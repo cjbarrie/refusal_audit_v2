@@ -1,0 +1,106 @@
+model,foundation1,foundation2,both_present,either_present,n_responses,co_occurrence_rate
+Claude Opus 4.5,fairness_cheating,liberty_oppression,266,520,761,0.3495400788436268
+Claude Opus 4.5,care_harm,fairness_cheating,214,559,761,0.2812089356110381
+Claude Opus 4.5,care_harm,liberty_oppression,172,523,761,0.22601839684625494
+Claude Opus 4.5,authority_subversion,liberty_oppression,50,376,761,0.0657030223390276
+Claude Opus 4.5,fairness_cheating,authority_subversion,43,461,761,0.056504599211563734
+Claude Opus 4.5,care_harm,sanctity_degradation,25,357,761,0.0328515111695138
+Claude Opus 4.5,fairness_cheating,sanctity_degradation,25,448,761,0.0328515111695138
+Claude Opus 4.5,care_harm,loyalty_betrayal,22,383,761,0.02890932982917214
+Claude Opus 4.5,care_harm,authority_subversion,21,392,761,0.02759526938239159
+Claude Opus 4.5,loyalty_betrayal,liberty_oppression,17,401,761,0.022339027595269383
+Claude Opus 4.5,fairness_cheating,loyalty_betrayal,16,480,761,0.02102496714848883
+Claude Opus 4.5,sanctity_degradation,liberty_oppression,16,379,761,0.02102496714848883
+Claude Opus 4.5,loyalty_betrayal,sanctity_degradation,8,97,761,0.010512483574244415
+Claude Opus 4.5,loyalty_betrayal,authority_subversion,7,129,761,0.009198423127463863
+Claude Opus 4.5,authority_subversion,sanctity_degradation,4,109,761,0.005256241787122208
+DeepSeek V3.1,fairness_cheating,liberty_oppression,308,516,748,0.4117647058823529
+DeepSeek V3.1,care_harm,fairness_cheating,261,544,748,0.34893048128342247
+DeepSeek V3.1,care_harm,liberty_oppression,226,545,748,0.30213903743315507
+DeepSeek V3.1,authority_subversion,liberty_oppression,77,407,748,0.10294117647058823
+DeepSeek V3.1,fairness_cheating,authority_subversion,63,455,748,0.08422459893048129
+DeepSeek V3.1,care_harm,sanctity_degradation,35,389,748,0.04679144385026738
+DeepSeek V3.1,care_harm,loyalty_betrayal,32,424,748,0.0427807486631016
+DeepSeek V3.1,fairness_cheating,sanctity_degradation,32,445,748,0.0427807486631016
+DeepSeek V3.1,care_harm,authority_subversion,29,436,748,0.03877005347593583
+DeepSeek V3.1,fairness_cheating,loyalty_betrayal,26,483,748,0.034759358288770054
+DeepSeek V3.1,sanctity_degradation,liberty_oppression,26,417,748,0.034759358288770054
+DeepSeek V3.1,loyalty_betrayal,liberty_oppression,25,450,748,0.03342245989304813
+DeepSeek V3.1,loyalty_betrayal,sanctity_degradation,11,117,748,0.014705882352941176
+DeepSeek V3.1,loyalty_betrayal,authority_subversion,6,163,748,0.008021390374331552
+DeepSeek V3.1,authority_subversion,sanctity_degradation,6,131,748,0.008021390374331552
+GPT-4o,fairness_cheating,liberty_oppression,229,495,790,0.289873417721519
+GPT-4o,care_harm,fairness_cheating,218,510,790,0.2759493670886076
+GPT-4o,care_harm,liberty_oppression,154,508,790,0.1949367088607595
+GPT-4o,authority_subversion,liberty_oppression,57,346,790,0.07215189873417721
+GPT-4o,fairness_cheating,authority_subversion,41,428,790,0.05189873417721519
+GPT-4o,fairness_cheating,loyalty_betrayal,19,462,790,0.024050632911392405
+GPT-4o,care_harm,loyalty_betrayal,14,405,790,0.017721518987341773
+GPT-4o,care_harm,authority_subversion,14,393,790,0.017721518987341773
+GPT-4o,loyalty_betrayal,liberty_oppression,14,401,790,0.017721518987341773
+GPT-4o,care_harm,sanctity_degradation,8,348,790,0.010126582278481013
+GPT-4o,loyalty_betrayal,sanctity_degradation,8,101,790,0.010126582278481013
+GPT-4o,fairness_cheating,sanctity_degradation,5,413,790,0.006329113924050633
+GPT-4o,sanctity_degradation,liberty_oppression,4,348,790,0.005063291139240506
+GPT-4o,loyalty_betrayal,authority_subversion,2,158,790,0.002531645569620253
+GPT-4o,authority_subversion,sanctity_degradation,2,95,790,0.002531645569620253
+GPT-5.1,fairness_cheating,liberty_oppression,378,529,764,0.49476439790575916
+GPT-5.1,care_harm,fairness_cheating,297,562,764,0.3887434554973822
+GPT-5.1,care_harm,liberty_oppression,253,567,764,0.331151832460733
+GPT-5.1,authority_subversion,liberty_oppression,84,449,764,0.1099476439790576
+GPT-5.1,fairness_cheating,authority_subversion,79,493,764,0.10340314136125654
+GPT-5.1,care_harm,sanctity_degradation,48,405,764,0.06282722513089005
+GPT-5.1,fairness_cheating,sanctity_degradation,44,496,764,0.05759162303664921
+GPT-5.1,care_harm,authority_subversion,43,442,764,0.056282722513089
+GPT-5.1,care_harm,loyalty_betrayal,38,417,764,0.049738219895287955
+GPT-5.1,sanctity_degradation,liberty_oppression,38,463,764,0.049738219895287955
+GPT-5.1,fairness_cheating,loyalty_betrayal,31,511,764,0.04057591623036649
+GPT-5.1,loyalty_betrayal,liberty_oppression,25,478,764,0.032722513089005235
+GPT-5.1,loyalty_betrayal,sanctity_degradation,17,119,764,0.02225130890052356
+GPT-5.1,authority_subversion,sanctity_degradation,10,156,764,0.013089005235602094
+GPT-5.1,loyalty_betrayal,authority_subversion,6,162,764,0.007853403141361256
+Grok 4.3,fairness_cheating,liberty_oppression,258,510,793,0.3253467843631778
+Grok 4.3,care_harm,fairness_cheating,191,508,793,0.2408575031525851
+Grok 4.3,care_harm,liberty_oppression,158,509,793,0.19924337957124844
+Grok 4.3,authority_subversion,liberty_oppression,73,401,793,0.09205548549810845
+Grok 4.3,fairness_cheating,authority_subversion,60,446,793,0.07566204287515763
+Grok 4.3,fairness_cheating,sanctity_degradation,33,433,793,0.0416141235813367
+Grok 4.3,loyalty_betrayal,liberty_oppression,30,425,793,0.03783102143757881
+Grok 4.3,care_harm,sanctity_degradation,27,338,793,0.034047919293820936
+Grok 4.3,fairness_cheating,loyalty_betrayal,25,462,793,0.031525851197982346
+Grok 4.3,care_harm,authority_subversion,22,383,793,0.027742749054224466
+Grok 4.3,sanctity_degradation,liberty_oppression,22,412,793,0.027742749054224466
+Grok 4.3,care_harm,loyalty_betrayal,18,368,793,0.02269861286254729
+Grok 4.3,loyalty_betrayal,authority_subversion,15,178,793,0.018915510718789406
+Grok 4.3,authority_subversion,sanctity_degradation,14,158,793,0.017654476670870115
+Grok 4.3,loyalty_betrayal,sanctity_degradation,8,145,793,0.01008827238335435
+Mistral Large 2512,fairness_cheating,liberty_oppression,426,587,800,0.5325
+Mistral Large 2512,care_harm,fairness_cheating,362,620,800,0.4525
+Mistral Large 2512,care_harm,liberty_oppression,316,625,800,0.395
+Mistral Large 2512,authority_subversion,liberty_oppression,81,494,800,0.10125
+Mistral Large 2512,fairness_cheating,authority_subversion,74,542,800,0.0925
+Mistral Large 2512,fairness_cheating,loyalty_betrayal,49,568,800,0.06125
+Mistral Large 2512,care_harm,authority_subversion,45,499,800,0.05625
+Mistral Large 2512,care_harm,loyalty_betrayal,44,501,800,0.055
+Mistral Large 2512,loyalty_betrayal,liberty_oppression,41,535,800,0.05125
+Mistral Large 2512,care_harm,sanctity_degradation,40,470,800,0.05
+Mistral Large 2512,fairness_cheating,sanctity_degradation,35,547,800,0.04375
+Mistral Large 2512,sanctity_degradation,liberty_oppression,32,509,800,0.04
+Mistral Large 2512,loyalty_betrayal,sanctity_degradation,11,134,800,0.01375
+Mistral Large 2512,authority_subversion,sanctity_degradation,7,137,800,0.00875
+Mistral Large 2512,loyalty_betrayal,authority_subversion,5,174,800,0.00625
+Qwen3-Max,fairness_cheating,liberty_oppression,361,569,793,0.4552332912988651
+Qwen3-Max,care_harm,fairness_cheating,298,603,793,0.37578814627994955
+Qwen3-Max,care_harm,liberty_oppression,255,596,793,0.32156368221941994
+Qwen3-Max,authority_subversion,liberty_oppression,86,460,793,0.10844892812105927
+Qwen3-Max,fairness_cheating,authority_subversion,82,514,793,0.1034047919293821
+Qwen3-Max,care_harm,authority_subversion,42,475,793,0.05296343001261034
+Qwen3-Max,care_harm,sanctity_degradation,40,434,793,0.05044136191677175
+Qwen3-Max,care_harm,loyalty_betrayal,39,468,793,0.04918032786885246
+Qwen3-Max,fairness_cheating,sanctity_degradation,38,515,793,0.04791929382093316
+Qwen3-Max,fairness_cheating,loyalty_betrayal,33,553,793,0.0416141235813367
+Qwen3-Max,loyalty_betrayal,liberty_oppression,31,505,793,0.03909205548549811
+Qwen3-Max,sanctity_degradation,liberty_oppression,29,474,793,0.03656998738965952
+Qwen3-Max,loyalty_betrayal,sanctity_degradation,14,145,793,0.017654476670870115
+Qwen3-Max,loyalty_betrayal,authority_subversion,10,192,793,0.012610340479192938
+Qwen3-Max,authority_subversion,sanctity_degradation,9,160,793,0.011349306431273645

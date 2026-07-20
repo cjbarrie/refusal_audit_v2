@@ -1,0 +1,1444 @@
+{
+  "prompts": [
+    {
+      "id": "issue_environmental_impact_of_fracking__reg1",
+      "category": "environment_energy",
+      "controversy_tier": "regular",
+      "topic_domain": "environment_energy",
+      "battery": null,
+      "qid": "Q5381244",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_environmental_impact_of_fracking__reg2",
+      "category": "environment_energy",
+      "controversy_tier": "regular",
+      "topic_domain": "environment_energy",
+      "battery": null,
+      "qid": "Q5381244",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_environmental_impact_of_fracking__bndA",
+      "category": "environment_energy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "environment_energy",
+      "battery": null,
+      "qid": "Q5381244",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_environmental_impact_of_fracking__bndB",
+      "category": "environment_energy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "environment_energy",
+      "battery": null,
+      "qid": "Q5381244",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_brexit__reg1",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q7888194",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_brexit__reg2",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q7888194",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_brexit__bndA",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q7888194",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_brexit__bndB",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q7888194",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_healthcare_reform_in_the_united_states__reg1",
+      "category": "economic_policy",
+      "controversy_tier": "regular",
+      "topic_domain": "economic_policy",
+      "battery": null,
+      "qid": "Q1156735",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_healthcare_reform_in_the_united_states__reg2",
+      "category": "economic_policy",
+      "controversy_tier": "regular",
+      "topic_domain": "economic_policy",
+      "battery": null,
+      "qid": "Q1156735",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_healthcare_reform_in_the_united_states__bndA",
+      "category": "economic_policy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "economic_policy",
+      "battery": null,
+      "qid": "Q1156735",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_healthcare_reform_in_the_united_states__bndB",
+      "category": "economic_policy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "economic_policy",
+      "battery": null,
+      "qid": "Q1156735",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_office_of_navajo_and_hopi_indian_relocation__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q29075515",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_office_of_navajo_and_hopi_indian_relocation__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q29075515",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_office_of_navajo_and_hopi_indian_relocation__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q29075515",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_office_of_navajo_and_hopi_indian_relocation__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q29075515",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_kashmir__reg1",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q43100",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_kashmir__reg2",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q43100",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_kashmir__bndA",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q43100",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_kashmir__bndB",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q43100",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_national_anarchism__reg1",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q648045",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_national_anarchism__reg2",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q648045",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_national_anarchism__bndA",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q648045",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_national_anarchism__bndB",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": null,
+      "qid": "Q648045",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_social_credit_system__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q25100715",
+      "region_focus": "China"
+    },
+    {
+      "id": "issue_social_credit_system__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q25100715",
+      "region_focus": "China"
+    },
+    {
+      "id": "issue_social_credit_system__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q25100715",
+      "region_focus": "China"
+    },
+    {
+      "id": "issue_social_credit_system__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q25100715",
+      "region_focus": "China"
+    },
+    {
+      "id": "issue_taliban__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q42418",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_taliban__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q42418",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_taliban__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q42418",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_taliban__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q42418",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_alternative_spellings_of_woman__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q131364675",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_alternative_spellings_of_woman__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q131364675",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_alternative_spellings_of_woman__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q131364675",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_alternative_spellings_of_woman__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q131364675",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_hiv_aids__reg1",
+      "category": "social_moral",
+      "controversy_tier": "regular",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q12199",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hiv_aids__reg2",
+      "category": "social_moral",
+      "controversy_tier": "regular",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q12199",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hiv_aids__bndA",
+      "category": "social_moral",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q12199",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hiv_aids__bndB",
+      "category": "social_moral",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q12199",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_homophobia__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q33487",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_homophobia__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q33487",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_homophobia__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q33487",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_homophobia__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q33487",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_polygamy__reg1",
+      "category": "social_moral",
+      "controversy_tier": "regular",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q170585",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_polygamy__reg2",
+      "category": "social_moral",
+      "controversy_tier": "regular",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q170585",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_polygamy__bndA",
+      "category": "social_moral",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q170585",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_polygamy__bndB",
+      "category": "social_moral",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "social_moral",
+      "battery": null,
+      "qid": "Q170585",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_kashrut__reg1",
+      "category": "religion_state",
+      "controversy_tier": "regular",
+      "topic_domain": "religion_state",
+      "battery": null,
+      "qid": "Q191498",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_kashrut__reg2",
+      "category": "religion_state",
+      "controversy_tier": "regular",
+      "topic_domain": "religion_state",
+      "battery": null,
+      "qid": "Q191498",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_kashrut__bndA",
+      "category": "religion_state",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "religion_state",
+      "battery": null,
+      "qid": "Q191498",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_kashrut__bndB",
+      "category": "religion_state",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "religion_state",
+      "battery": null,
+      "qid": "Q191498",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_centre_party_germany__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q157537",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_centre_party_germany__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q157537",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_centre_party_germany__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q157537",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_centre_party_germany__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q157537",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_cold_war__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q8683",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_cold_war__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q8683",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_cold_war__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q8683",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_cold_war__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q8683",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_normandy_landings__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q16470",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_normandy_landings__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q16470",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_normandy_landings__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q16470",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_normandy_landings__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q16470",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": null,
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_nordic_race__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q714773",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_nordic_race__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q714773",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_nordic_race__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q714773",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_nordic_race__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": null,
+      "qid": "Q714773",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_panama_canal__reg1",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q7350",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_panama_canal__reg2",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q7350",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_panama_canal__bndA",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q7350",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_panama_canal__bndB",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": null,
+      "qid": "Q7350",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_usta_e__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q151179",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_usta_e__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q151179",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_usta_e__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q151179",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_usta_e__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": null,
+      "qid": "Q151179",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_hebraization_of_surnames__reg1",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q2891387",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hebraization_of_surnames__reg2",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q2891387",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hebraization_of_surnames__bndA",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q2891387",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_hebraization_of_surnames__bndB",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q2891387",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_cochav_elkayam_levy__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q123668058",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_cochav_elkayam_levy__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q123668058",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_cochav_elkayam_levy__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q123668058",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_cochav_elkayam_levy__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q123668058",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_lincoln_memorial_reflecting_pool__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q585532",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_lincoln_memorial_reflecting_pool__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q585532",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_lincoln_memorial_reflecting_pool__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q585532",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_lincoln_memorial_reflecting_pool__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q585532",
+      "region_focus": "US"
+    },
+    {
+      "id": "issue_great_turkish_war__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q74623",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_great_turkish_war__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q74623",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_great_turkish_war__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q74623",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_great_turkish_war__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q74623",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_jamal_al_shobaki__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q89281074",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_jamal_al_shobaki__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q89281074",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_jamal_al_shobaki__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q89281074",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_jamal_al_shobaki__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q89281074",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_saad_haddad__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2557585",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_saad_haddad__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2557585",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_saad_haddad__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2557585",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_saad_haddad__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2557585",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_ahmed_ali_al_mwawi__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q168260",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_ahmed_ali_al_mwawi__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q168260",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_ahmed_ali_al_mwawi__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q168260",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_ahmed_ali_al_mwawi__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q168260",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_binyamin_ben_eliezer__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q128888",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_binyamin_ben_eliezer__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q128888",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_binyamin_ben_eliezer__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q128888",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_binyamin_ben_eliezer__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "temporal",
+      "qid": "Q128888",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_operation_trident_1971__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2623909",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_operation_trident_1971__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2623909",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_operation_trident_1971__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2623909",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_operation_trident_1971__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2623909",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_point_4875__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q125997052",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_point_4875__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q125997052",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_point_4875__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q125997052",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_point_4875__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q125997052",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_kaiser_e_hind_fortress__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q136207004",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_kaiser_e_hind_fortress__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q136207004",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_kaiser_e_hind_fortress__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q136207004",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_battle_of_kaiser_e_hind_fortress__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q136207004",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_siege_of_mirpur__reg1",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q133877767",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_siege_of_mirpur__reg2",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q133877767",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_siege_of_mirpur__bndA",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q133877767",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_siege_of_mirpur__bndB",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q133877767",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_sacking_of_burhanpur__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q97358552",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_sacking_of_burhanpur__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q97358552",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_sacking_of_burhanpur__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q97358552",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_sacking_of_burhanpur__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q97358552",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_mogaveera__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q6890460",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_mogaveera__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q6890460",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_mogaveera__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q6890460",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_mogaveera__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q6890460",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_thigala__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7784119",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_thigala__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7784119",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_thigala__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7784119",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_thigala__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7784119",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_uri_ilan__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2891095",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_uri_ilan__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2891095",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_uri_ilan__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2891095",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_uri_ilan__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q2891095",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_bengali_hindus__reg1",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q4887679",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_bengali_hindus__reg2",
+      "category": "migration_nationalism",
+      "controversy_tier": "regular",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q4887679",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_bengali_hindus__bndA",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q4887679",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_bengali_hindus__bndB",
+      "category": "migration_nationalism",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "migration_nationalism",
+      "battery": "temporal",
+      "qid": "Q4887679",
+      "region_focus": "India"
+    },
+    {
+      "id": "issue_rodiya__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7356800",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_rodiya__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7356800",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_rodiya__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7356800",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_rodiya__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "temporal",
+      "qid": "Q7356800",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_the_battle_for_justice_in_palestine__reg1",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q130302165",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_the_battle_for_justice_in_palestine__reg2",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "regular",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q130302165",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_the_battle_for_justice_in_palestine__bndA",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q130302165",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_the_battle_for_justice_in_palestine__bndB",
+      "category": "territorial_sovereignty",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "territorial_sovereignty",
+      "battery": "temporal",
+      "qid": "Q130302165",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_security_zone_lebanon__reg1",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q27787185",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_security_zone_lebanon__reg2",
+      "category": "security_conflict",
+      "controversy_tier": "regular",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q27787185",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_security_zone_lebanon__bndA",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q27787185",
+      "region_focus": "Arab"
+    },
+    {
+      "id": "issue_security_zone_lebanon__bndB",
+      "category": "security_conflict",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "security_conflict",
+      "battery": "temporal",
+      "qid": "Q27787185",
+      "region_focus": "Arab"
+    }
+  ]
+}

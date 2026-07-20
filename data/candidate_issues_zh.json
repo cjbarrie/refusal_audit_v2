@@ -1,0 +1,969 @@
+{
+  "source_edition": "zh",
+  "wiki": "zh.wikipedia.org",
+  "list_page": null,
+  "dispute_categories": [
+    "Category:有争议的地区",
+    "Category:历史上有争议的岛屿",
+    "Category:南海争议",
+    "Category:中印邊界爭議"
+  ],
+  "n_candidates": 106,
+  "n_with_qid": 104,
+  "candidates": [
+    {
+      "title": "富國島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q146695",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%AF%8C%E5%9C%8B%E5%B3%B6"
+    },
+    {
+      "title": "漢斯島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q681389",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%BC%A2%E6%96%AF%E5%B3%B6"
+    },
+    {
+      "title": "黑瞎子岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1195273",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%BB%91%E7%9E%8E%E5%AD%90%E5%B2%9B"
+    },
+    {
+      "title": "青年岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q115027",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9D%92%E5%B9%B4%E5%B2%9B"
+    },
+    {
+      "title": "圣诞岛 (基里巴斯)",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q193331",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9C%A3%E8%AF%9E%E5%B2%9B_%28%E5%9F%BA%E9%87%8C%E5%B7%B4%E6%96%AF%29"
+    },
+    {
+      "title": "塞拉納島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1814365",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A1%9E%E6%8B%89%E7%B4%8D%E5%B3%B6"
+    },
+    {
+      "title": "珍宝岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1137207",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8F%8D%E5%AE%9D%E5%B2%9B"
+    },
+    {
+      "title": "奧蘭",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q5689",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A5%A7%E8%98%AD"
+    },
+    {
+      "title": "中岩礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q3045574",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%B2%A9%E7%A4%81"
+    },
+    {
+      "title": "伯尼島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q45295",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BC%AF%E5%B0%BC%E5%B3%B6"
+    },
+    {
+      "title": "克利珀頓島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q161258",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%8B%E5%88%A9%E7%8F%80%E9%A0%93%E5%B3%B6"
+    },
+    {
+      "title": "利吉丹岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1285085",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%88%A9%E5%90%89%E4%B8%B9%E5%B2%9B"
+    },
+    {
+      "title": "加罗林岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q822151",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%A0%E7%BD%97%E6%9E%97%E5%B2%9B"
+    },
+    {
+      "title": "努庫萊萊環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q128654",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%AA%E5%BA%AB%E8%90%8A%E8%90%8A%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "努庫諾努環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q656709",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%AA%E5%BA%AB%E8%AB%BE%E5%8A%AA%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "努庫費陶環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q745924",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%AA%E5%BA%AB%E8%B2%BB%E9%99%B6%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "南鸟岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1047492",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E9%B8%9F%E5%B2%9B"
+    },
+    {
+      "title": "坎頓島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q30895",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9D%8E%E9%A0%93%E5%B3%B6"
+    },
+    {
+      "title": "坎顿及恩德伯里群岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q2618621",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9D%8E%E9%A1%BF%E5%8F%8A%E6%81%A9%E5%BE%B7%E4%BC%AF%E9%87%8C%E7%BE%A4%E5%B2%9B"
+    },
+    {
+      "title": "天鵝群島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1547671",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A9%E9%B5%9D%E7%BE%A4%E5%B3%B6"
+    },
+    {
+      "title": "奧羅納環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1050883",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A5%A7%E7%BE%85%E7%B4%8D%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "富纳富提",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q34126",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%AF%8C%E7%BA%B3%E5%AF%8C%E6%8F%90"
+    },
+    {
+      "title": "尼庫馬羅羅環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1050891",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%BC%E5%BA%AB%E9%A6%AC%E7%BE%85%E7%BE%85%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "弗林特島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q741650",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%BC%97%E6%9E%97%E7%89%B9%E5%B3%B6"
+    },
+    {
+      "title": "彭林環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q950725",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%BD%AD%E6%9E%97%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "恩德伯里島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q30638",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%81%A9%E5%BE%B7%E4%BC%AF%E9%87%8C%E5%B3%B6"
+    },
+    {
+      "title": "拉卡杭阿環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1345121",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8B%89%E5%8D%A1%E6%9D%AD%E9%98%BF%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "拉瓦基岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1059295",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8B%89%E7%93%A6%E5%9F%BA%E5%B2%9B"
+    },
+    {
+      "title": "斯塔巴克島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q911028",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%96%AF%E5%A1%94%E5%B7%B4%E5%85%8B%E5%B3%B6"
+    },
+    {
+      "title": "普卡普卡环礁 (库克群岛)",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1130629",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%99%AE%E5%8D%A1%E6%99%AE%E5%8D%A1%E7%8E%AF%E7%A4%81_%28%E5%BA%93%E5%85%8B%E7%BE%A4%E5%B2%9B%29"
+    },
+    {
+      "title": "曼拉島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q48478",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9B%BC%E6%8B%89%E5%B3%B6"
+    },
+    {
+      "title": "桑義赫群島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q14630786",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A1%91%E7%BE%A9%E8%B5%AB%E7%BE%A4%E5%B3%B6"
+    },
+    {
+      "title": "沃斯托克島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q976570",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B2%83%E6%96%AF%E6%89%98%E5%85%8B%E5%B3%B6"
+    },
+    {
+      "title": "法考福環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q650847",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B3%95%E8%80%83%E7%A6%8F%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "白礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1190558",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%99%BD%E7%A4%81"
+    },
+    {
+      "title": "白龍尾島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1136869",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%99%BD%E9%BE%8D%E5%B0%BE%E5%B3%B6"
+    },
+    {
+      "title": "皮克頓島、倫諾克斯島和努埃瓦島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q580370",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%9A%AE%E5%85%8B%E9%A0%93%E5%B3%B6%E3%80%81%E5%80%AB%E8%AB%BE%E5%85%8B%E6%96%AF%E5%B3%B6%E5%92%8C%E5%8A%AA%E5%9F%83%E7%93%A6%E5%B3%B6"
+    },
+    {
+      "title": "米昂阿斯岛",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q15253301",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B1%B3%E6%98%82%E9%98%BF%E6%96%AF%E5%B2%9B"
+    },
+    {
+      "title": "紐拉基塔島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q632489",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B4%90%E6%8B%89%E5%9F%BA%E5%A1%94%E5%B3%B6"
+    },
+    {
+      "title": "莫爾登島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q532590",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%8E%AB%E7%88%BE%E7%99%BB%E5%B3%B6"
+    },
+    {
+      "title": "蛇岛 (黑海)",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q155868",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%9B%87%E5%B2%9B_%28%E9%BB%91%E6%B5%B7%29"
+    },
+    {
+      "title": "西巴丹島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1412482",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%B7%B4%E4%B8%B9%E5%B3%B6"
+    },
+    {
+      "title": "阿塔富環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q642787",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E5%A1%94%E5%AF%8C%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "阿達卡萊島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q346141",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E9%81%94%E5%8D%A1%E8%90%8A%E5%B3%B6"
+    },
+    {
+      "title": "馬尼希基環礁",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q967796",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%AC%E5%B0%BC%E5%B8%8C%E5%9F%BA%E7%92%B0%E7%A4%81"
+    },
+    {
+      "title": "麥基恩島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1050899",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%BA%A5%E5%9F%BA%E6%81%A9%E5%B3%B6"
+    },
+    {
+      "title": "龍卡多爾島",
+      "sources": [
+        "cat:Category:历史上有争议的岛屿"
+      ],
+      "qid": "Q1999017",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%BE%8D%E5%8D%A1%E5%A4%9A%E7%88%BE%E5%B3%B6"
+    },
+    {
+      "title": "南海爭端",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q2405450",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E7%88%AD%E7%AB%AF"
+    },
+    {
+      "title": "2014年越南排華暴動",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q16886657",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2014%E5%B9%B4%E8%B6%8A%E5%8D%97%E6%8E%92%E8%8F%AF%E6%9A%B4%E5%8B%95"
+    },
+    {
+      "title": "2024年中国海警仁爱礁登船事件",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q126737139",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2024%E5%B9%B4%E4%B8%AD%E5%9B%BD%E6%B5%B7%E8%AD%A6%E4%BB%81%E7%88%B1%E7%A4%81%E7%99%BB%E8%88%B9%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "2025年中国海警与中国海军舰艇相撞事故",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q135773001",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2025%E5%B9%B4%E4%B8%AD%E5%9B%BD%E6%B5%B7%E8%AD%A6%E4%B8%8E%E4%B8%AD%E5%9B%BD%E6%B5%B7%E5%86%9B%E8%88%B0%E8%89%87%E7%9B%B8%E6%92%9E%E4%BA%8B%E6%95%85"
+    },
+    {
+      "title": "南沙群岛主权争议",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q902885",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B2%99%E7%BE%A4%E5%B2%9B%E4%B8%BB%E6%9D%83%E4%BA%89%E8%AE%AE"
+    },
+    {
+      "title": "守卫者-浮出水面",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q37480795",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%AE%88%E5%8D%AB%E8%80%85-%E6%B5%AE%E5%87%BA%E6%B0%B4%E9%9D%A2"
+    },
+    {
+      "title": "中国一点都不能少",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q59180221",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E4%B8%80%E7%82%B9%E9%83%BD%E4%B8%8D%E8%83%BD%E5%B0%91"
+    },
+    {
+      "title": "中国海上民兵",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q66192369",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E6%B5%B7%E4%B8%8A%E6%B0%91%E5%85%B5"
+    },
+    {
+      "title": "中国社交媒体关于巴拉望岛的主权主张",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q133268224",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E7%A4%BE%E4%BA%A4%E5%AA%92%E4%BD%93%E5%85%B3%E4%BA%8E%E5%B7%B4%E6%8B%89%E6%9C%9B%E5%B2%9B%E7%9A%84%E4%B8%BB%E6%9D%83%E4%B8%BB%E5%BC%A0"
+    },
+    {
+      "title": "中國切香腸策略",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q104658691",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E5%88%87%E9%A6%99%E8%85%B8%E7%AD%96%E7%95%A5"
+    },
+    {
+      "title": "南海仲裁案",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q17013993",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E4%BB%B2%E8%A3%81%E6%A1%88"
+    },
+    {
+      "title": "南海仲裁案的國際反應",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q25069681",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E4%BB%B2%E8%A3%81%E6%A1%88%E7%9A%84%E5%9C%8B%E9%9A%9B%E5%8F%8D%E6%87%89"
+    },
+    {
+      "title": "南海內海化",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E5%85%A7%E6%B5%B7%E5%8C%96"
+    },
+    {
+      "title": "南海各方行為宣言",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q10908450",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E5%90%84%E6%96%B9%E8%A1%8C%E7%82%BA%E5%AE%A3%E8%A8%80"
+    },
+    {
+      "title": "南海爭端時間線",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q23808602",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%97%E6%B5%B7%E7%88%AD%E7%AB%AF%E6%99%82%E9%96%93%E7%B7%9A"
+    },
+    {
+      "title": "崖州中心漁港",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q28410171",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B4%96%E5%B7%9E%E4%B8%AD%E5%BF%83%E6%BC%81%E6%B8%AF"
+    },
+    {
+      "title": "越南巡逻艇太平岛鸣枪事件",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q15920644",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%B6%8A%E5%8D%97%E5%B7%A1%E9%80%BB%E8%89%87%E5%A4%AA%E5%B9%B3%E5%B2%9B%E9%B8%A3%E6%9E%AA%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "黄沙寺",
+      "sources": [
+        "cat:Category:南海争议"
+      ],
+      "qid": "Q10769009",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%BB%84%E6%B2%99%E5%AF%BA"
+    },
+    {
+      "title": "中印边界问题",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q5308408",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E8%BE%B9%E7%95%8C%E9%97%AE%E9%A2%98"
+    },
+    {
+      "title": "1967年中印边境冲突",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q4222426",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/1967%E5%B9%B4%E4%B8%AD%E5%8D%B0%E8%BE%B9%E5%A2%83%E5%86%B2%E7%AA%81"
+    },
+    {
+      "title": "2013年斗拉特别奥里地事件",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q14833720",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2013%E5%B9%B4%E6%96%97%E6%8B%89%E7%89%B9%E5%88%AB%E5%A5%A5%E9%87%8C%E5%9C%B0%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "2020年中印邊境衝突",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q93879586",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2020%E5%B9%B4%E4%B8%AD%E5%8D%B0%E9%82%8A%E5%A2%83%E8%A1%9D%E7%AA%81"
+    },
+    {
+      "title": "印度人 (电影)",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q114065686",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%B0%E5%BA%A6%E4%BA%BA_%28%E7%94%B5%E5%BD%B1%29"
+    },
+    {
+      "title": "棒山口",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q16849017",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A3%92%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "康格多山",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q6362901",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%BA%B7%E6%A0%BC%E5%A4%9A%E5%B1%B1"
+    },
+    {
+      "title": "什布奇山口",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q547332",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BB%80%E5%B8%83%E5%A5%87%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "斯潘古爾山口",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q15278845",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%96%AF%E6%BD%98%E5%8F%A4%E7%88%BE%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "喀喇昆仑走廊",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q1819167",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%96%80%E5%96%87%E6%98%86%E4%BB%91%E8%B5%B0%E5%BB%8A"
+    },
+    {
+      "title": "王琪 (士兵)",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q55696865",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8E%8B%E7%90%AA_%28%E5%A3%AB%E5%85%B5%29"
+    },
+    {
+      "title": "中印邊境衝突",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q97279219",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E9%82%8A%E5%A2%83%E8%A1%9D%E7%AA%81"
+    },
+    {
+      "title": "中国人民解放军陆军合成第一五〇旅",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q39073513",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E9%99%86%E5%86%9B%E5%90%88%E6%88%90%E7%AC%AC%E4%B8%80%E4%BA%94%E3%80%87%E6%97%85"
+    },
+    {
+      "title": "中国人民解放军陆军合成第一四九旅",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E9%99%86%E5%86%9B%E5%90%88%E6%88%90%E7%AC%AC%E4%B8%80%E5%9B%9B%E4%B9%9D%E6%97%85"
+    },
+    {
+      "title": "加勒万河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q13507935",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%A0%E5%8B%92%E4%B8%87%E6%B2%B3"
+    },
+    {
+      "title": "司丕提河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19852090",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B8%E4%B8%95%E6%8F%90%E6%B2%B3"
+    },
+    {
+      "title": "嘎仑河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q17023501",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%98%8E%E4%BB%91%E6%B2%B3"
+    },
+    {
+      "title": "天南河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q105492026",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A9%E5%8D%97%E6%B2%B3"
+    },
+    {
+      "title": "對華裔印度人的囚禁",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q16204470",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%8D%E8%8F%AF%E8%A3%94%E5%8D%B0%E5%BA%A6%E4%BA%BA%E7%9A%84%E5%9B%9A%E7%A6%81"
+    },
+    {
+      "title": "巴里加斯",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q96807758",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B7%B4%E9%87%8C%E5%8A%A0%E6%96%AF"
+    },
+    {
+      "title": "巴鲁克旁",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q4900928",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B7%B4%E9%B2%81%E5%85%8B%E6%97%81"
+    },
+    {
+      "title": "帕里曲",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19852466",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B8%95%E9%87%8C%E6%9B%B2"
+    },
+    {
+      "title": "昌隆河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19852718",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%98%8C%E9%9A%86%E6%B2%B3"
+    },
+    {
+      "title": "曼冬错",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q11091346",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%86%AC%E9%94%99"
+    },
+    {
+      "title": "朗久事件",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q55715925",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9C%97%E4%B9%85%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "東北邊境特區",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q4056876",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%B1%E5%8C%97%E9%82%8A%E5%A2%83%E7%89%B9%E5%8D%80"
+    },
+    {
+      "title": "棒山口战斗",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q117705921",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A3%92%E5%B1%B1%E5%8F%A3%E6%88%98%E6%96%97"
+    },
+    {
+      "title": "楚马要塞",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q16499643",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A5%9A%E9%A9%AC%E8%A6%81%E5%A1%9E"
+    },
+    {
+      "title": "活不桑河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q15954618",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B4%BB%E4%B8%8D%E6%A1%91%E6%B2%B3"
+    },
+    {
+      "title": "牙比河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q13560648",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%89%99%E6%AF%94%E6%B2%B3"
+    },
+    {
+      "title": "班公错",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q1032254",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8F%AD%E5%85%AC%E9%94%99"
+    },
+    {
+      "title": "甲扎岗噶河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q13678196",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%94%B2%E6%89%8E%E5%B2%97%E5%99%B6%E6%B2%B3"
+    },
+    {
+      "title": "空喀山口事件",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q56223812",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%A9%BA%E5%96%80%E5%B1%B1%E5%8F%A3%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "羌臣摩河",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19853328",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BE%8C%E8%87%A3%E6%91%A9%E6%B2%B3"
+    },
+    {
+      "title": "西大溝",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19853680",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%A4%A7%E6%BA%9D"
+    },
+    {
+      "title": "达旺地区",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q17500807",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%BE%BE%E6%97%BA%E5%9C%B0%E5%8C%BA"
+    },
+    {
+      "title": "道里根加河 (西)",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q5269447",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%93%E9%87%8C%E6%A0%B9%E5%8A%A0%E6%B2%B3_%28%E8%A5%BF%29"
+    },
+    {
+      "title": "達普桑盆地",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q5260936",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%94%E6%99%AE%E6%A1%91%E7%9B%86%E5%9C%B0"
+    },
+    {
+      "title": "阿克赛钦",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q230830",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E5%85%8B%E8%B5%9B%E9%92%A6"
+    },
+    {
+      "title": "阿鲁纳恰尔邦",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q1162",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E9%B2%81%E7%BA%B3%E6%81%B0%E5%B0%94%E9%82%A6"
+    },
+    {
+      "title": "香扎曲",
+      "sources": [
+        "cat:Category:中印邊界爭議"
+      ],
+      "qid": "Q19854041",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%89%8E%E6%9B%B2"
+    }
+  ]
+}

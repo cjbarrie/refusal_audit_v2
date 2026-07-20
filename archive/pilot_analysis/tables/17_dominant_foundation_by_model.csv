@@ -1,0 +1,43 @@
+model_f,dominant_foundation,n,prop
+GPT-5.1,authority_subversion,15,0.023734177215189875
+GPT-5.1,care_harm,136,0.21518987341772153
+GPT-5.1,fairness_cheating,365,0.5775316455696202
+GPT-5.1,liberty_oppression,63,0.09968354430379747
+GPT-5.1,loyalty_betrayal,39,0.061708860759493674
+GPT-5.1,sanctity_degradation,14,0.022151898734177215
+Claude Opus 4.5,authority_subversion,19,0.02923076923076923
+Claude Opus 4.5,care_harm,152,0.23384615384615384
+Claude Opus 4.5,fairness_cheating,355,0.5461538461538461
+Claude Opus 4.5,liberty_oppression,74,0.11384615384615385
+Claude Opus 4.5,loyalty_betrayal,44,0.06769230769230769
+Claude Opus 4.5,sanctity_degradation,6,0.009230769230769232
+GPT-4o,authority_subversion,26,0.039816232771822356
+GPT-4o,care_harm,140,0.21439509954058192
+GPT-4o,fairness_cheating,332,0.5084226646248086
+GPT-4o,liberty_oppression,82,0.12557427258805512
+GPT-4o,loyalty_betrayal,68,0.10413476263399694
+GPT-4o,sanctity_degradation,5,0.007656967840735069
+Grok 4.3,authority_subversion,27,0.04122137404580153
+Grok 4.3,care_harm,131,0.2
+Grok 4.3,fairness_cheating,319,0.4870229007633588
+Grok 4.3,liberty_oppression,97,0.1480916030534351
+Grok 4.3,loyalty_betrayal,59,0.0900763358778626
+Grok 4.3,sanctity_degradation,22,0.03358778625954199
+DeepSeek V3.1,authority_subversion,22,0.034375
+DeepSeek V3.1,care_harm,158,0.246875
+DeepSeek V3.1,fairness_cheating,313,0.4890625
+DeepSeek V3.1,liberty_oppression,85,0.1328125
+DeepSeek V3.1,loyalty_betrayal,53,0.0828125
+DeepSeek V3.1,sanctity_degradation,9,0.0140625
+Qwen3-Max,authority_subversion,16,0.02282453637660485
+Qwen3-Max,care_harm,153,0.21825962910128388
+Qwen3-Max,fairness_cheating,377,0.5378031383737518
+Qwen3-Max,liberty_oppression,90,0.12838801711840228
+Qwen3-Max,loyalty_betrayal,59,0.08416547788873038
+Qwen3-Max,sanctity_degradation,6,0.008559201141226819
+Mistral Large 2512,authority_subversion,11,0.015873015873015872
+Mistral Large 2512,care_harm,163,0.2352092352092352
+Mistral Large 2512,fairness_cheating,387,0.5584415584415584
+Mistral Large 2512,liberty_oppression,70,0.10101010101010101
+Mistral Large 2512,loyalty_betrayal,50,0.07215007215007214
+Mistral Large 2512,sanctity_degradation,12,0.017316017316017316

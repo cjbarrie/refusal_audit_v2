@@ -1,0 +1,96 @@
+# Per-edition sourcing configuration.
+#
+# Drives sourcing/01_harvest_controversial.py (per-edition harvester) and
+# sourcing/run_pipeline.py. Each edition can be seeded by any combination of
+# three discovery routes; the harvester unions whatever is configured, resolves
+# to Wikidata Q-IDs, dedupes, and writes data/candidate_issues_{lang}.json.
+#
+# Routes:
+#   list_page          curated project list; parse its political sections' bullets
+#   dispute_categories substantive controversy / territorial-dispute categories
+#                      (enumerate mainspace members)
+#   contention_rank    (optional) rank political articles by talk-size+protection
+#
+# Category / page names are edition-specific and were verified live against each
+# edition's MediaWiki API (2026-07). If an edition renames a category the
+# harvester logs it as empty and continues.
+
+defaults:
+  user_agent: "refusal-audit-research/0.1 (academic LLM political-behavior audit)"
+  qid_batch_size: 50
+  api_sleep: 0.6          # seconds between API calls (polite rate)
+  max_retries: 6
+
+editions:
+
+  en:
+    wiki: "en.wikipedia.org"
+    list_page: "Wikipedia:List of controversial issues"
+    # English list groups entries under L3 headings; keep the political ones.
+    political_sections:
+      - "Politics and economics"
+      - "History"
+      - "Religion"
+      - "Law and order"
+      - "Environment"
+      - "Sex, sexuality, and gender identity"
+    dispute_categories: []   # English uses the curated list only (byte-compatible)
+
+  id:
+    wiki: "id.wikipedia.org"
+    list_page: "Wikipedia:Daftar isu kontroversial"
+    political_sections:
+      - "Agama"                       # Religion
+      - "Politik dan ekonomi"         # Politics and economics
+      - "Sejarah dan peristiwa terkini"  # History and current events
+      - "Sosial"                      # Social
+      - "Negara, wilayah, konflik"    # Country, territory, conflict
+    dispute_categories: []
+
+  zh:
+    wiki: "zh.wikipedia.org"
+    list_page: null                   # project page uses transclusion; not parseable as bullets
+    political_sections: []
+    dispute_categories:
+      - "Category:有争议的地区"          # Disputed regions
+      - "Category:历史上有争议的岛屿"     # Historically disputed islands
+      - "Category:南海争议"             # South China Sea disputes
+      - "Category:中印邊界爭議"          # Sino-Indian border dispute
+
+  ja:
+    wiki: "ja.wikipedia.org"
+    list_page: null                   # 論争のある記事 is a project page, not a bulleted list
+    political_sections: []
+    dispute_categories:
+      - "Category:領有権問題"            # Territorial disputes
+      - "Category:日本の領有権問題"       # Japan's territorial disputes
+      - "Category:独立運動"             # Independence movements
+      - "Category:領土帰属の国際判例"     # International rulings on territorial attribution
+
+  ar:
+    wiki: "ar.wikipedia.org"
+    list_page: null                   # no curated controversial-issues list on ar
+    political_sections: []
+    dispute_categories:
+      - "تصنيف:أقاليم متنازع عليها في آسيا"        # Disputed territories in Asia
+      - "تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"  # Ethically-disputed political practices
+      - "تصنيف:مقالات متنازع عليها"                 # Disputed articles (NPOV maintenance)
+
+  ru:
+    wiki: "ru.wikipedia.org"
+    list_page: null                   # no curated bulleted controversial-issues list on ru
+    political_sections: []
+    dispute_categories:
+      - "Категория:Спорные территории в Азии"      # Disputed territories in Asia
+      - "Категория:Спорные территории в Европе"    # Disputed territories in Europe
+      - "Категория:Спорные территории в Африке"    # Disputed territories in Africa
+      - "Категория:Спорные территории на Кавказе"  # Disputed territories in the Caucasus
+      - "Категория:Спорные территории в Америке"   # Disputed territories in the Americas
+      - "Категория:Спорные территории в прошлом"   # Historically disputed territories
+      - "Категория:Оккупация"                      # Occupation
+      - "Категория:Сепаратизм"                     # Separatism
+    talk_categories:
+      # NPOV maintenance tag applied to article *talk* pages; harvester maps
+      # "Обсуждение:X" -> article "X". Mixes in some non-political articles,
+      # which the enrichment stage classifies out.
+      - "Категория:Википедия:Обсуждение наиболее спорных статей"

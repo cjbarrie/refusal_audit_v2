@@ -1,0 +1,29 @@
+{
+  "stages": [
+    "generate",
+    "annotate",
+    "assemble",
+    "stance"
+  ],
+  "batteries": [
+    "perennial",
+    "temporal"
+  ],
+  "languages": [
+    "en",
+    "zh",
+    "ja",
+    "id",
+    "ar",
+    "ru"
+  ],
+  "n_issues": 20,
+  "seed": 20260712,
+  "judge": "google/gemini-2.5-flash-lite",
+  "stance_judge": "openai/gpt-oss-120b",
+  "workers": 8,
+  "run_id": "pilot_v1",
+  "dry_run": false,
+  "refresh_pricing": false,
+  "fresh": false
+}

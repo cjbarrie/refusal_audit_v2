@@ -1,0 +1,15 @@
+model_f,refusal_justification_f,n,total,prop
+GPT-5.1,Neutrality/Balance,14,32,0.4375
+GPT-5.1,Harm Avoidance,14,32,0.4375
+GPT-5.1,No Justification,1,32,0.03125
+GPT-5.1,Other,3,32,0.09375
+Claude Opus 4.5,Harm Avoidance,7,16,0.4375
+Claude Opus 4.5,Other,9,16,0.5625
+Grok 4.3,Neutrality/Balance,1,4,0.25
+Grok 4.3,Harm Avoidance,1,4,0.25
+Grok 4.3,Other,2,4,0.5
+DeepSeek V3.1,Neutrality/Balance,7,16,0.4375
+DeepSeek V3.1,Harm Avoidance,2,16,0.125
+DeepSeek V3.1,No Justification,7,16,0.4375
+Qwen3-Max,Neutrality/Balance,1,2,0.5
+Qwen3-Max,Harm Avoidance,1,2,0.5

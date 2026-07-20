@@ -1,0 +1,64 @@
+prompt_category,model_f,n,engagement_rate,refusal_rate
+civil_rights_liberties,Grok 4.3,160,1,0
+civil_rights_liberties,Mistral Large 2512,160,1,0
+civil_rights_liberties,GPT-4o,160,0.99375,0.00625
+civil_rights_liberties,Qwen3-Max,160,0.99375,0.00625
+civil_rights_liberties,GPT-5.1,160,0.9875,0.0125
+civil_rights_liberties,Claude Opus 4.5,160,0.9875,0.0125
+civil_rights_liberties,DeepSeek V3.1,160,0.98125,0.01875
+economic_policy,GPT-5.1,20,1,0
+economic_policy,Claude Opus 4.5,20,1,0
+economic_policy,GPT-4o,19,1,0
+economic_policy,Grok 4.3,20,1,0
+economic_policy,DeepSeek V3.1,20,1,0
+economic_policy,Qwen3-Max,20,1,0
+economic_policy,Mistral Large 2512,20,1,0
+environment_energy,GPT-5.1,20,1,0
+environment_energy,Claude Opus 4.5,20,1,0
+environment_energy,GPT-4o,20,1,0
+environment_energy,Grok 4.3,20,1,0
+environment_energy,DeepSeek V3.1,20,1,0
+environment_energy,Qwen3-Max,20,1,0
+environment_energy,Mistral Large 2512,20,1,0
+governance_democracy,Mistral Large 2512,120,1,0
+governance_democracy,Grok 4.3,120,0.9916666666666667,0.008333333333333333
+governance_democracy,Qwen3-Max,120,0.9833333333333333,0.016666666666666666
+governance_democracy,GPT-4o,120,0.975,0.025
+governance_democracy,GPT-5.1,120,0.95,0.05
+governance_democracy,Claude Opus 4.5,119,0.9243697478991597,0.07563025210084033
+governance_democracy,DeepSeek V3.1,120,0.9166666666666666,0.08333333333333333
+migration_nationalism,GPT-4o,80,1,0
+migration_nationalism,Grok 4.3,80,1,0
+migration_nationalism,DeepSeek V3.1,80,1,0
+migration_nationalism,Qwen3-Max,80,1,0
+migration_nationalism,Mistral Large 2512,80,1,0
+migration_nationalism,GPT-5.1,80,0.975,0.025
+migration_nationalism,Claude Opus 4.5,80,0.975,0.025
+religion_state,GPT-5.1,20,1,0
+religion_state,Claude Opus 4.5,20,1,0
+religion_state,GPT-4o,20,1,0
+religion_state,Grok 4.3,20,1,0
+religion_state,DeepSeek V3.1,20,1,0
+religion_state,Qwen3-Max,20,1,0
+religion_state,Mistral Large 2512,20,1,0
+security_conflict,Mistral Large 2512,260,1,0
+security_conflict,Qwen3-Max,260,0.9884615384615385,0.011538461538461539
+security_conflict,Grok 4.3,259,0.9845559845559846,0.015444015444015444
+security_conflict,GPT-4o,260,0.9807692307692307,0.019230769230769232
+security_conflict,GPT-5.1,260,0.9423076923076923,0.057692307692307696
+security_conflict,Claude Opus 4.5,260,0.9192307692307692,0.08076923076923077
+security_conflict,DeepSeek V3.1,260,0.8961538461538462,0.10384615384615385
+social_moral,Claude Opus 4.5,39,1,0
+social_moral,GPT-4o,40,1,0
+social_moral,Grok 4.3,40,1,0
+social_moral,DeepSeek V3.1,40,1,0
+social_moral,Qwen3-Max,40,1,0
+social_moral,Mistral Large 2512,40,1,0
+social_moral,GPT-5.1,40,0.975,0.025
+territorial_sovereignty,GPT-4o,80,1,0
+territorial_sovereignty,Mistral Large 2512,80,1,0
+territorial_sovereignty,Grok 4.3,80,0.9875,0.0125
+territorial_sovereignty,Qwen3-Max,80,0.9875,0.0125
+territorial_sovereignty,Claude Opus 4.5,80,0.9625,0.0375
+territorial_sovereignty,GPT-5.1,80,0.875,0.125
+territorial_sovereignty,DeepSeek V3.1,80,0.85,0.15

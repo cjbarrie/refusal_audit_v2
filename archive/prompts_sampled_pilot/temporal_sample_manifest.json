@@ -1,0 +1,91 @@
+{
+  "battery": "temporal",
+  "seed": 20260712,
+  "n_issues_requested": 20,
+  "n_issues_selected": 20,
+  "issue_ids": [
+    "issue_ahmed_ali_al_mwawi",
+    "issue_battle_of_kaiser_e_hind_fortress",
+    "issue_battle_of_point_4875",
+    "issue_bengali_hindus",
+    "issue_binyamin_ben_eliezer",
+    "issue_cochav_elkayam_levy",
+    "issue_great_turkish_war",
+    "issue_hebraization_of_surnames",
+    "issue_jamal_al_shobaki",
+    "issue_lincoln_memorial_reflecting_pool",
+    "issue_mogaveera",
+    "issue_operation_trident_1971",
+    "issue_rodiya",
+    "issue_saad_haddad",
+    "issue_sacking_of_burhanpur",
+    "issue_security_zone_lebanon",
+    "issue_siege_of_mirpur",
+    "issue_the_battle_for_justice_in_palestine",
+    "issue_thigala",
+    "issue_uri_ilan"
+  ],
+  "denylist_path": "../prompts/excluded_issues.yaml",
+  "denylist_qids": [
+    "Q1048570",
+    "Q127683",
+    "Q211354",
+    "Q327538",
+    "Q47092",
+    "Q536034",
+    "Q6517598",
+    "Q660567",
+    "Q830532"
+  ],
+  "reference_prompts_dropped_by_denylist": 0,
+  "per_language": {
+    "en": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_en_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "zh": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_zh_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ja": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_ja_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "id": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_id_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ar": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_ar_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ru": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/temporal_prompts_ru_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-07-20T14:11:39.113388+00:00",
+  "assumptions": {
+    "engage_rate": 0.83,
+    "judge_calls_engaged": 3,
+    "judge_calls_refused": 1,
+    "tokens_per_call": {
+      "gen": [
+        140,
+        400
+      ],
+      "judge": [
+        620,
+        60
+      ],
+      "stance": [
+        620,
+        60
+      ]
+    },
+    "pricing_usd_per_token": {
+      "openai/gpt-5.1": [
+        1.25e-06,
+        1e-05
+      ],
+      "anthropic/claude-opus-4.5": [
+        5e-06,
+        2.5e-05
+      ],
+      "openai/gpt-4o": [
+        2.5e-06,
+        1e-05
+      ],
+      "x-ai/grok-4.3": [
+        1.25e-06,
+        2.5e-06
+      ],
+      "deepseek/deepseek-chat-v3.1": [
+        2.5e-07,
+        9.5e-07
+      ],
+      "qwen/qwen3-max": [
+        7.8e-07,
+        3.9e-06
+      ],
+      "mistralai/mistral-large-2512": [
+        5e-07,
+        1.5e-06
+      ],
+      "google/gemini-2.5-flash-lite": [
+        1e-07,
+        4e-07
+      ],
+      "openai/gpt-oss-120b": [
+        3.7e-08,
+        1.7e-07
+      ]
+    },
+    "mena_via_hf_endpoints_billed_per_gpu_hour": true,
+    "hf_endpoint_hourly_usd_assumption": 1.0,
+    "n_issues": 1000,
+    "batteries": [
+      "perennial",
+      "temporal"
+    ]
+  },
+  "configurations": {
+    "baseline (7 OpenRouter models x 6 langs)": {
+      "n_models": 7,
+      "n_langs": 6,
+      "cells": 12,
+      "gens": 336000,
+      "gens_openrouter": 336000,
+      "gens_endpoint": 0,
+      "judge": 336000,
+      "stance": 0,
+      "total_calls": 672000,
+      "gen_usd": 1111.4016,
+      "judge_usd": 28.896,
+      "stance_usd": 0.0,
+      "total_usd": 1140.2975999999999
+    },
+    "+Russian  (7 OpenRouter models x 7 langs)": {
+      "n_models": 7,
+      "n_langs": 7,
+      "cells": 14,
+      "gens": 392000,
+      "gens_openrouter": 392000,
+      "gens_endpoint": 0,
+      "judge": 392000,
+      "stance": 0,
+      "total_calls": 784000,
+      "gen_usd": 1296.6352,
+      "judge_usd": 33.712,
+      "stance_usd": 0.0,
+      "total_usd": 1330.3472
+    },
+    "+MENA/India (7 models x 7 langs)": {
+      "n_models": 7,
+      "n_langs": 7,
+      "cells": 14,
+      "gens": 392000,
+      "gens_openrouter": 392000,
+      "gens_endpoint": 0,
+      "judge": 392000,
+      "stance": 0,
+      "total_calls": 784000,
+      "gen_usd": 1296.6352,
+      "judge_usd": 33.712,
+      "stance_usd": 0.0,
+      "total_usd": 1330.3472
+    }
+  }
+}

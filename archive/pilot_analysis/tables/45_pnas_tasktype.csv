@@ -1,0 +1,19 @@
+prompt_category,dataset_type_f,refusal_rate,n,instrumental,cat_label
+civil_rights_liberties,Regular Prompts,0.0035714285714285713,560,FALSE,Civil rights / liberties
+civil_rights_liberties,Boundary Prompts,0.0125,560,FALSE,Civil rights / liberties
+economic_policy,Regular Prompts,0,69,FALSE,Economic policy
+economic_policy,Boundary Prompts,0,70,FALSE,Economic policy
+environment_energy,Regular Prompts,0,70,FALSE,Environment / energy
+environment_energy,Boundary Prompts,0,70,FALSE,Environment / energy
+governance_democracy,Regular Prompts,0.05,420,FALSE,Governance / democracy
+governance_democracy,Boundary Prompts,0.02386634844868735,419,FALSE,Governance / democracy
+migration_nationalism,Regular Prompts,0,280,FALSE,Migration / nationalism
+migration_nationalism,Boundary Prompts,0.014285714285714285,280,FALSE,Migration / nationalism
+religion_state,Regular Prompts,0,70,FALSE,Religion / state
+religion_state,Boundary Prompts,0,70,FALSE,Religion / state
+security_conflict,Regular Prompts,0.03956043956043956,910,TRUE,Security / conflict
+security_conflict,Boundary Prompts,0.0429042904290429,909,TRUE,Security / conflict
+social_moral,Regular Prompts,0,139,FALSE,Social / moral
+social_moral,Boundary Prompts,0.007142857142857143,140,FALSE,Social / moral
+territorial_sovereignty,Regular Prompts,0.06428571428571428,280,TRUE,Territorial sovereignty
+territorial_sovereignty,Boundary Prompts,0.03214285714285714,280,TRUE,Territorial sovereignty

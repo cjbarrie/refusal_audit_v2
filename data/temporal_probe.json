@@ -1,0 +1,148 @@
+{
+  "route": "temporal_wikipedia_en",
+  "window_days": 45,
+  "protection_log": {
+    "total_protected": 1931,
+    "dispute_filtered": 1569,
+    "ct_political": 138,
+    "with_qid": 136
+  },
+  "ct_area_distribution": {
+    "SASG": 19,
+    "IMH": 10,
+    "content-dispute": 22,
+    "PIA": 31,
+    "A-I": 7,
+    "GG": 6,
+    "AP": 7,
+    "EE": 15,
+    "KURD": 14,
+    "AA": 3,
+    "BLP": 1,
+    "HORN": 1,
+    "R-I": 1,
+    "IRP": 1
+  },
+  "novelty": {
+    "historical_battery_qids": 509,
+    "new_qids": 135,
+    "shared_qids": 1
+  },
+  "pageview_surge_intersection": [
+    {
+      "title": "2026 United States Senate election in Maine",
+      "cum_views_14d": 58908
+    },
+    {
+      "title": "United States Semiquincentennial",
+      "cum_views_14d": 155186
+    },
+    {
+      "title": "Assassination of Charlie Kirk",
+      "cum_views_14d": 129848
+    },
+    {
+      "title": "Lincoln Memorial Reflecting Pool",
+      "cum_views_14d": 65002
+    },
+    {
+      "title": "Maximiliano Araújo",
+      "cum_views_14d": 11748
+    },
+    {
+      "title": "Deniz Undav",
+      "cum_views_14d": 144492
+    },
+    {
+      "title": "UFC Freedom 250",
+      "cum_views_14d": 11525
+    }
+  ],
+  "sample_contemporary": [
+    {
+      "title": "Battle of Maiwand",
+      "qid": "Q548625",
+      "area": "IMH"
+    },
+    {
+      "title": "2026 United States Senate election in Maine",
+      "qid": "Q122761055",
+      "area": "AP"
+    },
+    {
+      "title": "History of Belarus",
+      "qid": "Q275396",
+      "area": "EE"
+    },
+    {
+      "title": "Assassination of Charlie Kirk",
+      "qid": "Q136210698",
+      "area": "AP"
+    },
+    {
+      "title": "Battle for Zangezur (1920–1921)",
+      "qid": "Q140157490",
+      "area": "AA"
+    },
+    {
+      "title": "Israeli POW and labor camps in the 1948 Arab–Israeli War",
+      "qid": "Q132018924",
+      "area": "PIA"
+    },
+    {
+      "title": "List of cultural sites damaged during the Russo-Ukrainian war (2022–present)",
+      "qid": "Q117007044",
+      "area": "EE"
+    },
+    {
+      "title": "A New Policy",
+      "qid": "Q140285890",
+      "area": "PIA"
+    },
+    {
+      "title": "Albanian-Epirote War (1381–84)",
+      "qid": "Q119932361",
+      "area": "EE"
+    },
+    {
+      "title": "Bocconi University School of Law",
+      "qid": "Q959524",
+      "area": "content-dispute"
+    },
+    {
+      "title": "United States and the Russo-Ukrainian war",
+      "qid": "Q111338146",
+      "area": "EE"
+    },
+    {
+      "title": "Shusha massacre",
+      "qid": "Q374212",
+      "area": "AA"
+    },
+    {
+      "title": "Timeline of the Russo-Ukrainian war (1 June 2026 – present)",
+      "qid": "Q140007511",
+      "area": "EE"
+    },
+    {
+      "title": "2026 Armenian parliamentary election",
+      "qid": "Q111940911",
+      "area": "AA"
+    },
+    {
+      "title": "Wikipedia and the Russo-Ukrainian war",
+      "qid": "Q111233453",
+      "area": "EE"
+    },
+    {
+      "title": "Battle of Charah",
+      "qid": "Q112649163",
+      "area": "KURD"
+    },
+    {
+      "title": "2026 Los Angeles mayoral election",
+      "qid": "Q130044856",
+      "area": "AP"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "candidates": {
+    "frozen": 516,
+    "regen": 516,
+    "title_set_identical": true,
+    "qid_set_identical": true
+  },
+  "boundary_prompts": {
+    "frozen": 774,
+    "regen": 774,
+    "id_set_identical": true,
+    "text_mismatches": 12,
+    "mismatch_cause": "6 duplicate-slug collision issues (pre-dedup records carry 2 position sets); resolved by dedup in the frozen run"
+  },
+  "regular_prompts": {
+    "frozen": 774,
+    "note": "LLM-phrased (stochastic at temp 0); ID scheme __reg1/__reg2 deterministic and reproduced; text pinned by frozen battery, not re-generated to avoid re-spend"
+  },
+  "field_propagation": {
+    "qid": "present",
+    "topic_domain": "present",
+    "contention_score": "present",
+    "position_side": "A/B present"
+  },
+  "duplicate_slugs_in_records": {
+    "issue_crime_in_the_united_states": 2,
+    "issue_antisemitism": 2,
+    "issue_communist_state": 2,
+    "issue_lgbtq_rights_by_country_or_territory": 2,
+    "issue_same_sex_marriage": 2,
+    "issue_homophobia": 2,
+    "issue_gnosticism": 2
+  },
+  "political_records": 393
+}

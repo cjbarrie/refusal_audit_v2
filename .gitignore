@@ -1,0 +1,17 @@
+# OS / editor cruft
+.DS_Store
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# LaTeX build byproducts (keep .tex and .pdf)
+*.aux
+*.out
+*.toc
+*.synctex.gz
+writeup/*.log
+writeup/p[0-9].log
+
+# Secrets — never commit
+.env

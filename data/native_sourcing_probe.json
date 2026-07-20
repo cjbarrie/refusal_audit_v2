@@ -1,0 +1,70 @@
+{
+  "en_battery_qids": 387,
+  "ar": {
+    "n_issues": 71,
+    "new": 68,
+    "shared_with_en": 3,
+    "categories_used": [
+      "تصنيف:أقاليم متنازع عليها في آسيا",
+      "تصنيف:ممارسات سياسية متنازع عليها أخلاقيا",
+      "تصنيف:مقالات متنازع عليها"
+    ],
+    "sample_new_qids": [
+      "Q18097",
+      "Q1162909",
+      "Q7603664",
+      "Q2261995",
+      "Q215664",
+      "Q1413732",
+      "Q889",
+      "Q161147",
+      "Q12239874",
+      "Q5356425",
+      "Q5282698",
+      "Q476310",
+      "Q66278313",
+      "Q23681",
+      "Q10964327",
+      "Q5588655",
+      "Q200697",
+      "Q823175",
+      "Q1256740",
+      "Q2408462"
+    ]
+  },
+  "zh": {
+    "n_issues": 104,
+    "new": 104,
+    "shared_with_en": 0,
+    "categories_used": [
+      "Category:有争议的地区",
+      "Category:历史上有争议的岛屿",
+      "Category:南海争议",
+      "Category:中印邊界爭議"
+    ],
+    "sample_new_qids": [
+      "Q1999017",
+      "Q656709",
+      "Q1137207",
+      "Q14630786",
+      "Q10908450",
+      "Q133268224",
+      "Q146695",
+      "Q19853328",
+      "Q117705921",
+      "Q59180221",
+      "Q96807758",
+      "Q11091346",
+      "Q135773001",
+      "Q17023501",
+      "Q1190558",
+      "Q5260936",
+      "Q911028",
+      "Q55696865",
+      "Q39073513",
+      "Q23808602"
+    ]
+  },
+  "ar_zh_shared": 0,
+  "note": "Probe categories skew territorial (islands/borders/South China Sea); a full harvest would add NPOV-maintenance categories per edition and would raise topical diversity."
+}

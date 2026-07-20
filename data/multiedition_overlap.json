@@ -1,0 +1,75 @@
+{
+  "editions": [
+    "en",
+    "zh",
+    "ar",
+    "ja",
+    "id"
+  ],
+  "per_edition": {
+    "en": {
+      "n_candidates": 516,
+      "n_with_qid": 509
+    },
+    "zh": {
+      "n_candidates": 106,
+      "n_with_qid": 104
+    },
+    "ar": {
+      "n_candidates": 71,
+      "n_with_qid": 71
+    },
+    "ja": {
+      "n_candidates": 148,
+      "n_with_qid": 145
+    },
+    "id": {
+      "n_candidates": 57,
+      "n_with_qid": 57
+    }
+  },
+  "total_distinct_qids": 868,
+  "issues_by_n_editions": {
+    "1": 852,
+    "2": 14,
+    "3": 2
+  },
+  "pairwise_matrix": [
+    [
+      509,
+      0,
+      3,
+      4,
+      7
+    ],
+    [
+      0,
+      104,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      71,
+      3,
+      1
+    ],
+    [
+      4,
+      0,
+      3,
+      145,
+      2
+    ],
+    [
+      7,
+      0,
+      1,
+      2,
+      57
+    ]
+  ],
+  "note": "en n_with_qid=509 this run vs 516 frozen: minor run-to-run Wikidata resolution variance on ~7 entries; title set identical to frozen (verified Step 1)."
+}

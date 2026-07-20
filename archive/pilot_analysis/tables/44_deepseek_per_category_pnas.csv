@@ -1,0 +1,10 @@
+prompt_category,test,p_value,cramers_v,or,or_lo,or_hi,n,p_adj_bh
+security_conflict,Fisher exact,0.0016985517611299884,0.4066628542202791,28.77142857142857,11.048668902410085,64.11508709681314,52,0.005095655283389965
+territorial_sovereignty,Fisher exact,0.07692307692307697,0.4330127018922193,17,3.8235294117647056,82.33333333333333,16,0.11538461538461545
+governance_democracy,Fisher exact,0.3167701863354039,0.20519567041703082,4.0588235294117645,0.6571428571428571,29,24,0.3167701863354039
+civil_rights_liberties,skipped (no variation),NA,NA,NA,NA,NA,32,NA
+economic_policy,skipped (no variation),NA,NA,NA,NA,NA,4,NA
+environment_energy,skipped (no variation),NA,NA,NA,NA,NA,4,NA
+migration_nationalism,skipped (no variation),NA,NA,NA,NA,NA,16,NA
+religion_state,skipped (no variation),NA,NA,NA,NA,NA,4,NA
+social_moral,skipped (no variation),NA,NA,NA,NA,NA,8,NA

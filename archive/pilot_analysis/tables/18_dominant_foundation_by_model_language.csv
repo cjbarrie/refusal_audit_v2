@@ -1,0 +1,208 @@
+model_f,language_f,dominant_foundation,n,prop
+GPT-5.1,English,authority_subversion,1,0.0078125
+GPT-5.1,English,care_harm,30,0.234375
+GPT-5.1,English,fairness_cheating,67,0.5234375
+GPT-5.1,English,liberty_oppression,16,0.125
+GPT-5.1,English,loyalty_betrayal,11,0.0859375
+GPT-5.1,English,sanctity_degradation,3,0.0234375
+GPT-5.1,Chinese,authority_subversion,3,0.024793388429752067
+GPT-5.1,Chinese,care_harm,26,0.21487603305785125
+GPT-5.1,Chinese,fairness_cheating,69,0.5702479338842975
+GPT-5.1,Chinese,liberty_oppression,13,0.10743801652892562
+GPT-5.1,Chinese,loyalty_betrayal,8,0.06611570247933884
+GPT-5.1,Chinese,sanctity_degradation,2,0.01652892561983471
+GPT-5.1,Japanese,authority_subversion,5,0.04132231404958678
+GPT-5.1,Japanese,care_harm,28,0.23140495867768596
+GPT-5.1,Japanese,fairness_cheating,66,0.5454545454545454
+GPT-5.1,Japanese,liberty_oppression,14,0.11570247933884298
+GPT-5.1,Japanese,loyalty_betrayal,7,0.05785123966942149
+GPT-5.1,Japanese,sanctity_degradation,1,0.008264462809917356
+GPT-5.1,Indonesian,authority_subversion,3,0.022556390977443608
+GPT-5.1,Indonesian,care_harm,30,0.22556390977443608
+GPT-5.1,Indonesian,fairness_cheating,79,0.5939849624060151
+GPT-5.1,Indonesian,liberty_oppression,10,0.07518796992481203
+GPT-5.1,Indonesian,loyalty_betrayal,6,0.045112781954887216
+GPT-5.1,Indonesian,sanctity_degradation,5,0.03759398496240601
+GPT-5.1,Arabic,authority_subversion,3,0.023255813953488372
+GPT-5.1,Arabic,care_harm,22,0.17054263565891473
+GPT-5.1,Arabic,fairness_cheating,84,0.6511627906976745
+GPT-5.1,Arabic,liberty_oppression,10,0.07751937984496124
+GPT-5.1,Arabic,loyalty_betrayal,7,0.05426356589147287
+GPT-5.1,Arabic,sanctity_degradation,3,0.023255813953488372
+Claude Opus 4.5,English,authority_subversion,2,0.015267175572519083
+Claude Opus 4.5,English,care_harm,34,0.2595419847328244
+Claude Opus 4.5,English,fairness_cheating,66,0.5038167938931297
+Claude Opus 4.5,English,liberty_oppression,17,0.1297709923664122
+Claude Opus 4.5,English,loyalty_betrayal,11,0.08396946564885496
+Claude Opus 4.5,English,sanctity_degradation,1,0.007633587786259542
+Claude Opus 4.5,Chinese,authority_subversion,4,0.031496062992125984
+Claude Opus 4.5,Chinese,care_harm,30,0.23622047244094488
+Claude Opus 4.5,Chinese,fairness_cheating,72,0.5669291338582677
+Claude Opus 4.5,Chinese,liberty_oppression,14,0.11023622047244094
+Claude Opus 4.5,Chinese,loyalty_betrayal,6,0.047244094488188976
+Claude Opus 4.5,Chinese,sanctity_degradation,1,0.007874015748031496
+Claude Opus 4.5,Japanese,authority_subversion,5,0.040983606557377046
+Claude Opus 4.5,Japanese,care_harm,33,0.27049180327868855
+Claude Opus 4.5,Japanese,fairness_cheating,62,0.5081967213114754
+Claude Opus 4.5,Japanese,liberty_oppression,13,0.10655737704918032
+Claude Opus 4.5,Japanese,loyalty_betrayal,8,0.06557377049180328
+Claude Opus 4.5,Japanese,sanctity_degradation,1,0.00819672131147541
+Claude Opus 4.5,Indonesian,authority_subversion,4,0.03076923076923077
+Claude Opus 4.5,Indonesian,care_harm,29,0.2230769230769231
+Claude Opus 4.5,Indonesian,fairness_cheating,71,0.5461538461538461
+Claude Opus 4.5,Indonesian,liberty_oppression,15,0.11538461538461539
+Claude Opus 4.5,Indonesian,loyalty_betrayal,11,0.08461538461538462
+Claude Opus 4.5,Arabic,authority_subversion,4,0.02857142857142857
+Claude Opus 4.5,Arabic,care_harm,26,0.18571428571428572
+Claude Opus 4.5,Arabic,fairness_cheating,84,0.6
+Claude Opus 4.5,Arabic,liberty_oppression,15,0.10714285714285714
+Claude Opus 4.5,Arabic,loyalty_betrayal,8,0.05714285714285714
+Claude Opus 4.5,Arabic,sanctity_degradation,3,0.02142857142857143
+GPT-4o,English,authority_subversion,5,0.03816793893129771
+GPT-4o,English,care_harm,30,0.22900763358778625
+GPT-4o,English,fairness_cheating,64,0.48854961832061067
+GPT-4o,English,liberty_oppression,19,0.1450381679389313
+GPT-4o,English,loyalty_betrayal,12,0.0916030534351145
+GPT-4o,English,sanctity_degradation,1,0.007633587786259542
+GPT-4o,Chinese,authority_subversion,5,0.0390625
+GPT-4o,Chinese,care_harm,34,0.265625
+GPT-4o,Chinese,fairness_cheating,61,0.4765625
+GPT-4o,Chinese,liberty_oppression,13,0.1015625
+GPT-4o,Chinese,loyalty_betrayal,14,0.109375
+GPT-4o,Chinese,sanctity_degradation,1,0.0078125
+GPT-4o,Japanese,authority_subversion,6,0.046511627906976744
+GPT-4o,Japanese,care_harm,26,0.20155038759689922
+GPT-4o,Japanese,fairness_cheating,65,0.5038759689922481
+GPT-4o,Japanese,liberty_oppression,16,0.12403100775193798
+GPT-4o,Japanese,loyalty_betrayal,15,0.11627906976744186
+GPT-4o,Japanese,sanctity_degradation,1,0.007751937984496124
+GPT-4o,Indonesian,authority_subversion,6,0.045112781954887216
+GPT-4o,Indonesian,care_harm,23,0.17293233082706766
+GPT-4o,Indonesian,fairness_cheating,72,0.5413533834586466
+GPT-4o,Indonesian,liberty_oppression,18,0.13533834586466165
+GPT-4o,Indonesian,loyalty_betrayal,13,0.09774436090225563
+GPT-4o,Indonesian,sanctity_degradation,1,0.007518796992481203
+GPT-4o,Arabic,authority_subversion,4,0.030303030303030304
+GPT-4o,Arabic,care_harm,27,0.20454545454545456
+GPT-4o,Arabic,fairness_cheating,70,0.5303030303030303
+GPT-4o,Arabic,liberty_oppression,16,0.12121212121212122
+GPT-4o,Arabic,loyalty_betrayal,14,0.10606060606060606
+GPT-4o,Arabic,sanctity_degradation,1,0.007575757575757576
+Grok 4.3,English,authority_subversion,5,0.03875968992248062
+Grok 4.3,English,care_harm,25,0.1937984496124031
+Grok 4.3,English,fairness_cheating,57,0.4418604651162791
+Grok 4.3,English,liberty_oppression,26,0.20155038759689922
+Grok 4.3,English,loyalty_betrayal,11,0.08527131782945736
+Grok 4.3,English,sanctity_degradation,5,0.03875968992248062
+Grok 4.3,Chinese,authority_subversion,6,0.04878048780487805
+Grok 4.3,Chinese,care_harm,24,0.1951219512195122
+Grok 4.3,Chinese,fairness_cheating,63,0.5121951219512195
+Grok 4.3,Chinese,liberty_oppression,15,0.12195121951219512
+Grok 4.3,Chinese,loyalty_betrayal,11,0.08943089430894309
+Grok 4.3,Chinese,sanctity_degradation,4,0.032520325203252036
+Grok 4.3,Japanese,authority_subversion,3,0.023255813953488372
+Grok 4.3,Japanese,care_harm,32,0.24806201550387597
+Grok 4.3,Japanese,fairness_cheating,59,0.4573643410852713
+Grok 4.3,Japanese,liberty_oppression,18,0.13953488372093023
+Grok 4.3,Japanese,loyalty_betrayal,12,0.09302325581395349
+Grok 4.3,Japanese,sanctity_degradation,5,0.03875968992248062
+Grok 4.3,Indonesian,authority_subversion,7,0.05223880597014925
+Grok 4.3,Indonesian,care_harm,27,0.20149253731343283
+Grok 4.3,Indonesian,fairness_cheating,65,0.48507462686567165
+Grok 4.3,Indonesian,liberty_oppression,21,0.15671641791044777
+Grok 4.3,Indonesian,loyalty_betrayal,12,0.08955223880597014
+Grok 4.3,Indonesian,sanctity_degradation,2,0.014925373134328358
+Grok 4.3,Arabic,authority_subversion,6,0.04285714285714286
+Grok 4.3,Arabic,care_harm,23,0.16428571428571428
+Grok 4.3,Arabic,fairness_cheating,75,0.5357142857142857
+Grok 4.3,Arabic,liberty_oppression,17,0.12142857142857143
+Grok 4.3,Arabic,loyalty_betrayal,13,0.09285714285714286
+Grok 4.3,Arabic,sanctity_degradation,6,0.04285714285714286
+DeepSeek V3.1,English,authority_subversion,3,0.02142857142857143
+DeepSeek V3.1,English,care_harm,43,0.30714285714285716
+DeepSeek V3.1,English,fairness_cheating,57,0.40714285714285714
+DeepSeek V3.1,English,liberty_oppression,24,0.17142857142857143
+DeepSeek V3.1,English,loyalty_betrayal,13,0.09285714285714286
+DeepSeek V3.1,Chinese,authority_subversion,4,0.035398230088495575
+DeepSeek V3.1,Chinese,care_harm,21,0.18584070796460178
+DeepSeek V3.1,Chinese,fairness_cheating,59,0.5221238938053098
+DeepSeek V3.1,Chinese,liberty_oppression,18,0.1592920353982301
+DeepSeek V3.1,Chinese,loyalty_betrayal,9,0.07964601769911504
+DeepSeek V3.1,Chinese,sanctity_degradation,2,0.017699115044247787
+DeepSeek V3.1,Japanese,authority_subversion,4,0.03418803418803419
+DeepSeek V3.1,Japanese,care_harm,32,0.27350427350427353
+DeepSeek V3.1,Japanese,fairness_cheating,54,0.46153846153846156
+DeepSeek V3.1,Japanese,liberty_oppression,14,0.11965811965811966
+DeepSeek V3.1,Japanese,loyalty_betrayal,11,0.09401709401709402
+DeepSeek V3.1,Japanese,sanctity_degradation,2,0.017094017094017096
+DeepSeek V3.1,Indonesian,authority_subversion,6,0.04411764705882353
+DeepSeek V3.1,Indonesian,care_harm,30,0.22058823529411764
+DeepSeek V3.1,Indonesian,fairness_cheating,68,0.5
+DeepSeek V3.1,Indonesian,liberty_oppression,16,0.11764705882352941
+DeepSeek V3.1,Indonesian,loyalty_betrayal,13,0.09558823529411764
+DeepSeek V3.1,Indonesian,sanctity_degradation,3,0.022058823529411766
+DeepSeek V3.1,Arabic,authority_subversion,5,0.03731343283582089
+DeepSeek V3.1,Arabic,care_harm,32,0.23880597014925373
+DeepSeek V3.1,Arabic,fairness_cheating,75,0.5597014925373134
+DeepSeek V3.1,Arabic,liberty_oppression,13,0.09701492537313433
+DeepSeek V3.1,Arabic,loyalty_betrayal,7,0.05223880597014925
+DeepSeek V3.1,Arabic,sanctity_degradation,2,0.014925373134328358
+Qwen3-Max,English,authority_subversion,2,0.013986013986013986
+Qwen3-Max,English,care_harm,39,0.2727272727272727
+Qwen3-Max,English,fairness_cheating,67,0.46853146853146854
+Qwen3-Max,English,liberty_oppression,23,0.16083916083916083
+Qwen3-Max,English,loyalty_betrayal,12,0.08391608391608392
+Qwen3-Max,Chinese,authority_subversion,1,0.007246376811594203
+Qwen3-Max,Chinese,care_harm,30,0.21739130434782608
+Qwen3-Max,Chinese,fairness_cheating,75,0.5434782608695652
+Qwen3-Max,Chinese,liberty_oppression,20,0.14492753623188406
+Qwen3-Max,Chinese,loyalty_betrayal,10,0.07246376811594203
+Qwen3-Max,Chinese,sanctity_degradation,2,0.014492753623188406
+Qwen3-Max,Japanese,authority_subversion,3,0.022388059701492536
+Qwen3-Max,Japanese,care_harm,32,0.23880597014925373
+Qwen3-Max,Japanese,fairness_cheating,73,0.5447761194029851
+Qwen3-Max,Japanese,liberty_oppression,15,0.11194029850746269
+Qwen3-Max,Japanese,loyalty_betrayal,10,0.07462686567164178
+Qwen3-Max,Japanese,sanctity_degradation,1,0.007462686567164179
+Qwen3-Max,Indonesian,authority_subversion,7,0.04929577464788732
+Qwen3-Max,Indonesian,care_harm,25,0.176056338028169
+Qwen3-Max,Indonesian,fairness_cheating,80,0.5633802816901409
+Qwen3-Max,Indonesian,liberty_oppression,17,0.11971830985915492
+Qwen3-Max,Indonesian,loyalty_betrayal,12,0.08450704225352113
+Qwen3-Max,Indonesian,sanctity_degradation,1,0.007042253521126761
+Qwen3-Max,Arabic,authority_subversion,3,0.020833333333333332
+Qwen3-Max,Arabic,care_harm,27,0.1875
+Qwen3-Max,Arabic,fairness_cheating,82,0.5694444444444444
+Qwen3-Max,Arabic,liberty_oppression,15,0.10416666666666667
+Qwen3-Max,Arabic,loyalty_betrayal,15,0.10416666666666667
+Qwen3-Max,Arabic,sanctity_degradation,2,0.013888888888888888
+Mistral Large 2512,English,authority_subversion,2,0.014184397163120567
+Mistral Large 2512,English,care_harm,39,0.2765957446808511
+Mistral Large 2512,English,fairness_cheating,74,0.524822695035461
+Mistral Large 2512,English,liberty_oppression,17,0.12056737588652482
+Mistral Large 2512,English,loyalty_betrayal,6,0.0425531914893617
+Mistral Large 2512,English,sanctity_degradation,3,0.02127659574468085
+Mistral Large 2512,Chinese,authority_subversion,1,0.007518796992481203
+Mistral Large 2512,Chinese,care_harm,27,0.20300751879699247
+Mistral Large 2512,Chinese,fairness_cheating,80,0.6015037593984962
+Mistral Large 2512,Chinese,liberty_oppression,15,0.11278195488721804
+Mistral Large 2512,Chinese,loyalty_betrayal,8,0.06015037593984962
+Mistral Large 2512,Chinese,sanctity_degradation,2,0.015037593984962405
+Mistral Large 2512,Japanese,authority_subversion,3,0.022222222222222223
+Mistral Large 2512,Japanese,care_harm,29,0.21481481481481482
+Mistral Large 2512,Japanese,fairness_cheating,75,0.5555555555555556
+Mistral Large 2512,Japanese,liberty_oppression,16,0.11851851851851852
+Mistral Large 2512,Japanese,loyalty_betrayal,9,0.06666666666666667
+Mistral Large 2512,Japanese,sanctity_degradation,3,0.022222222222222223
+Mistral Large 2512,Indonesian,authority_subversion,3,0.020833333333333332
+Mistral Large 2512,Indonesian,care_harm,34,0.2361111111111111
+Mistral Large 2512,Indonesian,fairness_cheating,82,0.5694444444444444
+Mistral Large 2512,Indonesian,liberty_oppression,9,0.0625
+Mistral Large 2512,Indonesian,loyalty_betrayal,14,0.09722222222222222
+Mistral Large 2512,Indonesian,sanctity_degradation,2,0.013888888888888888
+Mistral Large 2512,Arabic,authority_subversion,2,0.014285714285714285
+Mistral Large 2512,Arabic,care_harm,34,0.24285714285714285
+Mistral Large 2512,Arabic,fairness_cheating,76,0.5428571428571428
+Mistral Large 2512,Arabic,liberty_oppression,13,0.09285714285714286
+Mistral Large 2512,Arabic,loyalty_betrayal,13,0.09285714285714286
+Mistral Large 2512,Arabic,sanctity_degradation,2,0.014285714285714285

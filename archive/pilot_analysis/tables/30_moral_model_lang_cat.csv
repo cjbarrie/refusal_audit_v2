@@ -1,0 +1,1891 @@
+model_f,language_f,prompt_category,foundation_f,n,activation_rate
+GPT-5.1,English,civil_rights_liberties,Care/Harm,30,0.4
+GPT-5.1,English,economic_policy,Care/Harm,4,1
+GPT-5.1,English,environment_energy,Care/Harm,4,1
+GPT-5.1,English,governance_democracy,Care/Harm,22,0.5
+GPT-5.1,English,migration_nationalism,Care/Harm,15,0.4
+GPT-5.1,English,religion_state,Care/Harm,4,1
+GPT-5.1,English,security_conflict,Care/Harm,52,0.5
+GPT-5.1,English,social_moral,Care/Harm,8,1
+GPT-5.1,English,territorial_sovereignty,Care/Harm,13,0.5384615384615384
+GPT-5.1,Chinese,civil_rights_liberties,Care/Harm,32,0.34375
+GPT-5.1,Chinese,economic_policy,Care/Harm,4,1
+GPT-5.1,Chinese,environment_energy,Care/Harm,4,1
+GPT-5.1,Chinese,governance_democracy,Care/Harm,24,0.5
+GPT-5.1,Chinese,migration_nationalism,Care/Harm,16,0.25
+GPT-5.1,Chinese,religion_state,Care/Harm,4,1
+GPT-5.1,Chinese,security_conflict,Care/Harm,48,0.39583333333333337
+GPT-5.1,Chinese,social_moral,Care/Harm,7,1
+GPT-5.1,Chinese,territorial_sovereignty,Care/Harm,15,0.33333333333333337
+GPT-5.1,Japanese,civil_rights_liberties,Care/Harm,32,0.375
+GPT-5.1,Japanese,economic_policy,Care/Harm,4,0.75
+GPT-5.1,Japanese,environment_energy,Care/Harm,4,1
+GPT-5.1,Japanese,governance_democracy,Care/Harm,22,0.5
+GPT-5.1,Japanese,migration_nationalism,Care/Harm,16,0.375
+GPT-5.1,Japanese,religion_state,Care/Harm,4,1
+GPT-5.1,Japanese,security_conflict,Care/Harm,48,0.47916666666666663
+GPT-5.1,Japanese,social_moral,Care/Harm,8,0.875
+GPT-5.1,Japanese,territorial_sovereignty,Care/Harm,15,0.39999999999999997
+GPT-5.1,Indonesian,civil_rights_liberties,Care/Harm,32,0.40625
+GPT-5.1,Indonesian,economic_policy,Care/Harm,4,0.75
+GPT-5.1,Indonesian,environment_energy,Care/Harm,4,1
+GPT-5.1,Indonesian,governance_democracy,Care/Harm,24,0.5
+GPT-5.1,Indonesian,migration_nationalism,Care/Harm,16,0.375
+GPT-5.1,Indonesian,religion_state,Care/Harm,4,1
+GPT-5.1,Indonesian,security_conflict,Care/Harm,49,0.5306122448979591
+GPT-5.1,Indonesian,social_moral,Care/Harm,8,0.875
+GPT-5.1,Indonesian,territorial_sovereignty,Care/Harm,13,0.46153846153846156
+GPT-5.1,Arabic,civil_rights_liberties,Care/Harm,32,0.4375
+GPT-5.1,Arabic,economic_policy,Care/Harm,4,0.75
+GPT-5.1,Arabic,environment_energy,Care/Harm,4,1
+GPT-5.1,Arabic,governance_democracy,Care/Harm,22,0.5454545454545454
+GPT-5.1,Arabic,migration_nationalism,Care/Harm,15,0.4
+GPT-5.1,Arabic,religion_state,Care/Harm,4,1
+GPT-5.1,Arabic,security_conflict,Care/Harm,48,0.4375
+GPT-5.1,Arabic,social_moral,Care/Harm,8,0.875
+GPT-5.1,Arabic,territorial_sovereignty,Care/Harm,14,0.42857142857142855
+GPT-5.1,English,civil_rights_liberties,Fairness/Cheating,30,0.7
+GPT-5.1,English,economic_policy,Fairness/Cheating,4,1
+GPT-5.1,English,environment_energy,Fairness/Cheating,4,0.75
+GPT-5.1,English,governance_democracy,Fairness/Cheating,22,0.7727272727272727
+GPT-5.1,English,migration_nationalism,Fairness/Cheating,15,0.6666666666666666
+GPT-5.1,English,religion_state,Fairness/Cheating,4,0.75
+GPT-5.1,English,security_conflict,Fairness/Cheating,52,0.4230769230769231
+GPT-5.1,English,social_moral,Fairness/Cheating,8,0.875
+GPT-5.1,English,territorial_sovereignty,Fairness/Cheating,13,0.8461538461538461
+GPT-5.1,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.59375
+GPT-5.1,Chinese,economic_policy,Fairness/Cheating,4,1
+GPT-5.1,Chinese,environment_energy,Fairness/Cheating,4,0.25
+GPT-5.1,Chinese,governance_democracy,Fairness/Cheating,24,0.6666666666666666
+GPT-5.1,Chinese,migration_nationalism,Fairness/Cheating,16,0.625
+GPT-5.1,Chinese,religion_state,Fairness/Cheating,4,0.75
+GPT-5.1,Chinese,security_conflict,Fairness/Cheating,48,0.35416666666666663
+GPT-5.1,Chinese,social_moral,Fairness/Cheating,7,1
+GPT-5.1,Chinese,territorial_sovereignty,Fairness/Cheating,15,0.8666666666666667
+GPT-5.1,Japanese,civil_rights_liberties,Fairness/Cheating,32,0.59375
+GPT-5.1,Japanese,economic_policy,Fairness/Cheating,4,0.75
+GPT-5.1,Japanese,environment_energy,Fairness/Cheating,4,0.5
+GPT-5.1,Japanese,governance_democracy,Fairness/Cheating,22,0.6818181818181819
+GPT-5.1,Japanese,migration_nationalism,Fairness/Cheating,16,0.5625
+GPT-5.1,Japanese,religion_state,Fairness/Cheating,4,0.5
+GPT-5.1,Japanese,security_conflict,Fairness/Cheating,48,0.3125
+GPT-5.1,Japanese,social_moral,Fairness/Cheating,8,0.875
+GPT-5.1,Japanese,territorial_sovereignty,Fairness/Cheating,15,0.8666666666666667
+GPT-5.1,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.8125
+GPT-5.1,Indonesian,economic_policy,Fairness/Cheating,4,1
+GPT-5.1,Indonesian,environment_energy,Fairness/Cheating,4,0.5
+GPT-5.1,Indonesian,governance_democracy,Fairness/Cheating,24,0.6666666666666667
+GPT-5.1,Indonesian,migration_nationalism,Fairness/Cheating,16,0.625
+GPT-5.1,Indonesian,religion_state,Fairness/Cheating,4,0.75
+GPT-5.1,Indonesian,security_conflict,Fairness/Cheating,49,0.40816326530612246
+GPT-5.1,Indonesian,social_moral,Fairness/Cheating,8,1
+GPT-5.1,Indonesian,territorial_sovereignty,Fairness/Cheating,13,0.8461538461538461
+GPT-5.1,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.75
+GPT-5.1,Arabic,economic_policy,Fairness/Cheating,4,1
+GPT-5.1,Arabic,environment_energy,Fairness/Cheating,4,0.75
+GPT-5.1,Arabic,governance_democracy,Fairness/Cheating,22,0.7727272727272727
+GPT-5.1,Arabic,migration_nationalism,Fairness/Cheating,15,0.6666666666666666
+GPT-5.1,Arabic,religion_state,Fairness/Cheating,4,0.5
+GPT-5.1,Arabic,security_conflict,Fairness/Cheating,48,0.3958333333333333
+GPT-5.1,Arabic,social_moral,Fairness/Cheating,8,0.875
+GPT-5.1,Arabic,territorial_sovereignty,Fairness/Cheating,14,1
+GPT-5.1,English,civil_rights_liberties,Loyalty/Betrayal,30,0.06666666666666668
+GPT-5.1,English,economic_policy,Loyalty/Betrayal,4,0
+GPT-5.1,English,environment_energy,Loyalty/Betrayal,4,0
+GPT-5.1,English,governance_democracy,Loyalty/Betrayal,22,0.0909090909090909
+GPT-5.1,English,migration_nationalism,Loyalty/Betrayal,15,0.2
+GPT-5.1,English,religion_state,Loyalty/Betrayal,4,0
+GPT-5.1,English,security_conflict,Loyalty/Betrayal,52,0.19230769230769232
+GPT-5.1,English,social_moral,Loyalty/Betrayal,8,0.125
+GPT-5.1,English,territorial_sovereignty,Loyalty/Betrayal,13,0
+GPT-5.1,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0
+GPT-5.1,Chinese,economic_policy,Loyalty/Betrayal,4,0
+GPT-5.1,Chinese,environment_energy,Loyalty/Betrayal,4,0
+GPT-5.1,Chinese,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+GPT-5.1,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.0625
+GPT-5.1,Chinese,religion_state,Loyalty/Betrayal,4,0
+GPT-5.1,Chinese,security_conflict,Loyalty/Betrayal,48,0.16666666666666666
+GPT-5.1,Chinese,social_moral,Loyalty/Betrayal,7,0
+GPT-5.1,Chinese,territorial_sovereignty,Loyalty/Betrayal,15,0.06666666666666668
+GPT-5.1,Japanese,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+GPT-5.1,Japanese,economic_policy,Loyalty/Betrayal,4,0
+GPT-5.1,Japanese,environment_energy,Loyalty/Betrayal,4,0
+GPT-5.1,Japanese,governance_democracy,Loyalty/Betrayal,22,0.045454545454545456
+GPT-5.1,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+GPT-5.1,Japanese,religion_state,Loyalty/Betrayal,4,0
+GPT-5.1,Japanese,security_conflict,Loyalty/Betrayal,48,0.14583333333333331
+GPT-5.1,Japanese,social_moral,Loyalty/Betrayal,8,0
+GPT-5.1,Japanese,territorial_sovereignty,Loyalty/Betrayal,15,0
+GPT-5.1,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+GPT-5.1,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+GPT-5.1,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+GPT-5.1,Indonesian,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+GPT-5.1,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.25
+GPT-5.1,Indonesian,religion_state,Loyalty/Betrayal,4,0
+GPT-5.1,Indonesian,security_conflict,Loyalty/Betrayal,49,0.1428571428571429
+GPT-5.1,Indonesian,social_moral,Loyalty/Betrayal,8,0
+GPT-5.1,Indonesian,territorial_sovereignty,Loyalty/Betrayal,13,0.07692307692307693
+GPT-5.1,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+GPT-5.1,Arabic,economic_policy,Loyalty/Betrayal,4,0
+GPT-5.1,Arabic,environment_energy,Loyalty/Betrayal,4,0
+GPT-5.1,Arabic,governance_democracy,Loyalty/Betrayal,22,0.0909090909090909
+GPT-5.1,Arabic,migration_nationalism,Loyalty/Betrayal,15,0.06666666666666668
+GPT-5.1,Arabic,religion_state,Loyalty/Betrayal,4,0
+GPT-5.1,Arabic,security_conflict,Loyalty/Betrayal,48,0.1875
+GPT-5.1,Arabic,social_moral,Loyalty/Betrayal,8,0
+GPT-5.1,Arabic,territorial_sovereignty,Loyalty/Betrayal,14,0.07142857142857144
+GPT-5.1,English,civil_rights_liberties,Authority/Subversion,30,0.13333333333333333
+GPT-5.1,English,economic_policy,Authority/Subversion,4,0
+GPT-5.1,English,environment_energy,Authority/Subversion,4,0
+GPT-5.1,English,governance_democracy,Authority/Subversion,22,0.1818181818181818
+GPT-5.1,English,migration_nationalism,Authority/Subversion,15,0.2666666666666667
+GPT-5.1,English,religion_state,Authority/Subversion,4,0
+GPT-5.1,English,security_conflict,Authority/Subversion,52,0.05769230769230768
+GPT-5.1,English,social_moral,Authority/Subversion,8,0
+GPT-5.1,English,territorial_sovereignty,Authority/Subversion,13,0.38461538461538464
+GPT-5.1,Chinese,civil_rights_liberties,Authority/Subversion,32,0.1875
+GPT-5.1,Chinese,economic_policy,Authority/Subversion,4,0
+GPT-5.1,Chinese,environment_energy,Authority/Subversion,4,0
+GPT-5.1,Chinese,governance_democracy,Authority/Subversion,24,0.16666666666666669
+GPT-5.1,Chinese,migration_nationalism,Authority/Subversion,16,0.25
+GPT-5.1,Chinese,religion_state,Authority/Subversion,4,0
+GPT-5.1,Chinese,security_conflict,Authority/Subversion,48,0.04166666666666668
+GPT-5.1,Chinese,social_moral,Authority/Subversion,7,0
+GPT-5.1,Chinese,territorial_sovereignty,Authority/Subversion,15,0
+GPT-5.1,Japanese,civil_rights_liberties,Authority/Subversion,32,0.1875
+GPT-5.1,Japanese,economic_policy,Authority/Subversion,4,0
+GPT-5.1,Japanese,environment_energy,Authority/Subversion,4,0
+GPT-5.1,Japanese,governance_democracy,Authority/Subversion,22,0.1818181818181818
+GPT-5.1,Japanese,migration_nationalism,Authority/Subversion,16,0.375
+GPT-5.1,Japanese,religion_state,Authority/Subversion,4,0
+GPT-5.1,Japanese,security_conflict,Authority/Subversion,48,0.0625
+GPT-5.1,Japanese,social_moral,Authority/Subversion,8,0
+GPT-5.1,Japanese,territorial_sovereignty,Authority/Subversion,15,0.13333333333333333
+GPT-5.1,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.15625
+GPT-5.1,Indonesian,economic_policy,Authority/Subversion,4,0
+GPT-5.1,Indonesian,environment_energy,Authority/Subversion,4,0
+GPT-5.1,Indonesian,governance_democracy,Authority/Subversion,24,0.16666666666666669
+GPT-5.1,Indonesian,migration_nationalism,Authority/Subversion,16,0.125
+GPT-5.1,Indonesian,religion_state,Authority/Subversion,4,0
+GPT-5.1,Indonesian,security_conflict,Authority/Subversion,49,0.10204081632653061
+GPT-5.1,Indonesian,social_moral,Authority/Subversion,8,0
+GPT-5.1,Indonesian,territorial_sovereignty,Authority/Subversion,13,0.38461538461538464
+GPT-5.1,Arabic,civil_rights_liberties,Authority/Subversion,32,0.09375
+GPT-5.1,Arabic,economic_policy,Authority/Subversion,4,0
+GPT-5.1,Arabic,environment_energy,Authority/Subversion,4,0
+GPT-5.1,Arabic,governance_democracy,Authority/Subversion,22,0.22727272727272727
+GPT-5.1,Arabic,migration_nationalism,Authority/Subversion,15,0.4
+GPT-5.1,Arabic,religion_state,Authority/Subversion,4,0
+GPT-5.1,Arabic,security_conflict,Authority/Subversion,48,0.08333333333333334
+GPT-5.1,Arabic,social_moral,Authority/Subversion,8,0
+GPT-5.1,Arabic,territorial_sovereignty,Authority/Subversion,14,0.21428571428571427
+GPT-5.1,English,civil_rights_liberties,Sanctity/Degradation,30,0.16666666666666666
+GPT-5.1,English,economic_policy,Sanctity/Degradation,4,0
+GPT-5.1,English,environment_energy,Sanctity/Degradation,4,0
+GPT-5.1,English,governance_democracy,Sanctity/Degradation,22,0.04545454545454546
+GPT-5.1,English,migration_nationalism,Sanctity/Degradation,15,0.06666666666666667
+GPT-5.1,English,religion_state,Sanctity/Degradation,4,0
+GPT-5.1,English,security_conflict,Sanctity/Degradation,52,0.07692307692307696
+GPT-5.1,English,social_moral,Sanctity/Degradation,8,0.125
+GPT-5.1,English,territorial_sovereignty,Sanctity/Degradation,13,0
+GPT-5.1,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.28125
+GPT-5.1,Chinese,economic_policy,Sanctity/Degradation,4,0
+GPT-5.1,Chinese,environment_energy,Sanctity/Degradation,4,0
+GPT-5.1,Chinese,governance_democracy,Sanctity/Degradation,24,0.08333333333333333
+GPT-5.1,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+GPT-5.1,Chinese,religion_state,Sanctity/Degradation,4,0
+GPT-5.1,Chinese,security_conflict,Sanctity/Degradation,48,0.041666666666666664
+GPT-5.1,Chinese,social_moral,Sanctity/Degradation,7,0
+GPT-5.1,Chinese,territorial_sovereignty,Sanctity/Degradation,15,0
+GPT-5.1,Japanese,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+GPT-5.1,Japanese,economic_policy,Sanctity/Degradation,4,0
+GPT-5.1,Japanese,environment_energy,Sanctity/Degradation,4,0
+GPT-5.1,Japanese,governance_democracy,Sanctity/Degradation,22,0.22727272727272727
+GPT-5.1,Japanese,migration_nationalism,Sanctity/Degradation,16,0.0625
+GPT-5.1,Japanese,religion_state,Sanctity/Degradation,4,0
+GPT-5.1,Japanese,security_conflict,Sanctity/Degradation,48,0.041666666666666664
+GPT-5.1,Japanese,social_moral,Sanctity/Degradation,8,0
+GPT-5.1,Japanese,territorial_sovereignty,Sanctity/Degradation,15,0
+GPT-5.1,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0.15625
+GPT-5.1,Indonesian,economic_policy,Sanctity/Degradation,4,0
+GPT-5.1,Indonesian,environment_energy,Sanctity/Degradation,4,0
+GPT-5.1,Indonesian,governance_democracy,Sanctity/Degradation,24,0.125
+GPT-5.1,Indonesian,migration_nationalism,Sanctity/Degradation,16,0.1875
+GPT-5.1,Indonesian,religion_state,Sanctity/Degradation,4,0
+GPT-5.1,Indonesian,security_conflict,Sanctity/Degradation,49,0.0816326530612245
+GPT-5.1,Indonesian,social_moral,Sanctity/Degradation,8,0.125
+GPT-5.1,Indonesian,territorial_sovereignty,Sanctity/Degradation,13,0
+GPT-5.1,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+GPT-5.1,Arabic,economic_policy,Sanctity/Degradation,4,0
+GPT-5.1,Arabic,environment_energy,Sanctity/Degradation,4,0
+GPT-5.1,Arabic,governance_democracy,Sanctity/Degradation,22,0.04545454545454546
+GPT-5.1,Arabic,migration_nationalism,Sanctity/Degradation,15,0
+GPT-5.1,Arabic,religion_state,Sanctity/Degradation,4,0
+GPT-5.1,Arabic,security_conflict,Sanctity/Degradation,48,0.041666666666666664
+GPT-5.1,Arabic,social_moral,Sanctity/Degradation,8,0.125
+GPT-5.1,Arabic,territorial_sovereignty,Sanctity/Degradation,14,0
+GPT-5.1,English,civil_rights_liberties,Liberty/Oppression,30,0.5333333333333333
+GPT-5.1,English,economic_policy,Liberty/Oppression,4,1
+GPT-5.1,English,environment_energy,Liberty/Oppression,4,0
+GPT-5.1,English,governance_democracy,Liberty/Oppression,22,0.6818181818181819
+GPT-5.1,English,migration_nationalism,Liberty/Oppression,15,0.8666666666666667
+GPT-5.1,English,religion_state,Liberty/Oppression,4,1
+GPT-5.1,English,security_conflict,Liberty/Oppression,52,0.3076923076923077
+GPT-5.1,English,social_moral,Liberty/Oppression,8,0.875
+GPT-5.1,English,territorial_sovereignty,Liberty/Oppression,13,0.9230769230769231
+GPT-5.1,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.5625
+GPT-5.1,Chinese,economic_policy,Liberty/Oppression,4,1
+GPT-5.1,Chinese,environment_energy,Liberty/Oppression,4,0
+GPT-5.1,Chinese,governance_democracy,Liberty/Oppression,24,0.7083333333333334
+GPT-5.1,Chinese,migration_nationalism,Liberty/Oppression,16,0.8125
+GPT-5.1,Chinese,religion_state,Liberty/Oppression,4,1
+GPT-5.1,Chinese,security_conflict,Liberty/Oppression,48,0.27083333333333337
+GPT-5.1,Chinese,social_moral,Liberty/Oppression,7,1
+GPT-5.1,Chinese,territorial_sovereignty,Liberty/Oppression,15,0.9333333333333333
+GPT-5.1,Japanese,civil_rights_liberties,Liberty/Oppression,32,0.625
+GPT-5.1,Japanese,economic_policy,Liberty/Oppression,4,0.75
+GPT-5.1,Japanese,environment_energy,Liberty/Oppression,4,0.25
+GPT-5.1,Japanese,governance_democracy,Liberty/Oppression,22,0.5909090909090909
+GPT-5.1,Japanese,migration_nationalism,Liberty/Oppression,16,0.6875
+GPT-5.1,Japanese,religion_state,Liberty/Oppression,4,1
+GPT-5.1,Japanese,security_conflict,Liberty/Oppression,48,0.22916666666666669
+GPT-5.1,Japanese,social_moral,Liberty/Oppression,8,0.875
+GPT-5.1,Japanese,territorial_sovereignty,Liberty/Oppression,15,0.9333333333333333
+GPT-5.1,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.6875
+GPT-5.1,Indonesian,economic_policy,Liberty/Oppression,4,0.5
+GPT-5.1,Indonesian,environment_energy,Liberty/Oppression,4,0.5
+GPT-5.1,Indonesian,governance_democracy,Liberty/Oppression,24,0.5833333333333333
+GPT-5.1,Indonesian,migration_nationalism,Liberty/Oppression,16,0.6875
+GPT-5.1,Indonesian,religion_state,Liberty/Oppression,4,1
+GPT-5.1,Indonesian,security_conflict,Liberty/Oppression,49,0.3469387755102041
+GPT-5.1,Indonesian,social_moral,Liberty/Oppression,8,0.75
+GPT-5.1,Indonesian,territorial_sovereignty,Liberty/Oppression,13,0.8461538461538461
+GPT-5.1,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.5625
+GPT-5.1,Arabic,economic_policy,Liberty/Oppression,4,0.75
+GPT-5.1,Arabic,environment_energy,Liberty/Oppression,4,0
+GPT-5.1,Arabic,governance_democracy,Liberty/Oppression,22,0.6363636363636364
+GPT-5.1,Arabic,migration_nationalism,Liberty/Oppression,15,0.7333333333333334
+GPT-5.1,Arabic,religion_state,Liberty/Oppression,4,0.75
+GPT-5.1,Arabic,security_conflict,Liberty/Oppression,48,0.3125
+GPT-5.1,Arabic,social_moral,Liberty/Oppression,8,0.75
+GPT-5.1,Arabic,territorial_sovereignty,Liberty/Oppression,14,1
+Claude Opus 4.5,English,civil_rights_liberties,Care/Harm,32,0.34375
+Claude Opus 4.5,English,economic_policy,Care/Harm,4,1
+Claude Opus 4.5,English,environment_energy,Care/Harm,4,1
+Claude Opus 4.5,English,governance_democracy,Care/Harm,21,0.42857142857142855
+Claude Opus 4.5,English,migration_nationalism,Care/Harm,16,0.3125
+Claude Opus 4.5,English,religion_state,Care/Harm,4,1
+Claude Opus 4.5,English,security_conflict,Care/Harm,45,0.37777777777777777
+Claude Opus 4.5,English,social_moral,Care/Harm,8,0.75
+Claude Opus 4.5,English,territorial_sovereignty,Care/Harm,15,0.33333333333333337
+Claude Opus 4.5,Chinese,civil_rights_liberties,Care/Harm,31,0.22580645161290322
+Claude Opus 4.5,Chinese,economic_policy,Care/Harm,4,0.5
+Claude Opus 4.5,Chinese,environment_energy,Care/Harm,4,1
+Claude Opus 4.5,Chinese,governance_democracy,Care/Harm,22,0.40909090909090906
+Claude Opus 4.5,Chinese,migration_nationalism,Care/Harm,16,0.25
+Claude Opus 4.5,Chinese,religion_state,Care/Harm,4,1
+Claude Opus 4.5,Chinese,security_conflict,Care/Harm,50,0.36
+Claude Opus 4.5,Chinese,social_moral,Care/Harm,8,0.625
+Claude Opus 4.5,Chinese,territorial_sovereignty,Care/Harm,16,0.25
+Claude Opus 4.5,Japanese,civil_rights_liberties,Care/Harm,31,0.32258064516129037
+Claude Opus 4.5,Japanese,economic_policy,Care/Harm,4,0.75
+Claude Opus 4.5,Japanese,environment_energy,Care/Harm,4,1
+Claude Opus 4.5,Japanese,governance_democracy,Care/Harm,22,0.31818181818181823
+Claude Opus 4.5,Japanese,migration_nationalism,Care/Harm,15,0.33333333333333337
+Claude Opus 4.5,Japanese,religion_state,Care/Harm,4,1
+Claude Opus 4.5,Japanese,security_conflict,Care/Harm,48,0.5208333333333333
+Claude Opus 4.5,Japanese,social_moral,Care/Harm,7,0.8571428571428571
+Claude Opus 4.5,Japanese,territorial_sovereignty,Care/Harm,15,0.4
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Care/Harm,32,0.375
+Claude Opus 4.5,Indonesian,economic_policy,Care/Harm,4,0.5
+Claude Opus 4.5,Indonesian,environment_energy,Care/Harm,4,1
+Claude Opus 4.5,Indonesian,governance_democracy,Care/Harm,22,0.5
+Claude Opus 4.5,Indonesian,migration_nationalism,Care/Harm,15,0.33333333333333337
+Claude Opus 4.5,Indonesian,religion_state,Care/Harm,4,1
+Claude Opus 4.5,Indonesian,security_conflict,Care/Harm,47,0.4893617021276596
+Claude Opus 4.5,Indonesian,social_moral,Care/Harm,8,1
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Care/Harm,15,0.33333333333333337
+Claude Opus 4.5,Arabic,civil_rights_liberties,Care/Harm,32,0.375
+Claude Opus 4.5,Arabic,economic_policy,Care/Harm,4,0.75
+Claude Opus 4.5,Arabic,environment_energy,Care/Harm,4,1
+Claude Opus 4.5,Arabic,governance_democracy,Care/Harm,23,0.4347826086956522
+Claude Opus 4.5,Arabic,migration_nationalism,Care/Harm,16,0.25
+Claude Opus 4.5,Arabic,religion_state,Care/Harm,4,1
+Claude Opus 4.5,Arabic,security_conflict,Care/Harm,49,0.5510204081632653
+Claude Opus 4.5,Arabic,social_moral,Care/Harm,8,0.75
+Claude Opus 4.5,Arabic,territorial_sovereignty,Care/Harm,16,0.3125
+Claude Opus 4.5,English,civil_rights_liberties,Fairness/Cheating,32,0.625
+Claude Opus 4.5,English,economic_policy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,English,environment_energy,Fairness/Cheating,4,0
+Claude Opus 4.5,English,governance_democracy,Fairness/Cheating,21,0.6190476190476191
+Claude Opus 4.5,English,migration_nationalism,Fairness/Cheating,16,0.5625
+Claude Opus 4.5,English,religion_state,Fairness/Cheating,4,0.25
+Claude Opus 4.5,English,security_conflict,Fairness/Cheating,45,0.3111111111111111
+Claude Opus 4.5,English,social_moral,Fairness/Cheating,8,0.625
+Claude Opus 4.5,English,territorial_sovereignty,Fairness/Cheating,15,0.8
+Claude Opus 4.5,Chinese,civil_rights_liberties,Fairness/Cheating,31,0.6451612903225806
+Claude Opus 4.5,Chinese,economic_policy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Chinese,environment_energy,Fairness/Cheating,4,1
+Claude Opus 4.5,Chinese,governance_democracy,Fairness/Cheating,22,0.7727272727272727
+Claude Opus 4.5,Chinese,migration_nationalism,Fairness/Cheating,16,0.625
+Claude Opus 4.5,Chinese,religion_state,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Chinese,security_conflict,Fairness/Cheating,50,0.27999999999999997
+Claude Opus 4.5,Chinese,social_moral,Fairness/Cheating,8,0.5
+Claude Opus 4.5,Chinese,territorial_sovereignty,Fairness/Cheating,16,0.8125
+Claude Opus 4.5,Japanese,civil_rights_liberties,Fairness/Cheating,31,0.6129032258064516
+Claude Opus 4.5,Japanese,economic_policy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Japanese,environment_energy,Fairness/Cheating,4,0
+Claude Opus 4.5,Japanese,governance_democracy,Fairness/Cheating,22,0.5909090909090909
+Claude Opus 4.5,Japanese,migration_nationalism,Fairness/Cheating,15,0.6
+Claude Opus 4.5,Japanese,religion_state,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Japanese,security_conflict,Fairness/Cheating,48,0.27083333333333337
+Claude Opus 4.5,Japanese,social_moral,Fairness/Cheating,7,0.5714285714285714
+Claude Opus 4.5,Japanese,territorial_sovereignty,Fairness/Cheating,15,0.8
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.6875
+Claude Opus 4.5,Indonesian,economic_policy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Indonesian,environment_energy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Indonesian,governance_democracy,Fairness/Cheating,22,0.7272727272727273
+Claude Opus 4.5,Indonesian,migration_nationalism,Fairness/Cheating,15,0.4666666666666666
+Claude Opus 4.5,Indonesian,religion_state,Fairness/Cheating,4,0.5
+Claude Opus 4.5,Indonesian,security_conflict,Fairness/Cheating,47,0.3191489361702128
+Claude Opus 4.5,Indonesian,social_moral,Fairness/Cheating,8,0.75
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Fairness/Cheating,15,0.8666666666666667
+Claude Opus 4.5,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.75
+Claude Opus 4.5,Arabic,economic_policy,Fairness/Cheating,4,0.75
+Claude Opus 4.5,Arabic,environment_energy,Fairness/Cheating,4,0.5
+Claude Opus 4.5,Arabic,governance_democracy,Fairness/Cheating,23,0.8695652173913043
+Claude Opus 4.5,Arabic,migration_nationalism,Fairness/Cheating,16,0.4375
+Claude Opus 4.5,Arabic,religion_state,Fairness/Cheating,4,0.5
+Claude Opus 4.5,Arabic,security_conflict,Fairness/Cheating,49,0.5102040816326531
+Claude Opus 4.5,Arabic,social_moral,Fairness/Cheating,8,0.875
+Claude Opus 4.5,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.875
+Claude Opus 4.5,English,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Claude Opus 4.5,English,economic_policy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,English,environment_energy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,English,governance_democracy,Loyalty/Betrayal,21,0.047619047619047616
+Claude Opus 4.5,English,migration_nationalism,Loyalty/Betrayal,16,0.0625
+Claude Opus 4.5,English,religion_state,Loyalty/Betrayal,4,0
+Claude Opus 4.5,English,security_conflict,Loyalty/Betrayal,45,0.20000000000000004
+Claude Opus 4.5,English,social_moral,Loyalty/Betrayal,8,0
+Claude Opus 4.5,English,territorial_sovereignty,Loyalty/Betrayal,15,0
+Claude Opus 4.5,Chinese,civil_rights_liberties,Loyalty/Betrayal,31,0.032258064516129045
+Claude Opus 4.5,Chinese,economic_policy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Chinese,environment_energy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Chinese,governance_democracy,Loyalty/Betrayal,22,0
+Claude Opus 4.5,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Claude Opus 4.5,Chinese,religion_state,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Chinese,security_conflict,Loyalty/Betrayal,50,0.16
+Claude Opus 4.5,Chinese,social_moral,Loyalty/Betrayal,8,0
+Claude Opus 4.5,Chinese,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+Claude Opus 4.5,Japanese,civil_rights_liberties,Loyalty/Betrayal,31,0.032258064516129045
+Claude Opus 4.5,Japanese,economic_policy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Japanese,environment_energy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Japanese,governance_democracy,Loyalty/Betrayal,22,0.045454545454545456
+Claude Opus 4.5,Japanese,migration_nationalism,Loyalty/Betrayal,15,0.06666666666666668
+Claude Opus 4.5,Japanese,religion_state,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Japanese,security_conflict,Loyalty/Betrayal,48,0.14583333333333331
+Claude Opus 4.5,Japanese,social_moral,Loyalty/Betrayal,7,0
+Claude Opus 4.5,Japanese,territorial_sovereignty,Loyalty/Betrayal,15,0
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Claude Opus 4.5,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Indonesian,governance_democracy,Loyalty/Betrayal,22,0.13636363636363638
+Claude Opus 4.5,Indonesian,migration_nationalism,Loyalty/Betrayal,15,0.13333333333333333
+Claude Opus 4.5,Indonesian,religion_state,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Indonesian,security_conflict,Loyalty/Betrayal,47,0.1914893617021277
+Claude Opus 4.5,Indonesian,social_moral,Loyalty/Betrayal,8,0
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Loyalty/Betrayal,15,0
+Claude Opus 4.5,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Claude Opus 4.5,Arabic,economic_policy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Arabic,environment_energy,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Arabic,governance_democracy,Loyalty/Betrayal,23,0.04347826086956523
+Claude Opus 4.5,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.0625
+Claude Opus 4.5,Arabic,religion_state,Loyalty/Betrayal,4,0
+Claude Opus 4.5,Arabic,security_conflict,Loyalty/Betrayal,49,0.14285714285714288
+Claude Opus 4.5,Arabic,social_moral,Loyalty/Betrayal,8,0
+Claude Opus 4.5,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Claude Opus 4.5,English,civil_rights_liberties,Authority/Subversion,32,0.09375
+Claude Opus 4.5,English,economic_policy,Authority/Subversion,4,0
+Claude Opus 4.5,English,environment_energy,Authority/Subversion,4,0
+Claude Opus 4.5,English,governance_democracy,Authority/Subversion,21,0.14285714285714288
+Claude Opus 4.5,English,migration_nationalism,Authority/Subversion,16,0.3125
+Claude Opus 4.5,English,religion_state,Authority/Subversion,4,0
+Claude Opus 4.5,English,security_conflict,Authority/Subversion,45,0.02222222222222222
+Claude Opus 4.5,English,social_moral,Authority/Subversion,8,0.125
+Claude Opus 4.5,English,territorial_sovereignty,Authority/Subversion,15,0.20000000000000004
+Claude Opus 4.5,Chinese,civil_rights_liberties,Authority/Subversion,31,0.12903225806451615
+Claude Opus 4.5,Chinese,economic_policy,Authority/Subversion,4,0
+Claude Opus 4.5,Chinese,environment_energy,Authority/Subversion,4,0
+Claude Opus 4.5,Chinese,governance_democracy,Authority/Subversion,22,0.13636363636363638
+Claude Opus 4.5,Chinese,migration_nationalism,Authority/Subversion,16,0.3125
+Claude Opus 4.5,Chinese,religion_state,Authority/Subversion,4,0
+Claude Opus 4.5,Chinese,security_conflict,Authority/Subversion,50,0.019999999999999993
+Claude Opus 4.5,Chinese,social_moral,Authority/Subversion,8,0
+Claude Opus 4.5,Chinese,territorial_sovereignty,Authority/Subversion,16,0
+Claude Opus 4.5,Japanese,civil_rights_liberties,Authority/Subversion,31,0.09677419354838708
+Claude Opus 4.5,Japanese,economic_policy,Authority/Subversion,4,0
+Claude Opus 4.5,Japanese,environment_energy,Authority/Subversion,4,0
+Claude Opus 4.5,Japanese,governance_democracy,Authority/Subversion,22,0.22727272727272727
+Claude Opus 4.5,Japanese,migration_nationalism,Authority/Subversion,15,0.2
+Claude Opus 4.5,Japanese,religion_state,Authority/Subversion,4,0
+Claude Opus 4.5,Japanese,security_conflict,Authority/Subversion,48,0.02083333333333333
+Claude Opus 4.5,Japanese,social_moral,Authority/Subversion,7,0
+Claude Opus 4.5,Japanese,territorial_sovereignty,Authority/Subversion,15,0.13333333333333336
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.09375
+Claude Opus 4.5,Indonesian,economic_policy,Authority/Subversion,4,0
+Claude Opus 4.5,Indonesian,environment_energy,Authority/Subversion,4,0
+Claude Opus 4.5,Indonesian,governance_democracy,Authority/Subversion,22,0.0909090909090909
+Claude Opus 4.5,Indonesian,migration_nationalism,Authority/Subversion,15,0.2
+Claude Opus 4.5,Indonesian,religion_state,Authority/Subversion,4,0
+Claude Opus 4.5,Indonesian,security_conflict,Authority/Subversion,47,0.0851063829787234
+Claude Opus 4.5,Indonesian,social_moral,Authority/Subversion,8,0
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Authority/Subversion,15,0.13333333333333333
+Claude Opus 4.5,Arabic,civil_rights_liberties,Authority/Subversion,32,0.0625
+Claude Opus 4.5,Arabic,economic_policy,Authority/Subversion,4,0
+Claude Opus 4.5,Arabic,environment_energy,Authority/Subversion,4,0
+Claude Opus 4.5,Arabic,governance_democracy,Authority/Subversion,23,0.08695652173913045
+Claude Opus 4.5,Arabic,migration_nationalism,Authority/Subversion,16,0.3125
+Claude Opus 4.5,Arabic,religion_state,Authority/Subversion,4,0
+Claude Opus 4.5,Arabic,security_conflict,Authority/Subversion,49,0.040816326530612214
+Claude Opus 4.5,Arabic,social_moral,Authority/Subversion,8,0
+Claude Opus 4.5,Arabic,territorial_sovereignty,Authority/Subversion,16,0.25
+Claude Opus 4.5,English,civil_rights_liberties,Sanctity/Degradation,32,0.125
+Claude Opus 4.5,English,economic_policy,Sanctity/Degradation,4,0
+Claude Opus 4.5,English,environment_energy,Sanctity/Degradation,4,0
+Claude Opus 4.5,English,governance_democracy,Sanctity/Degradation,21,0.0476190476190476
+Claude Opus 4.5,English,migration_nationalism,Sanctity/Degradation,16,0
+Claude Opus 4.5,English,religion_state,Sanctity/Degradation,4,0
+Claude Opus 4.5,English,security_conflict,Sanctity/Degradation,45,0.022222222222222223
+Claude Opus 4.5,English,social_moral,Sanctity/Degradation,8,0
+Claude Opus 4.5,English,territorial_sovereignty,Sanctity/Degradation,15,0
+Claude Opus 4.5,Chinese,civil_rights_liberties,Sanctity/Degradation,31,0.22580645161290322
+Claude Opus 4.5,Chinese,economic_policy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Chinese,environment_energy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Chinese,governance_democracy,Sanctity/Degradation,22,0.0909090909090909
+Claude Opus 4.5,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+Claude Opus 4.5,Chinese,religion_state,Sanctity/Degradation,4,0
+Claude Opus 4.5,Chinese,security_conflict,Sanctity/Degradation,50,0.019999999999999993
+Claude Opus 4.5,Chinese,social_moral,Sanctity/Degradation,8,0.125
+Claude Opus 4.5,Chinese,territorial_sovereignty,Sanctity/Degradation,16,0
+Claude Opus 4.5,Japanese,civil_rights_liberties,Sanctity/Degradation,31,0.22580645161290322
+Claude Opus 4.5,Japanese,economic_policy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Japanese,environment_energy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Japanese,governance_democracy,Sanctity/Degradation,22,0.045454545454545456
+Claude Opus 4.5,Japanese,migration_nationalism,Sanctity/Degradation,15,0
+Claude Opus 4.5,Japanese,religion_state,Sanctity/Degradation,4,0
+Claude Opus 4.5,Japanese,security_conflict,Sanctity/Degradation,48,0.02083333333333333
+Claude Opus 4.5,Japanese,social_moral,Sanctity/Degradation,7,0.14285714285714288
+Claude Opus 4.5,Japanese,territorial_sovereignty,Sanctity/Degradation,15,0
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0.09375
+Claude Opus 4.5,Indonesian,economic_policy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Indonesian,environment_energy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Indonesian,governance_democracy,Sanctity/Degradation,22,0
+Claude Opus 4.5,Indonesian,migration_nationalism,Sanctity/Degradation,15,0
+Claude Opus 4.5,Indonesian,religion_state,Sanctity/Degradation,4,0
+Claude Opus 4.5,Indonesian,security_conflict,Sanctity/Degradation,47,0.02127659574468085
+Claude Opus 4.5,Indonesian,social_moral,Sanctity/Degradation,8,0.25
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Sanctity/Degradation,15,0
+Claude Opus 4.5,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.15625
+Claude Opus 4.5,Arabic,economic_policy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Arabic,environment_energy,Sanctity/Degradation,4,0
+Claude Opus 4.5,Arabic,governance_democracy,Sanctity/Degradation,23,0.04347826086956523
+Claude Opus 4.5,Arabic,migration_nationalism,Sanctity/Degradation,16,0
+Claude Opus 4.5,Arabic,religion_state,Sanctity/Degradation,4,0
+Claude Opus 4.5,Arabic,security_conflict,Sanctity/Degradation,49,0.040816326530612235
+Claude Opus 4.5,Arabic,social_moral,Sanctity/Degradation,8,0
+Claude Opus 4.5,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+Claude Opus 4.5,English,civil_rights_liberties,Liberty/Oppression,32,0.34375
+Claude Opus 4.5,English,economic_policy,Liberty/Oppression,4,1
+Claude Opus 4.5,English,environment_energy,Liberty/Oppression,4,0
+Claude Opus 4.5,English,governance_democracy,Liberty/Oppression,21,0.5714285714285715
+Claude Opus 4.5,English,migration_nationalism,Liberty/Oppression,16,0.5625
+Claude Opus 4.5,English,religion_state,Liberty/Oppression,4,1
+Claude Opus 4.5,English,security_conflict,Liberty/Oppression,45,0.2666666666666667
+Claude Opus 4.5,English,social_moral,Liberty/Oppression,8,0.75
+Claude Opus 4.5,English,territorial_sovereignty,Liberty/Oppression,15,0.6
+Claude Opus 4.5,Chinese,civil_rights_liberties,Liberty/Oppression,31,0.4193548387096774
+Claude Opus 4.5,Chinese,economic_policy,Liberty/Oppression,4,0.75
+Claude Opus 4.5,Chinese,environment_energy,Liberty/Oppression,4,0.25
+Claude Opus 4.5,Chinese,governance_democracy,Liberty/Oppression,22,0.6363636363636364
+Claude Opus 4.5,Chinese,migration_nationalism,Liberty/Oppression,16,0.6875
+Claude Opus 4.5,Chinese,religion_state,Liberty/Oppression,4,1
+Claude Opus 4.5,Chinese,security_conflict,Liberty/Oppression,50,0.23999999999999994
+Claude Opus 4.5,Chinese,social_moral,Liberty/Oppression,8,0.5
+Claude Opus 4.5,Chinese,territorial_sovereignty,Liberty/Oppression,16,0.6875
+Claude Opus 4.5,Japanese,civil_rights_liberties,Liberty/Oppression,31,0.3548387096774193
+Claude Opus 4.5,Japanese,economic_policy,Liberty/Oppression,4,1
+Claude Opus 4.5,Japanese,environment_energy,Liberty/Oppression,4,0
+Claude Opus 4.5,Japanese,governance_democracy,Liberty/Oppression,22,0.5909090909090909
+Claude Opus 4.5,Japanese,migration_nationalism,Liberty/Oppression,15,0.6
+Claude Opus 4.5,Japanese,religion_state,Liberty/Oppression,4,1
+Claude Opus 4.5,Japanese,security_conflict,Liberty/Oppression,48,0.22916666666666669
+Claude Opus 4.5,Japanese,social_moral,Liberty/Oppression,7,0.7142857142857143
+Claude Opus 4.5,Japanese,territorial_sovereignty,Liberty/Oppression,15,0.6666666666666667
+Claude Opus 4.5,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.40625
+Claude Opus 4.5,Indonesian,economic_policy,Liberty/Oppression,4,0.5
+Claude Opus 4.5,Indonesian,environment_energy,Liberty/Oppression,4,0
+Claude Opus 4.5,Indonesian,governance_democracy,Liberty/Oppression,22,0.5
+Claude Opus 4.5,Indonesian,migration_nationalism,Liberty/Oppression,15,0.7333333333333333
+Claude Opus 4.5,Indonesian,religion_state,Liberty/Oppression,4,1
+Claude Opus 4.5,Indonesian,security_conflict,Liberty/Oppression,47,0.17021276595744683
+Claude Opus 4.5,Indonesian,social_moral,Liberty/Oppression,8,0.75
+Claude Opus 4.5,Indonesian,territorial_sovereignty,Liberty/Oppression,15,0.7333333333333333
+Claude Opus 4.5,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.40625
+Claude Opus 4.5,Arabic,economic_policy,Liberty/Oppression,4,1
+Claude Opus 4.5,Arabic,environment_energy,Liberty/Oppression,4,0.25
+Claude Opus 4.5,Arabic,governance_democracy,Liberty/Oppression,23,0.6956521739130435
+Claude Opus 4.5,Arabic,migration_nationalism,Liberty/Oppression,16,0.6875
+Claude Opus 4.5,Arabic,religion_state,Liberty/Oppression,4,0.75
+Claude Opus 4.5,Arabic,security_conflict,Liberty/Oppression,49,0.28571428571428575
+Claude Opus 4.5,Arabic,social_moral,Liberty/Oppression,8,0.875
+Claude Opus 4.5,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.75
+GPT-4o,English,civil_rights_liberties,Care/Harm,32,0.46875
+GPT-4o,English,economic_policy,Care/Harm,3,0.6666666666666666
+GPT-4o,English,environment_energy,Care/Harm,4,1
+GPT-4o,English,governance_democracy,Care/Harm,23,0.34782608695652173
+GPT-4o,English,migration_nationalism,Care/Harm,16,0.375
+GPT-4o,English,religion_state,Care/Harm,4,1
+GPT-4o,English,security_conflict,Care/Harm,51,0.33333333333333337
+GPT-4o,English,social_moral,Care/Harm,8,1
+GPT-4o,English,territorial_sovereignty,Care/Harm,16,0.375
+GPT-4o,Chinese,civil_rights_liberties,Care/Harm,32,0.40625
+GPT-4o,Chinese,economic_policy,Care/Harm,4,1
+GPT-4o,Chinese,environment_energy,Care/Harm,4,1
+GPT-4o,Chinese,governance_democracy,Care/Harm,23,0.34782608695652173
+GPT-4o,Chinese,migration_nationalism,Care/Harm,16,0.3125
+GPT-4o,Chinese,religion_state,Care/Harm,4,1
+GPT-4o,Chinese,security_conflict,Care/Harm,52,0.2884615384615385
+GPT-4o,Chinese,social_moral,Care/Harm,8,0.75
+GPT-4o,Chinese,territorial_sovereignty,Care/Harm,16,0.1875
+GPT-4o,Japanese,civil_rights_liberties,Care/Harm,31,0.3548387096774194
+GPT-4o,Japanese,economic_policy,Care/Harm,4,0.75
+GPT-4o,Japanese,environment_energy,Care/Harm,4,0.75
+GPT-4o,Japanese,governance_democracy,Care/Harm,24,0.33333333333333337
+GPT-4o,Japanese,migration_nationalism,Care/Harm,16,0.1875
+GPT-4o,Japanese,religion_state,Care/Harm,4,0.75
+GPT-4o,Japanese,security_conflict,Care/Harm,50,0.36000000000000004
+GPT-4o,Japanese,social_moral,Care/Harm,8,0.625
+GPT-4o,Japanese,territorial_sovereignty,Care/Harm,16,0.4375
+GPT-4o,Indonesian,civil_rights_liberties,Care/Harm,32,0.40625
+GPT-4o,Indonesian,economic_policy,Care/Harm,4,0.75
+GPT-4o,Indonesian,environment_energy,Care/Harm,4,0.75
+GPT-4o,Indonesian,governance_democracy,Care/Harm,24,0.41666666666666663
+GPT-4o,Indonesian,migration_nationalism,Care/Harm,16,0.375
+GPT-4o,Indonesian,religion_state,Care/Harm,4,1
+GPT-4o,Indonesian,security_conflict,Care/Harm,51,0.3529411764705882
+GPT-4o,Indonesian,social_moral,Care/Harm,8,0.75
+GPT-4o,Indonesian,territorial_sovereignty,Care/Harm,16,0.4375
+GPT-4o,Arabic,civil_rights_liberties,Care/Harm,32,0.40625
+GPT-4o,Arabic,economic_policy,Care/Harm,4,1
+GPT-4o,Arabic,environment_energy,Care/Harm,4,0.75
+GPT-4o,Arabic,governance_democracy,Care/Harm,23,0.4347826086956522
+GPT-4o,Arabic,migration_nationalism,Care/Harm,16,0.25
+GPT-4o,Arabic,religion_state,Care/Harm,4,1
+GPT-4o,Arabic,security_conflict,Care/Harm,51,0.3529411764705882
+GPT-4o,Arabic,social_moral,Care/Harm,8,0.75
+GPT-4o,Arabic,territorial_sovereignty,Care/Harm,16,0.5
+GPT-4o,English,civil_rights_liberties,Fairness/Cheating,32,0.65625
+GPT-4o,English,economic_policy,Fairness/Cheating,3,0.6666666666666666
+GPT-4o,English,environment_energy,Fairness/Cheating,4,0
+GPT-4o,English,governance_democracy,Fairness/Cheating,23,0.6956521739130435
+GPT-4o,English,migration_nationalism,Fairness/Cheating,16,0.5625
+GPT-4o,English,religion_state,Fairness/Cheating,4,0
+GPT-4o,English,security_conflict,Fairness/Cheating,51,0.2352941176470588
+GPT-4o,English,social_moral,Fairness/Cheating,8,0.625
+GPT-4o,English,territorial_sovereignty,Fairness/Cheating,16,0.8125
+GPT-4o,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.625
+GPT-4o,Chinese,economic_policy,Fairness/Cheating,4,0.75
+GPT-4o,Chinese,environment_energy,Fairness/Cheating,4,0
+GPT-4o,Chinese,governance_democracy,Fairness/Cheating,23,0.5217391304347826
+GPT-4o,Chinese,migration_nationalism,Fairness/Cheating,16,0.5
+GPT-4o,Chinese,religion_state,Fairness/Cheating,4,0
+GPT-4o,Chinese,security_conflict,Fairness/Cheating,52,0.21153846153846154
+GPT-4o,Chinese,social_moral,Fairness/Cheating,8,0.875
+GPT-4o,Chinese,territorial_sovereignty,Fairness/Cheating,16,0.8125
+GPT-4o,Japanese,civil_rights_liberties,Fairness/Cheating,31,0.6129032258064516
+GPT-4o,Japanese,economic_policy,Fairness/Cheating,4,0.75
+GPT-4o,Japanese,environment_energy,Fairness/Cheating,4,0.25
+GPT-4o,Japanese,governance_democracy,Fairness/Cheating,24,0.5416666666666666
+GPT-4o,Japanese,migration_nationalism,Fairness/Cheating,16,0.4375
+GPT-4o,Japanese,religion_state,Fairness/Cheating,4,0.25
+GPT-4o,Japanese,security_conflict,Fairness/Cheating,50,0.32
+GPT-4o,Japanese,social_moral,Fairness/Cheating,8,0.625
+GPT-4o,Japanese,territorial_sovereignty,Fairness/Cheating,16,0.75
+GPT-4o,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.71875
+GPT-4o,Indonesian,economic_policy,Fairness/Cheating,4,0.75
+GPT-4o,Indonesian,environment_energy,Fairness/Cheating,4,0
+GPT-4o,Indonesian,governance_democracy,Fairness/Cheating,24,0.7083333333333334
+GPT-4o,Indonesian,migration_nationalism,Fairness/Cheating,16,0.375
+GPT-4o,Indonesian,religion_state,Fairness/Cheating,4,0.25
+GPT-4o,Indonesian,security_conflict,Fairness/Cheating,51,0.2941176470588235
+GPT-4o,Indonesian,social_moral,Fairness/Cheating,8,0.625
+GPT-4o,Indonesian,territorial_sovereignty,Fairness/Cheating,16,0.75
+GPT-4o,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.75
+GPT-4o,Arabic,economic_policy,Fairness/Cheating,4,1
+GPT-4o,Arabic,environment_energy,Fairness/Cheating,4,0
+GPT-4o,Arabic,governance_democracy,Fairness/Cheating,23,0.6086956521739131
+GPT-4o,Arabic,migration_nationalism,Fairness/Cheating,16,0.4375
+GPT-4o,Arabic,religion_state,Fairness/Cheating,4,0.25
+GPT-4o,Arabic,security_conflict,Fairness/Cheating,51,0.2941176470588235
+GPT-4o,Arabic,social_moral,Fairness/Cheating,8,0.75
+GPT-4o,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.8125
+GPT-4o,English,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+GPT-4o,English,economic_policy,Loyalty/Betrayal,3,0
+GPT-4o,English,environment_energy,Loyalty/Betrayal,4,0
+GPT-4o,English,governance_democracy,Loyalty/Betrayal,23,0.13043478260869568
+GPT-4o,English,migration_nationalism,Loyalty/Betrayal,16,0.1875
+GPT-4o,English,religion_state,Loyalty/Betrayal,4,0
+GPT-4o,English,security_conflict,Loyalty/Betrayal,51,0.19607843137254904
+GPT-4o,English,social_moral,Loyalty/Betrayal,8,0
+GPT-4o,English,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+GPT-4o,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+GPT-4o,Chinese,economic_policy,Loyalty/Betrayal,4,0
+GPT-4o,Chinese,environment_energy,Loyalty/Betrayal,4,0
+GPT-4o,Chinese,governance_democracy,Loyalty/Betrayal,23,0
+GPT-4o,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+GPT-4o,Chinese,religion_state,Loyalty/Betrayal,4,0
+GPT-4o,Chinese,security_conflict,Loyalty/Betrayal,52,0.19230769230769232
+GPT-4o,Chinese,social_moral,Loyalty/Betrayal,8,0
+GPT-4o,Chinese,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+GPT-4o,Japanese,civil_rights_liberties,Loyalty/Betrayal,31,0.12903225806451613
+GPT-4o,Japanese,economic_policy,Loyalty/Betrayal,4,0
+GPT-4o,Japanese,environment_energy,Loyalty/Betrayal,4,0
+GPT-4o,Japanese,governance_democracy,Loyalty/Betrayal,24,0
+GPT-4o,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.125
+GPT-4o,Japanese,religion_state,Loyalty/Betrayal,4,0
+GPT-4o,Japanese,security_conflict,Loyalty/Betrayal,50,0.2
+GPT-4o,Japanese,social_moral,Loyalty/Betrayal,8,0
+GPT-4o,Japanese,territorial_sovereignty,Loyalty/Betrayal,16,0
+GPT-4o,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+GPT-4o,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+GPT-4o,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+GPT-4o,Indonesian,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+GPT-4o,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.1875
+GPT-4o,Indonesian,religion_state,Loyalty/Betrayal,4,0
+GPT-4o,Indonesian,security_conflict,Loyalty/Betrayal,51,0.1764705882352941
+GPT-4o,Indonesian,social_moral,Loyalty/Betrayal,8,0
+GPT-4o,Indonesian,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+GPT-4o,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+GPT-4o,Arabic,economic_policy,Loyalty/Betrayal,4,0
+GPT-4o,Arabic,environment_energy,Loyalty/Betrayal,4,0
+GPT-4o,Arabic,governance_democracy,Loyalty/Betrayal,23,0.13043478260869565
+GPT-4o,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.25
+GPT-4o,Arabic,religion_state,Loyalty/Betrayal,4,0
+GPT-4o,Arabic,security_conflict,Loyalty/Betrayal,51,0.19607843137254904
+GPT-4o,Arabic,social_moral,Loyalty/Betrayal,8,0
+GPT-4o,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+GPT-4o,English,civil_rights_liberties,Authority/Subversion,32,0.09375
+GPT-4o,English,economic_policy,Authority/Subversion,3,0
+GPT-4o,English,environment_energy,Authority/Subversion,4,0
+GPT-4o,English,governance_democracy,Authority/Subversion,23,0.2608695652173913
+GPT-4o,English,migration_nationalism,Authority/Subversion,16,0.1875
+GPT-4o,English,religion_state,Authority/Subversion,4,0
+GPT-4o,English,security_conflict,Authority/Subversion,51,0.09803921568627451
+GPT-4o,English,social_moral,Authority/Subversion,8,0
+GPT-4o,English,territorial_sovereignty,Authority/Subversion,16,0.0625
+GPT-4o,Chinese,civil_rights_liberties,Authority/Subversion,32,0.125
+GPT-4o,Chinese,economic_policy,Authority/Subversion,4,0
+GPT-4o,Chinese,environment_energy,Authority/Subversion,4,0
+GPT-4o,Chinese,governance_democracy,Authority/Subversion,23,0.08695652173913043
+GPT-4o,Chinese,migration_nationalism,Authority/Subversion,16,0.3125
+GPT-4o,Chinese,religion_state,Authority/Subversion,4,0
+GPT-4o,Chinese,security_conflict,Authority/Subversion,52,0.05769230769230768
+GPT-4o,Chinese,social_moral,Authority/Subversion,8,0
+GPT-4o,Chinese,territorial_sovereignty,Authority/Subversion,16,0.0625
+GPT-4o,Japanese,civil_rights_liberties,Authority/Subversion,31,0.09677419354838708
+GPT-4o,Japanese,economic_policy,Authority/Subversion,4,0
+GPT-4o,Japanese,environment_energy,Authority/Subversion,4,0
+GPT-4o,Japanese,governance_democracy,Authority/Subversion,24,0.125
+GPT-4o,Japanese,migration_nationalism,Authority/Subversion,16,0.3125
+GPT-4o,Japanese,religion_state,Authority/Subversion,4,0
+GPT-4o,Japanese,security_conflict,Authority/Subversion,50,0.039999999999999994
+GPT-4o,Japanese,social_moral,Authority/Subversion,8,0
+GPT-4o,Japanese,territorial_sovereignty,Authority/Subversion,16,0.1875
+GPT-4o,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.09375
+GPT-4o,Indonesian,economic_policy,Authority/Subversion,4,0
+GPT-4o,Indonesian,environment_energy,Authority/Subversion,4,0
+GPT-4o,Indonesian,governance_democracy,Authority/Subversion,24,0.16666666666666669
+GPT-4o,Indonesian,migration_nationalism,Authority/Subversion,16,0.1875
+GPT-4o,Indonesian,religion_state,Authority/Subversion,4,0
+GPT-4o,Indonesian,security_conflict,Authority/Subversion,51,0
+GPT-4o,Indonesian,social_moral,Authority/Subversion,8,0
+GPT-4o,Indonesian,territorial_sovereignty,Authority/Subversion,16,0.1875
+GPT-4o,Arabic,civil_rights_liberties,Authority/Subversion,32,0.125
+GPT-4o,Arabic,economic_policy,Authority/Subversion,4,0
+GPT-4o,Arabic,environment_energy,Authority/Subversion,4,0
+GPT-4o,Arabic,governance_democracy,Authority/Subversion,23,0.04347826086956523
+GPT-4o,Arabic,migration_nationalism,Authority/Subversion,16,0.3125
+GPT-4o,Arabic,religion_state,Authority/Subversion,4,0
+GPT-4o,Arabic,security_conflict,Authority/Subversion,51,0.01960784313725489
+GPT-4o,Arabic,social_moral,Authority/Subversion,8,0
+GPT-4o,Arabic,territorial_sovereignty,Authority/Subversion,16,0.0625
+GPT-4o,English,civil_rights_liberties,Sanctity/Degradation,32,0.0625
+GPT-4o,English,economic_policy,Sanctity/Degradation,3,0
+GPT-4o,English,environment_energy,Sanctity/Degradation,4,0
+GPT-4o,English,governance_democracy,Sanctity/Degradation,23,0.04347826086956523
+GPT-4o,English,migration_nationalism,Sanctity/Degradation,16,0.0625
+GPT-4o,English,religion_state,Sanctity/Degradation,4,0
+GPT-4o,English,security_conflict,Sanctity/Degradation,51,0.0196078431372549
+GPT-4o,English,social_moral,Sanctity/Degradation,8,0
+GPT-4o,English,territorial_sovereignty,Sanctity/Degradation,16,0
+GPT-4o,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.03125
+GPT-4o,Chinese,economic_policy,Sanctity/Degradation,4,0
+GPT-4o,Chinese,environment_energy,Sanctity/Degradation,4,0
+GPT-4o,Chinese,governance_democracy,Sanctity/Degradation,23,0
+GPT-4o,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+GPT-4o,Chinese,religion_state,Sanctity/Degradation,4,0
+GPT-4o,Chinese,security_conflict,Sanctity/Degradation,52,0.07692307692307696
+GPT-4o,Chinese,social_moral,Sanctity/Degradation,8,0.125
+GPT-4o,Chinese,territorial_sovereignty,Sanctity/Degradation,16,0
+GPT-4o,Japanese,civil_rights_liberties,Sanctity/Degradation,31,0.032258064516129045
+GPT-4o,Japanese,economic_policy,Sanctity/Degradation,4,0
+GPT-4o,Japanese,environment_energy,Sanctity/Degradation,4,0
+GPT-4o,Japanese,governance_democracy,Sanctity/Degradation,24,0.04166666666666668
+GPT-4o,Japanese,migration_nationalism,Sanctity/Degradation,16,0
+GPT-4o,Japanese,religion_state,Sanctity/Degradation,4,0
+GPT-4o,Japanese,security_conflict,Sanctity/Degradation,50,0.04
+GPT-4o,Japanese,social_moral,Sanctity/Degradation,8,0
+GPT-4o,Japanese,territorial_sovereignty,Sanctity/Degradation,16,0
+GPT-4o,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0
+GPT-4o,Indonesian,economic_policy,Sanctity/Degradation,4,0
+GPT-4o,Indonesian,environment_energy,Sanctity/Degradation,4,0
+GPT-4o,Indonesian,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+GPT-4o,Indonesian,migration_nationalism,Sanctity/Degradation,16,0
+GPT-4o,Indonesian,religion_state,Sanctity/Degradation,4,0
+GPT-4o,Indonesian,security_conflict,Sanctity/Degradation,51,0.019607843137254895
+GPT-4o,Indonesian,social_moral,Sanctity/Degradation,8,0
+GPT-4o,Indonesian,territorial_sovereignty,Sanctity/Degradation,16,0
+GPT-4o,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.09375
+GPT-4o,Arabic,economic_policy,Sanctity/Degradation,4,0
+GPT-4o,Arabic,environment_energy,Sanctity/Degradation,4,0
+GPT-4o,Arabic,governance_democracy,Sanctity/Degradation,23,0.04347826086956523
+GPT-4o,Arabic,migration_nationalism,Sanctity/Degradation,16,0
+GPT-4o,Arabic,religion_state,Sanctity/Degradation,4,0
+GPT-4o,Arabic,security_conflict,Sanctity/Degradation,51,0.0196078431372549
+GPT-4o,Arabic,social_moral,Sanctity/Degradation,8,0
+GPT-4o,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+GPT-4o,English,civil_rights_liberties,Liberty/Oppression,32,0.46875
+GPT-4o,English,economic_policy,Liberty/Oppression,3,0.33333333333333337
+GPT-4o,English,environment_energy,Liberty/Oppression,4,0.25
+GPT-4o,English,governance_democracy,Liberty/Oppression,23,0.5652173913043479
+GPT-4o,English,migration_nationalism,Liberty/Oppression,16,0.625
+GPT-4o,English,religion_state,Liberty/Oppression,4,1
+GPT-4o,English,security_conflict,Liberty/Oppression,51,0.29411764705882354
+GPT-4o,English,social_moral,Liberty/Oppression,8,0.75
+GPT-4o,English,territorial_sovereignty,Liberty/Oppression,16,0.625
+GPT-4o,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.375
+GPT-4o,Chinese,economic_policy,Liberty/Oppression,4,0.5
+GPT-4o,Chinese,environment_energy,Liberty/Oppression,4,0
+GPT-4o,Chinese,governance_democracy,Liberty/Oppression,23,0.4782608695652174
+GPT-4o,Chinese,migration_nationalism,Liberty/Oppression,16,0.5625
+GPT-4o,Chinese,religion_state,Liberty/Oppression,4,0.5
+GPT-4o,Chinese,security_conflict,Liberty/Oppression,52,0.23076923076923073
+GPT-4o,Chinese,social_moral,Liberty/Oppression,8,0.5
+GPT-4o,Chinese,territorial_sovereignty,Liberty/Oppression,16,0.625
+GPT-4o,Japanese,civil_rights_liberties,Liberty/Oppression,31,0.4516129032258064
+GPT-4o,Japanese,economic_policy,Liberty/Oppression,4,0.25
+GPT-4o,Japanese,environment_energy,Liberty/Oppression,4,0
+GPT-4o,Japanese,governance_democracy,Liberty/Oppression,24,0.375
+GPT-4o,Japanese,migration_nationalism,Liberty/Oppression,16,0.5625
+GPT-4o,Japanese,religion_state,Liberty/Oppression,4,0.75
+GPT-4o,Japanese,security_conflict,Liberty/Oppression,50,0.26
+GPT-4o,Japanese,social_moral,Liberty/Oppression,8,0.375
+GPT-4o,Japanese,territorial_sovereignty,Liberty/Oppression,16,0.5
+GPT-4o,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.40625
+GPT-4o,Indonesian,economic_policy,Liberty/Oppression,4,0.5
+GPT-4o,Indonesian,environment_energy,Liberty/Oppression,4,0
+GPT-4o,Indonesian,governance_democracy,Liberty/Oppression,24,0.5416666666666667
+GPT-4o,Indonesian,migration_nationalism,Liberty/Oppression,16,0.5
+GPT-4o,Indonesian,religion_state,Liberty/Oppression,4,0.75
+GPT-4o,Indonesian,security_conflict,Liberty/Oppression,51,0.2549019607843137
+GPT-4o,Indonesian,social_moral,Liberty/Oppression,8,0.375
+GPT-4o,Indonesian,territorial_sovereignty,Liberty/Oppression,16,0.75
+GPT-4o,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.34375
+GPT-4o,Arabic,economic_policy,Liberty/Oppression,4,0.25
+GPT-4o,Arabic,environment_energy,Liberty/Oppression,4,0
+GPT-4o,Arabic,governance_democracy,Liberty/Oppression,23,0.5217391304347826
+GPT-4o,Arabic,migration_nationalism,Liberty/Oppression,16,0.5625
+GPT-4o,Arabic,religion_state,Liberty/Oppression,4,0.5
+GPT-4o,Arabic,security_conflict,Liberty/Oppression,51,0.2549019607843137
+GPT-4o,Arabic,social_moral,Liberty/Oppression,8,0.625
+GPT-4o,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.75
+Grok 4.3,English,civil_rights_liberties,Care/Harm,32,0.21875
+Grok 4.3,English,economic_policy,Care/Harm,4,0.75
+Grok 4.3,English,environment_energy,Care/Harm,4,1
+Grok 4.3,English,governance_democracy,Care/Harm,24,0.41666666666666663
+Grok 4.3,English,migration_nationalism,Care/Harm,16,0.25
+Grok 4.3,English,religion_state,Care/Harm,4,1
+Grok 4.3,English,security_conflict,Care/Harm,51,0.3921568627450981
+Grok 4.3,English,social_moral,Care/Harm,8,0.625
+Grok 4.3,English,territorial_sovereignty,Care/Harm,16,0.25
+Grok 4.3,Chinese,civil_rights_liberties,Care/Harm,32,0.25
+Grok 4.3,Chinese,economic_policy,Care/Harm,4,0.5
+Grok 4.3,Chinese,environment_energy,Care/Harm,4,1
+Grok 4.3,Chinese,governance_democracy,Care/Harm,24,0.33333333333333337
+Grok 4.3,Chinese,migration_nationalism,Care/Harm,16,0.25
+Grok 4.3,Chinese,religion_state,Care/Harm,4,1
+Grok 4.3,Chinese,security_conflict,Care/Harm,51,0.3921568627450981
+Grok 4.3,Chinese,social_moral,Care/Harm,8,0.625
+Grok 4.3,Chinese,territorial_sovereignty,Care/Harm,15,0.26666666666666666
+Grok 4.3,Japanese,civil_rights_liberties,Care/Harm,32,0.25
+Grok 4.3,Japanese,economic_policy,Care/Harm,4,0.5
+Grok 4.3,Japanese,environment_energy,Care/Harm,4,1
+Grok 4.3,Japanese,governance_democracy,Care/Harm,23,0.30434782608695654
+Grok 4.3,Japanese,migration_nationalism,Care/Harm,16,0.25
+Grok 4.3,Japanese,religion_state,Care/Harm,4,1
+Grok 4.3,Japanese,security_conflict,Care/Harm,50,0.36
+Grok 4.3,Japanese,social_moral,Care/Harm,8,0.75
+Grok 4.3,Japanese,territorial_sovereignty,Care/Harm,16,0.3125
+Grok 4.3,Indonesian,civil_rights_liberties,Care/Harm,32,0.28125
+Grok 4.3,Indonesian,economic_policy,Care/Harm,4,0.75
+Grok 4.3,Indonesian,environment_energy,Care/Harm,4,1
+Grok 4.3,Indonesian,governance_democracy,Care/Harm,24,0.375
+Grok 4.3,Indonesian,migration_nationalism,Care/Harm,16,0.25
+Grok 4.3,Indonesian,religion_state,Care/Harm,4,0.75
+Grok 4.3,Indonesian,security_conflict,Care/Harm,51,0.33333333333333337
+Grok 4.3,Indonesian,social_moral,Care/Harm,8,0.75
+Grok 4.3,Indonesian,territorial_sovereignty,Care/Harm,16,0.375
+Grok 4.3,Arabic,civil_rights_liberties,Care/Harm,32,0.28125
+Grok 4.3,Arabic,economic_policy,Care/Harm,4,0.75
+Grok 4.3,Arabic,environment_energy,Care/Harm,4,1
+Grok 4.3,Arabic,governance_democracy,Care/Harm,24,0.29166666666666663
+Grok 4.3,Arabic,migration_nationalism,Care/Harm,16,0.25
+Grok 4.3,Arabic,religion_state,Care/Harm,4,1
+Grok 4.3,Arabic,security_conflict,Care/Harm,52,0.326923076923077
+Grok 4.3,Arabic,social_moral,Care/Harm,8,0.875
+Grok 4.3,Arabic,territorial_sovereignty,Care/Harm,16,0.3125
+Grok 4.3,English,civil_rights_liberties,Fairness/Cheating,32,0.46875
+Grok 4.3,English,economic_policy,Fairness/Cheating,4,0.75
+Grok 4.3,English,environment_energy,Fairness/Cheating,4,0.25
+Grok 4.3,English,governance_democracy,Fairness/Cheating,24,0.75
+Grok 4.3,English,migration_nationalism,Fairness/Cheating,16,0.3125
+Grok 4.3,English,religion_state,Fairness/Cheating,4,0.75
+Grok 4.3,English,security_conflict,Fairness/Cheating,51,0.2941176470588235
+Grok 4.3,English,social_moral,Fairness/Cheating,8,0.5
+Grok 4.3,English,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Grok 4.3,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.53125
+Grok 4.3,Chinese,economic_policy,Fairness/Cheating,4,0.75
+Grok 4.3,Chinese,environment_energy,Fairness/Cheating,4,0.25
+Grok 4.3,Chinese,governance_democracy,Fairness/Cheating,24,0.625
+Grok 4.3,Chinese,migration_nationalism,Fairness/Cheating,16,0.5
+Grok 4.3,Chinese,religion_state,Fairness/Cheating,4,0
+Grok 4.3,Chinese,security_conflict,Fairness/Cheating,51,0.2352941176470588
+Grok 4.3,Chinese,social_moral,Fairness/Cheating,8,0.75
+Grok 4.3,Chinese,territorial_sovereignty,Fairness/Cheating,15,0.8666666666666667
+Grok 4.3,Japanese,civil_rights_liberties,Fairness/Cheating,32,0.46875
+Grok 4.3,Japanese,economic_policy,Fairness/Cheating,4,0.75
+Grok 4.3,Japanese,environment_energy,Fairness/Cheating,4,0
+Grok 4.3,Japanese,governance_democracy,Fairness/Cheating,23,0.6521739130434783
+Grok 4.3,Japanese,migration_nationalism,Fairness/Cheating,16,0.4375
+Grok 4.3,Japanese,religion_state,Fairness/Cheating,4,0.75
+Grok 4.3,Japanese,security_conflict,Fairness/Cheating,50,0.28
+Grok 4.3,Japanese,social_moral,Fairness/Cheating,8,0.75
+Grok 4.3,Japanese,territorial_sovereignty,Fairness/Cheating,16,0.875
+Grok 4.3,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.53125
+Grok 4.3,Indonesian,economic_policy,Fairness/Cheating,4,0.5
+Grok 4.3,Indonesian,environment_energy,Fairness/Cheating,4,0
+Grok 4.3,Indonesian,governance_democracy,Fairness/Cheating,24,0.6666666666666666
+Grok 4.3,Indonesian,migration_nationalism,Fairness/Cheating,16,0.4375
+Grok 4.3,Indonesian,religion_state,Fairness/Cheating,4,0
+Grok 4.3,Indonesian,security_conflict,Fairness/Cheating,51,0.3137254901960784
+Grok 4.3,Indonesian,social_moral,Fairness/Cheating,8,0.625
+Grok 4.3,Indonesian,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Grok 4.3,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.625
+Grok 4.3,Arabic,economic_policy,Fairness/Cheating,4,0.75
+Grok 4.3,Arabic,environment_energy,Fairness/Cheating,4,0.25
+Grok 4.3,Arabic,governance_democracy,Fairness/Cheating,24,0.7083333333333333
+Grok 4.3,Arabic,migration_nationalism,Fairness/Cheating,16,0.5
+Grok 4.3,Arabic,religion_state,Fairness/Cheating,4,0
+Grok 4.3,Arabic,security_conflict,Fairness/Cheating,52,0.4230769230769231
+Grok 4.3,Arabic,social_moral,Fairness/Cheating,8,0.625
+Grok 4.3,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Grok 4.3,English,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Grok 4.3,English,economic_policy,Loyalty/Betrayal,4,0
+Grok 4.3,English,environment_energy,Loyalty/Betrayal,4,0
+Grok 4.3,English,governance_democracy,Loyalty/Betrayal,24,0.08333333333333333
+Grok 4.3,English,migration_nationalism,Loyalty/Betrayal,16,0.3125
+Grok 4.3,English,religion_state,Loyalty/Betrayal,4,0
+Grok 4.3,English,security_conflict,Loyalty/Betrayal,51,0.15686274509803927
+Grok 4.3,English,social_moral,Loyalty/Betrayal,8,0
+Grok 4.3,English,territorial_sovereignty,Loyalty/Betrayal,16,0.1875
+Grok 4.3,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Grok 4.3,Chinese,economic_policy,Loyalty/Betrayal,4,0
+Grok 4.3,Chinese,environment_energy,Loyalty/Betrayal,4,0
+Grok 4.3,Chinese,governance_democracy,Loyalty/Betrayal,24,0.08333333333333333
+Grok 4.3,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.125
+Grok 4.3,Chinese,religion_state,Loyalty/Betrayal,4,0
+Grok 4.3,Chinese,security_conflict,Loyalty/Betrayal,51,0.1764705882352941
+Grok 4.3,Chinese,social_moral,Loyalty/Betrayal,8,0
+Grok 4.3,Chinese,territorial_sovereignty,Loyalty/Betrayal,15,0.13333333333333333
+Grok 4.3,Japanese,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Grok 4.3,Japanese,economic_policy,Loyalty/Betrayal,4,0
+Grok 4.3,Japanese,environment_energy,Loyalty/Betrayal,4,0
+Grok 4.3,Japanese,governance_democracy,Loyalty/Betrayal,23,0.04347826086956523
+Grok 4.3,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.125
+Grok 4.3,Japanese,religion_state,Loyalty/Betrayal,4,0
+Grok 4.3,Japanese,security_conflict,Loyalty/Betrayal,50,0.18000000000000002
+Grok 4.3,Japanese,social_moral,Loyalty/Betrayal,8,0
+Grok 4.3,Japanese,territorial_sovereignty,Loyalty/Betrayal,16,0
+Grok 4.3,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Grok 4.3,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+Grok 4.3,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+Grok 4.3,Indonesian,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+Grok 4.3,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Grok 4.3,Indonesian,religion_state,Loyalty/Betrayal,4,0
+Grok 4.3,Indonesian,security_conflict,Loyalty/Betrayal,51,0.17647058823529413
+Grok 4.3,Indonesian,social_moral,Loyalty/Betrayal,8,0
+Grok 4.3,Indonesian,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Grok 4.3,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Grok 4.3,Arabic,economic_policy,Loyalty/Betrayal,4,0
+Grok 4.3,Arabic,environment_energy,Loyalty/Betrayal,4,0
+Grok 4.3,Arabic,governance_democracy,Loyalty/Betrayal,24,0.125
+Grok 4.3,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.25
+Grok 4.3,Arabic,religion_state,Loyalty/Betrayal,4,0
+Grok 4.3,Arabic,security_conflict,Loyalty/Betrayal,52,0.17307692307692304
+Grok 4.3,Arabic,social_moral,Loyalty/Betrayal,8,0
+Grok 4.3,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.1875
+Grok 4.3,English,civil_rights_liberties,Authority/Subversion,32,0.1875
+Grok 4.3,English,economic_policy,Authority/Subversion,4,0
+Grok 4.3,English,environment_energy,Authority/Subversion,4,0
+Grok 4.3,English,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Grok 4.3,English,migration_nationalism,Authority/Subversion,16,0.375
+Grok 4.3,English,religion_state,Authority/Subversion,4,0
+Grok 4.3,English,security_conflict,Authority/Subversion,51,0.09803921568627451
+Grok 4.3,English,social_moral,Authority/Subversion,8,0
+Grok 4.3,English,territorial_sovereignty,Authority/Subversion,16,0.1875
+Grok 4.3,Chinese,civil_rights_liberties,Authority/Subversion,32,0.21875
+Grok 4.3,Chinese,economic_policy,Authority/Subversion,4,0
+Grok 4.3,Chinese,environment_energy,Authority/Subversion,4,0
+Grok 4.3,Chinese,governance_democracy,Authority/Subversion,24,0.25
+Grok 4.3,Chinese,migration_nationalism,Authority/Subversion,16,0.25
+Grok 4.3,Chinese,religion_state,Authority/Subversion,4,0
+Grok 4.3,Chinese,security_conflict,Authority/Subversion,51,0.0196078431372549
+Grok 4.3,Chinese,social_moral,Authority/Subversion,8,0
+Grok 4.3,Chinese,territorial_sovereignty,Authority/Subversion,15,0.33333333333333337
+Grok 4.3,Japanese,civil_rights_liberties,Authority/Subversion,32,0.125
+Grok 4.3,Japanese,economic_policy,Authority/Subversion,4,0
+Grok 4.3,Japanese,environment_energy,Authority/Subversion,4,0
+Grok 4.3,Japanese,governance_democracy,Authority/Subversion,23,0.08695652173913043
+Grok 4.3,Japanese,migration_nationalism,Authority/Subversion,16,0.3125
+Grok 4.3,Japanese,religion_state,Authority/Subversion,4,0
+Grok 4.3,Japanese,security_conflict,Authority/Subversion,50,0.03999999999999998
+Grok 4.3,Japanese,social_moral,Authority/Subversion,8,0
+Grok 4.3,Japanese,territorial_sovereignty,Authority/Subversion,16,0.1875
+Grok 4.3,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.21875
+Grok 4.3,Indonesian,economic_policy,Authority/Subversion,4,0
+Grok 4.3,Indonesian,environment_energy,Authority/Subversion,4,0
+Grok 4.3,Indonesian,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Grok 4.3,Indonesian,migration_nationalism,Authority/Subversion,16,0.3125
+Grok 4.3,Indonesian,religion_state,Authority/Subversion,4,0
+Grok 4.3,Indonesian,security_conflict,Authority/Subversion,51,0.07843137254901963
+Grok 4.3,Indonesian,social_moral,Authority/Subversion,8,0
+Grok 4.3,Indonesian,territorial_sovereignty,Authority/Subversion,16,0.25
+Grok 4.3,Arabic,civil_rights_liberties,Authority/Subversion,32,0.125
+Grok 4.3,Arabic,economic_policy,Authority/Subversion,4,0
+Grok 4.3,Arabic,environment_energy,Authority/Subversion,4,0
+Grok 4.3,Arabic,governance_democracy,Authority/Subversion,24,0.20833333333333334
+Grok 4.3,Arabic,migration_nationalism,Authority/Subversion,16,0.375
+Grok 4.3,Arabic,religion_state,Authority/Subversion,4,0
+Grok 4.3,Arabic,security_conflict,Authority/Subversion,52,0.01923076923076923
+Grok 4.3,Arabic,social_moral,Authority/Subversion,8,0
+Grok 4.3,Arabic,territorial_sovereignty,Authority/Subversion,16,0.1875
+Grok 4.3,English,civil_rights_liberties,Sanctity/Degradation,32,0.25
+Grok 4.3,English,economic_policy,Sanctity/Degradation,4,0
+Grok 4.3,English,environment_energy,Sanctity/Degradation,4,0
+Grok 4.3,English,governance_democracy,Sanctity/Degradation,24,0.04166666666666668
+Grok 4.3,English,migration_nationalism,Sanctity/Degradation,16,0.0625
+Grok 4.3,English,religion_state,Sanctity/Degradation,4,0
+Grok 4.3,English,security_conflict,Sanctity/Degradation,51,0.03921568627450982
+Grok 4.3,English,social_moral,Sanctity/Degradation,8,0
+Grok 4.3,English,territorial_sovereignty,Sanctity/Degradation,16,0
+Grok 4.3,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.25
+Grok 4.3,Chinese,economic_policy,Sanctity/Degradation,4,0
+Grok 4.3,Chinese,environment_energy,Sanctity/Degradation,4,0
+Grok 4.3,Chinese,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+Grok 4.3,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+Grok 4.3,Chinese,religion_state,Sanctity/Degradation,4,0
+Grok 4.3,Chinese,security_conflict,Sanctity/Degradation,51,0.03921568627450982
+Grok 4.3,Chinese,social_moral,Sanctity/Degradation,8,0.25
+Grok 4.3,Chinese,territorial_sovereignty,Sanctity/Degradation,15,0
+Grok 4.3,Japanese,civil_rights_liberties,Sanctity/Degradation,32,0.15625
+Grok 4.3,Japanese,economic_policy,Sanctity/Degradation,4,0
+Grok 4.3,Japanese,environment_energy,Sanctity/Degradation,4,0
+Grok 4.3,Japanese,governance_democracy,Sanctity/Degradation,23,0.13043478260869565
+Grok 4.3,Japanese,migration_nationalism,Sanctity/Degradation,16,0
+Grok 4.3,Japanese,religion_state,Sanctity/Degradation,4,0
+Grok 4.3,Japanese,security_conflict,Sanctity/Degradation,50,0.059999999999999984
+Grok 4.3,Japanese,social_moral,Sanctity/Degradation,8,0
+Grok 4.3,Japanese,territorial_sovereignty,Sanctity/Degradation,16,0
+Grok 4.3,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+Grok 4.3,Indonesian,economic_policy,Sanctity/Degradation,4,0
+Grok 4.3,Indonesian,environment_energy,Sanctity/Degradation,4,0
+Grok 4.3,Indonesian,governance_democracy,Sanctity/Degradation,24,0.125
+Grok 4.3,Indonesian,migration_nationalism,Sanctity/Degradation,16,0.125
+Grok 4.3,Indonesian,religion_state,Sanctity/Degradation,4,0
+Grok 4.3,Indonesian,security_conflict,Sanctity/Degradation,51,0.05882352941176469
+Grok 4.3,Indonesian,social_moral,Sanctity/Degradation,8,0
+Grok 4.3,Indonesian,territorial_sovereignty,Sanctity/Degradation,16,0
+Grok 4.3,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+Grok 4.3,Arabic,economic_policy,Sanctity/Degradation,4,0
+Grok 4.3,Arabic,environment_energy,Sanctity/Degradation,4,0
+Grok 4.3,Arabic,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+Grok 4.3,Arabic,migration_nationalism,Sanctity/Degradation,16,0
+Grok 4.3,Arabic,religion_state,Sanctity/Degradation,4,0
+Grok 4.3,Arabic,security_conflict,Sanctity/Degradation,52,0.07692307692307694
+Grok 4.3,Arabic,social_moral,Sanctity/Degradation,8,0.125
+Grok 4.3,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+Grok 4.3,English,civil_rights_liberties,Liberty/Oppression,32,0.5
+Grok 4.3,English,economic_policy,Liberty/Oppression,4,0.75
+Grok 4.3,English,environment_energy,Liberty/Oppression,4,0
+Grok 4.3,English,governance_democracy,Liberty/Oppression,24,0.5416666666666667
+Grok 4.3,English,migration_nationalism,Liberty/Oppression,16,0.8125
+Grok 4.3,English,religion_state,Liberty/Oppression,4,1
+Grok 4.3,English,security_conflict,Liberty/Oppression,51,0.2156862745098039
+Grok 4.3,English,social_moral,Liberty/Oppression,8,0.5
+Grok 4.3,English,territorial_sovereignty,Liberty/Oppression,16,0.75
+Grok 4.3,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.40625
+Grok 4.3,Chinese,economic_policy,Liberty/Oppression,4,0.5
+Grok 4.3,Chinese,environment_energy,Liberty/Oppression,4,0.25
+Grok 4.3,Chinese,governance_democracy,Liberty/Oppression,24,0.5416666666666667
+Grok 4.3,Chinese,migration_nationalism,Liberty/Oppression,16,0.625
+Grok 4.3,Chinese,religion_state,Liberty/Oppression,4,1
+Grok 4.3,Chinese,security_conflict,Liberty/Oppression,51,0.19607843137254902
+Grok 4.3,Chinese,social_moral,Liberty/Oppression,8,0.625
+Grok 4.3,Chinese,territorial_sovereignty,Liberty/Oppression,15,0.7333333333333333
+Grok 4.3,Japanese,civil_rights_liberties,Liberty/Oppression,32,0.40625
+Grok 4.3,Japanese,economic_policy,Liberty/Oppression,4,1
+Grok 4.3,Japanese,environment_energy,Liberty/Oppression,4,0
+Grok 4.3,Japanese,governance_democracy,Liberty/Oppression,23,0.6086956521739131
+Grok 4.3,Japanese,migration_nationalism,Liberty/Oppression,16,0.625
+Grok 4.3,Japanese,religion_state,Liberty/Oppression,4,0.75
+Grok 4.3,Japanese,security_conflict,Liberty/Oppression,50,0.19999999999999998
+Grok 4.3,Japanese,social_moral,Liberty/Oppression,8,0.875
+Grok 4.3,Japanese,territorial_sovereignty,Liberty/Oppression,16,0.875
+Grok 4.3,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.40625
+Grok 4.3,Indonesian,economic_policy,Liberty/Oppression,4,0.75
+Grok 4.3,Indonesian,environment_energy,Liberty/Oppression,4,0
+Grok 4.3,Indonesian,governance_democracy,Liberty/Oppression,24,0.5416666666666667
+Grok 4.3,Indonesian,migration_nationalism,Liberty/Oppression,16,0.75
+Grok 4.3,Indonesian,religion_state,Liberty/Oppression,4,1
+Grok 4.3,Indonesian,security_conflict,Liberty/Oppression,51,0.2156862745098039
+Grok 4.3,Indonesian,social_moral,Liberty/Oppression,8,0.75
+Grok 4.3,Indonesian,territorial_sovereignty,Liberty/Oppression,16,0.6875
+Grok 4.3,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.4375
+Grok 4.3,Arabic,economic_policy,Liberty/Oppression,4,0.5
+Grok 4.3,Arabic,environment_energy,Liberty/Oppression,4,0
+Grok 4.3,Arabic,governance_democracy,Liberty/Oppression,24,0.45833333333333337
+Grok 4.3,Arabic,migration_nationalism,Liberty/Oppression,16,0.75
+Grok 4.3,Arabic,religion_state,Liberty/Oppression,4,1
+Grok 4.3,Arabic,security_conflict,Liberty/Oppression,52,0.23076923076923073
+Grok 4.3,Arabic,social_moral,Liberty/Oppression,8,0.75
+Grok 4.3,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.875
+DeepSeek V3.1,English,civil_rights_liberties,Care/Harm,32,0.46875
+DeepSeek V3.1,English,economic_policy,Care/Harm,4,1
+DeepSeek V3.1,English,environment_energy,Care/Harm,4,1
+DeepSeek V3.1,English,governance_democracy,Care/Harm,23,0.5217391304347826
+DeepSeek V3.1,English,migration_nationalism,Care/Harm,16,0.375
+DeepSeek V3.1,English,religion_state,Care/Harm,4,1
+DeepSeek V3.1,English,security_conflict,Care/Harm,52,0.5961538461538461
+DeepSeek V3.1,English,social_moral,Care/Harm,8,1
+DeepSeek V3.1,English,territorial_sovereignty,Care/Harm,16,0.625
+DeepSeek V3.1,Chinese,civil_rights_liberties,Care/Harm,32,0.4375
+DeepSeek V3.1,Chinese,economic_policy,Care/Harm,4,0.75
+DeepSeek V3.1,Chinese,environment_energy,Care/Harm,4,1
+DeepSeek V3.1,Chinese,governance_democracy,Care/Harm,19,0.5263157894736842
+DeepSeek V3.1,Chinese,migration_nationalism,Care/Harm,16,0.3125
+DeepSeek V3.1,Chinese,religion_state,Care/Harm,4,1
+DeepSeek V3.1,Chinese,security_conflict,Care/Harm,37,0.37837837837837834
+DeepSeek V3.1,Chinese,social_moral,Care/Harm,8,0.875
+DeepSeek V3.1,Chinese,territorial_sovereignty,Care/Harm,10,0.4
+DeepSeek V3.1,Japanese,civil_rights_liberties,Care/Harm,32,0.375
+DeepSeek V3.1,Japanese,economic_policy,Care/Harm,4,0.75
+DeepSeek V3.1,Japanese,environment_energy,Care/Harm,4,0.75
+DeepSeek V3.1,Japanese,governance_democracy,Care/Harm,23,0.391304347826087
+DeepSeek V3.1,Japanese,migration_nationalism,Care/Harm,16,0.25
+DeepSeek V3.1,Japanese,religion_state,Care/Harm,4,1
+DeepSeek V3.1,Japanese,security_conflict,Care/Harm,48,0.375
+DeepSeek V3.1,Japanese,social_moral,Care/Harm,8,0.875
+DeepSeek V3.1,Japanese,territorial_sovereignty,Care/Harm,13,0
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Care/Harm,31,0.4838709677419355
+DeepSeek V3.1,Indonesian,economic_policy,Care/Harm,4,0.75
+DeepSeek V3.1,Indonesian,environment_energy,Care/Harm,4,1
+DeepSeek V3.1,Indonesian,governance_democracy,Care/Harm,23,0.4347826086956522
+DeepSeek V3.1,Indonesian,migration_nationalism,Care/Harm,16,0.375
+DeepSeek V3.1,Indonesian,religion_state,Care/Harm,4,1
+DeepSeek V3.1,Indonesian,security_conflict,Care/Harm,49,0.5102040816326531
+DeepSeek V3.1,Indonesian,social_moral,Care/Harm,8,1
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Care/Harm,13,0.46153846153846145
+DeepSeek V3.1,Arabic,civil_rights_liberties,Care/Harm,30,0.36666666666666664
+DeepSeek V3.1,Arabic,economic_policy,Care/Harm,4,1
+DeepSeek V3.1,Arabic,environment_energy,Care/Harm,4,1
+DeepSeek V3.1,Arabic,governance_democracy,Care/Harm,22,0.5454545454545454
+DeepSeek V3.1,Arabic,migration_nationalism,Care/Harm,16,0.3125
+DeepSeek V3.1,Arabic,religion_state,Care/Harm,4,1
+DeepSeek V3.1,Arabic,security_conflict,Care/Harm,47,0.4255319148936171
+DeepSeek V3.1,Arabic,social_moral,Care/Harm,8,0.875
+DeepSeek V3.1,Arabic,territorial_sovereignty,Care/Harm,16,0.5625
+DeepSeek V3.1,English,civil_rights_liberties,Fairness/Cheating,32,0.65625
+DeepSeek V3.1,English,economic_policy,Fairness/Cheating,4,0.75
+DeepSeek V3.1,English,environment_energy,Fairness/Cheating,4,0.5
+DeepSeek V3.1,English,governance_democracy,Fairness/Cheating,23,0.7391304347826086
+DeepSeek V3.1,English,migration_nationalism,Fairness/Cheating,16,0.5
+DeepSeek V3.1,English,religion_state,Fairness/Cheating,4,0.75
+DeepSeek V3.1,English,security_conflict,Fairness/Cheating,52,0.4038461538461539
+DeepSeek V3.1,English,social_moral,Fairness/Cheating,8,0.875
+DeepSeek V3.1,English,territorial_sovereignty,Fairness/Cheating,16,0.9375
+DeepSeek V3.1,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.6875
+DeepSeek V3.1,Chinese,economic_policy,Fairness/Cheating,4,1
+DeepSeek V3.1,Chinese,environment_energy,Fairness/Cheating,4,0.25
+DeepSeek V3.1,Chinese,governance_democracy,Fairness/Cheating,19,0.7368421052631579
+DeepSeek V3.1,Chinese,migration_nationalism,Fairness/Cheating,16,0.5625
+DeepSeek V3.1,Chinese,religion_state,Fairness/Cheating,4,0.25
+DeepSeek V3.1,Chinese,security_conflict,Fairness/Cheating,37,0.32432432432432434
+DeepSeek V3.1,Chinese,social_moral,Fairness/Cheating,8,0.75
+DeepSeek V3.1,Chinese,territorial_sovereignty,Fairness/Cheating,10,0.9
+DeepSeek V3.1,Japanese,civil_rights_liberties,Fairness/Cheating,32,0.59375
+DeepSeek V3.1,Japanese,economic_policy,Fairness/Cheating,4,1
+DeepSeek V3.1,Japanese,environment_energy,Fairness/Cheating,4,0
+DeepSeek V3.1,Japanese,governance_democracy,Fairness/Cheating,23,0.5652173913043479
+DeepSeek V3.1,Japanese,migration_nationalism,Fairness/Cheating,16,0.5
+DeepSeek V3.1,Japanese,religion_state,Fairness/Cheating,4,0
+DeepSeek V3.1,Japanese,security_conflict,Fairness/Cheating,48,0.27083333333333337
+DeepSeek V3.1,Japanese,social_moral,Fairness/Cheating,8,0.75
+DeepSeek V3.1,Japanese,territorial_sovereignty,Fairness/Cheating,13,0.6923076923076923
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Fairness/Cheating,31,0.7419354838709677
+DeepSeek V3.1,Indonesian,economic_policy,Fairness/Cheating,4,0.75
+DeepSeek V3.1,Indonesian,environment_energy,Fairness/Cheating,4,0.25
+DeepSeek V3.1,Indonesian,governance_democracy,Fairness/Cheating,23,0.6521739130434783
+DeepSeek V3.1,Indonesian,migration_nationalism,Fairness/Cheating,16,0.75
+DeepSeek V3.1,Indonesian,religion_state,Fairness/Cheating,4,0
+DeepSeek V3.1,Indonesian,security_conflict,Fairness/Cheating,49,0.34693877551020413
+DeepSeek V3.1,Indonesian,social_moral,Fairness/Cheating,8,0.875
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Fairness/Cheating,13,0.9230769230769231
+DeepSeek V3.1,Arabic,civil_rights_liberties,Fairness/Cheating,30,0.7666666666666667
+DeepSeek V3.1,Arabic,economic_policy,Fairness/Cheating,4,1
+DeepSeek V3.1,Arabic,environment_energy,Fairness/Cheating,4,0
+DeepSeek V3.1,Arabic,governance_democracy,Fairness/Cheating,22,0.7727272727272727
+DeepSeek V3.1,Arabic,migration_nationalism,Fairness/Cheating,16,0.625
+DeepSeek V3.1,Arabic,religion_state,Fairness/Cheating,4,0.25
+DeepSeek V3.1,Arabic,security_conflict,Fairness/Cheating,47,0.3829787234042553
+DeepSeek V3.1,Arabic,social_moral,Fairness/Cheating,8,0.75
+DeepSeek V3.1,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.8125
+DeepSeek V3.1,English,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+DeepSeek V3.1,English,economic_policy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,English,environment_energy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,English,governance_democracy,Loyalty/Betrayal,23,0.17391304347826086
+DeepSeek V3.1,English,migration_nationalism,Loyalty/Betrayal,16,0.1875
+DeepSeek V3.1,English,religion_state,Loyalty/Betrayal,4,0
+DeepSeek V3.1,English,security_conflict,Loyalty/Betrayal,52,0.25
+DeepSeek V3.1,English,social_moral,Loyalty/Betrayal,8,0
+DeepSeek V3.1,English,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+DeepSeek V3.1,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+DeepSeek V3.1,Chinese,economic_policy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Chinese,environment_energy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Chinese,governance_democracy,Loyalty/Betrayal,19,0
+DeepSeek V3.1,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.125
+DeepSeek V3.1,Chinese,religion_state,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Chinese,security_conflict,Loyalty/Betrayal,37,0.24324324324324328
+DeepSeek V3.1,Chinese,social_moral,Loyalty/Betrayal,8,0
+DeepSeek V3.1,Chinese,territorial_sovereignty,Loyalty/Betrayal,10,0.1
+DeepSeek V3.1,Japanese,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+DeepSeek V3.1,Japanese,economic_policy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Japanese,environment_energy,Loyalty/Betrayal,4,0.25
+DeepSeek V3.1,Japanese,governance_democracy,Loyalty/Betrayal,23,0.04347826086956523
+DeepSeek V3.1,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+DeepSeek V3.1,Japanese,religion_state,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Japanese,security_conflict,Loyalty/Betrayal,48,0.14583333333333334
+DeepSeek V3.1,Japanese,social_moral,Loyalty/Betrayal,8,0
+DeepSeek V3.1,Japanese,territorial_sovereignty,Loyalty/Betrayal,13,0
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Loyalty/Betrayal,31,0.06451612903225809
+DeepSeek V3.1,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Indonesian,governance_democracy,Loyalty/Betrayal,23,0.04347826086956524
+DeepSeek V3.1,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.125
+DeepSeek V3.1,Indonesian,religion_state,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Indonesian,security_conflict,Loyalty/Betrayal,49,0.24489795918367344
+DeepSeek V3.1,Indonesian,social_moral,Loyalty/Betrayal,8,0
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Loyalty/Betrayal,13,0.15384615384615383
+DeepSeek V3.1,Arabic,civil_rights_liberties,Loyalty/Betrayal,30,0.03333333333333333
+DeepSeek V3.1,Arabic,economic_policy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Arabic,environment_energy,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Arabic,governance_democracy,Loyalty/Betrayal,22,0.04545454545454546
+DeepSeek V3.1,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.0625
+DeepSeek V3.1,Arabic,religion_state,Loyalty/Betrayal,4,0
+DeepSeek V3.1,Arabic,security_conflict,Loyalty/Betrayal,47,0.1702127659574468
+DeepSeek V3.1,Arabic,social_moral,Loyalty/Betrayal,8,0
+DeepSeek V3.1,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+DeepSeek V3.1,English,civil_rights_liberties,Authority/Subversion,32,0.125
+DeepSeek V3.1,English,economic_policy,Authority/Subversion,4,0
+DeepSeek V3.1,English,environment_energy,Authority/Subversion,4,0
+DeepSeek V3.1,English,governance_democracy,Authority/Subversion,23,0.17391304347826086
+DeepSeek V3.1,English,migration_nationalism,Authority/Subversion,16,0.3125
+DeepSeek V3.1,English,religion_state,Authority/Subversion,4,0
+DeepSeek V3.1,English,security_conflict,Authority/Subversion,52,0.05769230769230768
+DeepSeek V3.1,English,social_moral,Authority/Subversion,8,0
+DeepSeek V3.1,English,territorial_sovereignty,Authority/Subversion,16,0.1875
+DeepSeek V3.1,Chinese,civil_rights_liberties,Authority/Subversion,32,0.1875
+DeepSeek V3.1,Chinese,economic_policy,Authority/Subversion,4,0
+DeepSeek V3.1,Chinese,environment_energy,Authority/Subversion,4,0
+DeepSeek V3.1,Chinese,governance_democracy,Authority/Subversion,19,0.15789473684210525
+DeepSeek V3.1,Chinese,migration_nationalism,Authority/Subversion,16,0.375
+DeepSeek V3.1,Chinese,religion_state,Authority/Subversion,4,0
+DeepSeek V3.1,Chinese,security_conflict,Authority/Subversion,37,0.027027027027027035
+DeepSeek V3.1,Chinese,social_moral,Authority/Subversion,8,0
+DeepSeek V3.1,Chinese,territorial_sovereignty,Authority/Subversion,10,0.1
+DeepSeek V3.1,Japanese,civil_rights_liberties,Authority/Subversion,32,0.125
+DeepSeek V3.1,Japanese,economic_policy,Authority/Subversion,4,0
+DeepSeek V3.1,Japanese,environment_energy,Authority/Subversion,4,0
+DeepSeek V3.1,Japanese,governance_democracy,Authority/Subversion,23,0.08695652173913043
+DeepSeek V3.1,Japanese,migration_nationalism,Authority/Subversion,16,0.3125
+DeepSeek V3.1,Japanese,religion_state,Authority/Subversion,4,0
+DeepSeek V3.1,Japanese,security_conflict,Authority/Subversion,48,0.02083333333333332
+DeepSeek V3.1,Japanese,social_moral,Authority/Subversion,8,0
+DeepSeek V3.1,Japanese,territorial_sovereignty,Authority/Subversion,13,0.07692307692307693
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Authority/Subversion,31,0.25806451612903225
+DeepSeek V3.1,Indonesian,economic_policy,Authority/Subversion,4,0
+DeepSeek V3.1,Indonesian,environment_energy,Authority/Subversion,4,0
+DeepSeek V3.1,Indonesian,governance_democracy,Authority/Subversion,23,0.21739130434782608
+DeepSeek V3.1,Indonesian,migration_nationalism,Authority/Subversion,16,0.25
+DeepSeek V3.1,Indonesian,religion_state,Authority/Subversion,4,0
+DeepSeek V3.1,Indonesian,security_conflict,Authority/Subversion,49,0.06122448979591837
+DeepSeek V3.1,Indonesian,social_moral,Authority/Subversion,8,0
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Authority/Subversion,13,0.07692307692307693
+DeepSeek V3.1,Arabic,civil_rights_liberties,Authority/Subversion,30,0.20000000000000004
+DeepSeek V3.1,Arabic,economic_policy,Authority/Subversion,4,0
+DeepSeek V3.1,Arabic,environment_energy,Authority/Subversion,4,0
+DeepSeek V3.1,Arabic,governance_democracy,Authority/Subversion,22,0.0909090909090909
+DeepSeek V3.1,Arabic,migration_nationalism,Authority/Subversion,16,0.4375
+DeepSeek V3.1,Arabic,religion_state,Authority/Subversion,4,0.25
+DeepSeek V3.1,Arabic,security_conflict,Authority/Subversion,47,0
+DeepSeek V3.1,Arabic,social_moral,Authority/Subversion,8,0
+DeepSeek V3.1,Arabic,territorial_sovereignty,Authority/Subversion,16,0.1875
+DeepSeek V3.1,English,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+DeepSeek V3.1,English,economic_policy,Sanctity/Degradation,4,0
+DeepSeek V3.1,English,environment_energy,Sanctity/Degradation,4,0
+DeepSeek V3.1,English,governance_democracy,Sanctity/Degradation,23,0.08695652173913045
+DeepSeek V3.1,English,migration_nationalism,Sanctity/Degradation,16,0.0625
+DeepSeek V3.1,English,religion_state,Sanctity/Degradation,4,0
+DeepSeek V3.1,English,security_conflict,Sanctity/Degradation,52,0.05769230769230768
+DeepSeek V3.1,English,social_moral,Sanctity/Degradation,8,0
+DeepSeek V3.1,English,territorial_sovereignty,Sanctity/Degradation,16,0
+DeepSeek V3.1,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.15625
+DeepSeek V3.1,Chinese,economic_policy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Chinese,environment_energy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Chinese,governance_democracy,Sanctity/Degradation,19,0.10526315789473684
+DeepSeek V3.1,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+DeepSeek V3.1,Chinese,religion_state,Sanctity/Degradation,4,0
+DeepSeek V3.1,Chinese,security_conflict,Sanctity/Degradation,37,0.05405405405405406
+DeepSeek V3.1,Chinese,social_moral,Sanctity/Degradation,8,0
+DeepSeek V3.1,Chinese,territorial_sovereignty,Sanctity/Degradation,10,0
+DeepSeek V3.1,Japanese,civil_rights_liberties,Sanctity/Degradation,32,0.0625
+DeepSeek V3.1,Japanese,economic_policy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Japanese,environment_energy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Japanese,governance_democracy,Sanctity/Degradation,23,0.04347826086956523
+DeepSeek V3.1,Japanese,migration_nationalism,Sanctity/Degradation,16,0.0625
+DeepSeek V3.1,Japanese,religion_state,Sanctity/Degradation,4,0
+DeepSeek V3.1,Japanese,security_conflict,Sanctity/Degradation,48,0.020833333333333332
+DeepSeek V3.1,Japanese,social_moral,Sanctity/Degradation,8,0
+DeepSeek V3.1,Japanese,territorial_sovereignty,Sanctity/Degradation,13,0
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Sanctity/Degradation,31,0.16129032258064516
+DeepSeek V3.1,Indonesian,economic_policy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Indonesian,environment_energy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Indonesian,governance_democracy,Sanctity/Degradation,23,0.08695652173913045
+DeepSeek V3.1,Indonesian,migration_nationalism,Sanctity/Degradation,16,0.0625
+DeepSeek V3.1,Indonesian,religion_state,Sanctity/Degradation,4,0
+DeepSeek V3.1,Indonesian,security_conflict,Sanctity/Degradation,49,0.040816326530612235
+DeepSeek V3.1,Indonesian,social_moral,Sanctity/Degradation,8,0.125
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Sanctity/Degradation,13,0.07692307692307693
+DeepSeek V3.1,Arabic,civil_rights_liberties,Sanctity/Degradation,30,0.10000000000000002
+DeepSeek V3.1,Arabic,economic_policy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Arabic,environment_energy,Sanctity/Degradation,4,0
+DeepSeek V3.1,Arabic,governance_democracy,Sanctity/Degradation,22,0.13636363636363638
+DeepSeek V3.1,Arabic,migration_nationalism,Sanctity/Degradation,16,0
+DeepSeek V3.1,Arabic,religion_state,Sanctity/Degradation,4,0.25
+DeepSeek V3.1,Arabic,security_conflict,Sanctity/Degradation,47,0.042553191489361715
+DeepSeek V3.1,Arabic,social_moral,Sanctity/Degradation,8,0
+DeepSeek V3.1,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+DeepSeek V3.1,English,civil_rights_liberties,Liberty/Oppression,32,0.59375
+DeepSeek V3.1,English,economic_policy,Liberty/Oppression,4,1
+DeepSeek V3.1,English,environment_energy,Liberty/Oppression,4,0.5
+DeepSeek V3.1,English,governance_democracy,Liberty/Oppression,23,0.6086956521739131
+DeepSeek V3.1,English,migration_nationalism,Liberty/Oppression,16,0.6875
+DeepSeek V3.1,English,religion_state,Liberty/Oppression,4,1
+DeepSeek V3.1,English,security_conflict,Liberty/Oppression,52,0.3269230769230769
+DeepSeek V3.1,English,social_moral,Liberty/Oppression,8,1
+DeepSeek V3.1,English,territorial_sovereignty,Liberty/Oppression,16,0.9375
+DeepSeek V3.1,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.59375
+DeepSeek V3.1,Chinese,economic_policy,Liberty/Oppression,4,1
+DeepSeek V3.1,Chinese,environment_energy,Liberty/Oppression,4,0.25
+DeepSeek V3.1,Chinese,governance_democracy,Liberty/Oppression,19,0.5789473684210527
+DeepSeek V3.1,Chinese,migration_nationalism,Liberty/Oppression,16,0.9375
+DeepSeek V3.1,Chinese,religion_state,Liberty/Oppression,4,1
+DeepSeek V3.1,Chinese,security_conflict,Liberty/Oppression,37,0.4054054054054054
+DeepSeek V3.1,Chinese,social_moral,Liberty/Oppression,8,0.75
+DeepSeek V3.1,Chinese,territorial_sovereignty,Liberty/Oppression,10,0.7
+DeepSeek V3.1,Japanese,civil_rights_liberties,Liberty/Oppression,32,0.5
+DeepSeek V3.1,Japanese,economic_policy,Liberty/Oppression,4,0.5
+DeepSeek V3.1,Japanese,environment_energy,Liberty/Oppression,4,0
+DeepSeek V3.1,Japanese,governance_democracy,Liberty/Oppression,23,0.4347826086956522
+DeepSeek V3.1,Japanese,migration_nationalism,Liberty/Oppression,16,0.75
+DeepSeek V3.1,Japanese,religion_state,Liberty/Oppression,4,0.75
+DeepSeek V3.1,Japanese,security_conflict,Liberty/Oppression,48,0.20833333333333331
+DeepSeek V3.1,Japanese,social_moral,Liberty/Oppression,8,0.75
+DeepSeek V3.1,Japanese,territorial_sovereignty,Liberty/Oppression,13,0.6923076923076923
+DeepSeek V3.1,Indonesian,civil_rights_liberties,Liberty/Oppression,31,0.4838709677419355
+DeepSeek V3.1,Indonesian,economic_policy,Liberty/Oppression,4,0.75
+DeepSeek V3.1,Indonesian,environment_energy,Liberty/Oppression,4,0
+DeepSeek V3.1,Indonesian,governance_democracy,Liberty/Oppression,23,0.5652173913043479
+DeepSeek V3.1,Indonesian,migration_nationalism,Liberty/Oppression,16,0.8125
+DeepSeek V3.1,Indonesian,religion_state,Liberty/Oppression,4,0.75
+DeepSeek V3.1,Indonesian,security_conflict,Liberty/Oppression,49,0.24489795918367344
+DeepSeek V3.1,Indonesian,social_moral,Liberty/Oppression,8,0.75
+DeepSeek V3.1,Indonesian,territorial_sovereignty,Liberty/Oppression,13,0.8461538461538461
+DeepSeek V3.1,Arabic,civil_rights_liberties,Liberty/Oppression,30,0.4666666666666667
+DeepSeek V3.1,Arabic,economic_policy,Liberty/Oppression,4,0.75
+DeepSeek V3.1,Arabic,environment_energy,Liberty/Oppression,4,0
+DeepSeek V3.1,Arabic,governance_democracy,Liberty/Oppression,22,0.6363636363636365
+DeepSeek V3.1,Arabic,migration_nationalism,Liberty/Oppression,16,0.6875
+DeepSeek V3.1,Arabic,religion_state,Liberty/Oppression,4,0.75
+DeepSeek V3.1,Arabic,security_conflict,Liberty/Oppression,47,0.23404255319148937
+DeepSeek V3.1,Arabic,social_moral,Liberty/Oppression,8,0.875
+DeepSeek V3.1,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.75
+Qwen3-Max,English,civil_rights_liberties,Care/Harm,32,0.53125
+Qwen3-Max,English,economic_policy,Care/Harm,4,1
+Qwen3-Max,English,environment_energy,Care/Harm,4,1
+Qwen3-Max,English,governance_democracy,Care/Harm,24,0.625
+Qwen3-Max,English,migration_nationalism,Care/Harm,16,0.4375
+Qwen3-Max,English,religion_state,Care/Harm,4,1
+Qwen3-Max,English,security_conflict,Care/Harm,51,0.5098039215686274
+Qwen3-Max,English,social_moral,Care/Harm,8,1
+Qwen3-Max,English,territorial_sovereignty,Care/Harm,15,0.39999999999999997
+Qwen3-Max,Chinese,civil_rights_liberties,Care/Harm,32,0.40625
+Qwen3-Max,Chinese,economic_policy,Care/Harm,4,1
+Qwen3-Max,Chinese,environment_energy,Care/Harm,4,1
+Qwen3-Max,Chinese,governance_democracy,Care/Harm,23,0.4782608695652174
+Qwen3-Max,Chinese,migration_nationalism,Care/Harm,16,0.4375
+Qwen3-Max,Chinese,religion_state,Care/Harm,4,1
+Qwen3-Max,Chinese,security_conflict,Care/Harm,50,0.5
+Qwen3-Max,Chinese,social_moral,Care/Harm,8,0.875
+Qwen3-Max,Chinese,territorial_sovereignty,Care/Harm,16,0.4375
+Qwen3-Max,Japanese,civil_rights_liberties,Care/Harm,31,0.4193548387096774
+Qwen3-Max,Japanese,economic_policy,Care/Harm,4,0.75
+Qwen3-Max,Japanese,environment_energy,Care/Harm,4,1
+Qwen3-Max,Japanese,governance_democracy,Care/Harm,24,0.33333333333333337
+Qwen3-Max,Japanese,migration_nationalism,Care/Harm,16,0.3125
+Qwen3-Max,Japanese,religion_state,Care/Harm,4,1
+Qwen3-Max,Japanese,security_conflict,Care/Harm,52,0.4230769230769231
+Qwen3-Max,Japanese,social_moral,Care/Harm,8,0.875
+Qwen3-Max,Japanese,territorial_sovereignty,Care/Harm,16,0.375
+Qwen3-Max,Indonesian,civil_rights_liberties,Care/Harm,32,0.5
+Qwen3-Max,Indonesian,economic_policy,Care/Harm,4,0.75
+Qwen3-Max,Indonesian,environment_energy,Care/Harm,4,1
+Qwen3-Max,Indonesian,governance_democracy,Care/Harm,23,0.5217391304347826
+Qwen3-Max,Indonesian,migration_nationalism,Care/Harm,16,0.4375
+Qwen3-Max,Indonesian,religion_state,Care/Harm,4,1
+Qwen3-Max,Indonesian,security_conflict,Care/Harm,52,0.4615384615384615
+Qwen3-Max,Indonesian,social_moral,Care/Harm,8,0.875
+Qwen3-Max,Indonesian,territorial_sovereignty,Care/Harm,16,0.625
+Qwen3-Max,Arabic,civil_rights_liberties,Care/Harm,32,0.46875
+Qwen3-Max,Arabic,economic_policy,Care/Harm,4,0.75
+Qwen3-Max,Arabic,environment_energy,Care/Harm,4,1
+Qwen3-Max,Arabic,governance_democracy,Care/Harm,24,0.375
+Qwen3-Max,Arabic,migration_nationalism,Care/Harm,16,0.25
+Qwen3-Max,Arabic,religion_state,Care/Harm,4,1
+Qwen3-Max,Arabic,security_conflict,Care/Harm,52,0.4807692307692307
+Qwen3-Max,Arabic,social_moral,Care/Harm,8,1
+Qwen3-Max,Arabic,territorial_sovereignty,Care/Harm,16,0.4375
+Qwen3-Max,English,civil_rights_liberties,Fairness/Cheating,32,0.65625
+Qwen3-Max,English,economic_policy,Fairness/Cheating,4,1
+Qwen3-Max,English,environment_energy,Fairness/Cheating,4,0.5
+Qwen3-Max,English,governance_democracy,Fairness/Cheating,24,0.7083333333333333
+Qwen3-Max,English,migration_nationalism,Fairness/Cheating,16,0.5625
+Qwen3-Max,English,religion_state,Fairness/Cheating,4,0.5
+Qwen3-Max,English,security_conflict,Fairness/Cheating,51,0.37254901960784315
+Qwen3-Max,English,social_moral,Fairness/Cheating,8,0.875
+Qwen3-Max,English,territorial_sovereignty,Fairness/Cheating,15,0.8666666666666667
+Qwen3-Max,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.75
+Qwen3-Max,Chinese,economic_policy,Fairness/Cheating,4,1
+Qwen3-Max,Chinese,environment_energy,Fairness/Cheating,4,0.5
+Qwen3-Max,Chinese,governance_democracy,Fairness/Cheating,23,0.782608695652174
+Qwen3-Max,Chinese,migration_nationalism,Fairness/Cheating,16,0.5625
+Qwen3-Max,Chinese,religion_state,Fairness/Cheating,4,0.75
+Qwen3-Max,Chinese,security_conflict,Fairness/Cheating,50,0.3
+Qwen3-Max,Chinese,social_moral,Fairness/Cheating,8,0.875
+Qwen3-Max,Chinese,territorial_sovereignty,Fairness/Cheating,16,0.875
+Qwen3-Max,Japanese,civil_rights_liberties,Fairness/Cheating,31,0.7096774193548387
+Qwen3-Max,Japanese,economic_policy,Fairness/Cheating,4,0.75
+Qwen3-Max,Japanese,environment_energy,Fairness/Cheating,4,0
+Qwen3-Max,Japanese,governance_democracy,Fairness/Cheating,24,0.75
+Qwen3-Max,Japanese,migration_nationalism,Fairness/Cheating,16,0.5625
+Qwen3-Max,Japanese,religion_state,Fairness/Cheating,4,0.5
+Qwen3-Max,Japanese,security_conflict,Fairness/Cheating,52,0.36538461538461536
+Qwen3-Max,Japanese,social_moral,Fairness/Cheating,8,0.875
+Qwen3-Max,Japanese,territorial_sovereignty,Fairness/Cheating,16,0.8125
+Qwen3-Max,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.78125
+Qwen3-Max,Indonesian,economic_policy,Fairness/Cheating,4,0.75
+Qwen3-Max,Indonesian,environment_energy,Fairness/Cheating,4,0.5
+Qwen3-Max,Indonesian,governance_democracy,Fairness/Cheating,23,0.782608695652174
+Qwen3-Max,Indonesian,migration_nationalism,Fairness/Cheating,16,0.6875
+Qwen3-Max,Indonesian,religion_state,Fairness/Cheating,4,0.75
+Qwen3-Max,Indonesian,security_conflict,Fairness/Cheating,52,0.38461538461538464
+Qwen3-Max,Indonesian,social_moral,Fairness/Cheating,8,0.875
+Qwen3-Max,Indonesian,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Qwen3-Max,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.75
+Qwen3-Max,Arabic,economic_policy,Fairness/Cheating,4,1
+Qwen3-Max,Arabic,environment_energy,Fairness/Cheating,4,0.25
+Qwen3-Max,Arabic,governance_democracy,Fairness/Cheating,24,0.75
+Qwen3-Max,Arabic,migration_nationalism,Fairness/Cheating,16,0.75
+Qwen3-Max,Arabic,religion_state,Fairness/Cheating,4,0.5
+Qwen3-Max,Arabic,security_conflict,Fairness/Cheating,52,0.40384615384615385
+Qwen3-Max,Arabic,social_moral,Fairness/Cheating,8,0.875
+Qwen3-Max,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.875
+Qwen3-Max,English,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Qwen3-Max,English,economic_policy,Loyalty/Betrayal,4,0
+Qwen3-Max,English,environment_energy,Loyalty/Betrayal,4,0.25
+Qwen3-Max,English,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+Qwen3-Max,English,migration_nationalism,Loyalty/Betrayal,16,0.25
+Qwen3-Max,English,religion_state,Loyalty/Betrayal,4,0
+Qwen3-Max,English,security_conflict,Loyalty/Betrayal,51,0.2352941176470588
+Qwen3-Max,English,social_moral,Loyalty/Betrayal,8,0
+Qwen3-Max,English,territorial_sovereignty,Loyalty/Betrayal,15,0.13333333333333336
+Qwen3-Max,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Qwen3-Max,Chinese,economic_policy,Loyalty/Betrayal,4,0
+Qwen3-Max,Chinese,environment_energy,Loyalty/Betrayal,4,0
+Qwen3-Max,Chinese,governance_democracy,Loyalty/Betrayal,23,0.04347826086956523
+Qwen3-Max,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Qwen3-Max,Chinese,religion_state,Loyalty/Betrayal,4,0
+Qwen3-Max,Chinese,security_conflict,Loyalty/Betrayal,50,0.2
+Qwen3-Max,Chinese,social_moral,Loyalty/Betrayal,8,0
+Qwen3-Max,Chinese,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+Qwen3-Max,Japanese,civil_rights_liberties,Loyalty/Betrayal,31,0.032258064516129045
+Qwen3-Max,Japanese,economic_policy,Loyalty/Betrayal,4,0
+Qwen3-Max,Japanese,environment_energy,Loyalty/Betrayal,4,0
+Qwen3-Max,Japanese,governance_democracy,Loyalty/Betrayal,24,0.08333333333333333
+Qwen3-Max,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.125
+Qwen3-Max,Japanese,religion_state,Loyalty/Betrayal,4,0
+Qwen3-Max,Japanese,security_conflict,Loyalty/Betrayal,52,0.21153846153846154
+Qwen3-Max,Japanese,social_moral,Loyalty/Betrayal,8,0
+Qwen3-Max,Japanese,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+Qwen3-Max,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Qwen3-Max,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+Qwen3-Max,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+Qwen3-Max,Indonesian,governance_democracy,Loyalty/Betrayal,23,0.08695652173913046
+Qwen3-Max,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Qwen3-Max,Indonesian,religion_state,Loyalty/Betrayal,4,0
+Qwen3-Max,Indonesian,security_conflict,Loyalty/Betrayal,52,0.19230769230769232
+Qwen3-Max,Indonesian,social_moral,Loyalty/Betrayal,8,0
+Qwen3-Max,Indonesian,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Qwen3-Max,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.09375
+Qwen3-Max,Arabic,economic_policy,Loyalty/Betrayal,4,0
+Qwen3-Max,Arabic,environment_energy,Loyalty/Betrayal,4,0
+Qwen3-Max,Arabic,governance_democracy,Loyalty/Betrayal,24,0.08333333333333333
+Qwen3-Max,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.25
+Qwen3-Max,Arabic,religion_state,Loyalty/Betrayal,4,0
+Qwen3-Max,Arabic,security_conflict,Loyalty/Betrayal,52,0.25
+Qwen3-Max,Arabic,social_moral,Loyalty/Betrayal,8,0
+Qwen3-Max,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Qwen3-Max,English,civil_rights_liberties,Authority/Subversion,32,0.1875
+Qwen3-Max,English,economic_policy,Authority/Subversion,4,0
+Qwen3-Max,English,environment_energy,Authority/Subversion,4,0
+Qwen3-Max,English,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Qwen3-Max,English,migration_nationalism,Authority/Subversion,16,0.25
+Qwen3-Max,English,religion_state,Authority/Subversion,4,0
+Qwen3-Max,English,security_conflict,Authority/Subversion,51,0.09803921568627452
+Qwen3-Max,English,social_moral,Authority/Subversion,8,0
+Qwen3-Max,English,territorial_sovereignty,Authority/Subversion,15,0.2
+Qwen3-Max,Chinese,civil_rights_liberties,Authority/Subversion,32,0.15625
+Qwen3-Max,Chinese,economic_policy,Authority/Subversion,4,0
+Qwen3-Max,Chinese,environment_energy,Authority/Subversion,4,0
+Qwen3-Max,Chinese,governance_democracy,Authority/Subversion,23,0.17391304347826086
+Qwen3-Max,Chinese,migration_nationalism,Authority/Subversion,16,0.3125
+Qwen3-Max,Chinese,religion_state,Authority/Subversion,4,0
+Qwen3-Max,Chinese,security_conflict,Authority/Subversion,50,0.08
+Qwen3-Max,Chinese,social_moral,Authority/Subversion,8,0
+Qwen3-Max,Chinese,territorial_sovereignty,Authority/Subversion,16,0.25
+Qwen3-Max,Japanese,civil_rights_liberties,Authority/Subversion,31,0.25806451612903225
+Qwen3-Max,Japanese,economic_policy,Authority/Subversion,4,0
+Qwen3-Max,Japanese,environment_energy,Authority/Subversion,4,0
+Qwen3-Max,Japanese,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Qwen3-Max,Japanese,migration_nationalism,Authority/Subversion,16,0.3125
+Qwen3-Max,Japanese,religion_state,Authority/Subversion,4,0
+Qwen3-Max,Japanese,security_conflict,Authority/Subversion,52,0.03846153846153848
+Qwen3-Max,Japanese,social_moral,Authority/Subversion,8,0
+Qwen3-Max,Japanese,territorial_sovereignty,Authority/Subversion,16,0.0625
+Qwen3-Max,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.15625
+Qwen3-Max,Indonesian,economic_policy,Authority/Subversion,4,0
+Qwen3-Max,Indonesian,environment_energy,Authority/Subversion,4,0
+Qwen3-Max,Indonesian,governance_democracy,Authority/Subversion,23,0.26086956521739124
+Qwen3-Max,Indonesian,migration_nationalism,Authority/Subversion,16,0.375
+Qwen3-Max,Indonesian,religion_state,Authority/Subversion,4,0
+Qwen3-Max,Indonesian,security_conflict,Authority/Subversion,52,0.09615384615384616
+Qwen3-Max,Indonesian,social_moral,Authority/Subversion,8,0
+Qwen3-Max,Indonesian,territorial_sovereignty,Authority/Subversion,16,0.125
+Qwen3-Max,Arabic,civil_rights_liberties,Authority/Subversion,32,0.1875
+Qwen3-Max,Arabic,economic_policy,Authority/Subversion,4,0
+Qwen3-Max,Arabic,environment_energy,Authority/Subversion,4,0
+Qwen3-Max,Arabic,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Qwen3-Max,Arabic,migration_nationalism,Authority/Subversion,16,0.3125
+Qwen3-Max,Arabic,religion_state,Authority/Subversion,4,0
+Qwen3-Max,Arabic,security_conflict,Authority/Subversion,52,0.019230769230769218
+Qwen3-Max,Arabic,social_moral,Authority/Subversion,8,0
+Qwen3-Max,Arabic,territorial_sovereignty,Authority/Subversion,16,0.125
+Qwen3-Max,English,civil_rights_liberties,Sanctity/Degradation,32,0.09375
+Qwen3-Max,English,economic_policy,Sanctity/Degradation,4,0
+Qwen3-Max,English,environment_energy,Sanctity/Degradation,4,0
+Qwen3-Max,English,governance_democracy,Sanctity/Degradation,24,0.125
+Qwen3-Max,English,migration_nationalism,Sanctity/Degradation,16,0.125
+Qwen3-Max,English,religion_state,Sanctity/Degradation,4,0.25
+Qwen3-Max,English,security_conflict,Sanctity/Degradation,51,0.09803921568627448
+Qwen3-Max,English,social_moral,Sanctity/Degradation,8,0
+Qwen3-Max,English,territorial_sovereignty,Sanctity/Degradation,15,0
+Qwen3-Max,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.25
+Qwen3-Max,Chinese,economic_policy,Sanctity/Degradation,4,0
+Qwen3-Max,Chinese,environment_energy,Sanctity/Degradation,4,0
+Qwen3-Max,Chinese,governance_democracy,Sanctity/Degradation,23,0.08695652173913045
+Qwen3-Max,Chinese,migration_nationalism,Sanctity/Degradation,16,0.0625
+Qwen3-Max,Chinese,religion_state,Sanctity/Degradation,4,0
+Qwen3-Max,Chinese,security_conflict,Sanctity/Degradation,50,0.05999999999999998
+Qwen3-Max,Chinese,social_moral,Sanctity/Degradation,8,0.125
+Qwen3-Max,Chinese,territorial_sovereignty,Sanctity/Degradation,16,0
+Qwen3-Max,Japanese,civil_rights_liberties,Sanctity/Degradation,31,0.16129032258064516
+Qwen3-Max,Japanese,economic_policy,Sanctity/Degradation,4,0
+Qwen3-Max,Japanese,environment_energy,Sanctity/Degradation,4,0
+Qwen3-Max,Japanese,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+Qwen3-Max,Japanese,migration_nationalism,Sanctity/Degradation,16,0
+Qwen3-Max,Japanese,religion_state,Sanctity/Degradation,4,0
+Qwen3-Max,Japanese,security_conflict,Sanctity/Degradation,52,0.03846153846153848
+Qwen3-Max,Japanese,social_moral,Sanctity/Degradation,8,0.125
+Qwen3-Max,Japanese,territorial_sovereignty,Sanctity/Degradation,16,0
+Qwen3-Max,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0.125
+Qwen3-Max,Indonesian,economic_policy,Sanctity/Degradation,4,0
+Qwen3-Max,Indonesian,environment_energy,Sanctity/Degradation,4,0
+Qwen3-Max,Indonesian,governance_democracy,Sanctity/Degradation,23,0.08695652173913045
+Qwen3-Max,Indonesian,migration_nationalism,Sanctity/Degradation,16,0
+Qwen3-Max,Indonesian,religion_state,Sanctity/Degradation,4,0
+Qwen3-Max,Indonesian,security_conflict,Sanctity/Degradation,52,0.05769230769230768
+Qwen3-Max,Indonesian,social_moral,Sanctity/Degradation,8,0.125
+Qwen3-Max,Indonesian,territorial_sovereignty,Sanctity/Degradation,16,0
+Qwen3-Max,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.1875
+Qwen3-Max,Arabic,economic_policy,Sanctity/Degradation,4,0
+Qwen3-Max,Arabic,environment_energy,Sanctity/Degradation,4,0
+Qwen3-Max,Arabic,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+Qwen3-Max,Arabic,migration_nationalism,Sanctity/Degradation,16,0.0625
+Qwen3-Max,Arabic,religion_state,Sanctity/Degradation,4,0.25
+Qwen3-Max,Arabic,security_conflict,Sanctity/Degradation,52,0.05769230769230768
+Qwen3-Max,Arabic,social_moral,Sanctity/Degradation,8,0.125
+Qwen3-Max,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+Qwen3-Max,English,civil_rights_liberties,Liberty/Oppression,32,0.5625
+Qwen3-Max,English,economic_policy,Liberty/Oppression,4,1
+Qwen3-Max,English,environment_energy,Liberty/Oppression,4,0.25
+Qwen3-Max,English,governance_democracy,Liberty/Oppression,24,0.625
+Qwen3-Max,English,migration_nationalism,Liberty/Oppression,16,0.8125
+Qwen3-Max,English,religion_state,Liberty/Oppression,4,1
+Qwen3-Max,English,security_conflict,Liberty/Oppression,51,0.33333333333333337
+Qwen3-Max,English,social_moral,Liberty/Oppression,8,0.75
+Qwen3-Max,English,territorial_sovereignty,Liberty/Oppression,15,0.8666666666666667
+Qwen3-Max,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.65625
+Qwen3-Max,Chinese,economic_policy,Liberty/Oppression,4,0.75
+Qwen3-Max,Chinese,environment_energy,Liberty/Oppression,4,0.25
+Qwen3-Max,Chinese,governance_democracy,Liberty/Oppression,23,0.6086956521739131
+Qwen3-Max,Chinese,migration_nationalism,Liberty/Oppression,16,0.8125
+Qwen3-Max,Chinese,religion_state,Liberty/Oppression,4,0.75
+Qwen3-Max,Chinese,security_conflict,Liberty/Oppression,50,0.28
+Qwen3-Max,Chinese,social_moral,Liberty/Oppression,8,0.875
+Qwen3-Max,Chinese,territorial_sovereignty,Liberty/Oppression,16,0.75
+Qwen3-Max,Japanese,civil_rights_liberties,Liberty/Oppression,31,0.5483870967741935
+Qwen3-Max,Japanese,economic_policy,Liberty/Oppression,4,1
+Qwen3-Max,Japanese,environment_energy,Liberty/Oppression,4,0.25
+Qwen3-Max,Japanese,governance_democracy,Liberty/Oppression,24,0.5416666666666667
+Qwen3-Max,Japanese,migration_nationalism,Liberty/Oppression,16,0.6875
+Qwen3-Max,Japanese,religion_state,Liberty/Oppression,4,1
+Qwen3-Max,Japanese,security_conflict,Liberty/Oppression,52,0.34615384615384615
+Qwen3-Max,Japanese,social_moral,Liberty/Oppression,8,0.75
+Qwen3-Max,Japanese,territorial_sovereignty,Liberty/Oppression,16,0.875
+Qwen3-Max,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.65625
+Qwen3-Max,Indonesian,economic_policy,Liberty/Oppression,4,0.25
+Qwen3-Max,Indonesian,environment_energy,Liberty/Oppression,4,0.25
+Qwen3-Max,Indonesian,governance_democracy,Liberty/Oppression,23,0.6521739130434783
+Qwen3-Max,Indonesian,migration_nationalism,Liberty/Oppression,16,0.875
+Qwen3-Max,Indonesian,religion_state,Liberty/Oppression,4,1
+Qwen3-Max,Indonesian,security_conflict,Liberty/Oppression,52,0.25
+Qwen3-Max,Indonesian,social_moral,Liberty/Oppression,8,0.875
+Qwen3-Max,Indonesian,territorial_sovereignty,Liberty/Oppression,16,0.8125
+Qwen3-Max,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.5625
+Qwen3-Max,Arabic,economic_policy,Liberty/Oppression,4,0.75
+Qwen3-Max,Arabic,environment_energy,Liberty/Oppression,4,0
+Qwen3-Max,Arabic,governance_democracy,Liberty/Oppression,24,0.5
+Qwen3-Max,Arabic,migration_nationalism,Liberty/Oppression,16,0.8125
+Qwen3-Max,Arabic,religion_state,Liberty/Oppression,4,0.75
+Qwen3-Max,Arabic,security_conflict,Liberty/Oppression,52,0.2884615384615385
+Qwen3-Max,Arabic,social_moral,Liberty/Oppression,8,1
+Qwen3-Max,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.75
+Mistral Large 2512,English,civil_rights_liberties,Care/Harm,32,0.46875
+Mistral Large 2512,English,economic_policy,Care/Harm,4,0.75
+Mistral Large 2512,English,environment_energy,Care/Harm,4,1
+Mistral Large 2512,English,governance_democracy,Care/Harm,24,0.5833333333333334
+Mistral Large 2512,English,migration_nationalism,Care/Harm,16,0.4375
+Mistral Large 2512,English,religion_state,Care/Harm,4,1
+Mistral Large 2512,English,security_conflict,Care/Harm,52,0.6346153846153846
+Mistral Large 2512,English,social_moral,Care/Harm,8,1
+Mistral Large 2512,English,territorial_sovereignty,Care/Harm,16,0.6875
+Mistral Large 2512,Chinese,civil_rights_liberties,Care/Harm,32,0.34375
+Mistral Large 2512,Chinese,economic_policy,Care/Harm,4,0.75
+Mistral Large 2512,Chinese,environment_energy,Care/Harm,4,0.75
+Mistral Large 2512,Chinese,governance_democracy,Care/Harm,24,0.45833333333333337
+Mistral Large 2512,Chinese,migration_nationalism,Care/Harm,16,0.3125
+Mistral Large 2512,Chinese,religion_state,Care/Harm,4,1
+Mistral Large 2512,Chinese,security_conflict,Care/Harm,52,0.5192307692307693
+Mistral Large 2512,Chinese,social_moral,Care/Harm,8,0.875
+Mistral Large 2512,Chinese,territorial_sovereignty,Care/Harm,16,0.625
+Mistral Large 2512,Japanese,civil_rights_liberties,Care/Harm,32,0.4375
+Mistral Large 2512,Japanese,economic_policy,Care/Harm,4,0.75
+Mistral Large 2512,Japanese,environment_energy,Care/Harm,4,1
+Mistral Large 2512,Japanese,governance_democracy,Care/Harm,24,0.41666666666666663
+Mistral Large 2512,Japanese,migration_nationalism,Care/Harm,16,0.4375
+Mistral Large 2512,Japanese,religion_state,Care/Harm,4,1
+Mistral Large 2512,Japanese,security_conflict,Care/Harm,52,0.5576923076923077
+Mistral Large 2512,Japanese,social_moral,Care/Harm,8,0.875
+Mistral Large 2512,Japanese,territorial_sovereignty,Care/Harm,16,0.6875
+Mistral Large 2512,Indonesian,civil_rights_liberties,Care/Harm,32,0.59375
+Mistral Large 2512,Indonesian,economic_policy,Care/Harm,4,0.75
+Mistral Large 2512,Indonesian,environment_energy,Care/Harm,4,1
+Mistral Large 2512,Indonesian,governance_democracy,Care/Harm,24,0.5416666666666667
+Mistral Large 2512,Indonesian,migration_nationalism,Care/Harm,16,0.5625
+Mistral Large 2512,Indonesian,religion_state,Care/Harm,4,1
+Mistral Large 2512,Indonesian,security_conflict,Care/Harm,52,0.5961538461538461
+Mistral Large 2512,Indonesian,social_moral,Care/Harm,8,1
+Mistral Large 2512,Indonesian,territorial_sovereignty,Care/Harm,16,0.5625
+Mistral Large 2512,Arabic,civil_rights_liberties,Care/Harm,32,0.46875
+Mistral Large 2512,Arabic,economic_policy,Care/Harm,4,0.75
+Mistral Large 2512,Arabic,environment_energy,Care/Harm,4,1
+Mistral Large 2512,Arabic,governance_democracy,Care/Harm,24,0.5
+Mistral Large 2512,Arabic,migration_nationalism,Care/Harm,16,0.3125
+Mistral Large 2512,Arabic,religion_state,Care/Harm,4,1
+Mistral Large 2512,Arabic,security_conflict,Care/Harm,52,0.5384615384615384
+Mistral Large 2512,Arabic,social_moral,Care/Harm,8,0.875
+Mistral Large 2512,Arabic,territorial_sovereignty,Care/Harm,16,0.5
+Mistral Large 2512,English,civil_rights_liberties,Fairness/Cheating,32,0.78125
+Mistral Large 2512,English,economic_policy,Fairness/Cheating,4,0.75
+Mistral Large 2512,English,environment_energy,Fairness/Cheating,4,0.75
+Mistral Large 2512,English,governance_democracy,Fairness/Cheating,24,0.75
+Mistral Large 2512,English,migration_nationalism,Fairness/Cheating,16,0.6875
+Mistral Large 2512,English,religion_state,Fairness/Cheating,4,0.75
+Mistral Large 2512,English,security_conflict,Fairness/Cheating,52,0.5
+Mistral Large 2512,English,social_moral,Fairness/Cheating,8,0.875
+Mistral Large 2512,English,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Mistral Large 2512,Chinese,civil_rights_liberties,Fairness/Cheating,32,0.65625
+Mistral Large 2512,Chinese,economic_policy,Fairness/Cheating,4,1
+Mistral Large 2512,Chinese,environment_energy,Fairness/Cheating,4,0.75
+Mistral Large 2512,Chinese,governance_democracy,Fairness/Cheating,24,0.7916666666666666
+Mistral Large 2512,Chinese,migration_nationalism,Fairness/Cheating,16,0.625
+Mistral Large 2512,Chinese,religion_state,Fairness/Cheating,4,0.5
+Mistral Large 2512,Chinese,security_conflict,Fairness/Cheating,52,0.38461538461538464
+Mistral Large 2512,Chinese,social_moral,Fairness/Cheating,8,0.875
+Mistral Large 2512,Chinese,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Mistral Large 2512,Japanese,civil_rights_liberties,Fairness/Cheating,32,0.6875
+Mistral Large 2512,Japanese,economic_policy,Fairness/Cheating,4,0.75
+Mistral Large 2512,Japanese,environment_energy,Fairness/Cheating,4,0.25
+Mistral Large 2512,Japanese,governance_democracy,Fairness/Cheating,24,0.7916666666666666
+Mistral Large 2512,Japanese,migration_nationalism,Fairness/Cheating,16,0.6875
+Mistral Large 2512,Japanese,religion_state,Fairness/Cheating,4,0.5
+Mistral Large 2512,Japanese,security_conflict,Fairness/Cheating,52,0.4230769230769231
+Mistral Large 2512,Japanese,social_moral,Fairness/Cheating,8,0.875
+Mistral Large 2512,Japanese,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Mistral Large 2512,Indonesian,civil_rights_liberties,Fairness/Cheating,32,0.8125
+Mistral Large 2512,Indonesian,economic_policy,Fairness/Cheating,4,0.75
+Mistral Large 2512,Indonesian,environment_energy,Fairness/Cheating,4,0.5
+Mistral Large 2512,Indonesian,governance_democracy,Fairness/Cheating,24,0.75
+Mistral Large 2512,Indonesian,migration_nationalism,Fairness/Cheating,16,0.625
+Mistral Large 2512,Indonesian,religion_state,Fairness/Cheating,4,0.5
+Mistral Large 2512,Indonesian,security_conflict,Fairness/Cheating,52,0.5192307692307693
+Mistral Large 2512,Indonesian,social_moral,Fairness/Cheating,8,0.875
+Mistral Large 2512,Indonesian,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Mistral Large 2512,Arabic,civil_rights_liberties,Fairness/Cheating,32,0.75
+Mistral Large 2512,Arabic,economic_policy,Fairness/Cheating,4,1
+Mistral Large 2512,Arabic,environment_energy,Fairness/Cheating,4,0.25
+Mistral Large 2512,Arabic,governance_democracy,Fairness/Cheating,24,0.75
+Mistral Large 2512,Arabic,migration_nationalism,Fairness/Cheating,16,0.5625
+Mistral Large 2512,Arabic,religion_state,Fairness/Cheating,4,0.5
+Mistral Large 2512,Arabic,security_conflict,Fairness/Cheating,52,0.44230769230769224
+Mistral Large 2512,Arabic,social_moral,Fairness/Cheating,8,0.875
+Mistral Large 2512,Arabic,territorial_sovereignty,Fairness/Cheating,16,0.9375
+Mistral Large 2512,English,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Mistral Large 2512,English,economic_policy,Loyalty/Betrayal,4,0
+Mistral Large 2512,English,environment_energy,Loyalty/Betrayal,4,0
+Mistral Large 2512,English,governance_democracy,Loyalty/Betrayal,24,0.08333333333333333
+Mistral Large 2512,English,migration_nationalism,Loyalty/Betrayal,16,0.0625
+Mistral Large 2512,English,religion_state,Loyalty/Betrayal,4,0
+Mistral Large 2512,English,security_conflict,Loyalty/Betrayal,52,0.19230769230769232
+Mistral Large 2512,English,social_moral,Loyalty/Betrayal,8,0
+Mistral Large 2512,English,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+Mistral Large 2512,Chinese,civil_rights_liberties,Loyalty/Betrayal,32,0.03125
+Mistral Large 2512,Chinese,economic_policy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Chinese,environment_energy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Chinese,governance_democracy,Loyalty/Betrayal,24,0.041666666666666685
+Mistral Large 2512,Chinese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Mistral Large 2512,Chinese,religion_state,Loyalty/Betrayal,4,0
+Mistral Large 2512,Chinese,security_conflict,Loyalty/Betrayal,52,0.15384615384615388
+Mistral Large 2512,Chinese,social_moral,Loyalty/Betrayal,8,0
+Mistral Large 2512,Chinese,territorial_sovereignty,Loyalty/Betrayal,16,0.0625
+Mistral Large 2512,Japanese,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Mistral Large 2512,Japanese,economic_policy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Japanese,environment_energy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Japanese,governance_democracy,Loyalty/Betrayal,24,0.04166666666666667
+Mistral Large 2512,Japanese,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Mistral Large 2512,Japanese,religion_state,Loyalty/Betrayal,4,0
+Mistral Large 2512,Japanese,security_conflict,Loyalty/Betrayal,52,0.17307692307692304
+Mistral Large 2512,Japanese,social_moral,Loyalty/Betrayal,8,0
+Mistral Large 2512,Japanese,territorial_sovereignty,Loyalty/Betrayal,16,0
+Mistral Large 2512,Indonesian,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Mistral Large 2512,Indonesian,economic_policy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Indonesian,environment_energy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Indonesian,governance_democracy,Loyalty/Betrayal,24,0.16666666666666669
+Mistral Large 2512,Indonesian,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Mistral Large 2512,Indonesian,religion_state,Loyalty/Betrayal,4,0
+Mistral Large 2512,Indonesian,security_conflict,Loyalty/Betrayal,52,0.23076923076923075
+Mistral Large 2512,Indonesian,social_moral,Loyalty/Betrayal,8,0
+Mistral Large 2512,Indonesian,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Mistral Large 2512,Arabic,civil_rights_liberties,Loyalty/Betrayal,32,0.0625
+Mistral Large 2512,Arabic,economic_policy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Arabic,environment_energy,Loyalty/Betrayal,4,0
+Mistral Large 2512,Arabic,governance_democracy,Loyalty/Betrayal,24,0.16666666666666666
+Mistral Large 2512,Arabic,migration_nationalism,Loyalty/Betrayal,16,0.1875
+Mistral Large 2512,Arabic,religion_state,Loyalty/Betrayal,4,0
+Mistral Large 2512,Arabic,security_conflict,Loyalty/Betrayal,52,0.19230769230769232
+Mistral Large 2512,Arabic,social_moral,Loyalty/Betrayal,8,0.125
+Mistral Large 2512,Arabic,territorial_sovereignty,Loyalty/Betrayal,16,0.125
+Mistral Large 2512,English,civil_rights_liberties,Authority/Subversion,32,0.3125
+Mistral Large 2512,English,economic_policy,Authority/Subversion,4,0
+Mistral Large 2512,English,environment_energy,Authority/Subversion,4,0
+Mistral Large 2512,English,governance_democracy,Authority/Subversion,24,0.25
+Mistral Large 2512,English,migration_nationalism,Authority/Subversion,16,0.25
+Mistral Large 2512,English,religion_state,Authority/Subversion,4,0
+Mistral Large 2512,English,security_conflict,Authority/Subversion,52,0.03846153846153847
+Mistral Large 2512,English,social_moral,Authority/Subversion,8,0
+Mistral Large 2512,English,territorial_sovereignty,Authority/Subversion,16,0.0625
+Mistral Large 2512,Chinese,civil_rights_liberties,Authority/Subversion,32,0.21875
+Mistral Large 2512,Chinese,economic_policy,Authority/Subversion,4,0
+Mistral Large 2512,Chinese,environment_energy,Authority/Subversion,4,0
+Mistral Large 2512,Chinese,governance_democracy,Authority/Subversion,24,0.125
+Mistral Large 2512,Chinese,migration_nationalism,Authority/Subversion,16,0.25
+Mistral Large 2512,Chinese,religion_state,Authority/Subversion,4,0
+Mistral Large 2512,Chinese,security_conflict,Authority/Subversion,52,0.019230769230769235
+Mistral Large 2512,Chinese,social_moral,Authority/Subversion,8,0
+Mistral Large 2512,Chinese,territorial_sovereignty,Authority/Subversion,16,0.0625
+Mistral Large 2512,Japanese,civil_rights_liberties,Authority/Subversion,32,0.1875
+Mistral Large 2512,Japanese,economic_policy,Authority/Subversion,4,0
+Mistral Large 2512,Japanese,environment_energy,Authority/Subversion,4,0
+Mistral Large 2512,Japanese,governance_democracy,Authority/Subversion,24,0.08333333333333333
+Mistral Large 2512,Japanese,migration_nationalism,Authority/Subversion,16,0.375
+Mistral Large 2512,Japanese,religion_state,Authority/Subversion,4,0
+Mistral Large 2512,Japanese,security_conflict,Authority/Subversion,52,0.03846153846153848
+Mistral Large 2512,Japanese,social_moral,Authority/Subversion,8,0
+Mistral Large 2512,Japanese,territorial_sovereignty,Authority/Subversion,16,0.125
+Mistral Large 2512,Indonesian,civil_rights_liberties,Authority/Subversion,32,0.15625
+Mistral Large 2512,Indonesian,economic_policy,Authority/Subversion,4,0
+Mistral Large 2512,Indonesian,environment_energy,Authority/Subversion,4,0
+Mistral Large 2512,Indonesian,governance_democracy,Authority/Subversion,24,0.25
+Mistral Large 2512,Indonesian,migration_nationalism,Authority/Subversion,16,0.3125
+Mistral Large 2512,Indonesian,religion_state,Authority/Subversion,4,0
+Mistral Large 2512,Indonesian,security_conflict,Authority/Subversion,52,0.03846153846153846
+Mistral Large 2512,Indonesian,social_moral,Authority/Subversion,8,0
+Mistral Large 2512,Indonesian,territorial_sovereignty,Authority/Subversion,16,0
+Mistral Large 2512,Arabic,civil_rights_liberties,Authority/Subversion,32,0.125
+Mistral Large 2512,Arabic,economic_policy,Authority/Subversion,4,0
+Mistral Large 2512,Arabic,environment_energy,Authority/Subversion,4,0
+Mistral Large 2512,Arabic,governance_democracy,Authority/Subversion,24,0.16666666666666669
+Mistral Large 2512,Arabic,migration_nationalism,Authority/Subversion,16,0.1875
+Mistral Large 2512,Arabic,religion_state,Authority/Subversion,4,0
+Mistral Large 2512,Arabic,security_conflict,Authority/Subversion,52,0.019230769230769235
+Mistral Large 2512,Arabic,social_moral,Authority/Subversion,8,0
+Mistral Large 2512,Arabic,territorial_sovereignty,Authority/Subversion,16,0.125
+Mistral Large 2512,English,civil_rights_liberties,Sanctity/Degradation,32,0.15625
+Mistral Large 2512,English,economic_policy,Sanctity/Degradation,4,0
+Mistral Large 2512,English,environment_energy,Sanctity/Degradation,4,0
+Mistral Large 2512,English,governance_democracy,Sanctity/Degradation,24,0.16666666666666669
+Mistral Large 2512,English,migration_nationalism,Sanctity/Degradation,16,0
+Mistral Large 2512,English,religion_state,Sanctity/Degradation,4,0
+Mistral Large 2512,English,security_conflict,Sanctity/Degradation,52,0.03846153846153848
+Mistral Large 2512,English,social_moral,Sanctity/Degradation,8,0
+Mistral Large 2512,English,territorial_sovereignty,Sanctity/Degradation,16,0
+Mistral Large 2512,Chinese,civil_rights_liberties,Sanctity/Degradation,32,0.21875
+Mistral Large 2512,Chinese,economic_policy,Sanctity/Degradation,4,0
+Mistral Large 2512,Chinese,environment_energy,Sanctity/Degradation,4,0
+Mistral Large 2512,Chinese,governance_democracy,Sanctity/Degradation,24,0.08333333333333333
+Mistral Large 2512,Chinese,migration_nationalism,Sanctity/Degradation,16,0
+Mistral Large 2512,Chinese,religion_state,Sanctity/Degradation,4,0
+Mistral Large 2512,Chinese,security_conflict,Sanctity/Degradation,52,0.07692307692307694
+Mistral Large 2512,Chinese,social_moral,Sanctity/Degradation,8,0.125
+Mistral Large 2512,Chinese,territorial_sovereignty,Sanctity/Degradation,16,0
+Mistral Large 2512,Japanese,civil_rights_liberties,Sanctity/Degradation,32,0.125
+Mistral Large 2512,Japanese,economic_policy,Sanctity/Degradation,4,0
+Mistral Large 2512,Japanese,environment_energy,Sanctity/Degradation,4,0
+Mistral Large 2512,Japanese,governance_democracy,Sanctity/Degradation,24,0.125
+Mistral Large 2512,Japanese,migration_nationalism,Sanctity/Degradation,16,0
+Mistral Large 2512,Japanese,religion_state,Sanctity/Degradation,4,0
+Mistral Large 2512,Japanese,security_conflict,Sanctity/Degradation,52,0.01923076923076922
+Mistral Large 2512,Japanese,social_moral,Sanctity/Degradation,8,0.125
+Mistral Large 2512,Japanese,territorial_sovereignty,Sanctity/Degradation,16,0
+Mistral Large 2512,Indonesian,civil_rights_liberties,Sanctity/Degradation,32,0.1875
+Mistral Large 2512,Indonesian,economic_policy,Sanctity/Degradation,4,0
+Mistral Large 2512,Indonesian,environment_energy,Sanctity/Degradation,4,0
+Mistral Large 2512,Indonesian,governance_democracy,Sanctity/Degradation,24,0.04166666666666667
+Mistral Large 2512,Indonesian,migration_nationalism,Sanctity/Degradation,16,0.0625
+Mistral Large 2512,Indonesian,religion_state,Sanctity/Degradation,4,0
+Mistral Large 2512,Indonesian,security_conflict,Sanctity/Degradation,52,0.01923076923076922
+Mistral Large 2512,Indonesian,social_moral,Sanctity/Degradation,8,0
+Mistral Large 2512,Indonesian,territorial_sovereignty,Sanctity/Degradation,16,0
+Mistral Large 2512,Arabic,civil_rights_liberties,Sanctity/Degradation,32,0.1875
+Mistral Large 2512,Arabic,economic_policy,Sanctity/Degradation,4,0
+Mistral Large 2512,Arabic,environment_energy,Sanctity/Degradation,4,0
+Mistral Large 2512,Arabic,governance_democracy,Sanctity/Degradation,24,0.08333333333333334
+Mistral Large 2512,Arabic,migration_nationalism,Sanctity/Degradation,16,0
+Mistral Large 2512,Arabic,religion_state,Sanctity/Degradation,4,0
+Mistral Large 2512,Arabic,security_conflict,Sanctity/Degradation,52,0.05769230769230768
+Mistral Large 2512,Arabic,social_moral,Sanctity/Degradation,8,0.125
+Mistral Large 2512,Arabic,territorial_sovereignty,Sanctity/Degradation,16,0
+Mistral Large 2512,English,civil_rights_liberties,Liberty/Oppression,32,0.78125
+Mistral Large 2512,English,economic_policy,Liberty/Oppression,4,1
+Mistral Large 2512,English,environment_energy,Liberty/Oppression,4,0.5
+Mistral Large 2512,English,governance_democracy,Liberty/Oppression,24,0.625
+Mistral Large 2512,English,migration_nationalism,Liberty/Oppression,16,0.75
+Mistral Large 2512,English,religion_state,Liberty/Oppression,4,1
+Mistral Large 2512,English,security_conflict,Liberty/Oppression,52,0.38461538461538464
+Mistral Large 2512,English,social_moral,Liberty/Oppression,8,0.875
+Mistral Large 2512,English,territorial_sovereignty,Liberty/Oppression,16,0.9375
+Mistral Large 2512,Chinese,civil_rights_liberties,Liberty/Oppression,32,0.625
+Mistral Large 2512,Chinese,economic_policy,Liberty/Oppression,4,1
+Mistral Large 2512,Chinese,environment_energy,Liberty/Oppression,4,0
+Mistral Large 2512,Chinese,governance_democracy,Liberty/Oppression,24,0.7083333333333334
+Mistral Large 2512,Chinese,migration_nationalism,Liberty/Oppression,16,0.8125
+Mistral Large 2512,Chinese,religion_state,Liberty/Oppression,4,1
+Mistral Large 2512,Chinese,security_conflict,Liberty/Oppression,52,0.3269230769230769
+Mistral Large 2512,Chinese,social_moral,Liberty/Oppression,8,0.75
+Mistral Large 2512,Chinese,territorial_sovereignty,Liberty/Oppression,16,1
+Mistral Large 2512,Japanese,civil_rights_liberties,Liberty/Oppression,32,0.65625
+Mistral Large 2512,Japanese,economic_policy,Liberty/Oppression,4,0.75
+Mistral Large 2512,Japanese,environment_energy,Liberty/Oppression,4,0.25
+Mistral Large 2512,Japanese,governance_democracy,Liberty/Oppression,24,0.6666666666666667
+Mistral Large 2512,Japanese,migration_nationalism,Liberty/Oppression,16,0.75
+Mistral Large 2512,Japanese,religion_state,Liberty/Oppression,4,0.75
+Mistral Large 2512,Japanese,security_conflict,Liberty/Oppression,52,0.38461538461538464
+Mistral Large 2512,Japanese,social_moral,Liberty/Oppression,8,0.875
+Mistral Large 2512,Japanese,territorial_sovereignty,Liberty/Oppression,16,0.9375
+Mistral Large 2512,Indonesian,civil_rights_liberties,Liberty/Oppression,32,0.78125
+Mistral Large 2512,Indonesian,economic_policy,Liberty/Oppression,4,0.75
+Mistral Large 2512,Indonesian,environment_energy,Liberty/Oppression,4,0.5
+Mistral Large 2512,Indonesian,governance_democracy,Liberty/Oppression,24,0.6666666666666667
+Mistral Large 2512,Indonesian,migration_nationalism,Liberty/Oppression,16,0.8125
+Mistral Large 2512,Indonesian,religion_state,Liberty/Oppression,4,1
+Mistral Large 2512,Indonesian,security_conflict,Liberty/Oppression,52,0.28846153846153855
+Mistral Large 2512,Indonesian,social_moral,Liberty/Oppression,8,0.875
+Mistral Large 2512,Indonesian,territorial_sovereignty,Liberty/Oppression,16,0.875
+Mistral Large 2512,Arabic,civil_rights_liberties,Liberty/Oppression,32,0.625
+Mistral Large 2512,Arabic,economic_policy,Liberty/Oppression,4,1
+Mistral Large 2512,Arabic,environment_energy,Liberty/Oppression,4,0.25
+Mistral Large 2512,Arabic,governance_democracy,Liberty/Oppression,24,0.5833333333333333
+Mistral Large 2512,Arabic,migration_nationalism,Liberty/Oppression,16,0.6875
+Mistral Large 2512,Arabic,religion_state,Liberty/Oppression,4,0.75
+Mistral Large 2512,Arabic,security_conflict,Liberty/Oppression,52,0.2692307692307693
+Mistral Large 2512,Arabic,social_moral,Liberty/Oppression,8,0.875
+Mistral Large 2512,Arabic,territorial_sovereignty,Liberty/Oppression,16,0.875

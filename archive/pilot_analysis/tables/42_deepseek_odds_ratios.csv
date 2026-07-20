@@ -1,0 +1,10 @@
+category,or_estimate,or_lower,or_upper,p_value,en_refusal,zh_refusal,n,note
+environment_energy,NA,NA,NA,NA,0,0,8,Insufficient variation
+migration_nationalism,NA,NA,NA,NA,0,0,32,Insufficient variation
+economic_policy,NA,NA,NA,NA,0,0,8,Insufficient variation
+civil_rights_liberties,NA,NA,NA,NA,0,0,64,Insufficient variation
+governance_democracy,6.052631045619517,0.6501822233388346,56.34473115286273,0.11370418146898104,0.041666666666666664,0.20833333333333334,48,
+religion_state,NA,NA,NA,NA,0,0,8,Insufficient variation
+security_conflict,127445681.83565132,0,Inf,0.9900150484711565,0,0.2884615384615385,104,
+territorial_sovereignty,188619609.11953738,0,Inf,0.9943448993138599,0,0.375,32,
+social_moral,NA,NA,NA,NA,0,0,16,Insufficient variation

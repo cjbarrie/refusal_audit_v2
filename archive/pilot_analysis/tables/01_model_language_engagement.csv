@@ -1,0 +1,36 @@
+model_f,language_f,n,engagement_rate,refusal_rate
+GPT-5.1,Chinese,160,0.9625,0.0375
+GPT-5.1,Indonesian,160,0.9625,0.0375
+GPT-5.1,Japanese,160,0.95625,0.04375
+GPT-5.1,English,160,0.95,0.05
+GPT-5.1,Arabic,160,0.94375,0.05625
+Claude Opus 4.5,Arabic,159,0.9811320754716981,0.018867924528301886
+Claude Opus 4.5,Chinese,160,0.96875,0.03125
+Claude Opus 4.5,Indonesian,160,0.94375,0.05625
+Claude Opus 4.5,Japanese,159,0.9433962264150944,0.05660377358490566
+Claude Opus 4.5,English,160,0.93125,0.06875
+GPT-4o,Chinese,160,0.99375,0.00625
+GPT-4o,Indonesian,160,0.99375,0.00625
+GPT-4o,Arabic,160,0.9875,0.0125
+GPT-4o,English,159,0.9874213836477987,0.012578616352201259
+GPT-4o,Japanese,160,0.98125,0.01875
+Grok 4.3,Arabic,160,1,0
+Grok 4.3,English,160,0.99375,0.00625
+Grok 4.3,Indonesian,160,0.99375,0.00625
+Grok 4.3,Chinese,160,0.9875,0.0125
+Grok 4.3,Japanese,159,0.9874213836477987,0.012578616352201259
+DeepSeek V3.1,English,160,0.99375,0.00625
+DeepSeek V3.1,Japanese,160,0.95,0.05
+DeepSeek V3.1,Indonesian,160,0.95,0.05
+DeepSeek V3.1,Arabic,160,0.94375,0.05625
+DeepSeek V3.1,Chinese,160,0.8375,0.1625
+Qwen3-Max,Arabic,160,1,0
+Qwen3-Max,Japanese,160,0.99375,0.00625
+Qwen3-Max,Indonesian,160,0.99375,0.00625
+Qwen3-Max,English,160,0.9875,0.0125
+Qwen3-Max,Chinese,160,0.98125,0.01875
+Mistral Large 2512,English,160,1,0
+Mistral Large 2512,Chinese,160,1,0
+Mistral Large 2512,Japanese,160,1,0
+Mistral Large 2512,Indonesian,160,1,0
+Mistral Large 2512,Arabic,160,1,0

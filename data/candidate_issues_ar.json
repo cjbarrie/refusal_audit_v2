@@ -1,0 +1,653 @@
+{
+  "source_edition": "ar",
+  "wiki": "ar.wikipedia.org",
+  "list_page": null,
+  "dispute_categories": [
+    "تصنيف:أقاليم متنازع عليها في آسيا",
+    "تصنيف:ممارسات سياسية متنازع عليها أخلاقيا",
+    "تصنيف:مقالات متنازع عليها"
+  ],
+  "n_candidates": 71,
+  "n_with_qid": 71,
+  "candidates": [
+    {
+      "title": "آزاد كشمير",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q200130",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A2%D8%B2%D8%A7%D8%AF_%D9%83%D8%B4%D9%85%D9%8A%D8%B1"
+    },
+    {
+      "title": "أفغانستان",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q889",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A3%D9%81%D8%BA%D8%A7%D9%86%D8%B3%D8%AA%D8%A7%D9%86"
+    },
+    {
+      "title": "إقليم المحيط الهندي البريطاني",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q43448",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A5%D9%82%D9%84%D9%8A%D9%85_%D8%A7%D9%84%D9%85%D8%AD%D9%8A%D8%B7_%D8%A7%D9%84%D9%87%D9%86%D8%AF%D9%8A_%D8%A7%D9%84%D8%A8%D8%B1%D9%8A%D8%B7%D8%A7%D9%86%D9%8A"
+    },
+    {
+      "title": "احتلال جزر أبو موسى وطنب الكبرى والصغرى",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q4115029",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D8%AD%D8%AA%D9%84%D8%A7%D9%84_%D8%AC%D8%B2%D8%B1_%D8%A3%D8%A8%D9%88_%D9%85%D9%88%D8%B3%D9%89_%D9%88%D8%B7%D9%86%D8%A8_%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89_%D9%88%D8%A7%D9%84%D8%B5%D8%BA%D8%B1%D9%89"
+    },
+    {
+      "title": "الأراضي التي تحتلها روسيا",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q106809413",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%A3%D8%B1%D8%A7%D8%B6%D9%8A_%D8%A7%D9%84%D8%AA%D9%8A_%D8%AA%D8%AD%D8%AA%D9%84%D9%87%D8%A7_%D8%B1%D9%88%D8%B3%D9%8A%D8%A7"
+    },
+    {
+      "title": "الإسلام في كشمير",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q6081933",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85_%D9%81%D9%8A_%D9%83%D8%B4%D9%85%D9%8A%D8%B1"
+    },
+    {
+      "title": "التبت (1912–1951)",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q2444884",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AA%D8%A8%D8%AA_%281912%E2%80%931951%29"
+    },
+    {
+      "title": "الضفة الغربية وقطاع غزة",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q407199",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%B6%D9%81%D8%A9_%D8%A7%D9%84%D8%BA%D8%B1%D8%A8%D9%8A%D8%A9_%D9%88%D9%82%D8%B7%D8%A7%D8%B9_%D8%BA%D8%B2%D8%A9"
+    },
+    {
+      "title": "القدس",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1218",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D9%82%D8%AF%D8%B3"
+    },
+    {
+      "title": "القدس الشرقية",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q212938",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D9%82%D8%AF%D8%B3_%D8%A7%D9%84%D8%B4%D8%B1%D9%82%D9%8A%D8%A9"
+    },
+    {
+      "title": "المناطق المتنازع عليها في العراق",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q5282698",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D9%85%D9%86%D8%A7%D8%B7%D9%82_%D8%A7%D9%84%D9%85%D8%AA%D9%86%D8%A7%D8%B2%D8%B9_%D8%B9%D9%84%D9%8A%D9%87%D8%A7_%D9%81%D9%8A_%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82"
+    },
+    {
+      "title": "بحر قزوين",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q5484",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A8%D8%AD%D8%B1_%D9%82%D8%B2%D9%88%D9%8A%D9%86"
+    },
+    {
+      "title": "بلاورستان",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q2988478",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A8%D9%84%D8%A7%D9%88%D8%B1%D8%B3%D8%AA%D8%A7%D9%86"
+    },
+    {
+      "title": "تاريخ إقليم المحيط الهندي البريطاني",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q35587079",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE_%D8%A5%D9%82%D9%84%D9%8A%D9%85_%D8%A7%D9%84%D9%85%D8%AD%D9%8A%D8%B7_%D8%A7%D9%84%D9%87%D9%86%D8%AF%D9%8A_%D8%A7%D9%84%D8%A8%D8%B1%D9%8A%D8%B7%D8%A7%D9%86%D9%8A"
+    },
+    {
+      "title": "تعريب كركوك",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q5989564",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D8%B9%D8%B1%D9%8A%D8%A8_%D9%83%D8%B1%D9%83%D9%88%D9%83"
+    },
+    {
+      "title": "جزر الكوريل",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q80389",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D8%B2%D8%B1_%D8%A7%D9%84%D9%83%D9%88%D8%B1%D9%8A%D9%84"
+    },
+    {
+      "title": "جزر بحر الصين الجنوبي",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1141500",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D8%B2%D8%B1_%D8%A8%D8%AD%D8%B1_%D8%A7%D9%84%D8%B5%D9%8A%D9%86_%D8%A7%D9%84%D8%AC%D9%86%D9%88%D8%A8%D9%8A"
+    },
+    {
+      "title": "جزر سبراتلي",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q215664",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D8%B2%D8%B1_%D8%B3%D8%A8%D8%B1%D8%A7%D8%AA%D9%84%D9%8A"
+    },
+    {
+      "title": "جمهورية آرتساخ",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q244165",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D9%85%D9%87%D9%88%D8%B1%D9%8A%D8%A9_%D8%A2%D8%B1%D8%AA%D8%B3%D8%A7%D8%AE"
+    },
+    {
+      "title": "جمون وكشمير (إقليم)",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q66278313",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D9%85%D9%88%D9%86_%D9%88%D9%83%D8%B4%D9%85%D9%8A%D8%B1_%28%D8%A5%D9%82%D9%84%D9%8A%D9%85%29"
+    },
+    {
+      "title": "جمون وكشمير (ولاية)",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1180",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D9%85%D9%88%D9%86_%D9%88%D9%83%D8%B4%D9%85%D9%8A%D8%B1_%28%D9%88%D9%84%D8%A7%D9%8A%D8%A9%29"
+    },
+    {
+      "title": "سانشا",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q264818",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B3%D8%A7%D9%86%D8%B4%D8%A7"
+    },
+    {
+      "title": "شمال بورنيو",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1147441",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B4%D9%85%D8%A7%D9%84_%D8%A8%D9%88%D8%B1%D9%86%D9%8A%D9%88"
+    },
+    {
+      "title": "صخور ليانكورت",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q20317",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B5%D8%AE%D9%88%D8%B1_%D9%84%D9%8A%D8%A7%D9%86%D9%83%D9%88%D8%B1%D8%AA"
+    },
+    {
+      "title": "غجر (قرية)",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1261045",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%BA%D8%AC%D8%B1_%28%D9%82%D8%B1%D9%8A%D8%A9%29"
+    },
+    {
+      "title": "غلغت بلتستان",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q200697",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%BA%D9%84%D8%BA%D8%AA_%D8%A8%D9%84%D8%AA%D8%B3%D8%AA%D8%A7%D9%86"
+    },
+    {
+      "title": "قبرص الشمالية",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q23681",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%82%D8%A8%D8%B1%D8%B5_%D8%A7%D9%84%D8%B4%D9%85%D8%A7%D9%84%D9%8A%D8%A9"
+    },
+    {
+      "title": "كشمير",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q43100",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%83%D8%B4%D9%85%D9%8A%D8%B1"
+    },
+    {
+      "title": "كوريا",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q18097",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%83%D9%88%D8%B1%D9%8A%D8%A7"
+    },
+    {
+      "title": "لداخ",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q200667",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%84%D8%AF%D8%A7%D8%AE"
+    },
+    {
+      "title": "محافظة كركوك",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q193268",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D8%A7%D9%81%D8%B8%D8%A9_%D9%83%D8%B1%D9%83%D9%88%D9%83"
+    },
+    {
+      "title": "مدينة كولون المسورة",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1022918",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AF%D9%8A%D9%86%D8%A9_%D9%83%D9%88%D9%84%D9%88%D9%86_%D8%A7%D9%84%D9%85%D8%B3%D9%88%D8%B1%D8%A9"
+    },
+    {
+      "title": "نزاع كشمير",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q1413732",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%86%D8%B2%D8%A7%D8%B9_%D9%83%D8%B4%D9%85%D9%8A%D8%B1"
+    },
+    {
+      "title": "نهر سياشين الجليدي",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q333946",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%86%D9%87%D8%B1_%D8%B3%D9%8A%D8%A7%D8%B4%D9%8A%D9%86_%D8%A7%D9%84%D8%AC%D9%84%D9%8A%D8%AF%D9%8A"
+    },
+    {
+      "title": "وضع الأراضي التي احتلتها إسرائيل عام 1967",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q4568059",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%88%D8%B6%D8%B9_%D8%A7%D9%84%D8%A3%D8%B1%D8%A7%D8%B6%D9%8A_%D8%A7%D9%84%D8%AA%D9%8A_%D8%A7%D8%AD%D8%AA%D9%84%D8%AA%D9%87%D8%A7_%D8%A5%D8%B3%D8%B1%D8%A7%D8%A6%D9%8A%D9%84_%D8%B9%D8%A7%D9%85_1967"
+    },
+    {
+      "title": "ولاية حطاي",
+      "sources": [
+        "cat:تصنيف:أقاليم متنازع عليها في آسيا"
+      ],
+      "qid": "Q83274",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%88%D9%84%D8%A7%D9%8A%D8%A9_%D8%AD%D8%B7%D8%A7%D9%8A"
+    },
+    {
+      "title": "إشاعة الخوف",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q5439369",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A5%D8%B4%D8%A7%D8%B9%D8%A9_%D8%A7%D9%84%D8%AE%D9%88%D9%81"
+    },
+    {
+      "title": "إصلاح انتخابي في الولايات المتحدة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q5356425",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A5%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8%D9%8A_%D9%81%D9%8A_%D8%A7%D9%84%D9%88%D9%84%D8%A7%D9%8A%D8%A7%D8%AA_%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%AF%D8%A9"
+    },
+    {
+      "title": "اختزال إلى هتلر",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q161147",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D8%AE%D8%AA%D8%B2%D8%A7%D9%84_%D8%A5%D9%84%D9%89_%D9%87%D8%AA%D9%84%D8%B1"
+    },
+    {
+      "title": "استئثار تنظيمي",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q2408462",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D8%B3%D8%AA%D8%A6%D8%AB%D8%A7%D8%B1_%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A"
+    },
+    {
+      "title": "الاتهام الأحمر",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q7303428",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%A7%D8%AA%D9%87%D8%A7%D9%85_%D8%A7%D9%84%D8%A3%D8%AD%D9%85%D8%B1"
+    },
+    {
+      "title": "التدخل في الانتخابات",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q115113090",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AA%D8%AF%D8%AE%D9%84_%D9%81%D9%8A_%D8%A7%D9%84%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8%D8%A7%D8%AA"
+    },
+    {
+      "title": "الجيريمانديرية في الولايات المتحدة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q16838875",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AC%D9%8A%D8%B1%D9%8A%D9%85%D8%A7%D9%86%D8%AF%D9%8A%D8%B1%D9%8A%D8%A9_%D9%81%D9%8A_%D8%A7%D9%84%D9%88%D9%84%D8%A7%D9%8A%D8%A7%D8%AA_%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%AF%D8%A9"
+    },
+    {
+      "title": "السلطة المختفية وراء العرش",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q1162909",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%B3%D9%84%D8%B7%D8%A9_%D8%A7%D9%84%D9%85%D8%AE%D8%AA%D9%81%D9%8A%D8%A9_%D9%88%D8%B1%D8%A7%D8%A1_%D8%A7%D9%84%D8%B9%D8%B1%D8%B4"
+    },
+    {
+      "title": "باب دوار (سياسة)",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q1256740",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A8%D8%A7%D8%A8_%D8%AF%D9%88%D8%A7%D8%B1_%28%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9%29"
+    },
+    {
+      "title": "تدخل انتخابي أجنبي",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q28456918",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D8%AF%D8%AE%D9%84_%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8%D9%8A_%D8%A3%D8%AC%D9%86%D8%A8%D9%8A"
+    },
+    {
+      "title": "تعارض المصالح",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q211067",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D8%B9%D8%A7%D8%B1%D8%B6_%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D9%84%D8%AD"
+    },
+    {
+      "title": "تلاعب بالنظام",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q2893210",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D9%84%D8%A7%D8%B9%D8%A8_%D8%A8%D8%A7%D9%84%D9%86%D8%B8%D8%A7%D9%85"
+    },
+    {
+      "title": "تهدئة (سياسة)",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q620737",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AA%D9%87%D8%AF%D8%A6%D8%A9_%28%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9%29"
+    },
+    {
+      "title": "جرمندرة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q476310",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D8%B1%D9%85%D9%86%D8%AF%D8%B1%D8%A9"
+    },
+    {
+      "title": "حملة تشويه",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q693026",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AD%D9%85%D9%84%D8%A9_%D8%AA%D8%B4%D9%88%D9%8A%D9%87"
+    },
+    {
+      "title": "حملة سلبية",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q257437",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AD%D9%85%D9%84%D8%A9_%D8%B3%D9%84%D8%A8%D9%8A%D8%A9"
+    },
+    {
+      "title": "خطاب الكراهية",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q653347",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AE%D8%B7%D8%A7%D8%A8_%D8%A7%D9%84%D9%83%D8%B1%D8%A7%D9%87%D9%8A%D8%A9"
+    },
+    {
+      "title": "رقابة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q543",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B1%D9%82%D8%A7%D8%A8%D8%A9"
+    },
+    {
+      "title": "سيطرة على الدولة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q7603664",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B3%D9%8A%D8%B7%D8%B1%D8%A9_%D8%B9%D9%84%D9%89_%D8%A7%D9%84%D8%AF%D9%88%D9%84%D8%A9"
+    },
+    {
+      "title": "فنلدة",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q823175",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%81%D9%86%D9%84%D8%AF%D8%A9"
+    },
+    {
+      "title": "متاجرة بالتصويت",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q7942137",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AA%D8%A7%D8%AC%D8%B1%D8%A9_%D8%A8%D8%A7%D9%84%D8%AA%D8%B5%D9%88%D9%8A%D8%AA"
+    },
+    {
+      "title": "محاباة (فساد)",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q161165",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D8%A7%D8%A8%D8%A7%D8%A9_%28%D9%81%D8%B3%D8%A7%D8%AF%29"
+    },
+    {
+      "title": "محاباة الأصدقاء",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q10964327",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D8%A7%D8%A8%D8%A7%D8%A9_%D8%A7%D9%84%D8%A3%D8%B5%D8%AF%D9%82%D8%A7%D8%A1"
+    },
+    {
+      "title": "مظاهرات رسمية",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q5588655",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%B8%D8%A7%D9%87%D8%B1%D8%A7%D8%AA_%D8%B1%D8%B3%D9%85%D9%8A%D8%A9"
+    },
+    {
+      "title": "مماطلة سياسية",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q624036",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D9%85%D8%A7%D8%B7%D9%84%D8%A9_%D8%B3%D9%8A%D8%A7%D8%B3%D9%8A%D8%A9"
+    },
+    {
+      "title": "منظف (جريمة)",
+      "sources": [
+        "cat:تصنيف:ممارسات سياسية متنازع عليها أخلاقيا"
+      ],
+      "qid": "Q3073127",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D9%86%D8%B8%D9%81_%28%D8%AC%D8%B1%D9%8A%D9%85%D8%A9%29"
+    },
+    {
+      "title": "استشراب",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q170050",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%A7%D8%B3%D8%AA%D8%B4%D8%B1%D8%A7%D8%A8"
+    },
+    {
+      "title": "جيش أبي بكر الصديق السلفي",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q12206673",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%AC%D9%8A%D8%B4_%D8%A3%D8%A8%D9%8A_%D8%A8%D9%83%D8%B1_%D8%A7%D9%84%D8%B5%D8%AF%D9%8A%D9%82_%D8%A7%D9%84%D8%B3%D9%84%D9%81%D9%8A"
+    },
+    {
+      "title": "سيد عسران",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q138779485",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D8%B3%D9%8A%D8%AF_%D8%B9%D8%B3%D8%B1%D8%A7%D9%86"
+    },
+    {
+      "title": "مؤتمر لوزان",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q2261995",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%A4%D8%AA%D9%85%D8%B1_%D9%84%D9%88%D8%B2%D8%A7%D9%86"
+    },
+    {
+      "title": "محمد العوين",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q12239874",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D9%85%D8%AF_%D8%A7%D9%84%D8%B9%D9%88%D9%8A%D9%86"
+    },
+    {
+      "title": "محمد بويلف",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q12240312",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D9%85%D8%AF_%D8%A8%D9%88%D9%8A%D9%84%D9%81"
+    },
+    {
+      "title": "محمد عبد اللطيف (وزير)",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q126995618",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D9%84%D8%B7%D9%8A%D9%81_%28%D9%88%D8%B2%D9%8A%D8%B1%29"
+    },
+    {
+      "title": "محمد مهدي الحكيم",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q12241034",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D9%85%D8%AF_%D9%85%D9%87%D8%AF%D9%8A_%D8%A7%D9%84%D8%AD%D9%83%D9%8A%D9%85"
+    },
+    {
+      "title": "محنشة",
+      "sources": [
+        "cat:تصنيف:مقالات متنازع عليها"
+      ],
+      "qid": "Q16664232",
+      "source_edition": "ar",
+      "url": "https://ar.wikipedia.org/wiki/%D9%85%D8%AD%D9%86%D8%B4%D8%A9"
+    }
+  ]
+}

@@ -1,0 +1,1347 @@
+{
+  "source_edition": "ja",
+  "wiki": "ja.wikipedia.org",
+  "list_page": null,
+  "dispute_categories": [
+    "Category:領有権問題",
+    "Category:日本の領有権問題",
+    "Category:独立運動",
+    "Category:領土帰属の国際判例"
+  ],
+  "n_candidates": 148,
+  "n_with_qid": 145,
+  "candidates": [
+    {
+      "title": "領土問題",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1078001",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E9%A0%98%E5%9C%9F%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "アガシェ地帯紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q580961",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%AC%E3%82%B7%E3%82%A7%E5%9C%B0%E5%B8%AF%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "沿ドニエストル共和国",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q907112",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B2%BF%E3%83%89%E3%83%8B%E3%82%A8%E3%82%B9%E3%83%88%E3%83%AB%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "オセチア・イングーシ紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q2382909",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%BB%E3%83%81%E3%82%A2%E3%83%BB%E3%82%A4%E3%83%B3%E3%82%B0%E3%83%BC%E3%82%B7%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "乾岔子島事件",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q11370625",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B9%BE%E5%B2%94%E5%AD%90%E5%B3%B6%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "間島問題",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q11655420",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E9%96%93%E5%B3%B6%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "北千島・南樺太の帰属問題",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q135640700",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8C%97%E5%8D%83%E5%B3%B6%E3%83%BB%E5%8D%97%E6%A8%BA%E5%A4%AA%E3%81%AE%E5%B8%B0%E5%B1%9E%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "2022年キルギス・タジキスタン国境紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q114005999",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/2022%E5%B9%B4%E3%82%AD%E3%83%AB%E3%82%AE%E3%82%B9%E3%83%BB%E3%82%BF%E3%82%B8%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%B3%E5%9B%BD%E5%A2%83%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "グリーンライン (キプロス)",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q116970",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B0%E3%83%AA%E3%83%BC%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3_%28%E3%82%AD%E3%83%97%E3%83%AD%E3%82%B9%29"
+    },
+    {
+      "title": "係争地",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q11545840",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%BF%82%E4%BA%89%E5%9C%B0"
+    },
+    {
+      "title": "江東六十四屯",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q618995",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B1%9F%E6%9D%B1%E5%85%AD%E5%8D%81%E5%9B%9B%E5%B1%AF"
+    },
+    {
+      "title": "白主土城",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q137778762",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%99%BD%E4%B8%BB%E5%9C%9F%E5%9F%8E"
+    },
+    {
+      "title": "水域",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q15324",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B0%B4%E5%9F%9F"
+    },
+    {
+      "title": "スヴァールバル条約",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q461891",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%B4%E3%82%A1%E3%83%BC%E3%83%AB%E3%83%90%E3%83%AB%E6%9D%A1%E7%B4%84"
+    },
+    {
+      "title": "スヴァールバル諸島",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q25231",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%B4%E3%82%A1%E3%83%BC%E3%83%AB%E3%83%90%E3%83%AB%E8%AB%B8%E5%B3%B6"
+    },
+    {
+      "title": "スウェインズ島",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1128488",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%A6%E3%82%A7%E3%82%A4%E3%83%B3%E3%82%BA%E5%B3%B6"
+    },
+    {
+      "title": "代表なき国家民族機構",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q215613",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%BB%A3%E8%A1%A8%E3%81%AA%E3%81%8D%E5%9B%BD%E5%AE%B6%E6%B0%91%E6%97%8F%E6%A9%9F%E6%A7%8B"
+    },
+    {
+      "title": "台湾民主基金会",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q4449821",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E6%B0%91%E4%B8%BB%E5%9F%BA%E9%87%91%E4%BC%9A"
+    },
+    {
+      "title": "中沙諸島",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q197893",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B8%AD%E6%B2%99%E8%AB%B8%E5%B3%B6"
+    },
+    {
+      "title": "中ソ国境紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q244932",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B8%AD%E3%82%BD%E5%9B%BD%E5%A2%83%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "ドイツ・ポーランド国境条約",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q650979",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%89%E3%82%A4%E3%83%84%E3%83%BB%E3%83%9D%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E5%9B%BD%E5%A2%83%E6%9D%A1%E7%B4%84"
+    },
+    {
+      "title": "トルコ海峡危機",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q16499676",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%AB%E3%82%B3%E6%B5%B7%E5%B3%A1%E5%8D%B1%E6%A9%9F"
+    },
+    {
+      "title": "南極条約",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q182814",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%97%E6%A5%B5%E6%9D%A1%E7%B4%84"
+    },
+    {
+      "title": "日ソ国境紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q696389",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%97%A5%E3%82%BD%E5%9B%BD%E5%A2%83%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "排他的経済水域",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q202008",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%8E%92%E4%BB%96%E7%9A%84%E7%B5%8C%E6%B8%88%E6%B0%B4%E5%9F%9F"
+    },
+    {
+      "title": "バルカン戦争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q165725",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%AB%E3%82%AB%E3%83%B3%E6%88%A6%E4%BA%89"
+    },
+    {
+      "title": "ピーナッツ・ホール",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q15943124",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%94%E3%83%BC%E3%83%8A%E3%83%83%E3%83%84%E3%83%BB%E3%83%9B%E3%83%BC%E3%83%AB"
+    },
+    {
+      "title": "東エルサレム",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q212938",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E3%82%A8%E3%83%AB%E3%82%B5%E3%83%AC%E3%83%A0"
+    },
+    {
+      "title": "ビル・タウィール",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q620634",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%93%E3%83%AB%E3%83%BB%E3%82%BF%E3%82%A6%E3%82%A3%E3%83%BC%E3%83%AB"
+    },
+    {
+      "title": "ファルハドダム",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q2855719",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%83%AB%E3%83%8F%E3%83%89%E3%83%80%E3%83%A0"
+    },
+    {
+      "title": "ブラックヒルズ",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q250937",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E3%83%92%E3%83%AB%E3%82%BA"
+    },
+    {
+      "title": "プントランド・ソマリランド紛争",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1545857",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%B3%E3%83%88%E3%83%A9%E3%83%B3%E3%83%89%E3%83%BB%E3%82%BD%E3%83%9E%E3%83%AA%E3%83%A9%E3%83%B3%E3%83%89%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "北西航路",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q81136",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8C%97%E8%A5%BF%E8%88%AA%E8%B7%AF"
+    },
+    {
+      "title": "北極海会議",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1777483",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8C%97%E6%A5%B5%E6%B5%B7%E4%BC%9A%E8%AD%B0"
+    },
+    {
+      "title": "マーヒル",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1322424",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%BC%E3%83%92%E3%83%AB"
+    },
+    {
+      "title": "民族統一主義",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q182274",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B0%91%E6%97%8F%E7%B5%B1%E4%B8%80%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "無人地帯",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q773403",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%84%A1%E4%BA%BA%E5%9C%B0%E5%B8%AF"
+    },
+    {
+      "title": "琉球の地位未定論",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": null,
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%90%89%E7%90%83%E3%81%AE%E5%9C%B0%E4%BD%8D%E6%9C%AA%E5%AE%9A%E8%AB%96"
+    },
+    {
+      "title": "ロッコール島",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q206137",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%83%E3%82%B3%E3%83%BC%E3%83%AB%E5%B3%B6"
+    },
+    {
+      "title": "ロモノソフ海嶺",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q1166029",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%A2%E3%83%8E%E3%82%BD%E3%83%95%E6%B5%B7%E5%B6%BA"
+    },
+    {
+      "title": "ワジハルファ突出",
+      "sources": [
+        "cat:Category:領有権問題"
+      ],
+      "qid": "Q943214",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%AF%E3%82%B8%E3%83%8F%E3%83%AB%E3%83%95%E3%82%A1%E7%AA%81%E5%87%BA"
+    },
+    {
+      "title": "日本の領土問題",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q20982973",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E3%81%AE%E9%A0%98%E5%9C%9F%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "Voluntary Agency Network of Korea",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q491058",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/Voluntary_Agency_Network_of_Korea"
+    },
+    {
+      "title": "一般命令第一号",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q5532082",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B8%80%E8%88%AC%E5%91%BD%E4%BB%A4%E7%AC%AC%E4%B8%80%E5%8F%B7"
+    },
+    {
+      "title": "ヴァン・フリート特命報告書",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q7314117",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%BB%E3%83%95%E3%83%AA%E3%83%BC%E3%83%88%E7%89%B9%E5%91%BD%E5%A0%B1%E5%91%8A%E6%9B%B8"
+    },
+    {
+      "title": "応永の外寇",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q701121",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%BF%9C%E6%B0%B8%E3%81%AE%E5%A4%96%E5%AF%87"
+    },
+    {
+      "title": "2005年の沖縄近海における台湾漁船の抗議行動",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11186577",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/2005%E5%B9%B4%E3%81%AE%E6%B2%96%E7%B8%84%E8%BF%91%E6%B5%B7%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%8F%B0%E6%B9%BE%E6%BC%81%E8%88%B9%E3%81%AE%E6%8A%97%E8%AD%B0%E8%A1%8C%E5%8B%95"
+    },
+    {
+      "title": "樺太",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q7792",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%A8%BA%E5%A4%AA"
+    },
+    {
+      "title": "国境対馬振興特別措置法案",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11420678",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%9B%BD%E5%A2%83%E5%AF%BE%E9%A6%AC%E6%8C%AF%E8%88%88%E7%89%B9%E5%88%A5%E6%8E%AA%E7%BD%AE%E6%B3%95%E6%A1%88"
+    },
+    {
+      "title": "山東問題",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q2984056",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%B1%B1%E6%9D%B1%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "十島村 (鹿児島県大島郡1946年)",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q140379398",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%81%E5%B3%B6%E6%9D%91_%28%E9%B9%BF%E5%85%90%E5%B3%B6%E7%9C%8C%E5%A4%A7%E5%B3%B6%E9%83%A11946%E5%B9%B4%29"
+    },
+    {
+      "title": "白樺ガス田",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q717331",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%99%BD%E6%A8%BA%E3%82%AC%E3%82%B9%E7%94%B0"
+    },
+    {
+      "title": "SCAPIN",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11242653",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/SCAPIN"
+    },
+    {
+      "title": "全国樺太連盟",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q10891532",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%85%A8%E5%9B%BD%E6%A8%BA%E5%A4%AA%E9%80%A3%E7%9B%9F"
+    },
+    {
+      "title": "石島 (韓国)",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11585590",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%9F%B3%E5%B3%B6_%28%E9%9F%93%E5%9B%BD%29"
+    },
+    {
+      "title": "第一列島線",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q5454212",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AC%AC%E4%B8%80%E5%88%97%E5%B3%B6%E7%B7%9A"
+    },
+    {
+      "title": "竹島",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q20317",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AB%B9%E5%B3%B6"
+    },
+    {
+      "title": "竹島一件",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11599108",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AB%B9%E5%B3%B6%E4%B8%80%E4%BB%B6"
+    },
+    {
+      "title": "竹島の日",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q624296",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AB%B9%E5%B3%B6%E3%81%AE%E6%97%A5"
+    },
+    {
+      "title": "「竹島の日」記念式典",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11256380",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%80%8C%E7%AB%B9%E5%B3%B6%E3%81%AE%E6%97%A5%E3%80%8D%E8%A8%98%E5%BF%B5%E5%BC%8F%E5%85%B8"
+    },
+    {
+      "title": "『竹島の日』を考え直す会",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q17209077",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%80%8E%E7%AB%B9%E5%B3%B6%E3%81%AE%E6%97%A5%E3%80%8F%E3%82%92%E8%80%83%E3%81%88%E7%9B%B4%E3%81%99%E4%BC%9A"
+    },
+    {
+      "title": "竹島外一島",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11599113",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AB%B9%E5%B3%B6%E5%A4%96%E4%B8%80%E5%B3%B6"
+    },
+    {
+      "title": "竹島問題",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q488457",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AB%B9%E5%B3%B6%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "千島歯舞諸島居住者連盟",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11405464",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%83%E5%B3%B6%E6%AD%AF%E8%88%9E%E8%AB%B8%E5%B3%B6%E5%B1%85%E4%BD%8F%E8%80%85%E9%80%A3%E7%9B%9F"
+    },
+    {
+      "title": "千島列島",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q80389",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%83%E5%B3%B6%E5%88%97%E5%B3%B6"
+    },
+    {
+      "title": "対馬島の日",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11232306",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%AF%BE%E9%A6%AC%E5%B3%B6%E3%81%AE%E6%97%A5"
+    },
+    {
+      "title": "対馬島返還要求決議案",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11458214",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%AF%BE%E9%A6%AC%E5%B3%B6%E8%BF%94%E9%82%84%E8%A6%81%E6%B1%82%E6%B1%BA%E8%AD%B0%E6%A1%88"
+    },
+    {
+      "title": "対馬フォーラム",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11458202",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%AF%BE%E9%A6%AC%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A9%E3%83%A0"
+    },
+    {
+      "title": "対馬フォーラム実行委員会",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11458204",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%AF%BE%E9%A6%AC%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A9%E3%83%A0%E5%AE%9F%E8%A1%8C%E5%A7%94%E5%93%A1%E4%BC%9A"
+    },
+    {
+      "title": "トカラ列島の本土復帰",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q139694598",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%88%E3%82%AB%E3%83%A9%E5%88%97%E5%B3%B6%E3%81%AE%E6%9C%AC%E5%9C%9F%E5%BE%A9%E5%B8%B0"
+    },
+    {
+      "title": "独島警備隊",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11571529",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%8B%AC%E5%B3%B6%E8%AD%A6%E5%82%99%E9%9A%8A"
+    },
+    {
+      "title": "独島ヘリポート",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q12593140",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%8B%AC%E5%B3%B6%E3%83%98%E3%83%AA%E3%83%9D%E3%83%BC%E3%83%88"
+    },
+    {
+      "title": "中井養三郎",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11362963",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B8%AD%E4%BA%95%E9%A4%8A%E4%B8%89%E9%83%8E"
+    },
+    {
+      "title": "南極における領有権主張の一覧",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q783953",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%97%E6%A5%B5%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E9%A0%98%E6%9C%89%E6%A8%A9%E4%B8%BB%E5%BC%B5%E3%81%AE%E4%B8%80%E8%A6%A7"
+    },
+    {
+      "title": "日中中間線",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11504779",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%97%A5%E4%B8%AD%E4%B8%AD%E9%96%93%E7%B7%9A"
+    },
+    {
+      "title": "日本国との平和条約",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q392541",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E5%9B%BD%E3%81%A8%E3%81%AE%E5%B9%B3%E5%92%8C%E6%9D%A1%E7%B4%84"
+    },
+    {
+      "title": "日本の排他的経済水域",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11505956",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E3%81%AE%E6%8E%92%E4%BB%96%E7%9A%84%E7%B5%8C%E6%B8%88%E6%B0%B4%E5%9F%9F"
+    },
+    {
+      "title": "東シナ海ガス田問題",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q6112504",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E3%82%B7%E3%83%8A%E6%B5%B7%E3%82%AC%E3%82%B9%E7%94%B0%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "活貧団",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q24889737",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B4%BB%E8%B2%A7%E5%9B%A3"
+    },
+    {
+      "title": "古釜布",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q28692725",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8F%A4%E9%87%9C%E5%B8%83"
+    },
+    {
+      "title": "北方領土問題",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q389717",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8C%97%E6%96%B9%E9%A0%98%E5%9C%9F%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "マッカーサー・ライン",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q11240049",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%83%E3%82%AB%E3%83%BC%E3%82%B5%E3%83%BC%E3%83%BB%E3%83%A9%E3%82%A4%E3%83%B3"
+    },
+    {
+      "title": "大和雪原",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q4456199",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%92%8C%E9%9B%AA%E5%8E%9F"
+    },
+    {
+      "title": "ラスク書簡",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q492092",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%A9%E3%82%B9%E3%82%AF%E6%9B%B8%E7%B0%A1"
+    },
+    {
+      "title": "李承晩ライン",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q482871",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%8E%E6%89%BF%E6%99%A9%E3%83%A9%E3%82%A4%E3%83%B3"
+    },
+    {
+      "title": "領土・主権対策企画調整室",
+      "sources": [
+        "cat:Category:日本の領有権問題"
+      ],
+      "qid": "Q24863121",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E9%A0%98%E5%9C%9F%E3%83%BB%E4%B8%BB%E6%A8%A9%E5%AF%BE%E7%AD%96%E4%BC%81%E7%94%BB%E8%AA%BF%E6%95%B4%E5%AE%A4"
+    },
+    {
+      "title": "独立",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q37055",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B"
+    },
+    {
+      "title": "アイルランドのナショナリズム",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2021987",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%A4%E3%83%AB%E3%83%A9%E3%83%B3%E3%83%89%E3%81%AE%E3%83%8A%E3%82%B7%E3%83%A7%E3%83%8A%E3%83%AA%E3%82%BA%E3%83%A0"
+    },
+    {
+      "title": "アジア・アフリカ諸国の独立年表",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q11283318",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%B8%E3%82%A2%E3%83%BB%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E8%AB%B8%E5%9B%BD%E3%81%AE%E7%8B%AC%E7%AB%8B%E5%B9%B4%E8%A1%A8"
+    },
+    {
+      "title": "アチェ独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q11283746",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%81%E3%82%A7%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "アフリカの年",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q387647",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E3%81%AE%E5%B9%B4"
+    },
+    {
+      "title": "アメリカ大陸の脱植民地化",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1183679",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E5%A4%A7%E9%99%B8%E3%81%AE%E8%84%B1%E6%A4%8D%E6%B0%91%E5%9C%B0%E5%8C%96"
+    },
+    {
+      "title": "アルジェ動乱",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1127451",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%AB%E3%82%B8%E3%82%A7%E5%8B%95%E4%B9%B1"
+    },
+    {
+      "title": "アルジェリア戦争",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q200790",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%AB%E3%82%B8%E3%82%A7%E3%83%AA%E3%82%A2%E6%88%A6%E4%BA%89"
+    },
+    {
+      "title": "イスラム教徒ミンダナオ自治地域",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q13708",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A4%E3%82%B9%E3%83%A9%E3%83%A0%E6%95%99%E5%BE%92%E3%83%9F%E3%83%B3%E3%83%80%E3%83%8A%E3%82%AA%E8%87%AA%E6%B2%BB%E5%9C%B0%E5%9F%9F"
+    },
+    {
+      "title": "インドネシア独立戦争",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1332160",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A4%E3%83%B3%E3%83%89%E3%83%8D%E3%82%B7%E3%82%A2%E7%8B%AC%E7%AB%8B%E6%88%A6%E4%BA%89"
+    },
+    {
+      "title": "エジプト革命 (1919年)",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1993171",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A8%E3%82%B8%E3%83%97%E3%83%88%E9%9D%A9%E5%91%BD_%281919%E5%B9%B4%29"
+    },
+    {
+      "title": "大島大誓言",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q105550071",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%B3%B6%E5%A4%A7%E8%AA%93%E8%A8%80"
+    },
+    {
+      "title": "カストロ主義",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1049968",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%82%B9%E3%83%88%E3%83%AD%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "カム反乱",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q11294799",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%A0%E5%8F%8D%E4%B9%B1"
+    },
+    {
+      "title": "広東独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q48898160",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%BA%83%E6%9D%B1%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "ケベック独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1321476",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B1%E3%83%99%E3%83%83%E3%82%AF%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "コルシカ民族解放戦線",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1138646",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%AB%E3%82%B7%E3%82%AB%E6%B0%91%E6%97%8F%E8%A7%A3%E6%94%BE%E6%88%A6%E7%B7%9A"
+    },
+    {
+      "title": "自治・独立運動旗の一覧",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q3253944",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E8%87%AA%E6%B2%BB%E3%83%BB%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95%E6%97%97%E3%81%AE%E4%B8%80%E8%A6%A7"
+    },
+    {
+      "title": "自由パプア運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q559673",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E8%87%AA%E7%94%B1%E3%83%91%E3%83%97%E3%82%A2%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "新アフリカ共和国",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2458580",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%96%B0%E3%82%A2%E3%83%95%E3%83%AA%E3%82%AB%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "深南部 (タイ)",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2478838",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%B7%B1%E5%8D%97%E9%83%A8_%28%E3%82%BF%E3%82%A4%29"
+    },
+    {
+      "title": "スコットランド独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q891905",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%B3%E3%83%83%E3%83%88%E3%83%A9%E3%83%B3%E3%83%89%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "セルビア蜂起",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2092429",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%BB%E3%83%AB%E3%83%93%E3%82%A2%E8%9C%82%E8%B5%B7"
+    },
+    {
+      "title": "第二バーモント共和国",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2590465",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%AC%AC%E4%BA%8C%E3%83%90%E3%83%BC%E3%83%A2%E3%83%B3%E3%83%88%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "台湾独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q708772",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "脱植民地化",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q230533",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E8%84%B1%E6%A4%8D%E6%B0%91%E5%9C%B0%E5%8C%96"
+    },
+    {
+      "title": "タミル・イーラム解放のトラ",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q80312",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%BF%E3%83%9F%E3%83%AB%E3%83%BB%E3%82%A4%E3%83%BC%E3%83%A9%E3%83%A0%E8%A7%A3%E6%94%BE%E3%81%AE%E3%83%88%E3%83%A9"
+    },
+    {
+      "title": "チュシ・ガンドゥク",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1090018",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%81%E3%83%A5%E3%82%B7%E3%83%BB%E3%82%AC%E3%83%B3%E3%83%89%E3%82%A5%E3%82%AF"
+    },
+    {
+      "title": "独立主張のある地域一覧",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1142999",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E4%B8%BB%E5%BC%B5%E3%81%AE%E3%81%82%E3%82%8B%E5%9C%B0%E5%9F%9F%E4%B8%80%E8%A6%A7"
+    },
+    {
+      "title": "南部運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q6130720",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E5%8D%97%E9%83%A8%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "西パプア共和国",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2562456",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E8%A5%BF%E3%83%91%E3%83%97%E3%82%A2%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "バスク紛争",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1021158",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%90%E3%82%B9%E3%82%AF%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "パダーニャ連邦",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q505632",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%80%E3%83%BC%E3%83%8B%E3%83%A3%E9%80%A3%E9%82%A6"
+    },
+    {
+      "title": "パプア紛争",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1893456",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%97%E3%82%A2%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "ハワイ独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q839030",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%AF%E3%82%A4%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "バンサモロ共和国",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q14897108",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%B3%E3%82%B5%E3%83%A2%E3%83%AD%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "バンサモロ自治地域",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q806550",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%B3%E3%82%B5%E3%83%A2%E3%83%AD%E8%87%AA%E6%B2%BB%E5%9C%B0%E5%9F%9F"
+    },
+    {
+      "title": "バンヌー宣言",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q30694496",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%90%E3%83%B3%E3%83%8C%E3%83%BC%E5%AE%A3%E8%A8%80"
+    },
+    {
+      "title": "東ティモール紛争",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q152848",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E3%83%86%E3%82%A3%E3%83%A2%E3%83%BC%E3%83%AB%E7%B4%9B%E4%BA%89"
+    },
+    {
+      "title": "東トルキスタン情報センター",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q4026929",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E3%83%88%E3%83%AB%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%B3%E6%83%85%E5%A0%B1%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+    },
+    {
+      "title": "東トルキスタン独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1339134",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E3%83%88%E3%83%AB%E3%82%AD%E3%82%B9%E3%82%BF%E3%83%B3%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "フィンランドの独立",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q27916528",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A3%E3%83%B3%E3%83%A9%E3%83%B3%E3%83%89%E3%81%AE%E7%8B%AC%E7%AB%8B"
+    },
+    {
+      "title": "ベルギー独立革命",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q223933",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%99%E3%83%AB%E3%82%AE%E3%83%BC%E7%8B%AC%E7%AB%8B%E9%9D%A9%E5%91%BD"
+    },
+    {
+      "title": "香港独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q113301",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "満洲国政府 (政治団体)",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q5158758",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E6%BA%80%E6%B4%B2%E5%9B%BD%E6%94%BF%E5%BA%9C_%28%E6%94%BF%E6%B2%BB%E5%9B%A3%E4%BD%93%29"
+    },
+    {
+      "title": "モン国民解放軍",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1451595",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%A2%E3%83%B3%E5%9B%BD%E6%B0%91%E8%A7%A3%E6%94%BE%E8%BB%8D"
+    },
+    {
+      "title": "ヤマトホテル事件",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q12486623",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%A4%E3%83%9E%E3%83%88%E3%83%9B%E3%83%86%E3%83%AB%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "ラカイン族の民族運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": null,
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%A9%E3%82%AB%E3%82%A4%E3%83%B3%E6%97%8F%E3%81%AE%E6%B0%91%E6%97%8F%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "ラコタ共和国",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q1099144",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%A9%E3%82%B3%E3%82%BF%E5%85%B1%E5%92%8C%E5%9B%BD"
+    },
+    {
+      "title": "琉球救国運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q118109653",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%90%89%E7%90%83%E6%95%91%E5%9B%BD%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "琉球独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q905599",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%90%89%E7%90%83%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "琉球民族独立総合研究学会",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q15108702",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E7%90%89%E7%90%83%E6%B0%91%E6%97%8F%E7%8B%AC%E7%AB%8B%E7%B7%8F%E5%90%88%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%BC%9A"
+    },
+    {
+      "title": "両シチリア独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q7570052",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E4%B8%A1%E3%82%B7%E3%83%81%E3%83%AA%E3%82%A2%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "レズギスタン",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q2365056",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%AC%E3%82%BA%E3%82%AE%E3%82%B9%E3%82%BF%E3%83%B3"
+    },
+    {
+      "title": "エストニア民族主義",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q5401671",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%A8%E3%82%B9%E3%83%88%E3%83%8B%E3%82%A2%E6%B0%91%E6%97%8F%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "カレン族の独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q18389900",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AC%E3%83%B3%E6%97%8F%E3%81%AE%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "ミャンマーの独立運動",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": null,
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%9F%E3%83%A3%E3%83%B3%E3%83%9E%E3%83%BC%E3%81%AE%E7%8B%AC%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "西トーゴランド",
+      "sources": [
+        "cat:Category:独立運動"
+      ],
+      "qid": "Q65079691",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E8%A5%BF%E3%83%88%E3%83%BC%E3%82%B4%E3%83%A9%E3%83%B3%E3%83%89"
+    },
+    {
+      "title": "クリッパートン島事件",
+      "sources": [
+        "cat:Category:領土帰属の国際判例"
+      ],
+      "qid": "Q11299380",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%AA%E3%83%83%E3%83%91%E3%83%BC%E3%83%88%E3%83%B3%E5%B3%B6%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "パルマス島事件",
+      "sources": [
+        "cat:Category:領土帰属の国際判例"
+      ],
+      "qid": "Q1152207",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%AB%E3%83%9E%E3%82%B9%E5%B3%B6%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "プレア・ビヘア寺院事件",
+      "sources": [
+        "cat:Category:領土帰属の国際判例"
+      ],
+      "qid": "Q11335783",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AC%E3%82%A2%E3%83%BB%E3%83%93%E3%83%98%E3%82%A2%E5%AF%BA%E9%99%A2%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "マンキエ・エクレオ事件",
+      "sources": [
+        "cat:Category:領土帰属の国際判例"
+      ],
+      "qid": "Q16934049",
+      "source_edition": "ja",
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%B3%E3%82%AD%E3%82%A8%E3%83%BB%E3%82%A8%E3%82%AF%E3%83%AC%E3%82%AA%E4%BA%8B%E4%BB%B6"
+    }
+  ]
+}

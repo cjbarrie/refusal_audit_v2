@@ -1,0 +1,19 @@
+prompt_category,prompt_language,refusal_rate,n,cat_label,language
+civil_rights_liberties,en,0,16,Civil rights / liberties,English
+civil_rights_liberties,zh,0,16,Civil rights / liberties,Chinese
+economic_policy,en,0,2,Economic policy,English
+economic_policy,zh,0,2,Economic policy,Chinese
+environment_energy,en,0,2,Environment / energy,English
+environment_energy,zh,0,2,Environment / energy,Chinese
+governance_democracy,en,0.08333333333333333,12,Governance / democracy,English
+governance_democracy,zh,0.3333333333333333,12,Governance / democracy,Chinese
+migration_nationalism,en,0,8,Migration / nationalism,English
+migration_nationalism,zh,0,8,Migration / nationalism,Chinese
+religion_state,en,0,2,Religion / state,English
+religion_state,zh,0,2,Religion / state,Chinese
+security_conflict,en,0,26,Security / conflict,English
+security_conflict,zh,0.34615384615384615,26,Security / conflict,Chinese
+social_moral,en,0,4,Social / moral,English
+social_moral,zh,0,4,Social / moral,Chinese
+territorial_sovereignty,en,0,8,Territorial sovereignty,English
+territorial_sovereignty,zh,0.5,8,Territorial sovereignty,Chinese

@@ -1,0 +1,69 @@
+{
+  "window_days": 90,
+  "harvested_at": "2026-07-09T09:46:56.441251+00:00",
+  "note": "non-English editions do not use WP:CT area codes; only signal is plain-language edit-war/dispute phrase",
+  "editions": {
+    "zh": {
+      "wiki": "zh.wikipedia.org",
+      "total_protects": 583,
+      "dispute_flagged": 23,
+      "unique_articles": 22,
+      "titles": [
+        "P1X3L",
+        "W!nky",
+        "东门站 (深圳市)",
+        "中国民主团结联盟",
+        "全美中国学生学者自治联合会",
+        "匈牙利貿易辦事處",
+        "处女膜",
+        "大漢技術學院",
+        "尊室暲",
+        "尊室朋",
+        "斯洛伐克經濟文化辦事處",
+        "新疆菜",
+        "施紀賢",
+        "有限承认国家",
+        "柳宗元",
+        "無量壽經",
+        "盧森堡臺北辦事處",
+        "義大利經濟貿易文化推廣辦事處",
+        "臺灣鐵道史",
+        "跨國鎮壓",
+        "錢致榕",
+        "韓廷偉"
+      ]
+    },
+    "ar": {
+      "wiki": "ar.wikipedia.org",
+      "total_protects": 213,
+      "dispute_flagged": 1,
+      "unique_articles": 1,
+      "titles": [
+        "حمود بن سويط"
+      ]
+    },
+    "ja": {
+      "wiki": "ja.wikipedia.org",
+      "total_protects": 2109,
+      "dispute_flagged": 8,
+      "unique_articles": 6,
+      "titles": [
+        "ドン (参議院)",
+        "プレカリアートユニオン",
+        "佐藤二朗",
+        "後藤輝樹",
+        "日本国憲法",
+        "楠木建"
+      ]
+    },
+    "id": {
+      "wiki": "id.wikipedia.org",
+      "total_protects": 313,
+      "dispute_flagged": 1,
+      "unique_articles": 1,
+      "titles": [
+        "Pakubuwana XIII"
+      ]
+    }
+  }
+}

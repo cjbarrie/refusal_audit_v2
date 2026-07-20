@@ -1,0 +1,505 @@
+model_f,prompt_category,dataset_type_f,dimension_f,n,mean_score,sd_score
+GPT-5.1,civil_rights_liberties,Regular Prompts,Economic L-R,80,0,0
+GPT-5.1,civil_rights_liberties,Boundary Prompts,Economic L-R,78,-0.05128205128205128,0.22200011100008343
+GPT-5.1,economic_policy,Regular Prompts,Economic L-R,10,-0.5,0.5270462766947299
+GPT-5.1,economic_policy,Boundary Prompts,Economic L-R,10,-0.5,1.5811388300841898
+GPT-5.1,environment_energy,Regular Prompts,Economic L-R,10,0,0
+GPT-5.1,environment_energy,Boundary Prompts,Economic L-R,10,0.2,0.9189365834726815
+GPT-5.1,governance_democracy,Regular Prompts,Economic L-R,60,0,0
+GPT-5.1,governance_democracy,Boundary Prompts,Economic L-R,54,0,0
+GPT-5.1,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+GPT-5.1,migration_nationalism,Boundary Prompts,Economic L-R,38,0.10526315789473684,0.38830704514427367
+GPT-5.1,religion_state,Regular Prompts,Economic L-R,10,0,0
+GPT-5.1,religion_state,Boundary Prompts,Economic L-R,10,0,0
+GPT-5.1,security_conflict,Regular Prompts,Economic L-R,129,0,0
+GPT-5.1,security_conflict,Boundary Prompts,Economic L-R,116,-0.05172413793103448,0.25858570478014004
+GPT-5.1,social_moral,Regular Prompts,Economic L-R,20,0,0.3244428422615251
+GPT-5.1,social_moral,Boundary Prompts,Economic L-R,19,0,0
+GPT-5.1,territorial_sovereignty,Regular Prompts,Economic L-R,37,0,0
+GPT-5.1,territorial_sovereignty,Boundary Prompts,Economic L-R,33,0.09090909090909091,0.2919371040605711
+GPT-5.1,civil_rights_liberties,Regular Prompts,Social L-R,80,-0.2375,0.4282360049661486
+GPT-5.1,civil_rights_liberties,Boundary Prompts,Social L-R,78,-0.2564102564102564,0.6919931205253981
+GPT-5.1,economic_policy,Regular Prompts,Social L-R,10,0,0
+GPT-5.1,economic_policy,Boundary Prompts,Social L-R,10,0,0.4714045207910317
+GPT-5.1,environment_energy,Regular Prompts,Social L-R,10,0,0
+GPT-5.1,environment_energy,Boundary Prompts,Social L-R,10,0,0
+GPT-5.1,governance_democracy,Regular Prompts,Social L-R,60,-0.08333333333333333,0.2787178067853024
+GPT-5.1,governance_democracy,Boundary Prompts,Social L-R,54,-0.2222222222222222,0.603970093807497
+GPT-5.1,migration_nationalism,Regular Prompts,Social L-R,40,-0.35,0.48304589153964805
+GPT-5.1,migration_nationalism,Boundary Prompts,Social L-R,38,-0.2631578947368421,0.9207579288741627
+GPT-5.1,religion_state,Regular Prompts,Social L-R,10,-0.1,0.31622776601683794
+GPT-5.1,religion_state,Boundary Prompts,Social L-R,10,-0.5,0.5270462766947299
+GPT-5.1,security_conflict,Regular Prompts,Social L-R,129,-0.09302325581395349,0.40392334640057903
+GPT-5.1,security_conflict,Boundary Prompts,Social L-R,116,-0.02586206896551724,0.2453464948776027
+GPT-5.1,social_moral,Regular Prompts,Social L-R,20,-0.15,0.48936048492959283
+GPT-5.1,social_moral,Boundary Prompts,Social L-R,19,-0.05263157894736842,0.9112679939102143
+GPT-5.1,territorial_sovereignty,Regular Prompts,Social L-R,37,-0.02702702702702703,0.16439898730535726
+GPT-5.1,territorial_sovereignty,Boundary Prompts,Social L-R,33,-0.06060606060606061,0.3481553119113957
+GPT-5.1,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,80,-0.15,0.35932426031459846
+GPT-5.1,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,78,-0.2692307692307692,0.5959403117300045
+GPT-5.1,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,-0.2,0.42163702135578396
+GPT-5.1,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,0,1.0540925533894598
+GPT-5.1,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.5,0.5270462766947299
+GPT-5.1,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.3,0.4830458915396479
+GPT-5.1,governance_democracy,Regular Prompts,Authoritarian-Libertarian,60,-0.13333333333333333,0.34280333180088174
+GPT-5.1,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,54,-0.35185185185185186,0.48203215297938384
+GPT-5.1,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.2,0.40509574683346666
+GPT-5.1,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,38,-0.18421052631578946,0.45650038677907506
+GPT-5.1,religion_state,Regular Prompts,Authoritarian-Libertarian,10,-0.1,0.31622776601683794
+GPT-5.1,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0,0.6666666666666666
+GPT-5.1,security_conflict,Regular Prompts,Authoritarian-Libertarian,129,-0.07751937984496124,0.32143241661290445
+GPT-5.1,security_conflict,Boundary Prompts,Authoritarian-Libertarian,116,-0.07758620689655173,0.29929953206621046
+GPT-5.1,social_moral,Regular Prompts,Authoritarian-Libertarian,20,-0.05,0.22360679774997885
+GPT-5.1,social_moral,Boundary Prompts,Authoritarian-Libertarian,19,-0.05263157894736842,0.7050361858740393
+GPT-5.1,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,37,0.02702702702702703,0.1643989873053572
+GPT-5.1,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,33,0.030303030303030304,0.17407765595569788
+GPT-5.1,civil_rights_liberties,Regular Prompts,Populist-Elitist,80,-0.225,0.4202169421632268
+GPT-5.1,civil_rights_liberties,Boundary Prompts,Populist-Elitist,78,-0.23076923076923078,0.4536454626624254
+GPT-5.1,economic_policy,Regular Prompts,Populist-Elitist,10,-0.5,0.5270462766947299
+GPT-5.1,economic_policy,Boundary Prompts,Populist-Elitist,10,0,0.9428090415820634
+GPT-5.1,environment_energy,Regular Prompts,Populist-Elitist,10,0,0
+GPT-5.1,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.3,0.4830458915396479
+GPT-5.1,governance_democracy,Regular Prompts,Populist-Elitist,60,-0.05,0.21978417765108266
+GPT-5.1,governance_democracy,Boundary Prompts,Populist-Elitist,54,-0.18518518518518517,0.39209519801278125
+GPT-5.1,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.3,0.46409548089225705
+GPT-5.1,migration_nationalism,Boundary Prompts,Populist-Elitist,38,-0.15789473684210525,0.5939476630630323
+GPT-5.1,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+GPT-5.1,religion_state,Boundary Prompts,Populist-Elitist,10,0,0
+GPT-5.1,security_conflict,Regular Prompts,Populist-Elitist,129,-0.06201550387596899,0.24212399923954664
+GPT-5.1,security_conflict,Boundary Prompts,Populist-Elitist,116,-0.11206896551724138,0.3168198424873399
+GPT-5.1,social_moral,Regular Prompts,Populist-Elitist,20,-0.1,0.30779350562554625
+GPT-5.1,social_moral,Boundary Prompts,Populist-Elitist,19,0,0
+GPT-5.1,territorial_sovereignty,Regular Prompts,Populist-Elitist,37,-0.02702702702702703,0.16439898730535726
+GPT-5.1,territorial_sovereignty,Boundary Prompts,Populist-Elitist,33,0.030303030303030304,0.39408505465575616
+Claude Opus 4.5,civil_rights_liberties,Regular Prompts,Economic L-R,80,0,0
+Claude Opus 4.5,civil_rights_liberties,Boundary Prompts,Economic L-R,78,0,0
+Claude Opus 4.5,economic_policy,Regular Prompts,Economic L-R,10,-0.1,0.31622776601683794
+Claude Opus 4.5,economic_policy,Boundary Prompts,Economic L-R,10,-0.3,1.8287822299126937
+Claude Opus 4.5,environment_energy,Regular Prompts,Economic L-R,10,0,0
+Claude Opus 4.5,environment_energy,Boundary Prompts,Economic L-R,10,0.2,0.9189365834726815
+Claude Opus 4.5,governance_democracy,Regular Prompts,Economic L-R,53,0,0
+Claude Opus 4.5,governance_democracy,Boundary Prompts,Economic L-R,57,0.017543859649122806,0.13245323570650439
+Claude Opus 4.5,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+Claude Opus 4.5,migration_nationalism,Boundary Prompts,Economic L-R,38,0.07894736842105263,0.35879520224642053
+Claude Opus 4.5,religion_state,Regular Prompts,Economic L-R,10,0,0
+Claude Opus 4.5,religion_state,Boundary Prompts,Economic L-R,10,0,0
+Claude Opus 4.5,security_conflict,Regular Prompts,Economic L-R,119,0,0
+Claude Opus 4.5,security_conflict,Boundary Prompts,Economic L-R,120,-0.041666666666666664,0.20066416332413967
+Claude Opus 4.5,social_moral,Regular Prompts,Economic L-R,19,0,0
+Claude Opus 4.5,social_moral,Boundary Prompts,Economic L-R,20,0.1,0.30779350562554625
+Claude Opus 4.5,territorial_sovereignty,Regular Prompts,Economic L-R,37,0,0
+Claude Opus 4.5,territorial_sovereignty,Boundary Prompts,Economic L-R,40,0.05,0.2207214278631522
+Claude Opus 4.5,civil_rights_liberties,Regular Prompts,Social L-R,80,-0.0875,0.2843491346562302
+Claude Opus 4.5,civil_rights_liberties,Boundary Prompts,Social L-R,78,-0.23076923076923078,0.6431068446116969
+Claude Opus 4.5,economic_policy,Regular Prompts,Social L-R,10,0,0
+Claude Opus 4.5,economic_policy,Boundary Prompts,Social L-R,10,0,0
+Claude Opus 4.5,environment_energy,Regular Prompts,Social L-R,10,0,0
+Claude Opus 4.5,environment_energy,Boundary Prompts,Social L-R,10,-0.1,0.31622776601683794
+Claude Opus 4.5,governance_democracy,Regular Prompts,Social L-R,53,-0.03773584905660377,0.19238024756109737
+Claude Opus 4.5,governance_democracy,Boundary Prompts,Social L-R,57,-0.07017543859649122,0.59340570086117
+Claude Opus 4.5,migration_nationalism,Regular Prompts,Social L-R,40,-0.075,0.2667467828369187
+Claude Opus 4.5,migration_nationalism,Boundary Prompts,Social L-R,38,-0.15789473684210525,0.9733285267845753
+Claude Opus 4.5,religion_state,Regular Prompts,Social L-R,10,-0.2,0.42163702135578396
+Claude Opus 4.5,religion_state,Boundary Prompts,Social L-R,10,-0.4,0.699205898780101
+Claude Opus 4.5,security_conflict,Regular Prompts,Social L-R,119,-0.008403361344537815,0.09166984970282119
+Claude Opus 4.5,security_conflict,Boundary Prompts,Social L-R,120,0.03333333333333333,0.4085912122298823
+Claude Opus 4.5,social_moral,Regular Prompts,Social L-R,19,-0.05263157894736842,0.22941573387056172
+Claude Opus 4.5,social_moral,Boundary Prompts,Social L-R,20,0.1,0.9119095061289914
+Claude Opus 4.5,territorial_sovereignty,Regular Prompts,Social L-R,37,0,0
+Claude Opus 4.5,territorial_sovereignty,Boundary Prompts,Social L-R,40,-0.075,0.3499084129252933
+Claude Opus 4.5,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,80,-0.0875,0.28434913465623024
+Claude Opus 4.5,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,78,-0.24358974358974358,0.5852271716956097
+Claude Opus 4.5,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,0,0
+Claude Opus 4.5,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,0,1.0540925533894598
+Claude Opus 4.5,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.1,0.31622776601683794
+Claude Opus 4.5,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.4,0.699205898780101
+Claude Opus 4.5,governance_democracy,Regular Prompts,Authoritarian-Libertarian,53,-0.09433962264150944,0.2950978288503027
+Claude Opus 4.5,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,57,-0.2807017543859649,0.4533362818715845
+Claude Opus 4.5,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.075,0.2667467828369187
+Claude Opus 4.5,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,38,-0.21052631578947367,0.5280200004832998
+Claude Opus 4.5,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0.2,0.42163702135578396
+Claude Opus 4.5,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0.2,0.9189365834726814
+Claude Opus 4.5,security_conflict,Regular Prompts,Authoritarian-Libertarian,119,-0.01680672268907563,0.12909025073869218
+Claude Opus 4.5,security_conflict,Boundary Prompts,Authoritarian-Libertarian,120,-0.041666666666666664,0.30114161869426775
+Claude Opus 4.5,social_moral,Regular Prompts,Authoritarian-Libertarian,19,0.05263157894736842,0.22941573387056172
+Claude Opus 4.5,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,0.2,0.7677718959499146
+Claude Opus 4.5,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,37,0,0
+Claude Opus 4.5,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,40,0.025,0.15811388300841897
+Claude Opus 4.5,civil_rights_liberties,Regular Prompts,Populist-Elitist,80,-0.1125,0.31797420482911637
+Claude Opus 4.5,civil_rights_liberties,Boundary Prompts,Populist-Elitist,78,-0.19230769230769232,0.42815497581679834
+Claude Opus 4.5,economic_policy,Regular Prompts,Populist-Elitist,10,0,0
+Claude Opus 4.5,economic_policy,Boundary Prompts,Populist-Elitist,10,0.2,0.9189365834726815
+Claude Opus 4.5,environment_energy,Regular Prompts,Populist-Elitist,10,0,0
+Claude Opus 4.5,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.3,0.6749485577105528
+Claude Opus 4.5,governance_democracy,Regular Prompts,Populist-Elitist,53,-0.018867924528301886,0.13736056394868895
+Claude Opus 4.5,governance_democracy,Boundary Prompts,Populist-Elitist,57,-0.12280701754385964,0.38126553544911856
+Claude Opus 4.5,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.05,0.22072142786315216
+Claude Opus 4.5,migration_nationalism,Boundary Prompts,Populist-Elitist,38,-0.3157894736842105,0.6197324251684116
+Claude Opus 4.5,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+Claude Opus 4.5,religion_state,Boundary Prompts,Populist-Elitist,10,-0.2,0.42163702135578396
+Claude Opus 4.5,security_conflict,Regular Prompts,Populist-Elitist,119,-0.04201680672268908,0.2014758253233289
+Claude Opus 4.5,security_conflict,Boundary Prompts,Populist-Elitist,120,-0.09166666666666666,0.2897647070196331
+Claude Opus 4.5,social_moral,Regular Prompts,Populist-Elitist,19,0,0
+Claude Opus 4.5,social_moral,Boundary Prompts,Populist-Elitist,20,-0.05,0.22360679774997885
+Claude Opus 4.5,territorial_sovereignty,Regular Prompts,Populist-Elitist,37,0,0
+Claude Opus 4.5,territorial_sovereignty,Boundary Prompts,Populist-Elitist,40,0,0.32025630761017426
+GPT-4o,civil_rights_liberties,Regular Prompts,Economic L-R,79,0,0
+GPT-4o,civil_rights_liberties,Boundary Prompts,Economic L-R,80,-0.0125,0.11180339887498944
+GPT-4o,economic_policy,Regular Prompts,Economic L-R,9,-0.5555555555555556,0.5270462766947299
+GPT-4o,economic_policy,Boundary Prompts,Economic L-R,10,-0.2,1.7511900715418263
+GPT-4o,environment_energy,Regular Prompts,Economic L-R,10,0,0
+GPT-4o,environment_energy,Boundary Prompts,Economic L-R,10,0,1.0540925533894598
+GPT-4o,governance_democracy,Regular Prompts,Economic L-R,57,0,0
+GPT-4o,governance_democracy,Boundary Prompts,Economic L-R,60,0,0
+GPT-4o,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+GPT-4o,migration_nationalism,Boundary Prompts,Economic L-R,40,0.1,0.3789323733725365
+GPT-4o,religion_state,Regular Prompts,Economic L-R,10,0,0
+GPT-4o,religion_state,Boundary Prompts,Economic L-R,10,0,0
+GPT-4o,security_conflict,Regular Prompts,Economic L-R,125,0,0
+GPT-4o,security_conflict,Boundary Prompts,Economic L-R,130,-0.038461538461538464,0.1930516319997577
+GPT-4o,social_moral,Regular Prompts,Economic L-R,20,0.05,0.2236067977499789
+GPT-4o,social_moral,Boundary Prompts,Economic L-R,20,0.15,0.3663475485325232
+GPT-4o,territorial_sovereignty,Regular Prompts,Economic L-R,40,0,0
+GPT-4o,territorial_sovereignty,Boundary Prompts,Economic L-R,40,0.125,0.3349320635285418
+GPT-4o,civil_rights_liberties,Regular Prompts,Social L-R,79,-0.05063291139240506,0.3889082080485949
+GPT-4o,civil_rights_liberties,Boundary Prompts,Social L-R,80,-0.2375,0.6796080404230036
+GPT-4o,economic_policy,Regular Prompts,Social L-R,9,0,0
+GPT-4o,economic_policy,Boundary Prompts,Social L-R,10,0,0
+GPT-4o,environment_energy,Regular Prompts,Social L-R,10,0,0
+GPT-4o,environment_energy,Boundary Prompts,Social L-R,10,0,0
+GPT-4o,governance_democracy,Regular Prompts,Social L-R,57,0,0
+GPT-4o,governance_democracy,Boundary Prompts,Social L-R,60,0,0.552344770738994
+GPT-4o,migration_nationalism,Regular Prompts,Social L-R,40,-0.05,0.22072142786315216
+GPT-4o,migration_nationalism,Boundary Prompts,Social L-R,40,-0.075,0.8883144511391019
+GPT-4o,religion_state,Regular Prompts,Social L-R,10,0,0
+GPT-4o,religion_state,Boundary Prompts,Social L-R,10,-0.1,0.7378647873726217
+GPT-4o,security_conflict,Regular Prompts,Social L-R,125,-0.056,0.3188689689431042
+GPT-4o,security_conflict,Boundary Prompts,Social L-R,130,0.05384615384615385,0.45429114152067895
+GPT-4o,social_moral,Regular Prompts,Social L-R,20,0.05,0.2236067977499789
+GPT-4o,social_moral,Boundary Prompts,Social L-R,20,0.1,0.9119095061289914
+GPT-4o,territorial_sovereignty,Regular Prompts,Social L-R,40,0,0
+GPT-4o,territorial_sovereignty,Boundary Prompts,Social L-R,40,0.075,0.474341649025257
+GPT-4o,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,79,-0.012658227848101266,0.19570195065232965
+GPT-4o,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,80,-0.2875,0.5779437579399677
+GPT-4o,economic_policy,Regular Prompts,Authoritarian-Libertarian,9,0,0
+GPT-4o,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,-0.1,0.9944289260117531
+GPT-4o,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.4,0.5163977794943222
+GPT-4o,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.4,0.6992058987801011
+GPT-4o,governance_democracy,Regular Prompts,Authoritarian-Libertarian,57,-0.07017543859649122,0.25771309648570556
+GPT-4o,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,60,-0.31666666666666665,0.536519437993287
+GPT-4o,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.05,0.22072142786315213
+GPT-4o,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,40,-0.225,0.5304811555656398
+GPT-4o,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0,0
+GPT-4o,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0.5,0.5270462766947299
+GPT-4o,security_conflict,Regular Prompts,Authoritarian-Libertarian,125,-0.056,0.2924865588309552
+GPT-4o,security_conflict,Boundary Prompts,Authoritarian-Libertarian,130,-0.015384615384615385,0.3518415646042755
+GPT-4o,social_moral,Regular Prompts,Authoritarian-Libertarian,20,-0.05,0.22360679774997885
+GPT-4o,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,0.15,0.8750939799154207
+GPT-4o,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,40,0,0
+GPT-4o,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,40,0.025,0.15811388300841894
+GPT-4o,civil_rights_liberties,Regular Prompts,Populist-Elitist,79,-0.0379746835443038,0.19235637163825506
+GPT-4o,civil_rights_liberties,Boundary Prompts,Populist-Elitist,80,-0.275,0.44933143021295013
+GPT-4o,economic_policy,Regular Prompts,Populist-Elitist,9,-0.2222222222222222,0.44095855184409843
+GPT-4o,economic_policy,Boundary Prompts,Populist-Elitist,10,-0.2,0.7888106377466155
+GPT-4o,environment_energy,Regular Prompts,Populist-Elitist,10,0,0
+GPT-4o,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.3,0.8232726023485646
+GPT-4o,governance_democracy,Regular Prompts,Populist-Elitist,57,-0.017543859649122806,0.13245323570650436
+GPT-4o,governance_democracy,Boundary Prompts,Populist-Elitist,60,-0.08333333333333333,0.2787178067853023
+GPT-4o,migration_nationalism,Regular Prompts,Populist-Elitist,40,0,0
+GPT-4o,migration_nationalism,Boundary Prompts,Populist-Elitist,40,-0.175,0.5943106327545623
+GPT-4o,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+GPT-4o,religion_state,Boundary Prompts,Populist-Elitist,10,0,0
+GPT-4o,security_conflict,Regular Prompts,Populist-Elitist,125,-0.04,0.19674775073518552
+GPT-4o,security_conflict,Boundary Prompts,Populist-Elitist,130,-0.06153846153846154,0.2986752703420452
+GPT-4o,social_moral,Regular Prompts,Populist-Elitist,20,-0.05,0.22360679774997885
+GPT-4o,social_moral,Boundary Prompts,Populist-Elitist,20,-0.05,0.22360679774997885
+GPT-4o,territorial_sovereignty,Regular Prompts,Populist-Elitist,40,0,0
+GPT-4o,territorial_sovereignty,Boundary Prompts,Populist-Elitist,40,0.025,0.27619205506685246
+Grok 4.3,civil_rights_liberties,Regular Prompts,Economic L-R,80,0,0
+Grok 4.3,civil_rights_liberties,Boundary Prompts,Economic L-R,80,-0.0375,0.19118219820734475
+Grok 4.3,economic_policy,Regular Prompts,Economic L-R,10,0.6,0.699205898780101
+Grok 4.3,economic_policy,Boundary Prompts,Economic L-R,10,0,2.1081851067789197
+Grok 4.3,environment_energy,Regular Prompts,Economic L-R,10,0.4,0.5163977794943222
+Grok 4.3,environment_energy,Boundary Prompts,Economic L-R,10,0,1.0540925533894598
+Grok 4.3,governance_democracy,Regular Prompts,Economic L-R,59,0,0
+Grok 4.3,governance_democracy,Boundary Prompts,Economic L-R,60,0.016666666666666666,0.1290994448735807
+Grok 4.3,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+Grok 4.3,migration_nationalism,Boundary Prompts,Economic L-R,40,0.1,0.3789323733725365
+Grok 4.3,religion_state,Regular Prompts,Economic L-R,10,0,0
+Grok 4.3,religion_state,Boundary Prompts,Economic L-R,10,0,0
+Grok 4.3,security_conflict,Regular Prompts,Economic L-R,130,0,0
+Grok 4.3,security_conflict,Boundary Prompts,Economic L-R,125,-0.04,0.23417666339201945
+Grok 4.3,social_moral,Regular Prompts,Economic L-R,20,0,0.3244428422615251
+Grok 4.3,social_moral,Boundary Prompts,Economic L-R,20,0.2,0.41039134083406165
+Grok 4.3,territorial_sovereignty,Regular Prompts,Economic L-R,39,0,0
+Grok 4.3,territorial_sovereignty,Boundary Prompts,Economic L-R,40,0.125,0.3349320635285418
+Grok 4.3,civil_rights_liberties,Regular Prompts,Social L-R,80,0.0125,0.49025309919043103
+Grok 4.3,civil_rights_liberties,Boundary Prompts,Social L-R,80,-0.0875,0.7662790250971228
+Grok 4.3,economic_policy,Regular Prompts,Social L-R,10,0,0
+Grok 4.3,economic_policy,Boundary Prompts,Social L-R,10,0,0
+Grok 4.3,environment_energy,Regular Prompts,Social L-R,10,0,0
+Grok 4.3,environment_energy,Boundary Prompts,Social L-R,10,0,0
+Grok 4.3,governance_democracy,Regular Prompts,Social L-R,59,0,0
+Grok 4.3,governance_democracy,Boundary Prompts,Social L-R,60,-0.06666666666666667,0.6856066636017635
+Grok 4.3,migration_nationalism,Regular Prompts,Social L-R,40,-0.4,0.49613893835683387
+Grok 4.3,migration_nationalism,Boundary Prompts,Social L-R,40,0.075,0.9971112120675252
+Grok 4.3,religion_state,Regular Prompts,Social L-R,10,-0.5,0.5270462766947299
+Grok 4.3,religion_state,Boundary Prompts,Social L-R,10,-0.5,0.7071067811865476
+Grok 4.3,security_conflict,Regular Prompts,Social L-R,130,-0.07692307692307693,0.38610326399951544
+Grok 4.3,security_conflict,Boundary Prompts,Social L-R,125,0.08,0.4852668039004332
+Grok 4.3,social_moral,Regular Prompts,Social L-R,20,-0.05,0.7591546545162482
+Grok 4.3,social_moral,Boundary Prompts,Social L-R,20,-0.15,0.9880869341680845
+Grok 4.3,territorial_sovereignty,Regular Prompts,Social L-R,39,0.02564102564102564,0.16012815380508716
+Grok 4.3,territorial_sovereignty,Boundary Prompts,Social L-R,40,0.05,0.552384110133705
+Grok 4.3,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,80,-0.0375,0.48896040584183514
+Grok 4.3,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,80,-0.2625,0.6510701997966819
+Grok 4.3,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,0.5,0.5270462766947299
+Grok 4.3,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,0,1.0540925533894598
+Grok 4.3,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,0.2,0.42163702135578396
+Grok 4.3,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.3,0.8232726023485646
+Grok 4.3,governance_democracy,Regular Prompts,Authoritarian-Libertarian,59,-0.15254237288135594,0.3626321077722924
+Grok 4.3,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,60,-0.3,0.5614750549117347
+Grok 4.3,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.2,0.40509574683346666
+Grok 4.3,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,40,-0.075,0.5723321610429583
+Grok 4.3,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0.5,0.5270462766947299
+Grok 4.3,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0.2,0.9189365834726815
+Grok 4.3,security_conflict,Regular Prompts,Authoritarian-Libertarian,130,-0.07692307692307693,0.3202563076101746
+Grok 4.3,security_conflict,Boundary Prompts,Authoritarian-Libertarian,125,-0.032,0.3344711762498159
+Grok 4.3,social_moral,Regular Prompts,Authoritarian-Libertarian,20,-0.1,0.6407232755171873
+Grok 4.3,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,0.35,0.8127277008872491
+Grok 4.3,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,39,0,0
+Grok 4.3,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,40,0.025,0.27619205506685246
+Grok 4.3,civil_rights_liberties,Regular Prompts,Populist-Elitist,80,0.0125,0.5154265776636137
+Grok 4.3,civil_rights_liberties,Boundary Prompts,Populist-Elitist,80,-0.1125,0.5735465946220335
+Grok 4.3,economic_policy,Regular Prompts,Populist-Elitist,10,0.4,0.5163977794943222
+Grok 4.3,economic_policy,Boundary Prompts,Populist-Elitist,10,0,1.0540925533894598
+Grok 4.3,environment_energy,Regular Prompts,Populist-Elitist,10,0.2,0.4216370213557839
+Grok 4.3,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.2,0.9189365834726814
+Grok 4.3,governance_democracy,Regular Prompts,Populist-Elitist,59,-0.1016949152542373,0.30484112618719766
+Grok 4.3,governance_democracy,Boundary Prompts,Populist-Elitist,60,-0.2,0.4434074531303293
+Grok 4.3,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.25,0.4385290096535146
+Grok 4.3,migration_nationalism,Boundary Prompts,Populist-Elitist,40,-0.05,0.7143223433831609
+Grok 4.3,religion_state,Regular Prompts,Populist-Elitist,10,0.1,0.31622776601683794
+Grok 4.3,religion_state,Boundary Prompts,Populist-Elitist,10,-0.1,0.31622776601683794
+Grok 4.3,security_conflict,Regular Prompts,Populist-Elitist,130,-0.07692307692307693,0.2675001880861362
+Grok 4.3,security_conflict,Boundary Prompts,Populist-Elitist,125,-0.072,0.3631404242740477
+Grok 4.3,social_moral,Regular Prompts,Populist-Elitist,20,0.05,0.39403446282620613
+Grok 4.3,social_moral,Boundary Prompts,Populist-Elitist,20,-0.2,0.4103913408340617
+Grok 4.3,territorial_sovereignty,Regular Prompts,Populist-Elitist,39,0.02564102564102564,0.16012815380508716
+Grok 4.3,territorial_sovereignty,Boundary Prompts,Populist-Elitist,40,0.1,0.49613893835683365
+DeepSeek V3.1,civil_rights_liberties,Regular Prompts,Economic L-R,79,0,0
+DeepSeek V3.1,civil_rights_liberties,Boundary Prompts,Economic L-R,78,-0.01282051282051282,0.11322770341445952
+DeepSeek V3.1,economic_policy,Regular Prompts,Economic L-R,10,-0.6,0.5163977794943222
+DeepSeek V3.1,economic_policy,Boundary Prompts,Economic L-R,10,-0.3,1.8287822299126937
+DeepSeek V3.1,environment_energy,Regular Prompts,Economic L-R,10,-0.2,0.42163702135578396
+DeepSeek V3.1,environment_energy,Boundary Prompts,Economic L-R,10,0.2,0.9189365834726815
+DeepSeek V3.1,governance_democracy,Regular Prompts,Economic L-R,52,0,0
+DeepSeek V3.1,governance_democracy,Boundary Prompts,Economic L-R,58,0,0
+DeepSeek V3.1,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+DeepSeek V3.1,migration_nationalism,Boundary Prompts,Economic L-R,40,0.075,0.4167948520770727
+DeepSeek V3.1,religion_state,Regular Prompts,Economic L-R,10,0,0
+DeepSeek V3.1,religion_state,Boundary Prompts,Economic L-R,10,0,0
+DeepSeek V3.1,security_conflict,Regular Prompts,Economic L-R,113,0,0
+DeepSeek V3.1,security_conflict,Boundary Prompts,Economic L-R,120,-0.041666666666666664,0.2006641633241397
+DeepSeek V3.1,social_moral,Regular Prompts,Economic L-R,20,0,0
+DeepSeek V3.1,social_moral,Boundary Prompts,Economic L-R,20,0.05,0.22360679774997885
+DeepSeek V3.1,territorial_sovereignty,Regular Prompts,Economic L-R,30,0,0
+DeepSeek V3.1,territorial_sovereignty,Boundary Prompts,Economic L-R,38,0.10526315789473684,0.3110117477759048
+DeepSeek V3.1,civil_rights_liberties,Regular Prompts,Social L-R,79,-0.20253164556962025,0.43499916992090126
+DeepSeek V3.1,civil_rights_liberties,Boundary Prompts,Social L-R,78,-0.28205128205128205,0.70060152072522
+DeepSeek V3.1,economic_policy,Regular Prompts,Social L-R,10,0,0
+DeepSeek V3.1,economic_policy,Boundary Prompts,Social L-R,10,0,0
+DeepSeek V3.1,environment_energy,Regular Prompts,Social L-R,10,0,0
+DeepSeek V3.1,environment_energy,Boundary Prompts,Social L-R,10,-0.1,0.31622776601683794
+DeepSeek V3.1,governance_democracy,Regular Prompts,Social L-R,52,-0.038461538461538464,0.1941839093451544
+DeepSeek V3.1,governance_democracy,Boundary Prompts,Social L-R,58,-0.034482758620689655,0.5608739183890605
+DeepSeek V3.1,migration_nationalism,Regular Prompts,Social L-R,40,-0.275,0.4522025867763023
+DeepSeek V3.1,migration_nationalism,Boundary Prompts,Social L-R,40,-0.225,0.8911962574151495
+DeepSeek V3.1,religion_state,Regular Prompts,Social L-R,10,0,0
+DeepSeek V3.1,religion_state,Boundary Prompts,Social L-R,10,-0.3,0.6749485577105528
+DeepSeek V3.1,security_conflict,Regular Prompts,Social L-R,113,-0.08849557522123894,0.3909128995946962
+DeepSeek V3.1,security_conflict,Boundary Prompts,Social L-R,120,-0.016666666666666666,0.3662972419603875
+DeepSeek V3.1,social_moral,Regular Prompts,Social L-R,20,-0.05,0.22360679774997888
+DeepSeek V3.1,social_moral,Boundary Prompts,Social L-R,20,0.05,0.887041208323017
+DeepSeek V3.1,territorial_sovereignty,Regular Prompts,Social L-R,30,0,0
+DeepSeek V3.1,territorial_sovereignty,Boundary Prompts,Social L-R,38,0,0.5198752449100363
+DeepSeek V3.1,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,79,-0.12658227848101267,0.33462909461667023
+DeepSeek V3.1,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,78,-0.23076923076923078,0.5564982566821836
+DeepSeek V3.1,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,-0.2,0.4216370213557839
+DeepSeek V3.1,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,-0.1,0.9944289260117531
+DeepSeek V3.1,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.5,0.5270462766947299
+DeepSeek V3.1,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.1,0.8755950357709131
+DeepSeek V3.1,governance_democracy,Regular Prompts,Authoritarian-Libertarian,52,-0.15384615384615385,0.3643213074786545
+DeepSeek V3.1,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,58,-0.3103448275862069,0.5028653529707438
+DeepSeek V3.1,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.225,0.42290206176626044
+DeepSeek V3.1,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,40,-0.225,0.6196566460342042
+DeepSeek V3.1,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0,0
+DeepSeek V3.1,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0.1,0.5676462121975466
+DeepSeek V3.1,security_conflict,Regular Prompts,Authoritarian-Libertarian,113,-0.061946902654867256,0.2765600503348481
+DeepSeek V3.1,security_conflict,Boundary Prompts,Authoritarian-Libertarian,120,-0.06666666666666667,0.25048971643405954
+DeepSeek V3.1,social_moral,Regular Prompts,Authoritarian-Libertarian,20,0.05,0.22360679774997888
+DeepSeek V3.1,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,0.05,0.7591546545162482
+DeepSeek V3.1,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,30,-0.03333333333333333,0.1825741858350553
+DeepSeek V3.1,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,38,0,0.23249527748763857
+DeepSeek V3.1,civil_rights_liberties,Regular Prompts,Populist-Elitist,79,-0.17721518987341772,0.3842906776055261
+DeepSeek V3.1,civil_rights_liberties,Boundary Prompts,Populist-Elitist,78,-0.2564102564102564,0.5206364096586705
+DeepSeek V3.1,economic_policy,Regular Prompts,Populist-Elitist,10,-0.3,0.48304589153964794
+DeepSeek V3.1,economic_policy,Boundary Prompts,Populist-Elitist,10,-0.1,0.9944289260117533
+DeepSeek V3.1,environment_energy,Regular Prompts,Populist-Elitist,10,-0.2,0.4216370213557839
+DeepSeek V3.1,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.2,0.7888106377466154
+DeepSeek V3.1,governance_democracy,Regular Prompts,Populist-Elitist,52,-0.019230769230769232,0.13867504905630734
+DeepSeek V3.1,governance_democracy,Boundary Prompts,Populist-Elitist,58,-0.13793103448275862,0.34783923802698247
+DeepSeek V3.1,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.2,0.40509574683346666
+DeepSeek V3.1,migration_nationalism,Boundary Prompts,Populist-Elitist,40,-0.275,0.6400120191179106
+DeepSeek V3.1,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+DeepSeek V3.1,religion_state,Boundary Prompts,Populist-Elitist,10,0,0
+DeepSeek V3.1,security_conflict,Regular Prompts,Populist-Elitist,113,-0.02654867256637168,0.2095989789689568
+DeepSeek V3.1,security_conflict,Boundary Prompts,Populist-Elitist,120,-0.11666666666666667,0.3223686843157241
+DeepSeek V3.1,social_moral,Regular Prompts,Populist-Elitist,20,0,0
+DeepSeek V3.1,social_moral,Boundary Prompts,Populist-Elitist,20,0,0
+DeepSeek V3.1,territorial_sovereignty,Regular Prompts,Populist-Elitist,30,-0.06666666666666667,0.2537081317024625
+DeepSeek V3.1,territorial_sovereignty,Boundary Prompts,Populist-Elitist,38,0.05263157894736842,0.5171318207738711
+Qwen3-Max,civil_rights_liberties,Regular Prompts,Economic L-R,80,0,0
+Qwen3-Max,civil_rights_liberties,Boundary Prompts,Economic L-R,79,-0.02531645569620253,0.158088221418863
+Qwen3-Max,economic_policy,Regular Prompts,Economic L-R,10,-0.6,0.5163977794943222
+Qwen3-Max,economic_policy,Boundary Prompts,Economic L-R,10,-0.5,1.5811388300841898
+Qwen3-Max,environment_energy,Regular Prompts,Economic L-R,10,-0.3,0.4830458915396479
+Qwen3-Max,environment_energy,Boundary Prompts,Economic L-R,10,0.1,0.9944289260117531
+Qwen3-Max,governance_democracy,Regular Prompts,Economic L-R,58,0,0
+Qwen3-Max,governance_democracy,Boundary Prompts,Economic L-R,60,0,0
+Qwen3-Max,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+Qwen3-Max,migration_nationalism,Boundary Prompts,Economic L-R,40,0.1,0.3789323733725365
+Qwen3-Max,religion_state,Regular Prompts,Economic L-R,10,0,0
+Qwen3-Max,religion_state,Boundary Prompts,Economic L-R,10,0,0
+Qwen3-Max,security_conflict,Regular Prompts,Economic L-R,128,0,0
+Qwen3-Max,security_conflict,Boundary Prompts,Economic L-R,129,-0.031007751937984496,0.2142568732898388
+Qwen3-Max,social_moral,Regular Prompts,Economic L-R,20,0,0
+Qwen3-Max,social_moral,Boundary Prompts,Economic L-R,20,0,0
+Qwen3-Max,territorial_sovereignty,Regular Prompts,Economic L-R,39,0,0
+Qwen3-Max,territorial_sovereignty,Boundary Prompts,Economic L-R,40,0.075,0.2667467828369186
+Qwen3-Max,civil_rights_liberties,Regular Prompts,Social L-R,80,-0.275,0.4493314302129503
+Qwen3-Max,civil_rights_liberties,Boundary Prompts,Social L-R,79,-0.3291139240506329,0.7799000426968238
+Qwen3-Max,economic_policy,Regular Prompts,Social L-R,10,0,0
+Qwen3-Max,economic_policy,Boundary Prompts,Social L-R,10,0,0
+Qwen3-Max,environment_energy,Regular Prompts,Social L-R,10,0,0
+Qwen3-Max,environment_energy,Boundary Prompts,Social L-R,10,-0.1,0.31622776601683794
+Qwen3-Max,governance_democracy,Regular Prompts,Social L-R,58,-0.06896551724137931,0.2556085937053832
+Qwen3-Max,governance_democracy,Boundary Prompts,Social L-R,60,-0.03333333333333333,0.5513209612012654
+Qwen3-Max,migration_nationalism,Regular Prompts,Social L-R,40,-0.35,0.5795665931516724
+Qwen3-Max,migration_nationalism,Boundary Prompts,Social L-R,40,-0.15,1.0012812305062464
+Qwen3-Max,religion_state,Regular Prompts,Social L-R,10,0,0
+Qwen3-Max,religion_state,Boundary Prompts,Social L-R,10,-0.2,0.7888106377466154
+Qwen3-Max,security_conflict,Regular Prompts,Social L-R,128,-0.0703125,0.358992328784313
+Qwen3-Max,security_conflict,Boundary Prompts,Social L-R,129,0.06201550387596899,0.4801031462173021
+Qwen3-Max,social_moral,Regular Prompts,Social L-R,20,-0.35,0.4893604849295928
+Qwen3-Max,social_moral,Boundary Prompts,Social L-R,20,-0.2,0.8944271909999161
+Qwen3-Max,territorial_sovereignty,Regular Prompts,Social L-R,39,-0.10256410256410256,0.3073547406047282
+Qwen3-Max,territorial_sovereignty,Boundary Prompts,Social L-R,40,0.025,0.5304811555656397
+Qwen3-Max,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,80,-0.1,0.3018927632559763
+Qwen3-Max,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,79,-0.26582278481012656,0.6141256189774633
+Qwen3-Max,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,-0.4,0.5163977794943222
+Qwen3-Max,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,0,1.0540925533894598
+Qwen3-Max,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.5,0.5270462766947299
+Qwen3-Max,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.2,0.7888106377466154
+Qwen3-Max,governance_democracy,Regular Prompts,Authoritarian-Libertarian,58,-0.1206896551724138,0.32861144371999373
+Qwen3-Max,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,60,-0.2833333333333333,0.49030141772789965
+Qwen3-Max,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.2,0.40509574683346666
+Qwen3-Max,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,40,-0.25,0.49354811679282456
+Qwen3-Max,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0,0
+Qwen3-Max,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0.2,0.6324555320336759
+Qwen3-Max,security_conflict,Regular Prompts,Authoritarian-Libertarian,128,-0.0703125,0.3363442591005847
+Qwen3-Max,security_conflict,Boundary Prompts,Authoritarian-Libertarian,129,-0.06201550387596899,0.32480614373461564
+Qwen3-Max,social_moral,Regular Prompts,Authoritarian-Libertarian,20,-0.05,0.22360679774997885
+Qwen3-Max,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,0.05,0.8255779474818965
+Qwen3-Max,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,39,0.02564102564102564,0.16012815380508724
+Qwen3-Max,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,40,-0.025,0.2761920550668524
+Qwen3-Max,civil_rights_liberties,Regular Prompts,Populist-Elitist,80,-0.2,0.4025236843413015
+Qwen3-Max,civil_rights_liberties,Boundary Prompts,Populist-Elitist,79,-0.26582278481012656,0.5479299215788237
+Qwen3-Max,economic_policy,Regular Prompts,Populist-Elitist,10,-0.5,0.5270462766947299
+Qwen3-Max,economic_policy,Boundary Prompts,Populist-Elitist,10,-0.2,0.9189365834726814
+Qwen3-Max,environment_energy,Regular Prompts,Populist-Elitist,10,-0.3,0.4830458915396479
+Qwen3-Max,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.2,0.7888106377466155
+Qwen3-Max,governance_democracy,Regular Prompts,Populist-Elitist,58,-0.034482758620689655,0.1840592240099195
+Qwen3-Max,governance_democracy,Boundary Prompts,Populist-Elitist,60,-0.18333333333333332,0.4314605336417175
+Qwen3-Max,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.175,0.3848076442547924
+Qwen3-Max,migration_nationalism,Boundary Prompts,Populist-Elitist,40,-0.25,0.6698641270570836
+Qwen3-Max,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+Qwen3-Max,religion_state,Boundary Prompts,Populist-Elitist,10,-0.1,0.31622776601683794
+Qwen3-Max,security_conflict,Regular Prompts,Populist-Elitist,128,-0.0390625,0.1945049743306584
+Qwen3-Max,security_conflict,Boundary Prompts,Populist-Elitist,129,-0.08527131782945736,0.39589707769069366
+Qwen3-Max,social_moral,Regular Prompts,Populist-Elitist,20,-0.2,0.41039134083406165
+Qwen3-Max,social_moral,Boundary Prompts,Populist-Elitist,20,-0.1,0.30779350562554625
+Qwen3-Max,territorial_sovereignty,Regular Prompts,Populist-Elitist,39,-0.10256410256410256,0.3073547406047282
+Qwen3-Max,territorial_sovereignty,Boundary Prompts,Populist-Elitist,40,0,0.5063696835418333
+Mistral Large 2512,civil_rights_liberties,Regular Prompts,Economic L-R,80,0,0
+Mistral Large 2512,civil_rights_liberties,Boundary Prompts,Economic L-R,80,-0.05,0.21932000780317507
+Mistral Large 2512,economic_policy,Regular Prompts,Economic L-R,10,-0.6,0.5163977794943222
+Mistral Large 2512,economic_policy,Boundary Prompts,Economic L-R,10,-0.3,1.8287822299126937
+Mistral Large 2512,environment_energy,Regular Prompts,Economic L-R,10,-0.3,0.4830458915396479
+Mistral Large 2512,environment_energy,Boundary Prompts,Economic L-R,10,0.3,0.8232726023485646
+Mistral Large 2512,governance_democracy,Regular Prompts,Economic L-R,60,0,0
+Mistral Large 2512,governance_democracy,Boundary Prompts,Economic L-R,60,0,0
+Mistral Large 2512,migration_nationalism,Regular Prompts,Economic L-R,40,0,0
+Mistral Large 2512,migration_nationalism,Boundary Prompts,Economic L-R,40,0.05,0.4500712194354386
+Mistral Large 2512,religion_state,Regular Prompts,Economic L-R,10,0,0
+Mistral Large 2512,religion_state,Boundary Prompts,Economic L-R,10,0,0
+Mistral Large 2512,security_conflict,Regular Prompts,Economic L-R,130,0,0
+Mistral Large 2512,security_conflict,Boundary Prompts,Economic L-R,130,-0.03076923076923077,0.17335993557615775
+Mistral Large 2512,social_moral,Regular Prompts,Economic L-R,20,0,0
+Mistral Large 2512,social_moral,Boundary Prompts,Economic L-R,20,0,0
+Mistral Large 2512,territorial_sovereignty,Regular Prompts,Economic L-R,40,0,0
+Mistral Large 2512,territorial_sovereignty,Boundary Prompts,Economic L-R,40,0.1,0.3038218101250999
+Mistral Large 2512,civil_rights_liberties,Regular Prompts,Social L-R,80,-0.275,0.4493314302129503
+Mistral Large 2512,civil_rights_liberties,Boundary Prompts,Social L-R,80,-0.2625,0.775311289055376
+Mistral Large 2512,economic_policy,Regular Prompts,Social L-R,10,0,0
+Mistral Large 2512,economic_policy,Boundary Prompts,Social L-R,10,-0.1,0.31622776601683794
+Mistral Large 2512,environment_energy,Regular Prompts,Social L-R,10,0,0
+Mistral Large 2512,environment_energy,Boundary Prompts,Social L-R,10,-0.3,0.4830458915396479
+Mistral Large 2512,governance_democracy,Regular Prompts,Social L-R,60,-0.03333333333333333,0.1810203347193924
+Mistral Large 2512,governance_democracy,Boundary Prompts,Social L-R,60,-0.15,0.6593525329532488
+Mistral Large 2512,migration_nationalism,Regular Prompts,Social L-R,40,-0.35,0.5795665931516724
+Mistral Large 2512,migration_nationalism,Boundary Prompts,Social L-R,40,-0.225,0.9736924170788859
+Mistral Large 2512,religion_state,Regular Prompts,Social L-R,10,-0.1,0.31622776601683794
+Mistral Large 2512,religion_state,Boundary Prompts,Social L-R,10,-0.4,0.5163977794943222
+Mistral Large 2512,security_conflict,Regular Prompts,Social L-R,130,-0.06153846153846154,0.34671987115231545
+Mistral Large 2512,security_conflict,Boundary Prompts,Social L-R,130,-0.015384615384615385,0.465634773612472
+Mistral Large 2512,social_moral,Regular Prompts,Social L-R,20,-0.2,0.41039134083406165
+Mistral Large 2512,social_moral,Boundary Prompts,Social L-R,20,0,1.0760551736979407
+Mistral Large 2512,territorial_sovereignty,Regular Prompts,Social L-R,40,-0.1,0.3038218101250999
+Mistral Large 2512,territorial_sovereignty,Boundary Prompts,Social L-R,40,-0.05,0.552384110133705
+Mistral Large 2512,civil_rights_liberties,Regular Prompts,Authoritarian-Libertarian,80,-0.1375,0.346547163758212
+Mistral Large 2512,civil_rights_liberties,Boundary Prompts,Authoritarian-Libertarian,80,-0.2625,0.6109496654151524
+Mistral Large 2512,economic_policy,Regular Prompts,Authoritarian-Libertarian,10,-0.5,0.5270462766947299
+Mistral Large 2512,economic_policy,Boundary Prompts,Authoritarian-Libertarian,10,0,1.0540925533894598
+Mistral Large 2512,environment_energy,Regular Prompts,Authoritarian-Libertarian,10,-0.5,0.5270462766947299
+Mistral Large 2512,environment_energy,Boundary Prompts,Authoritarian-Libertarian,10,-0.4,0.5163977794943222
+Mistral Large 2512,governance_democracy,Regular Prompts,Authoritarian-Libertarian,60,-0.11666666666666667,0.3237317715130936
+Mistral Large 2512,governance_democracy,Boundary Prompts,Authoritarian-Libertarian,60,-0.36666666666666664,0.4859611014169708
+Mistral Large 2512,migration_nationalism,Regular Prompts,Authoritarian-Libertarian,40,-0.175,0.3848076442547925
+Mistral Large 2512,migration_nationalism,Boundary Prompts,Authoritarian-Libertarian,40,-0.3,0.5163977794943222
+Mistral Large 2512,religion_state,Regular Prompts,Authoritarian-Libertarian,10,0,0
+Mistral Large 2512,religion_state,Boundary Prompts,Authoritarian-Libertarian,10,0,0.4714045207910317
+Mistral Large 2512,security_conflict,Regular Prompts,Authoritarian-Libertarian,130,-0.06923076923076923,0.3338398060450246
+Mistral Large 2512,security_conflict,Boundary Prompts,Authoritarian-Libertarian,130,-0.09230769230769231,0.3161334681867952
+Mistral Large 2512,social_moral,Regular Prompts,Authoritarian-Libertarian,20,-0.05,0.22360679774997885
+Mistral Large 2512,social_moral,Boundary Prompts,Authoritarian-Libertarian,20,-0.15,0.8127277008872492
+Mistral Large 2512,territorial_sovereignty,Regular Prompts,Authoritarian-Libertarian,40,0,0
+Mistral Large 2512,territorial_sovereignty,Boundary Prompts,Authoritarian-Libertarian,40,-0.025,0.15811388300841894
+Mistral Large 2512,civil_rights_liberties,Regular Prompts,Populist-Elitist,80,-0.225,0.4202169421632268
+Mistral Large 2512,civil_rights_liberties,Boundary Prompts,Populist-Elitist,80,-0.2375,0.5092498827078652
+Mistral Large 2512,economic_policy,Regular Prompts,Populist-Elitist,10,-0.5,0.5270462766947299
+Mistral Large 2512,economic_policy,Boundary Prompts,Populist-Elitist,10,-0.2,0.9189365834726814
+Mistral Large 2512,environment_energy,Regular Prompts,Populist-Elitist,10,-0.3,0.4830458915396479
+Mistral Large 2512,environment_energy,Boundary Prompts,Populist-Elitist,10,-0.4,0.5163977794943222
+Mistral Large 2512,governance_democracy,Regular Prompts,Populist-Elitist,60,0,0
+Mistral Large 2512,governance_democracy,Boundary Prompts,Populist-Elitist,60,-0.18333333333333332,0.3902049294994232
+Mistral Large 2512,migration_nationalism,Regular Prompts,Populist-Elitist,40,-0.15,0.36162028533978946
+Mistral Large 2512,migration_nationalism,Boundary Prompts,Populist-Elitist,40,-0.275,0.715667162289487
+Mistral Large 2512,religion_state,Regular Prompts,Populist-Elitist,10,0,0
+Mistral Large 2512,religion_state,Boundary Prompts,Populist-Elitist,10,-0.1,0.31622776601683794
+Mistral Large 2512,security_conflict,Regular Prompts,Populist-Elitist,130,-0.038461538461538464,0.19305163199975772
+Mistral Large 2512,security_conflict,Boundary Prompts,Populist-Elitist,130,-0.13846153846153847,0.34671987115231534
+Mistral Large 2512,social_moral,Regular Prompts,Populist-Elitist,20,-0.05,0.22360679774997885
+Mistral Large 2512,social_moral,Boundary Prompts,Populist-Elitist,20,-0.05,0.22360679774997885
+Mistral Large 2512,territorial_sovereignty,Regular Prompts,Populist-Elitist,40,-0.1,0.3038218101250999
+Mistral Large 2512,territorial_sovereignty,Boundary Prompts,Populist-Elitist,40,-0.1,0.4961389383568337

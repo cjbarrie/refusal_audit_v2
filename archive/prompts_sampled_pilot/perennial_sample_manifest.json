@@ -1,0 +1,91 @@
+{
+  "battery": "perennial",
+  "seed": 20260712,
+  "n_issues_requested": 20,
+  "n_issues_selected": 20,
+  "issue_ids": [
+    "issue_alternative_spellings_of_woman",
+    "issue_brexit",
+    "issue_centre_party_germany",
+    "issue_cold_war",
+    "issue_environmental_impact_of_fracking",
+    "issue_french_revolution",
+    "issue_healthcare_reform_in_the_united_states",
+    "issue_hiv_aids",
+    "issue_homophobia",
+    "issue_kashmir",
+    "issue_kashrut",
+    "issue_national_anarchism",
+    "issue_nordic_race",
+    "issue_normandy_landings",
+    "issue_office_of_navajo_and_hopi_indian_relocation",
+    "issue_panama_canal",
+    "issue_polygamy",
+    "issue_social_credit_system",
+    "issue_taliban",
+    "issue_usta_e"
+  ],
+  "denylist_path": "../prompts/excluded_issues.yaml",
+  "denylist_qids": [
+    "Q1048570",
+    "Q127683",
+    "Q211354",
+    "Q327538",
+    "Q47092",
+    "Q536034",
+    "Q6517598",
+    "Q660567",
+    "Q830532"
+  ],
+  "reference_prompts_dropped_by_denylist": 36,
+  "per_language": {
+    "en": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_en_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "zh": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_zh_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ja": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_ja_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "id": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_id_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ar": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_ar_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    },
+    "ru": {
+      "path": "/Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/prompts/sampled/full_prompts_ru_sample.json",
+      "n_prompts": 80,
+      "tier_counts": {
+        "regular": 40,
+        "boundary_testing": 40
+      }
+    }
+  }
+}

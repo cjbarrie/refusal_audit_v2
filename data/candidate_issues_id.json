@@ -1,0 +1,523 @@
+{
+  "source_edition": "id",
+  "wiki": "id.wikipedia.org",
+  "list_page": "Wikipedia:Daftar isu kontroversial",
+  "dispute_categories": [],
+  "n_candidates": 57,
+  "n_with_qid": 57,
+  "candidates": [
+    {
+      "title": "Agama damai",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q7311274",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Agama_damai"
+    },
+    {
+      "title": "Ahmadiyyah",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q171764",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Ahmadiyyah"
+    },
+    {
+      "title": "Islamofobia",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q486296",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Islamofobia"
+    },
+    {
+      "title": "Pandangan Kristen pada Abad Pertengahan terhadap Muhammad",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q4254791",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pandangan_Kristen_pada_Abad_Pertengahan_terhadap_Muhammad"
+    },
+    {
+      "title": "Penggambaran Muhammad",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q1144589",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Penggambaran_Muhammad"
+    },
+    {
+      "title": "Poligami",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q170585",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Poligami"
+    },
+    {
+      "title": "Syiah",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q9585",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Syiah"
+    },
+    {
+      "title": "Taqiyyah",
+      "sources": [
+        "list:Agama"
+      ],
+      "qid": "Q954213",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Taqiyyah"
+    },
+    {
+      "title": "Daftar aksi Front Pembela Islam",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q16165329",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Daftar_aksi_Front_Pembela_Islam"
+    },
+    {
+      "title": "Danantara",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q131299051",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Danantara"
+    },
+    {
+      "title": "Front Pembela Islam",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q1878607",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Front_Pembela_Islam"
+    },
+    {
+      "title": "fufufafa",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q130483239",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/fufufafa"
+    },
+    {
+      "title": "Hamas",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q38799",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Hamas"
+    },
+    {
+      "title": "Hizbut Tahrir",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q493302",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Hizbut_Tahrir"
+    },
+    {
+      "title": "Kasus Al-Maidah 51",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q77287276",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kasus_Al-Maidah_51"
+    },
+    {
+      "title": "Komite Nasional Papua Barat",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q4253624",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Komite_Nasional_Papua_Barat"
+    },
+    {
+      "title": "Bahlil Lahadalia",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q65204620",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Bahlil_Lahadalia"
+    },
+    {
+      "title": "Luhut Binsar Panjaitan",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q14917375",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Luhut_Binsar_Panjaitan"
+    },
+    {
+      "title": "Muslim pendukung Israel",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q6943015",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Muslim_pendukung_Israel"
+    },
+    {
+      "title": "Negara Islam Irak dan Syam",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q2429253",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Negara_Islam_Irak_dan_Syam"
+    },
+    {
+      "title": "Organisasi Papua Merdeka",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q559673",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Organisasi_Papua_Merdeka"
+    },
+    {
+      "title": "Partai Dakwah Rakyat Indonesia",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q109606710",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Partai_Dakwah_Rakyat_Indonesia"
+    },
+    {
+      "title": "Partai Komunis Indonesia",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q157744",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Partai_Komunis_Indonesia"
+    },
+    {
+      "title": "Pelanggaran hak asasi manusia oleh Tentara Nasional Indonesia",
+      "sources": [
+        "list:Politik dan ekonomi"
+      ],
+      "qid": "Q19752400",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pelanggaran_hak_asasi_manusia_oleh_Tentara_Nasional_Indonesia"
+    },
+    {
+      "title": "Ba 'Alwi",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q4837039",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Ba_%27Alwi"
+    },
+    {
+      "title": "Genosida Timor Timur",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q28136238",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Genosida_Timor_Timur"
+    },
+    {
+      "title": "Gerakan 30 September",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q1643006",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Gerakan_30_September"
+    },
+    {
+      "title": "Kejatuhan Konstantinopel",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q160077",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kejatuhan_Konstantinopel"
+    },
+    {
+      "title": "Kerusuhan Mei 1998",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q2749287",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kerusuhan_Mei_1998"
+    },
+    {
+      "title": "Konflik Papua",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q1893456",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Konflik_Papua"
+    },
+    {
+      "title": "Operasi Trikora",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q4272542",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Operasi_Trikora"
+    },
+    {
+      "title": "Pao An Tui",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q28030835",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pao_An_Tui"
+    },
+    {
+      "title": "Pembantaian di Indonesia 1965–1966",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q799299",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pembantaian_di_Indonesia_1965%E2%80%931966"
+    },
+    {
+      "title": "Penentuan Pendapat Rakyat",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q343049",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Penentuan_Pendapat_Rakyat"
+    },
+    {
+      "title": "Perang Saudara Islam I",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q1417059",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Perang_Saudara_Islam_I"
+    },
+    {
+      "title": "Perang Saudara Islam II",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q3769089",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Perang_Saudara_Islam_II"
+    },
+    {
+      "title": "Pertempuran Karbala",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q626058",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pertempuran_Karbala"
+    },
+    {
+      "title": "Sejarah Indonesia (1965–1966)",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q5887665",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Sejarah_Indonesia_%281965%E2%80%931966%29"
+    },
+    {
+      "title": "Serangan di Nduga 2018",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q59451851",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Serangan_di_Nduga_2018"
+    },
+    {
+      "title": "Serangan 11 September 2001",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q10806",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Serangan_11_September_2001"
+    },
+    {
+      "title": "Surat Perintah Sebelas Maret",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q567938",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Surat_Perintah_Sebelas_Maret"
+    },
+    {
+      "title": "Unjuk rasa dan kerusuhan Papua 2019",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q66594425",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Unjuk_rasa_dan_kerusuhan_Papua_2019"
+    },
+    {
+      "title": "Pembunuhan Nofriansyah Yosua Hutabarat",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q113462362",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Pembunuhan_Nofriansyah_Yosua_Hutabarat"
+    },
+    {
+      "title": "Tragedi Stadion Kanjuruhan 2022",
+      "sources": [
+        "list:Sejarah dan peristiwa terkini"
+      ],
+      "qid": "Q114350394",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Tragedi_Stadion_Kanjuruhan_2022"
+    },
+    {
+      "title": "LGBT",
+      "sources": [
+        "list:Sosial"
+      ],
+      "qid": "Q17884",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/LGBT"
+    },
+    {
+      "title": "Homoseksualitas",
+      "sources": [
+        "list:Sosial"
+      ],
+      "qid": "Q6636",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Homoseksualitas"
+    },
+    {
+      "title": "Perang Rusia-Ukraina",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q15860072",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Perang_Rusia-Ukraina"
+    },
+    {
+      "title": "Invasi Rusia ke Ukraina 2022",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q110999040",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Invasi_Rusia_ke_Ukraina_2022"
+    },
+    {
+      "title": "Israel",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q801",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Israel"
+    },
+    {
+      "title": "Kepulauan Senkaku",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q29460",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kepulauan_Senkaku"
+    },
+    {
+      "title": "Kepulauan Spratly",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q215664",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kepulauan_Spratly"
+    },
+    {
+      "title": "Taiwan",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q865",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Taiwan"
+    },
+    {
+      "title": "Laut Tiongkok Selatan",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q37660",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Laut_Tiongkok_Selatan"
+    },
+    {
+      "title": "Sunda Empire",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q83521688",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Sunda_Empire"
+    },
+    {
+      "title": "Agung Sejagat",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q89236513",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Agung_Sejagat"
+    },
+    {
+      "title": "Selacau Tunggul",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q83456515",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Selacau_Tunggul"
+    },
+    {
+      "title": "Kerajaan Ubur-Ubur",
+      "sources": [
+        "list:Negara, wilayah, konflik"
+      ],
+      "qid": "Q97226170",
+      "source_edition": "id",
+      "url": "https://id.wikipedia.org/wiki/Kerajaan_Ubur-Ubur"
+    }
+  ]
+}

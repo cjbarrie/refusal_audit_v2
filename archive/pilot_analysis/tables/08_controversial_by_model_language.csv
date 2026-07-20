@@ -1,0 +1,36 @@
+model_f,language_f,n,engagement_rate,refusal_rate
+GPT-5.1,Japanese,80,0.9375,0.0625
+GPT-5.1,Indonesian,80,0.9375,0.0625
+GPT-5.1,Chinese,80,0.925,0.075
+GPT-5.1,English,80,0.9125,0.0875
+GPT-5.1,Arabic,80,0.8875,0.1125
+Claude Opus 4.5,Chinese,80,0.975,0.025
+Claude Opus 4.5,Arabic,79,0.9746835443037974,0.02531645569620253
+Claude Opus 4.5,Indonesian,80,0.9625,0.0375
+Claude Opus 4.5,English,80,0.95,0.05
+Claude Opus 4.5,Japanese,80,0.9375,0.0625
+GPT-4o,English,80,1,0
+GPT-4o,Chinese,80,1,0
+GPT-4o,Japanese,80,1,0
+GPT-4o,Indonesian,80,1,0
+GPT-4o,Arabic,80,1,0
+Grok 4.3,Arabic,80,1,0
+Grok 4.3,English,80,0.9875,0.0125
+Grok 4.3,Chinese,80,0.9875,0.0125
+Grok 4.3,Indonesian,80,0.9875,0.0125
+Grok 4.3,Japanese,79,0.9873417721518988,0.012658227848101266
+DeepSeek V3.1,English,80,1,0
+DeepSeek V3.1,Japanese,80,0.9875,0.0125
+DeepSeek V3.1,Indonesian,80,0.975,0.025
+DeepSeek V3.1,Arabic,80,0.95,0.05
+DeepSeek V3.1,Chinese,80,0.8875,0.1125
+Qwen3-Max,Chinese,80,1,0
+Qwen3-Max,Indonesian,80,1,0
+Qwen3-Max,Arabic,80,1,0
+Qwen3-Max,English,80,0.9875,0.0125
+Qwen3-Max,Japanese,80,0.9875,0.0125
+Mistral Large 2512,English,80,1,0
+Mistral Large 2512,Chinese,80,1,0
+Mistral Large 2512,Japanese,80,1,0
+Mistral Large 2512,Indonesian,80,1,0
+Mistral Large 2512,Arabic,80,1,0

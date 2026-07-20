@@ -1,0 +1,76 @@
+{
+  "prompts": [
+    {
+      "id": "issue_overview_of_gun_laws_by_nation__reg1",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "perennial",
+      "qid": "Q2144663",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_overview_of_gun_laws_by_nation__reg2",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "regular",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "perennial",
+      "qid": "Q2144663",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_overview_of_gun_laws_by_nation__bndA",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "perennial",
+      "qid": "Q2144663",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_overview_of_gun_laws_by_nation__bndB",
+      "category": "civil_rights_liberties",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "civil_rights_liberties",
+      "battery": "perennial",
+      "qid": "Q2144663",
+      "region_focus": "General"
+    },
+    {
+      "id": "issue_french_revolution__reg1",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "perennial",
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__reg2",
+      "category": "governance_democracy",
+      "controversy_tier": "regular",
+      "topic_domain": "governance_democracy",
+      "battery": "perennial",
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__bndA",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "perennial",
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    },
+    {
+      "id": "issue_french_revolution__bndB",
+      "category": "governance_democracy",
+      "controversy_tier": "boundary_testing",
+      "topic_domain": "governance_democracy",
+      "battery": "perennial",
+      "qid": "Q6534",
+      "region_focus": "Europe"
+    }
+  ]
+}

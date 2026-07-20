@@ -1,0 +1,29 @@
+[2026-07-08T15:54:49] ========================================================================
+[2026-07-08T15:54:49] RUN editions=['en', 'zh', 'ar', 'ja', 'id'] enrich=False model=(none)
+[2026-07-08T15:54:49] START harvest [en] :: /Users/christopherbarrie/.claude-science/orgs/80ce749a-5659-477d-9657-745851c3c384/workspaces/b862051f-0a55-437e-9c02-b7d8ffca68f2/.venv/refusal-v2/bin/python 01_harvest_controversial.py --lang en
+[2026-07-08T15:55:07]     harvest [en] | 
+[2026-07-08T15:55:07]     harvest [en] | Wrote 516 candidate issues -> /Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/data/candidate_issues.json
+[2026-07-08T15:55:07]     harvest [en] |   with Q-ID: 516/516
+[2026-07-08T15:55:07] OK    harvest [en] (18s)
+[2026-07-08T15:55:07] START harvest [zh] :: /Users/christopherbarrie/.claude-science/orgs/80ce749a-5659-477d-9657-745851c3c384/workspaces/b862051f-0a55-437e-9c02-b7d8ffca68f2/.venv/refusal-v2/bin/python 01_harvest_controversial.py --lang zh
+[2026-07-08T15:56:05]     harvest [zh] | 
+[2026-07-08T15:56:05]     harvest [zh] | Wrote 106 candidate issues -> /Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/data/candidate_issues_zh.json
+[2026-07-08T15:56:05]     harvest [zh] |   with Q-ID: 104/106
+[2026-07-08T15:56:05] OK    harvest [zh] (57s)
+[2026-07-08T15:56:05] START harvest [ar] :: /Users/christopherbarrie/.claude-science/orgs/80ce749a-5659-477d-9657-745851c3c384/workspaces/b862051f-0a55-437e-9c02-b7d8ffca68f2/.venv/refusal-v2/bin/python 01_harvest_controversial.py --lang ar
+[2026-07-08T15:56:10]     harvest [ar] | 
+[2026-07-08T15:56:10]     harvest [ar] | Wrote 71 candidate issues -> /Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/data/candidate_issues_ar.json
+[2026-07-08T15:56:10]     harvest [ar] |   with Q-ID: 71/71
+[2026-07-08T15:56:10] OK    harvest [ar] (5s)
+[2026-07-08T15:56:10] START harvest [ja] :: /Users/christopherbarrie/.claude-science/orgs/80ce749a-5659-477d-9657-745851c3c384/workspaces/b862051f-0a55-437e-9c02-b7d8ffca68f2/.venv/refusal-v2/bin/python 01_harvest_controversial.py --lang ja
+[2026-07-08T15:57:06]     harvest [ja] | 
+[2026-07-08T15:57:06]     harvest [ja] | Wrote 148 candidate issues -> /Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/data/candidate_issues_ja.json
+[2026-07-08T15:57:06]     harvest [ja] |   with Q-ID: 145/148
+[2026-07-08T15:57:06] OK    harvest [ja] (57s)
+[2026-07-08T15:57:06] START harvest [id] :: /Users/christopherbarrie/.claude-science/orgs/80ce749a-5659-477d-9657-745851c3c384/workspaces/b862051f-0a55-437e-9c02-b7d8ffca68f2/.venv/refusal-v2/bin/python 01_harvest_controversial.py --lang id
+[2026-07-08T15:58:04]     harvest [id] | 
+[2026-07-08T15:58:04]     harvest [id] | Wrote 57 candidate issues -> /Users/christopherbarrie/Dropbox/nyu_projects/refusal_audit_v2/data/candidate_issues_id.json
+[2026-07-08T15:58:04]     harvest [id] |   with Q-ID: 57/57
+[2026-07-08T15:58:04] OK    harvest [id] (58s)
+[2026-07-08T15:58:04] DONE
+[2026-07-08T15:58:04] NOTE: candidate harvest only (free). Re-run with --enrich to build prompts.

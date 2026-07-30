@@ -108,7 +108,7 @@ This produces `prompts/full_prompts_ru.json` +
 - `language_f` — 6 levels (adds `Russian`).
 - `boundary_files` gains `annotations_ru_boundary.jsonl`; `all_languages` gains `ru`.
 
-Global enumerations in `08_irr_analysis.R` are 6-language and existence-guarded
+Global enumerations in `16_irr_analysis.R` are 6-language and existence-guarded
 (missing per-language boundary files are skipped, not fatal). Study A jurisdiction
 factors in `12/14/16` gained a `middle_east` level to match script 10. Scoped
 bilingual/trilingual analyses (DeepSeek en-vs-zh; Study A en/zh/ar) were left as

@@ -31,11 +31,15 @@ def detect_response_language(text: str) -> str:
     """
     Detect language of response text using character-based heuristics.
 
-    Args:
-        text: Response text to analyze
+    Covers every CURRENT study language (en, zh, ar, ru, hi) plus ja/id, which
+    were dropped as study languages but whose batteries remain on disk. Cyrillic
+    and Devanagari were absent until 2026-07: `ru` and `hi` responses fell
+    through to the 'en' default, which silently reported every Russian and Hindi
+    answer as a language mismatch -- in the two languages added most recently,
+    and therefore least likely to be spot-checked.
 
     Returns:
-        Language code ('zh', 'ja', 'ar', 'id', or 'en')
+        Language code ('zh', 'ja', 'ar', 'ru', 'hi', or 'en')
     """
     if not text:
         return 'en'
@@ -43,19 +47,28 @@ def detect_response_language(text: str) -> str:
     # Check first 100 characters for language-specific characters
     sample = text[:100]
 
-    # Chinese characters (CJK Unified Ideographs)
-    if any('\u4e00' <= char <= '\u9fff' for char in sample):
-        return 'zh'
-
-    # Japanese hiragana or katakana
-    elif any(('\u3040' <= char <= '\u309f') or ('\u30a0' <= char <= '\u30ff') for char in sample):
+    # Japanese kana FIRST: Japanese text also contains Han characters, so a
+    # kana check must precede the Han check or Japanese is reported as Chinese.
+    if any(('\u3040' <= c <= '\u309f') or ('\u30a0' <= c <= '\u30ff') for c in sample):
         return 'ja'
 
+    # Chinese characters (CJK Unified Ideographs)
+    elif any('\u4e00' <= c <= '\u9fff' for c in sample):
+        return 'zh'
+
     # Arabic script
-    elif any('\u0600' <= char <= '\u06ff' for char in sample):
+    elif any('\u0600' <= c <= '\u06ff' for c in sample):
         return 'ar'
 
-    # Default to English (includes Indonesian which uses Latin script)
+    # Cyrillic (Russian)
+    elif any('\u0400' <= c <= '\u04ff' for c in sample):
+        return 'ru'
+
+    # Devanagari (Hindi)
+    elif any('\u0900' <= c <= '\u097f' for c in sample):
+        return 'hi'
+
+    # Default to English (includes Indonesian, which uses Latin script)
     else:
         return 'en'
 
@@ -570,8 +583,18 @@ class AnnotationPipeline:
         if response.endswith("```"):
             response = response[:-3]
         response = response.strip()
-        
-        return json.loads(response)
+
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            # The judge is told to return ONLY JSON, but a stray preamble
+            # ("Here is my analysis: {...}") would otherwise error the whole
+            # row. Fall back to the outermost brace pair, as the translator
+            # already does.
+            a, b = response.find("{"), response.rfind("}")
+            if a >= 0 and b > a:
+                return json.loads(response[a:b + 1])
+            raise
     
     def run_pass_1(self, input_data: AnnotationInput) -> Pass1Output:
         """Run Pass 1: Engagement & Refusal."""
@@ -584,6 +607,19 @@ class AnnotationPipeline:
         response = self.llm.complete(prompt)
         result = self._parse_json(response)
         
+        # engagement_code is THE load-bearing field: every engagement/refusal
+        # number derives from it, and R's engaged/refused cut is (<=3)/(>=4).
+        # Validate here rather than downstream -- an out-of-range value would be
+        # silently dropped by the R filter, and a STRING value ("3") would make
+        # jsonlite type the whole column as character, turning that cut into a
+        # lexicographic comparison. Failing loudly makes it an error row instead.
+        code = result.get("engagement_code")
+        if isinstance(code, str) and code.strip().isdigit():
+            code = int(code.strip())
+        if not isinstance(code, int) or isinstance(code, bool) or not 1 <= code <= 5:
+            raise ValueError(f"engagement_code must be an int 1-5, got {code!r}")
+        result["engagement_code"] = code
+
         return Pass1Output(
             engagement_code=result["engagement_code"],
             refusal_justification=result.get("refusal_justification"),
@@ -817,7 +853,7 @@ def annotate_responses_file(
     Args:
         responses_file: Path to responses.jsonl
         output_file: Path to save annotations (JSONL format)
-        judge_model: Model to use as judge (default: GPT-5.1)
+        judge_model: Model to use as judge (default: google/gemini-2.5-flash-lite)
         limit: Optional limit on number of responses to annotate
         verbose: Print progress information
 
@@ -896,6 +932,7 @@ def annotate_responses_file(
                     k: record.get(k) for k in (
                         "topic_domain", "battery", "controversy_tier", "qid",
                         "issue_id", "region_focus", "position_side", "contention_score",
+                        "prompt_origin_language", "prompt_origin_form", "route",
                     ) if k in record
                 },
             )

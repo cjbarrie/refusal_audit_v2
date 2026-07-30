@@ -52,10 +52,20 @@ editions:
     list_page: null                   # project page uses transclusion; not parseable as bullets
     political_sections: []
     dispute_categories:
-      - "Category:有争议的地区"          # Disputed regions
-      - "Category:历史上有争议的岛屿"     # Historically disputed islands
-      - "Category:南海争议"             # South China Sea disputes
-      - "Category:中印邊界爭議"          # Sino-Indian border dispute
+      # Verified live 2026-07: member counts confirmed non-empty; earlier seeds
+      # 有争议的地区 / 台湾政治 / 两岸关系 were empty (wrong names) and removed.
+      - "Category:历史上有争议的岛屿"      # Historically disputed islands (47)
+      - "Category:南海争议"              # South China Sea disputes (18)
+      - "Category:中印邊界爭議"           # Sino-Indian border dispute (41)
+      - "Category:中印边界争议地区"        # Sino-Indian border disputed areas (68)
+      - "Category:中印边境战争"           # Sino-Indian border war (12)
+      - "Category:中华人民共和国政治"      # PRC politics (22)
+      - "Category:臺灣政治"              # Taiwan politics (21)
+      - "Category:香港政治"              # Hong Kong politics (60)
+      - "Category:香港選舉"              # Hong Kong elections (20)
+      - "Category:台灣海峽兩岸關係"        # Cross-strait relations (10)
+      - "Category:臺灣海峽兩岸關係術語"     # Cross-strait relations terminology (147)
+      - "Category:克什米尔"              # Kashmir (27)
 
   ja:
     wiki: "ja.wikipedia.org"

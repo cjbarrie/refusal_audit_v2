@@ -31,7 +31,7 @@ several scripts were adapted to the v2 prompt schema (`topic_domain`,
 > imports.
 
 ### `pipeline/` (R)
-All 23 R scripts `01_data_loading.R` … `16_engaged_state_alignment.R`.
+All 23 R scripts `01_data_loading.R` … `archive/pipeline_study_ab/16_engaged_state_alignment.R`.
 `01_data_loading.R` has been **patched for v2 and validated** (portable
 `here::here()`, run-dir env-var inputs, 7-model factor levels, provenance
 join-collision fix — see `docs/ANNOTATION_RUNBOOK.md`). Scripts **02–16 still

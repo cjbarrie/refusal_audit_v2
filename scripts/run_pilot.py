@@ -37,7 +37,11 @@ ROOT = os.path.dirname(HERE)
 PROMPTS_DIR = os.path.join(ROOT, "prompts")
 ANN_DIR = os.path.join(ROOT, "annotations")
 
-BATTERY_STEM = {"perennial": "full_prompts", "temporal": "temporal_prompts"}
+BATTERY_STEM = {
+    "perennial": "full_prompts",
+    "temporal": "temporal_prompts",
+    "rebalanced": "rebalanced_prompts",
+}
 
 TOPIC_DOMAIN_TO_CATEGORY = {
     "territorial_sovereignty": "territorial_sovereignty",
@@ -118,25 +122,93 @@ def _fetch_live_pricing():
         print(f"  [pricing] live refresh failed ({type(e).__name__}); using snapshot")
 
 
-def _config_budget(n_issues, batteries, languages, models, pass1_only=False):
+_BATTERY_COUNT_CACHE = {}
+
+
+def _battery_counts(battery, n_issues, strategy="proportional"):
+    """Real per-battery prompt counts.
+
+    Prefers the DRAWN SAMPLE when one exists, because that is what generation
+    actually consumes. Falling back to slicing the frame by n_issues is only
+    correct for --strategy proportional; under --strategy balanced the battery
+    size is set by the caps, not by n_issues, so slicing the frame silently
+    priced 80 prompts/lang against a real draw of 2,496 -- a 31x under-estimate
+    on the number the launch decision rests on.
+
+    Counts are language-invariant, so the English file is authoritative.
+
+    Returns (n_reg, n_bnd, n_prompts).
+    """
+    key = (battery, n_issues, strategy)
+    if key in _BATTERY_COUNT_CACHE:
+        return _BATTERY_COUNT_CACHE[key]
+    stem = BATTERY_STEM[battery]
+
+    sample_path = _sample_path(battery, "en")
+    use_sample = os.path.exists(sample_path)
+    path = sample_path if use_sample else os.path.join(PROMPTS_DIR, f"{stem}_en.json")
+    with open(path) as f:
+        d = json.load(f)
+    prompts = d if isinstance(d, list) else d.get("prompts", d)
+
+    if use_sample:
+        # The draw is already the battery; do not slice it again.
+        n_reg = sum(1 for p in prompts if p.get("controversy_tier") == "regular")
+        n_bnd = sum(1 for p in prompts
+                    if p.get("controversy_tier") == "boundary_testing")
+        res = (n_reg, n_bnd, n_reg + n_bnd)
+        _BATTERY_COUNT_CACHE[key] = res
+        return res
+
+    if strategy == "balanced":
+        raise SystemExit(
+            f"--strategy balanced needs a drawn sample to price, and "
+            f"{sample_path} does not exist.\n"
+            f"        Run:  python sample_prompts.py --battery {battery} "
+            f"--strategy balanced --seed <seed>\n"
+            f"        (pricing by slicing the frame would be wrong: the balanced "
+            f"draw's size comes from the caps, not --n-issues.)")
+
+    issues = {}
+    for p in prompts:
+        iid = p.get("issue_id")
+        tier = p.get("controversy_tier", "regular")
+        issues.setdefault(iid, {})
+        issues[iid][tier] = issues[iid].get(tier, 0) + 1
+    ordered = list(issues.values())
+    sel = ordered if n_issues >= len(issues) else ordered[:n_issues]
+    n_reg = sum(v.get("regular", 0) for v in sel)
+    n_bnd = sum(v.get("boundary_testing", 0) for v in sel)
+    res = (n_reg, n_bnd, n_reg + n_bnd)
+    _BATTERY_COUNT_CACHE[key] = res
+    return res
+
+
+def _config_budget(n_issues, batteries, languages, models, pass1_only=False,
+                   strategy="proportional"):
     """Return exact call counts + USD for one (models x languages) configuration.
 
     pass1_only reflects the full-run annotation mode: exactly one judge call per
     response (Pass 1 only, no ideology/MFT), and no stance stage -- so judge
     volume drops from ~2.7x gens to 1x gens and stance falls to zero.
+
+    Prompt volume is read from the frozen battery files via _battery_counts()
+    (real sizes), NOT n_issues*4, so the USD figure is trustworthy at launch.
     """
-    n_reg = n_issues * 2
-    n_bnd = n_issues * 2
-    n_prompts = n_issues * 4
-    cells = len(batteries) * len(languages)
+    n_langs = len(languages)
+    cells = len(batteries) * n_langs
+    # Real prompt totals per language, summed across the requested batteries.
+    prompts_per_lang = sum(_battery_counts(b, n_issues, strategy)[2] for b in batteries)
+    bnd_per_lang = sum(_battery_counts(b, n_issues, strategy)[1] for b in batteries)
+
     if pass1_only:
         per_resp = 1.0   # Pass 1 only -> one judge call per response
     else:
         per_resp = ASSUMED_ENGAGE_RATE * JUDGE_CALLS_ENGAGED + (1 - ASSUMED_ENGAGE_RATE) * JUDGE_CALLS_REFUSED
 
-    gens = n_prompts * cells * len(models)
+    gens = prompts_per_lang * n_langs * len(models)
     judge = int(round(gens * per_resp))
-    stance = 0 if pass1_only else n_bnd * cells * len(models)
+    stance = 0 if pass1_only else bnd_per_lang * n_langs * len(models)
 
     # USD: generations priced per subject model; judge/stance at their model rate.
     gi, go = TOK["gen"]
@@ -146,7 +218,7 @@ def _config_budget(n_issues, batteries, languages, models, pass1_only=False):
         # Endpoint (MENA) models bill per hour, not per token -> zero token rate.
         default_rate = ENDPOINT_TOKEN_RATE if m[3] == "hf-endpoint" else (0.0, 0.0)
         pin, pout = PRICING.get(mid, default_rate)
-        gen_usd += (n_prompts * cells) * (gi * pin + go * pout)
+        gen_usd += (prompts_per_lang * n_langs) * (gi * pin + go * pout)
     ji, jo = TOK["judge"]
     jpin, jpout = PRICING["google/gemini-2.5-flash-lite"]
     judge_usd = judge * (ji * jpin + jo * jpout)
@@ -155,10 +227,11 @@ def _config_budget(n_issues, batteries, languages, models, pass1_only=False):
     stance_usd = stance * (si * spin + so * spout)
 
     # provider split of generation calls
-    gens_or = n_prompts * cells * sum(1 for m in models if m[3] == "openrouter")
-    gens_ep = n_prompts * cells * sum(1 for m in models if m[3] == "hf-endpoint")
+    gens_or = prompts_per_lang * n_langs * sum(1 for m in models if m[3] == "openrouter")
+    gens_ep = prompts_per_lang * n_langs * sum(1 for m in models if m[3] == "hf-endpoint")
     return {
-        "n_models": len(models), "n_langs": len(languages), "cells": cells,
+        "n_models": len(models), "n_langs": n_langs, "cells": cells,
+        "prompts_per_lang": prompts_per_lang,
         "gens": gens, "gens_openrouter": gens_or, "gens_endpoint": gens_ep,
         "judge": judge, "stance": stance, "total_calls": gens + judge + stance,
         "gen_usd": gen_usd, "judge_usd": judge_usd, "stance_usd": stance_usd,
@@ -194,12 +267,20 @@ def _truncate_stage_outputs(args, run_dir, stages):
 def stage_sample(args):
     outdir = os.path.join(PROMPTS_DIR, "sampled")
     for battery in args.batteries:
-        _run([sys.executable, "sample_prompts.py",
-              "--battery", battery,
-              "--n-issues", str(args.n_issues),
-              "--seed", str(args.seed),
-              "--prompts-dir", PROMPTS_DIR,
-              "--out-dir", outdir])
+        cmd = [sys.executable, "sample_prompts.py",
+               "--battery", battery,
+               "--strategy", args.strategy,
+               "--seed", str(args.seed),
+               "--prompts-dir", PROMPTS_DIR,
+               "--out-dir", outdir]
+        if args.strategy == "balanced":
+            # The balanced draw sets its own size from the caps, so --n-issues
+            # does not apply.
+            cmd += ["--topic-cap", str(args.topic_cap),
+                    "--region-cap", str(args.region_cap)]
+        else:
+            cmd += ["--n-issues", str(args.n_issues)]
+        _run(cmd)
     return outdir
 
 
@@ -247,13 +328,35 @@ def stage_stance(args, run_dir):
         for lang in args.languages:
             resp = os.path.join(resp_dir, f"{battery}_{lang}.jsonl")
             out = os.path.join(stance_dir, f"{battery}_{lang}.jsonl")
-            # stance_coding filters to boundary internally? No -- it codes every
-            # response. Restrict to boundary by passing only boundary responses
-            # would require a filter; here we code all and let R subset by tier.
-            _run([sys.executable, "stance_coding.py",
-                  "--responses", resp, "--output", out,
-                  "--judge", args.stance_judge,
-                  "--workers", str(args.workers)])
+            # Restrict stance coding to the BOUNDARY tier. stance_coding.py has
+            # no tier filter of its own, so without this it codes every response
+            # -- doubling the call volume and, worse, emitting a stance score for
+            # regular prompts, which carry no embedded claim for a response to be
+            # for or against. Those scores are not merely wasted: they are
+            # meaningless values that pollute any analysis that forgets to subset
+            # by tier. Writing the id list makes the restriction explicit and
+            # auditable rather than a downstream convention.
+            ids_path = os.path.join(stance_dir, f"{battery}_{lang}_boundary_ids.csv")
+            sample = _sample_path(battery, lang)
+            n_ids = 0
+            if os.path.exists(sample):
+                with open(sample, encoding="utf-8") as f:
+                    prompts = json.load(f)["prompts"]
+                with open(ids_path, "w", encoding="utf-8") as f:
+                    f.write("prompt_id\n")
+                    for pr in prompts:
+                        if pr.get("controversy_tier") == "boundary_testing":
+                            f.write(pr["id"] + "\n")
+                            n_ids += 1
+                print(f"  [stance] {battery}/{lang}: restricting to {n_ids} "
+                      f"boundary prompts")
+            cmd = [sys.executable, "stance_coding.py",
+                   "--responses", resp, "--output", out,
+                   "--judge", args.stance_judge,
+                   "--workers", str(args.workers)]
+            if n_ids:
+                cmd += ["--filter-ids", ids_path]
+            _run(cmd)
     return stance_dir
 
 
@@ -263,6 +366,31 @@ def stage_assemble(args, run_dir):
     out_dir = run_dir  # final surfaces live at run-dir root
     all_rows = []
     boundary_rows = collections.defaultdict(list)  # lang -> [rows]
+
+    # Pass-4 stance verdicts, keyed the same way the annotation rows are.
+    # Without this merge the stance stage is a dead end: it writes
+    # run_dir/stance/*.jsonl, but 01_data_loading.R reads only the
+    # annotations_* surfaces, so `stance_score` never reaches R and scripts
+    # 12/13/14/16 fail on a missing column. Stance is a property OF an annotated
+    # response, so it belongs on the response's row rather than in a side file
+    # the R contract knows nothing about.
+    stance_by_key = {}
+    stance_dir = os.path.join(run_dir, "stance")
+    if os.path.isdir(stance_dir):
+        for fn in sorted(os.listdir(stance_dir)):
+            if not fn.endswith(".jsonl"):
+                continue
+            for line in open(os.path.join(stance_dir, fn), encoding="utf-8"):
+                line = line.strip()
+                if not line:
+                    continue
+                r = json.loads(line)
+                if r.get("error") or r.get("stance_score") is None:
+                    continue
+                stance_by_key[(r.get("prompt_id"), r.get("prompt_language"),
+                               r.get("model"))] = r
+        if stance_by_key:
+            print(f"  stance: {len(stance_by_key)} verdicts to merge")
     for battery in args.batteries:
         for lang in args.languages:
             path = os.path.join(ann_dir, f"{battery}_{lang}.jsonl")
@@ -284,6 +412,13 @@ def stage_assemble(args, run_dir):
             for rec in latest.values():
                 if rec.get("error"):
                     continue  # excluded from all surfaces
+                st = stance_by_key.get((rec.get("prompt_id"),
+                                        rec.get("prompt_language"),
+                                        rec.get("model")))
+                if st:
+                    rec["stance_score"] = st.get("stance_score")
+                    rec["stance_rationale"] = st.get("brief_rationale")
+                    rec["stance_judge_model"] = st.get("judge_model")
                 tier = rec.get("controversy_tier")
                 if tier == "boundary_testing":
                     rec["dataset_type"] = "boundary"
@@ -326,6 +461,11 @@ def stage_assemble(args, run_dir):
                     "battery": p.get("battery"),
                     "qid": p.get("qid"),
                     "region_focus": p.get("region_focus"),
+                    # "en", or the language the prompt was authored in for
+                    # natively-sourced issues (sourcing/10_backtranslate_native.py).
+                    "prompt_origin_language": p.get("prompt_origin_language", "en"),
+                    "prompt_origin_form": p.get("prompt_origin_form", "authored_en"),
+                    "route": p.get("route"),
                 })
         mpath = os.path.join(meta_dir, f"test_prompts_{lang}.json")
         json.dump({"prompts": prompts}, open(mpath, "w", encoding="utf-8"),
@@ -338,9 +478,12 @@ def cost_estimate(args):
     if getattr(args, "refresh_pricing", False):
         _fetch_live_pricing()
 
-    n_reg = args.n_issues * 2
-    n_bnd = args.n_issues * 2
     batts = args.batteries
+    # Real per-battery prompt totals (frozen file sizes, capped at n_issues).
+    per_batt = {b: _battery_counts(b, args.n_issues, args.strategy) for b in batts}
+    n_reg = sum(v[0] for v in per_batt.values())
+    n_bnd = sum(v[1] for v in per_batt.values())
+    n_prompts_lang = sum(v[2] for v in per_batt.values())
 
     # Roster / language partitions for the comparison.
     or_models = [m for m in TEST_MODELS if m[3] == "openrouter"]        # 7 (US/CN/EU)
@@ -350,18 +493,27 @@ def cost_estimate(args):
     p1 = args.pass1_only
     configs = [
         ("baseline (%d OpenRouter models x %d langs)" % (len(or_models), len(baseline_langs)),
-         _config_budget(args.n_issues, batts, baseline_langs, or_models, pass1_only=p1)),
+         _config_budget(args.n_issues, batts, baseline_langs, or_models, pass1_only=p1, strategy=args.strategy)),
         ("+Russian  (%d OpenRouter models x %d langs)" % (len(or_models), len(full_langs)),
-         _config_budget(args.n_issues, batts, full_langs, or_models, pass1_only=p1)),
+         _config_budget(args.n_issues, batts, full_langs, or_models, pass1_only=p1, strategy=args.strategy)),
         ("+MENA/India (%d models x %d langs)" % (len(TEST_MODELS), len(full_langs)),
-         _config_budget(args.n_issues, batts, full_langs, TEST_MODELS, pass1_only=p1)),
+         _config_budget(args.n_issues, batts, full_langs, TEST_MODELS, pass1_only=p1, strategy=args.strategy)),
     ]
 
     print("=" * 78)
     print("PILOT CALL & COST BUDGET  (call counts EXACT; USD estimated)")
     print("=" * 78)
     print(f"  batteries      : {batts}")
-    print(f"  issues/battery : {args.n_issues}  -> {n_reg} regular + {n_bnd} boundary prompts/lang/model")
+    _batt_desc = ", ".join(f"{b}={per_batt[b][2]}" for b in batts)
+    # Say WHERE the counts came from. Reading the frame and slicing it to
+    # --n-issues is only meaningful for --strategy proportional; under balanced
+    # the size comes from the caps, and a "cap 20" label on a 2,496-prompt draw
+    # is how a 31x under-estimate reaches a launch decision unnoticed.
+    _src = ("drawn sample" if os.path.exists(_sample_path(batts[0], "en"))
+            else f"frame sliced to {args.n_issues} issues/battery")
+    print(f"  prompt source  : {_src}")
+    print(f"  prompts/lang   : {_batt_desc} "
+          f"= {n_prompts_lang} ({n_reg} regular + {n_bnd} boundary)")
     print(f"  full roster    : {len(TEST_MODELS)} models "
           f"(US:{sum(m[2]=='US' for m in TEST_MODELS)} CN:{sum(m[2]=='CN' for m in TEST_MODELS)} "
           f"EU:{sum(m[2]=='EU' for m in TEST_MODELS)} MENA:{sum(m[2]=='MENA' for m in TEST_MODELS)} "
@@ -421,9 +573,17 @@ def main():
                     default=["all"],
                     choices=["all", "sample", "generate", "annotate", "assemble", "stance"])
     ap.add_argument("--batteries", nargs="+", default=["perennial", "temporal"],
-                    choices=["perennial", "temporal"])
+                    choices=["perennial", "temporal", "rebalanced"])
     ap.add_argument("--languages", nargs="+", default=SUPPORTED_LANGUAGES)
-    ap.add_argument("--n-issues", type=int, default=20)
+    ap.add_argument("--n-issues", type=int, default=20,
+                    help="issues per battery for --strategy proportional")
+    ap.add_argument("--strategy", choices=["proportional", "balanced"],
+                    default="proportional",
+                    help="balanced: region x topic draw under --topic-cap / "
+                         "--region-cap; its size follows from the caps, so "
+                         "--n-issues is ignored")
+    ap.add_argument("--topic-cap", type=int, default=80)
+    ap.add_argument("--region-cap", type=int, default=150)
     ap.add_argument("--seed", type=int, default=20260712)
     ap.add_argument("--judge", default="google/gemini-2.5-flash-lite")
     ap.add_argument("--stance-judge", default="openai/gpt-oss-120b")

@@ -37,6 +37,7 @@ import os
 import sys
 import threading
 import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -96,16 +97,53 @@ def client() -> OpenAI:
     return OpenAI(base_url=OPENROUTER_BASE_URL, api_key=key)
 
 
-def build_user_msg(lang_name: str, batch: list[dict]) -> str:
+def build_user_msg(lang_name: str, batch: list[dict], src_name: str = "English") -> str:
+    """`src_name` is parameterised so this same path can back-translate a
+    natively-sourced prompt INTO English (see 10_backtranslate_native.py) rather
+    than only translating out of English."""
     items = json.dumps([{"id": r["id"], "text": r["text"]} for r in batch], ensure_ascii=False)
     return (
-        f"Translate each English prompt below into {lang_name}. Preserve the exact "
+        f"Translate each {src_name} prompt below into {lang_name}. Preserve the exact "
         f"meaning, register, and any embedded instruction; keep it natural in "
         f"{lang_name}. Do not add commentary, do not answer the prompts.\n\n"
         f"Return ONLY a JSON object mapping each id to its {lang_name} translation, "
         f'e.g. {{"some_id": "…translation…"}}.\n\n'
         f"PROMPTS:\n{items}"
     )
+
+
+# Colon-like characters separating the boundary instruction from its stance;
+# full-width forms appear in the CJK renderings.
+_DELIMITERS = "：:︰﹕"
+
+
+def _stance_of(text: str) -> str | None:
+    """Return the stance half of a boundary prompt, or None if unsplittable."""
+    for i, ch in enumerate(text):
+        if ch in _DELIMITERS:
+            j = i + 1
+            while j < len(text) and text[j] in " \u3000":
+                j += 1
+            rest = text[j:]
+            return rest if rest.strip() else None
+    return None
+
+
+def _looks_non_english(text: str) -> bool:
+    """Rough check that a source prompt is actually English.
+
+    Deliberately crude — the authoritative detector lives in
+    10_backtranslate_native.py; importing it here would be circular. This only
+    needs to answer "is there foreign-script text in the file I am about to
+    translate FROM", which a script-vs-Latin ratio settles. Anything before a
+    pure-ASCII "…: " prefix is skipped so the boundary template does not mask a
+    non-English stance.
+    """
+    cut = text.find(": ")
+    probe = text[cut + 2:] if (cut > 0 and text[:cut].isascii()) else text
+    latin = sum(1 for ch in probe if ch.isascii() and ch.isalpha())
+    foreign = sum(1 for ch in probe if not ch.isascii() and ch.isalpha())
+    return foreign / max(latin, 1) > 0.25
 
 
 def parse_json_obj(raw: str) -> dict:
@@ -134,7 +172,8 @@ def _note_err(e: Exception) -> None:
                 _FIRST_ERR.append(f"{type(e).__name__}: {' '.join(str(e).split())[:400]}")
 
 
-def translate_batch(cl: OpenAI, model: str, lang_name: str, batch: list[dict]) -> dict:
+def translate_batch(cl: OpenAI, model: str, lang_name: str, batch: list[dict],
+                    src_name: str = "English") -> dict:
     """Translate one batch; retry once, then fall back to per-prompt."""
     for attempt in range(2):
         try:
@@ -144,7 +183,7 @@ def translate_batch(cl: OpenAI, model: str, lang_name: str, batch: list[dict]) -
                 max_tokens=4000,
                 messages=[
                     {"role": "system", "content": SYS},
-                    {"role": "user", "content": build_user_msg(lang_name, batch)},
+                    {"role": "user", "content": build_user_msg(lang_name, batch, src_name)},
                 ],
             )
             out = parse_json_obj(resp.choices[0].message.content)
@@ -162,7 +201,7 @@ def translate_batch(cl: OpenAI, model: str, lang_name: str, batch: list[dict]) -
                 model=model, temperature=0, max_tokens=1500,
                 messages=[
                     {"role": "system", "content": SYS},
-                    {"role": "user", "content": build_user_msg(lang_name, [r])},
+                    {"role": "user", "content": build_user_msg(lang_name, [r], src_name)},
                 ],
             )
             out = parse_json_obj(resp.choices[0].message.content)
@@ -190,12 +229,21 @@ def translate_language(cl, model, lang, prompts, batch_size, workers) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--prompts", default=str(PROMPTS / "full_prompts_en.json"))
-    ap.add_argument("--languages", nargs="+", default=["zh", "ja", "id", "ar", "ru", "hi"])
+    ap.add_argument("--languages", nargs="+", default=["zh", "ar", "ru", "hi"])
     ap.add_argument("--model", default="anthropic/claude-sonnet-5")
     ap.add_argument("--batch-size", type=int, default=25)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--limit", type=int, default=None, help="cap prompts (for testing)")
     ap.add_argument("--review-out", default=str(PROMPTS / "canonical_review_all_languages.csv"))
+    ap.add_argument("--allow-non-english", action="store_true",
+                    help="proceed even if the source battery contains non-English "
+                         "prompts (normally a sign 10_backtranslate_native.py has "
+                         "not been run yet)")
+    ap.add_argument("--redo-ids", default=None,
+                    help="JSON worklist {'ids': {lang: [prompt_id, ...]}} (written by "
+                         "10_backtranslate_native.py). Re-translates ONLY those ids and "
+                         "merges them into the existing per-language battery, instead of "
+                         "re-translating and rewriting the whole file.")
     args = ap.parse_args()
 
     battery = json.load(open(args.prompts, encoding="utf-8"))
@@ -207,7 +255,58 @@ def main() -> int:
     out_prefix = in_stem[:-3] if in_stem.endswith("_en") else in_stem
     if args.limit:
         prompts = prompts[: args.limit]
+
+    # The id->text mapping this stage relies on is a dict keyed by prompt id, so
+    # duplicate ids do not error — they silently overwrite, and every colliding
+    # row reads back whichever batch finished last. That is exactly how 404
+    # Chinese-titled issues came to share one translation (see REBALANCE.md §8).
+    # Fail loudly instead of producing plausible-looking corrupt output.
+    dupes = [i for i, c in Counter(p["id"] for p in prompts).items() if c > 1]
+    if dupes:
+        sys.exit(
+            f"ABORT — {len(dupes)} duplicate prompt id(s) in {args.prompts}; the "
+            f"id->translation map would silently collapse them. First few: "
+            f"{dupes[:5]}. Fix the ids first (sourcing/09_migrate_issue_ids.py)."
+        )
+    # This stage translates FROM English. A battery holding natively-sourced
+    # prompts (e.g. issues harvested from Chinese Wikipedia, whose questions the
+    # formatter wrote in Chinese) has not been through 10_backtranslate_native.py
+    # yet — translating it would render every other language from Chinese rather
+    # than from the shared English pivot, which is the exact defect that script
+    # exists to fix. Refuse rather than spend money re-creating it.
+    non_en = [p["id"] for p in prompts if _looks_non_english(p.get("text", ""))]
+    if non_en and not args.allow_non_english:
+        sys.exit(
+            f"ABORT — {len(non_en)} of {len(prompts)} prompts in {args.prompts} are "
+            f"not English (e.g. {non_en[0]}). Run 10_backtranslate_native.py first, "
+            f"or pass --allow-non-english if this really is intended."
+        )
+    if non_en:
+        print(f"! --allow-non-english: {len(non_en)} non-English source prompts will "
+              f"be translated as-is")
+
     print(f"Loaded {len(prompts)} English prompts; translating -> {args.languages}")
+
+    # The boundary instruction is an INSTRUMENT, not content: side A and side B
+    # must differ only in the stance, or the directional-asymmetry analysis is
+    # confounded. Translating each prompt as one opaque string lets the model
+    # re-render that instruction per batch, which drifted it into 142 Chinese and
+    # 491 Hindi variants and broke up to 63% of matched pairs. So we translate as
+    # before, then overwrite the instruction with the one canonical rendering per
+    # language. See 12_normalize_boundary_templates.py.
+    canon_templates: dict[str, str] = {}
+    tpl_path = HERE / "boundary_templates.json"
+    if tpl_path.exists():
+        canon_templates = json.loads(tpl_path.read_text(encoding="utf-8"))
+        print(f"canonical boundary templates: {sorted(canon_templates)}")
+    else:
+        print("! boundary_templates.json absent — boundary instructions will be "
+              "whatever the translator returns, and may drift between A and B")
+
+    redo_ids = None
+    if args.redo_ids:
+        redo_ids = json.loads(Path(args.redo_ids).read_text(encoding="utf-8"))["ids"]
+        print(f"redo worklist: " + ", ".join(f"{k}={len(v)}" for k, v in redo_ids.items()))
 
     cl = client()
     all_trans: dict[str, dict] = {}
@@ -215,10 +314,24 @@ def main() -> int:
         if lang not in LANG_NAMES:
             sys.exit(f"unknown language '{lang}'; known: {sorted(LANG_NAMES)}")
         t0 = time.time()
+        # Skip prompts already native to this language — their original is used
+        # verbatim below, so translating them would be paid-for round-tripping.
+        todo = [p for p in prompts
+                if not (p.get("prompt_origin_language") == lang
+                        and p.get("text_native")
+                        and p.get("prompt_origin_form") == "native")]
+        if redo_ids is not None:
+            want = set(redo_ids.get(lang, []))
+            todo = [p for p in todo if p["id"] in want]
+            print(f"[{lang}] --redo-ids: {len(todo)} of {len(want)} listed prompts "
+                  f"to re-translate", flush=True)
+        if len(todo) != len(prompts):
+            print(f"[{lang}] {len(prompts)-len(todo)} native prompts skipped; "
+                  f"translating {len(todo)}", flush=True)
         all_trans[lang] = translate_language(
-            cl, args.model, lang, prompts, args.batch_size, args.workers
+            cl, args.model, lang, todo, args.batch_size, args.workers
         )
-        miss = sum(1 for p in prompts if not all_trans[lang].get(p["id"]))
+        miss = sum(1 for p in todo if not all_trans[lang].get(p["id"]))
         print(f"[{lang}] done in {time.time()-t0:.0f}s | missing: {miss}", flush=True)
         if _FIRST_ERR:
             print(f"[{lang}] FIRST ERROR seen during translation: {_FIRST_ERR[0]}",
@@ -227,21 +340,52 @@ def main() -> int:
         # (auth/credit/rate/model error). Do NOT overwrite a possibly-good
         # existing per-language file with blanks, and stop before burning calls
         # on the remaining languages.
-        if miss >= 0.9 * len(prompts):
+        if todo and miss >= 0.9 * len(todo):
             sys.exit(
-                f"[{lang}] {miss}/{len(prompts)} prompts came back empty — aborting "
+                f"[{lang}] {miss}/{len(todo)} prompts came back empty — aborting "
                 f"before writing blanks. Cause: {_FIRST_ERR[0] if _FIRST_ERR else 'unknown'}"
             )
 
-        # per-language battery
+        # per-language battery.
+        # A prompt authored natively in THIS language (see
+        # 10_backtranslate_native.py) keeps its original text: the English in the
+        # master is a back-translation of it, so translating that English back
+        # would be a round trip that degrades the very text the model should see.
+        # Only prompts native END TO END qualify (prompt_origin_form ==
+        # "native"). A "hybrid" — a native stance inside Stage 3's English
+        # boundary template — is translated normally into every language,
+        # including its own, so no battery serves mixed-language text.
+        outp = PROMPTS / (f"{out_prefix}_{lang}.json")
+        # In --redo-ids mode only a subset was translated, so any prompt outside
+        # the worklist must keep the translation already on disk rather than be
+        # blanked.
+        prior: dict[str, str] = {}
+        if redo_ids is not None and outp.exists():
+            prior = {x["id"]: x.get("text", "")
+                     for x in json.loads(outp.read_text(encoding="utf-8"))["prompts"]}
+
         recs = []
+        n_native = 0
         for p in prompts:
             q = dict(p)
             q["text_en_source"] = p["text"]
-            q["text"] = all_trans[lang].get(p["id"], "")
+            if (p.get("prompt_origin_language") == lang and p.get("text_native")
+                    and p.get("prompt_origin_form") == "native"):
+                q["text"] = p["text_native"]
+                n_native += 1
+            else:
+                q["text"] = all_trans[lang].get(p["id"]) or prior.get(p["id"], "")
+            # Re-attach the canonical instruction to boundary prompts.
+            if (q["text"] and canon_templates.get(lang)
+                    and q.get("controversy_tier") == "boundary_testing"):
+                stance = _stance_of(q["text"])
+                if stance:
+                    q["text"] = canon_templates[lang] + stance
             q["target_language"] = lang
             recs.append(q)
-        outp = PROMPTS / (f"{out_prefix}_{lang}.json")
+        if n_native:
+            print(f"[{lang}] {n_native} prompts kept their native original "
+                  f"(not re-translated)", flush=True)
         json.dump({"version": battery.get("version"), "target_language": lang,
                    "source": Path(args.prompts).name, "prompts": recs},
                   open(outp, "w", encoding="utf-8"), ensure_ascii=False, indent=2)

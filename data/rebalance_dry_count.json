@@ -1,0 +1,67 @@
+{
+  "generated": "2026-07-27",
+  "note": "pre-enrichment dry count; net-new est. after is_political gate",
+  "frozen_qids": {
+    "frozen": 1537,
+    "zh_new": 410,
+    "ce_new_30d": 439,
+    "ce_new_45d_proj": 658,
+    "zh_ce_overlap": 1
+  },
+  "route_qid_pools": {
+    "zh_china": 415,
+    "current_events_30d@0.45": 485,
+    "frozen_union": 1537
+  },
+  "net_new_issues_est": {
+    "zh": 348,
+    "ce": 395,
+    "ct": 220
+  },
+  "region_before": {
+    "General": 230,
+    "US": 182,
+    "Arab": 374,
+    "Europe": 99,
+    "India": 244,
+    "Russia": 32,
+    "China": 12,
+    "Japan": 11,
+    "Indonesia": 2
+  },
+  "region_after": {
+    "General": 380,
+    "US": 372,
+    "Arab": 434,
+    "Europe": 239,
+    "India": 272,
+    "Russia": 77,
+    "China": 352,
+    "Japan": 21,
+    "Indonesia": 2
+  },
+  "topic_before": {
+    "security_conflict": 453,
+    "civil_rights_liberties": 207,
+    "governance_democracy": 171,
+    "migration_nationalism": 113,
+    "territorial_sovereignty": 109,
+    "social_moral": 38,
+    "environment_energy": 32,
+    "economic_policy": 32,
+    "religion_state": 31
+  },
+  "topic_after": {
+    "security_conflict": 666,
+    "civil_rights_liberties": 267,
+    "governance_democracy": 401,
+    "migration_nationalism": 183,
+    "territorial_sovereignty": 329,
+    "social_moral": 83,
+    "environment_energy": 87,
+    "economic_policy": 102,
+    "religion_state": 31
+  },
+  "baseline_issues": 1186,
+  "projected_issues": 2149
+}

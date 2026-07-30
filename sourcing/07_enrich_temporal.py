@@ -28,7 +28,7 @@ Usage:
         --workers 8
 """
 from __future__ import annotations
-import argparse, json, re, sys, time, urllib.parse, urllib.request
+import argparse, json, sys, time, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 from pathlib import Path
@@ -49,6 +49,8 @@ build_extraction_prompt = enrich02.build_extraction_prompt
 parse_extraction      = enrich02.parse_extraction
 TOPIC_DOMAIN_KEYS     = enrich02.TOPIC_DOMAIN_KEYS
 default_openrouter_llm = enrich02.default_openrouter_llm
+# Shared so both seed routes mint identical, collision-free ids (see 02).
+make_issue_id         = enrich02.make_issue_id
 
 UA = "refusal-audit-research/0.1 (academic LLM political-behavior audit)"
 
@@ -74,17 +76,26 @@ def _api(wiki: str, params: dict, tries: int = 6) -> dict:
 
 
 def batch_fetch_extracts(titles: list[str], wiki: str, batch: int = 20,
-                         sleep: float = 0.5) -> dict[str, str]:
-    """Return {input_title: lead_extract}. Batches up to `batch` titles per call.
+                         sleep: float = 0.5) -> dict[str, dict]:
+    """Return {input_title: {"extract": str, "revid": int|None}}.
+
+    The revision id is fetched in the SAME call as the extract, and this matters:
+    it is the revision the prompt is actually derived from. Earlier versions
+    wrote `rev_id: None`, which left 1,965 of 2,773 records with no citable
+    source revision — and 18 of those articles were deleted within weeks, making
+    their source text unrecoverable. `prop=revisions&rvprop=ids` returns the
+    current revision per page when several titles are queried at once, so this
+    costs nothing extra.
 
     `redirects=1` + `normalized`/`redirects` maps let us recover the input title
     each returned page corresponds to, so the cache keys match the candidate list.
     """
-    out: dict[str, str] = {}
+    out: dict[str, dict] = {}
     for i in range(0, len(titles), batch):
         chunk = titles[i:i + batch]
-        d = _api(wiki, dict(action="query", prop="extracts", exintro=1,
-                            explaintext=1, redirects=1, titles="|".join(chunk)))
+        d = _api(wiki, dict(action="query", prop="extracts|revisions", exintro=1,
+                            explaintext=1, rvprop="ids", redirects=1,
+                            titles="|".join(chunk)))
         q = d.get("query", {})
         # map any normalization / redirect back to the original input title
         alias = {}
@@ -96,14 +107,19 @@ def batch_fetch_extracts(titles: list[str], wiki: str, batch: int = 20,
         for page in q.get("pages", {}).values():
             resolved = page.get("title", "")
             original = alias.get(resolved, resolved)
-            out[original] = (page.get("extract") or "").strip()
+            revs = page.get("revisions") or []
+            out[original] = {
+                "extract": (page.get("extract") or "").strip(),
+                "revid": (revs[0].get("revid") if revs else None),
+            }
         print(f"  fetched extracts {i + len(chunk)}/{len(titles)}", flush=True)
         time.sleep(sleep)
     return out
 
 
 def enrich_one(cand: dict, summary: str, llm_fn, source_edition: str,
-               source_language: str) -> dict:
+               source_language: str, route: str = "temporal",
+               rev_id: int | None = None) -> dict:
     """LLM extraction for one candidate, using the pre-fetched `summary`.
 
     Preserves the temporal contention score and provenance from the candidate.
@@ -128,7 +144,7 @@ def enrich_one(cand: dict, summary: str, llm_fn, source_edition: str,
         except Exception:
             pass
 
-    issue_id = "issue_" + re.sub(r"[^a-z0-9]+", "_", title.lower()).strip("_")[:48]
+    issue_id = make_issue_id(title, cand.get("qid"))
     contention = cand.get("contention_temporal")
     return {
         "issue_id": issue_id,
@@ -145,7 +161,7 @@ def enrich_one(cand: dict, summary: str, llm_fn, source_edition: str,
         "key_entities": ext.get("key_entities", []),
         "contention_score": contention,
         "contention_signals": {
-            "route": "temporal",
+            "route": route,
             "ct_area": cand.get("ct_area"),
             "n_protections": cand.get("n_protections"),
             "last_protection": cand.get("last_protection"),
@@ -153,10 +169,10 @@ def enrich_one(cand: dict, summary: str, llm_fn, source_edition: str,
             "contention_temporal": contention,
         },
         "provenance": {
-            "rev_id": None,
+            "rev_id": rev_id,
             "snapshot": date.today().isoformat(),
             "url": cand.get("url"),
-            "route": "temporal",
+            "route": route,
         },
         "extraction_ok": ext_ok,
         "topic_domain_ok": ext.get("topic_domain") in TOPIC_DOMAIN_KEYS,
@@ -173,6 +189,9 @@ def main() -> int:
     ap.add_argument("--model", default="anthropic/claude-sonnet-5")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--batch", type=int, default=20, help="titles per extract API call")
+    ap.add_argument("--route", default="temporal",
+                    help="provenance tag written to each record "
+                         "(e.g. 'temporal', 'current-events', 'zh-dispute-category')")
     args = ap.parse_args()
 
     payload = json.loads(Path(args.candidates).read_text(encoding="utf-8"))
@@ -192,8 +211,10 @@ def main() -> int:
     llm_fn = default_openrouter_llm(args.model)
 
     def _task(cand):
-        return enrich_one(cand, extracts.get(cand["title"], ""), llm_fn,
-                          source_edition=args.lang, source_language=args.lang)
+        got = extracts.get(cand["title"]) or {}
+        return enrich_one(cand, got.get("extract", ""), llm_fn,
+                          source_edition=args.lang, source_language=args.lang,
+                          route=args.route, rev_id=got.get("revid"))
 
     records = []
     t0 = time.time()

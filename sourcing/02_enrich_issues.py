@@ -26,6 +26,7 @@ Output:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import re
@@ -204,6 +205,52 @@ def parse_extraction(text: str) -> dict:
     return json.loads(t)
 
 
+# --- issue identifiers -------------------------------------------------------
+# Shared by this stage and 07_enrich_temporal.py (which imports these helpers),
+# so both seed routes mint ids the same way.
+#
+# The id used to be the ASCII slug of the title alone:
+#     "issue_" + re.sub(r"[^a-z0-9]+", "_", title.lower()).strip("_")[:48]
+# For a title in a non-Latin script that pattern matches everything, so the slug
+# came out EMPTY and every such issue collapsed onto the id "issue_". In the
+# rebalanced frame that silently merged 404 Chinese-titled issues into one id;
+# because 03_format_prompts.py derives prompt ids as f"{issue_id}__reg1", the
+# collision propagated into the keys the R loader joins on and destroyed the
+# matched A/B pairing the boundary tier depends on. The 48-char truncation did
+# the same to long English titles sharing a prefix ("List of aviation
+# shootdowns and accidents during the ...").
+#
+# Uniqueness now comes from the Wikidata Q-ID, which is already unique, stable
+# across editions, and script-independent. The slug is kept only as a readable
+# prefix and is allowed to be empty.
+SLUG_MAX = 48
+
+
+def slugify_title(title: str) -> str:
+    """ASCII slug of a title. Legitimately empty for non-Latin scripts."""
+    return re.sub(r"[^a-z0-9]+", "_", (title or "").lower()).strip("_")[:SLUG_MAX]
+
+
+def title_fallback_key(title: str) -> str:
+    """Deterministic key for a record with no Q-ID; 'x' prefix so it can never
+    be mistaken for one."""
+    return "x" + hashlib.sha1((title or "").encode("utf-8")).hexdigest()[:10]
+
+
+def make_issue_id(title: str, qid: str | None) -> str:
+    """Collision-free issue id: issue_<slug>_<Q-ID>, or issue_<Q-ID> if the slug
+    is empty. Deterministic, so re-running a stage reproduces the same ids.
+
+    The slug stays ASCII on purpose: identity is carried by the Q-ID, so letting
+    CJK/Arabic text into a value that becomes a join key, CSV field and filename
+    component would add risk for no gain. The readable title is preserved in the
+    record's `title` field and in the review sheet.
+    """
+    key = qid or title_fallback_key(title)
+    slug = slugify_title(title)
+    return f"issue_{slug}_{key}" if slug else f"issue_{key}"
+
+
 def _enrich_one(cand: dict, llm_fn, wiki: str, source_edition: str,
                 source_language: str, talk_prefix: str) -> dict:
     """Enrich a single candidate. `cand` is a Stage-1 candidate dict (has title,
@@ -236,7 +283,7 @@ def _enrich_one(cand: dict, llm_fn, wiki: str, source_edition: str,
         except Exception:  # noqa: BLE001
             pass
 
-    issue_id = "issue_" + re.sub(r"[^a-z0-9]+", "_", base["title"].lower()).strip("_")[:48]
+    issue_id = make_issue_id(base["title"], cand.get("qid"))
     return {
         "issue_id": issue_id,
         "title": base["title"],

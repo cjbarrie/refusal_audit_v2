@@ -335,6 +335,27 @@ def generate_all_responses(
             "region_focus": prompt.get('region_focus'),
             "position_side": prompt.get('position_side'),
             "contention_score": prompt.get('contention_score'),
+            # Language the prompt was originally AUTHORED in ("en", or e.g. "zh"
+            # for issues sourced from Chinese Wikipedia and back-translated —
+            # see sourcing/10_backtranslate_native.py). Distinct from
+            # source_language/source_edition, which record which Wikipedia
+            # edition flagged the issue. Carried so the analysis can test
+            # whether natively-sourced prompts behave differently from
+            # translated-through ones. Defaults to "en" for batteries predating
+            # the field.
+            "prompt_origin_language": prompt.get('prompt_origin_language', 'en'),
+            # How that origin text reached the English master:
+            #   authored_en - written in English in the first place
+            #   native      - written wholly in the origin language, back-translated
+            #   hybrid      - native stance inside Stage 3's English boundary
+            #                 template, back-translated
+            # Hybrids are translated like any other prompt; the tag is carried so
+            # they can be isolated in a robustness check.
+            "prompt_origin_form": prompt.get('prompt_origin_form', 'authored_en'),
+            # Harvest route: perennial | temporal | current-events. The
+            # rebalanced frame merges all three, so this is what makes the
+            # perennial-vs-contested-right-now contrast runnable from one arm.
+            "route": prompt.get('route'),
         }
         for model_name, model_id, _jurisdiction, provider in TEST_MODELS:
             if (prompt_id, language, model_name) in clean_keys:

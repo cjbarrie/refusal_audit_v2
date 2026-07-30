@@ -89,7 +89,8 @@ def strip_leading_stance(stance: str) -> str:
     return s
 
 
-def format_issue(rec: dict, llm_fn, idx: int) -> tuple[list[dict], dict]:
+def format_issue(rec: dict, llm_fn, idx: int,
+                 battery_tag: str | None = None) -> tuple[list[dict], dict]:
     """Return (prompt_dicts, review_row) for one issue."""
     issue_id = rec["issue_id"]
     topic_domain = rec.get("topic_domain")
@@ -100,6 +101,23 @@ def format_issue(rec: dict, llm_fn, idx: int) -> tuple[list[dict], dict]:
     # which community flagged the issue. Default to en for legacy records.
     src_lang = rec.get("source_language", "en")
     src_edition = rec.get("source_edition", "en")
+
+    # Which arm this issue belongs to. Carried onto every prompt so the arms
+    # stay separable through downstream joins (Decision 0: perennial, temporal
+    # and rebalanced are run as SEPARATE experiments, never pooled). Prefer an
+    # explicit --battery tag, else whatever the record already carries.
+    battery = battery_tag or rec.get("battery")
+
+    # Which HARVEST ROUTE produced this issue: perennial (curated controversy
+    # list), temporal (protection log) or current-events (portal). The
+    # rebalanced frame merges all three, so this is what makes the
+    # "perennial vs contested-right-now" contrast (NEXT_STEPS Step 7) runnable
+    # WITHOUT running three separate batteries — which would be wasteful, since
+    # the rebalanced frame already contains 100% of perennial and 96% of
+    # temporal. Records that predate the route tag are perennial by definition.
+    route = ((rec.get("contention_signals") or {}).get("route")
+             or (rec.get("provenance") or {}).get("route")
+             or "perennial")
 
     prompts: list[dict] = []
 
@@ -125,6 +143,8 @@ def format_issue(rec: dict, llm_fn, idx: int) -> tuple[list[dict], dict]:
             "source_edition": src_edition,
             "position_side": None,
             "contention_score": contention,
+            "battery": battery,
+            "route": route,
         })
 
     # ----- boundary tier: matched pair, one directive per side -----
@@ -147,6 +167,8 @@ def format_issue(rec: dict, llm_fn, idx: int) -> tuple[list[dict], dict]:
             "source_edition": src_edition,
             "position_side": side,
             "contention_score": contention,
+            "battery": battery,
+            "route": route,
         })
 
     review_row = {
@@ -174,6 +196,11 @@ def main() -> None:
     ap.add_argument("--out-prompts", default=str(PROMPTS / "probe_prompts_en.json"))
     ap.add_argument("--out-review", default=str(PROMPTS / "probe_review_sheet.csv"))
     ap.add_argument("--model", default="anthropic/claude-sonnet-5")
+    ap.add_argument("--battery", default=None,
+                    help="arm tag stamped on every emitted prompt "
+                         "(perennial | temporal | rebalanced). Falls back to "
+                         "whatever the issue record carries. Keeps the arms "
+                         "separable downstream — see REBALANCE.md Decision 0.")
     ap.add_argument("--workers", type=int, default=1,
                     help="Concurrent regular-question generations. Default 1 "
                          "(serial, byte-compatible with the frozen English "
@@ -197,7 +224,7 @@ def main() -> None:
         # serial path: byte-compatible with the frozen English battery
         for i, rec in enumerate(records, 1):
             print(f"[{i}/{len(records)}] {rec['title']}")
-            pr, row = format_issue(rec, llm_fn, i)
+            pr, row = format_issue(rec, llm_fn, i, args.battery)
             all_prompts.extend(pr)
             review_rows.append(row)
             time.sleep(0.3)
@@ -208,7 +235,7 @@ def main() -> None:
         results: dict[int, tuple[list[dict], dict]] = {}
         done = 0
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
-            futs = {ex.submit(format_issue, rec, llm_fn, i): i
+            futs = {ex.submit(format_issue, rec, llm_fn, i, args.battery): i
                     for i, rec in enumerate(records, 1)}
             for fut in as_completed(futs):
                 i = futs[fut]

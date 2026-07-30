@@ -15,3 +15,20 @@ writeup/p[0-9].log
 
 # Secrets — never commit
 .env
+
+# Repair snapshots written by the sourcing/annotation fix chain
+# (.pre_idfix, .pre_backtranslate, .pre_template_fix, .pre_battery_tag,
+# .pre_route_tag, .pre_provenance_recovery, .pre_wording_review).
+# 364 MB of superseded intermediate state — every repair they snapshot has been
+# applied and verified. Kept on disk for a local revert; never in history.
+*.pre_idfix
+*.pre_backtranslate
+*.pre_template_fix
+*.pre_battery_tag
+*.pre_route_tag
+*.pre_provenance_recovery
+*.pre_wording_review
+*.tmpmv
+
+# Resumable API-lookup cache (regenerable, read-only Wikipedia)
+data/_provenance_cache.json

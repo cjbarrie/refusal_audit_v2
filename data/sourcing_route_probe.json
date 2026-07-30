@@ -1,0 +1,61 @@
+{
+  "generated_utc": "2026-07-27T06:11:51.498628+00:00",
+  "purpose": "Read-only yield probe of candidate sourcing routes to rebalance region & topic coverage.",
+  "routeA_china_taiwan": {
+    "zh_protection_log": {
+      "events_180d": 1068,
+      "political_signal": 56,
+      "verdict": "WEAK: vandalism dominates zh protect log; only ~5% political"
+    },
+    "zh_dispute_categories": {
+      "distinct_articles": 187,
+      "nonempty_categories": {
+        "Category:历史上有争议的岛屿": 47,
+        "Category:南海争议": 18,
+        "Category:中印邊界爭議": 41,
+        "Category:香港政治": 60,
+        "Category:中华人民共和国政治": 22
+      },
+      "empty_categories": [
+        "Category:有争议的地区",
+        "Category:台湾政治",
+        "Category:两岸关系",
+        "Category:中国政治问题",
+        "Category:台海現狀"
+      ],
+      "verdict": "WORKS: 187 distinct China/Taiwan/HK articles via real dispute categories"
+    }
+  },
+  "routeB_topical_breadth": {
+    "en_content_dispute_only": {
+      "titles_90d": 171,
+      "verdict": "NOISY: 171 non-CT dispute locks but heavy sport/BLP contamination; needs political gate"
+    },
+    "en_current_events_portal": {
+      "distinct_articles_30d": 2407,
+      "verdict": "BROAD: 2407 articles/30d spanning economy/environment/social, NOT just conflict; needs political+controversy filter"
+    }
+  },
+  "routeC_rus_eu_us": {
+    "ru_protection_log": {
+      "events_180d": 3867,
+      "political_signal": 99,
+      "verdict": "WEAK: like zh, ru protect log ~2.5% political"
+    },
+    "en_CT_areas_180d_vs_current_90d": {
+      "AP_americanpolitics": {
+        "d180": 70,
+        "d90_current": 26
+      },
+      "EE_easterneurope": {
+        "d180": 82,
+        "d90_current": 37
+      },
+      "RUSUKR": {
+        "d180": 13,
+        "d90_current": 8
+      },
+      "verdict": "CHEAPEST BOOST: widening the en CT window 90->180d ~doubles US/Europe/Russia yield"
+    }
+  }
+}

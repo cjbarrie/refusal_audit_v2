@@ -564,6 +564,12 @@ cat("Saved: pipeline/plots/fig8_domestic_government_by_model_language.pdf + .png
 # Figure 9: Ideology by Model and Dimension Grid
 # =============================================================================
 
+# Figures 9 and 10 render Pass-2/Pass-3 (slant) predictions produced by the
+# archived 03_ideology_analysis.R. The canonical run is Pass-1-only
+# (docs/ANNOTATION_TRIM_FULL_RUN.md), so those tables do not exist and an
+# unguarded read_csv() here aborted the whole script -- taking figures 11+
+# with it. Guarded so a Pass-1 run skips these two and continues.
+if (file.exists("pipeline/tables/13_ideology_predictions.csv")) {
 cat("\nCreating Figure 9: Ideology by Model and Dimension Grid...\n")
 
 # Load ideology predictions from 03_ideology_analysis.R
@@ -606,11 +612,15 @@ p9 <- ggplot(ideology_plot_data, aes(x = mean, y = language_f)) +
 ggsave("pipeline/plots/fig9_ideology_by_model_language.pdf", p9, width = 16, height = 6)
 ggsave("pipeline/plots/fig9_ideology_by_model_language.png", p9, width = 16, height = 6, dpi = 300)
 cat("Saved: pipeline/plots/fig9_ideology_by_model_language.pdf + .png\n")
+} else {
+  cat("\nSKIP Figure 9: pipeline/tables/13_ideology_predictions.csv absent (Pass-1-only run).\n")
+}
 
 # =============================================================================
 # Figure 10: Moral Foundations by Model and Foundation Grid
 # =============================================================================
 
+if (file.exists("pipeline/tables/16_moral_predictions.csv")) {
 cat("\nCreating Figure 10: Moral Foundations by Model and Foundation Grid...\n")
 
 # Load moral foundations predictions from 03_ideology_analysis.R
@@ -653,6 +663,9 @@ p10 <- ggplot(moral_plot_data, aes(x = prop, y = language_f)) +
 ggsave("pipeline/plots/fig10_moral_foundations_by_model_language.pdf", p10, width = 16, height = 6)
 ggsave("pipeline/plots/fig10_moral_foundations_by_model_language.png", p10, width = 16, height = 6, dpi = 300)
 cat("Saved: pipeline/plots/fig10_moral_foundations_by_model_language.pdf + .png\n")
+} else {
+  cat("\nSKIP Figure 10: pipeline/tables/16_moral_predictions.csv absent (Pass-1-only run).\n")
+}
 
 # =============================================================================
 # Figure 11: Refusal Justifications by Model (Histogram)

@@ -60,28 +60,36 @@ write_csv(t36, "pipeline/tables/36_deepseek_engagement_distribution.csv")
 cat("Saved: pipeline/tables/36_deepseek_engagement_distribution.csv\n")
 
 # =============================================================================
-# Table 37: Ideology by language (engaged only)
+# Table 37: Ideology by language (engaged only)  -- PASS-2 ONLY
 # =============================================================================
+# The main run is Pass-1-only (docs/ANNOTATION_TRIM_FULL_RUN.md), so the four
+# ideology columns are all-NA and this table would be a grid of NaN. It still
+# runs against a pilot-style run annotated with every pass, so it is guarded
+# rather than deleted. Tables 35, 36, 38 and figure 19 are Pass 1 and always run.
 
-cat("\nGenerating Table 37: Ideology by Language (Engaged Only)...\n")
+if (all(is.na(deepseek$economic_left_right))) {
+  cat("\nSKIP Table 37 (ideology): Pass 2 not present in this run.\n")
+} else {
+  cat("\nGenerating Table 37: Ideology by Language (Engaged Only)...\n")
 
-t37 <- deepseek %>%
-  filter(engaged) %>%
-  group_by(response_language) %>%
-  summarise(
-    n = n(),
-    economic_mean = mean(economic_left_right, na.rm = TRUE),
-    economic_sd = sd(economic_left_right, na.rm = TRUE),
-    social_mean = mean(social_left_right, na.rm = TRUE),
-    social_sd = sd(social_left_right, na.rm = TRUE),
-    auth_lib_mean = mean(authoritarian_libertarian, na.rm = TRUE),
-    auth_lib_sd = sd(authoritarian_libertarian, na.rm = TRUE),
-    pop_elite_mean = mean(populist_elitist, na.rm = TRUE),
-    pop_elite_sd = sd(populist_elitist, na.rm = TRUE)
-  )
+  t37 <- deepseek %>%
+    filter(engaged) %>%
+    group_by(response_language) %>%
+    summarise(
+      n = n(),
+      economic_mean = mean(economic_left_right, na.rm = TRUE),
+      economic_sd = sd(economic_left_right, na.rm = TRUE),
+      social_mean = mean(social_left_right, na.rm = TRUE),
+      social_sd = sd(social_left_right, na.rm = TRUE),
+      auth_lib_mean = mean(authoritarian_libertarian, na.rm = TRUE),
+      auth_lib_sd = sd(authoritarian_libertarian, na.rm = TRUE),
+      pop_elite_mean = mean(populist_elitist, na.rm = TRUE),
+      pop_elite_sd = sd(populist_elitist, na.rm = TRUE)
+    )
 
-write_csv(t37, "pipeline/tables/37_deepseek_ideology_by_language.csv")
-cat("Saved: pipeline/tables/37_deepseek_ideology_by_language.csv\n")
+  write_csv(t37, "pipeline/tables/37_deepseek_ideology_by_language.csv")
+  cat("Saved: pipeline/tables/37_deepseek_ideology_by_language.csv\n")
+}
 
 # =============================================================================
 # Table 38: Justifications by language

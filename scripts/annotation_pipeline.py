@@ -1068,14 +1068,28 @@ if __name__ == "__main__":
         help="Max tokens per judge verdict (default: 1000). OpenRouter reserves "
              "credits against this ceiling; the judge emits short JSON."
     )
+    # Pass 1 alone is the canonical annotation (docs/ANNOTATION_TRIM_FULL_RUN.md):
+    # the study measures refusal and the nature of refusal, both of which come
+    # from Pass 1. Passes 2-3 measure the slant of answers that were given, a
+    # different question. Defaulting to Pass 1 means the documented design is
+    # what runs when no flag is passed.
+    parser.add_argument(
+        "--all-passes",
+        dest="pass1_only",
+        action="store_false",
+        default=True,
+        help="Also run Pass 2 (ideology) and Pass 3 (moral foundations) on "
+             "engaged responses. Off by default: the study's target is refusal "
+             "+ nature of refusal, which is Pass 1 alone. Slant columns are "
+             "always emitted (null when the passes are skipped), so the record "
+             "schema is identical either way."
+    )
     parser.add_argument(
         "--pass1-only",
+        dest="pass1_only",
         action="store_true",
-        help="Full-run mode: run only Pass 1 (engagement 1-5 + refusal "
-             "justification A-G). Skip Pass 2 (ideology) and Pass 3 (moral "
-             "foundations) on every response. Slant columns are still emitted "
-             "but null, so the record schema is unchanged. Default off (the "
-             "pilot keeps all passes)."
+        help="Deprecated no-op: Pass-1-only is now the default. Accepted so "
+             "existing commands and docs keep working."
     )
 
     args = parser.parse_args()

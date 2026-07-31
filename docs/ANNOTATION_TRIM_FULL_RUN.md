@@ -1,8 +1,13 @@
 # Annotation trim: Pass-1-only full run
 
-**Status:** planned, not yet applied. **Scope:** the *full run* only. `pilot_v1`
-keeps the complete four-stage annotation (nothing in this document changes the
-pilot).
+**Status: APPLIED 2026-07-31.** Pass 1 is now the default in
+`scripts/run_pilot.py` and `scripts/annotation_pipeline.py` (`--all-passes`
+opts back in; `--pass1-only` is kept as an accepted no-op). The four
+slant-only analysis scripts were moved to `archive/pipeline_slant/`, and
+`07_deepseek_language_analysis.R` / `16_irr_analysis.R` were trimmed to their
+Pass-1 content. **Scope:** the *full run*. `pilot_v1` was annotated with all
+four passes and is unaffected -- run the archived scripts against it if slant
+is needed.
 
 ## Decision
 

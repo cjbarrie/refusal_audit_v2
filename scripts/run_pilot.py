@@ -591,12 +591,25 @@ def main():
                     help="Concurrent API workers per stage script (default: 8). "
                          "Raise for faster wall-time; lower if you hit OpenRouter "
                          "rate limits (HTTP 429).")
-    ap.add_argument("--pass1-only", action="store_true",
-                    help="Annotate stage: run only Pass 1 (engagement + refusal "
-                         "justification), skipping the ideology and moral-foundations "
-                         "passes. This is the full-run mode (the study's target is "
-                         "refusal + nature of refusal). Default off; the pilot keeps "
-                         "all passes.")
+    # Pass 1 is the canonical annotation for this study: the target is refusal
+    # and the nature of refusal, both of which come entirely from Pass 1
+    # (docs/ANNOTATION_TRIM_FULL_RUN.md). Ideology and moral foundations measure
+    # the slant of answers the model DID give -- a different research question.
+    # This was a settled decision, but it lived behind an opt-in flag, so
+    # forgetting --pass1-only silently bought a different, more expensive
+    # annotation than the design calls for. The default now matches the design;
+    # --all-passes opts back in for a pilot that needs slant.
+    ap.add_argument("--all-passes", dest="pass1_only", action="store_false",
+                    default=True,
+                    help="Annotate stage: also run Pass 2 (ideology) and Pass 3 "
+                         "(moral foundations) on engaged responses. Off by default "
+                         "-- the study's target is refusal + nature of refusal, "
+                         "which is Pass 1 alone. Use for a pilot that needs slant. "
+                         "The consuming analysis scripts live in "
+                         "archive/pipeline_slant/.")
+    ap.add_argument("--pass1-only", dest="pass1_only", action="store_true",
+                    help="Deprecated no-op: Pass-1-only is now the default. "
+                         "Accepted so existing commands and docs keep working.")
     ap.add_argument("--run-id", default=None, help="run dir name under annotations/ (default: pilot_<UTC>)")
     ap.add_argument("--dry-run", action="store_true", help="print call budget and exit")
     ap.add_argument("--refresh-pricing", action="store_true",

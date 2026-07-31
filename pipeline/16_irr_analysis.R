@@ -137,7 +137,14 @@ irr_summary <- bind_rows(
     n = kappa_binary$subjects,
     p_value = kappa_binary$p.value
   ),
+  # Pass 2 rows only when the run actually carries ideology codes. The main run
+  # is Pass-1-only (docs/ANNOTATION_TRIM_FULL_RUN.md), which leaves the four
+  # ideology columns all-NA; kripp_dim() then returns alpha = NA, n = 0, and
+  # emitting those rows would put four meaningless NA lines in the reported IRR
+  # table next to the two real kappas. Dropping them keeps the table honest
+  # while a pilot-style run annotated with every pass still reports all six.
   dims %>%
+    filter(n > 0) %>%
     transmute(
       pass = paste0("Pass 2 (", dimension, ", -2..+2)"),
       statistic = "Krippendorff's alpha (ordinal)",

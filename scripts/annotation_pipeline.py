@@ -1007,7 +1007,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--judge-model",
         default="google/gemini-2.5-flash-lite",
-        help="Model to use as judge (default: Gemini Flash 1.5 8B)"
+        help="Model to use as judge (default: google/gemini-2.5-flash-lite)"
     )
     parser.add_argument(
         "--limit",

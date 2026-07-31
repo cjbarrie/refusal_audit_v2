@@ -864,6 +864,17 @@ def annotate_responses_file(
     client = LLMClient(model=judge_model, max_tokens=max_tokens)
     pipeline = AnnotationPipeline(client)
 
+    # Ensure the output directory exists. Annotations are appended with
+    # open(..., 'a'), which does NOT create parent directories, so invoking this
+    # script directly against a fresh run dir raised FileNotFoundError.
+    # run_pilot.py mkdirs the run layout itself, so this only ever bit direct
+    # invocation. The open() precedes the thread pool, so the failure cost
+    # nothing -- but it aborted after the resume scan, which is the point at
+    # which a long run looks like it is about to start.
+    out_dir = os.path.dirname(os.path.abspath(output_file))
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
     # Load responses
     responses = []
     with open(responses_file, 'r') as f:

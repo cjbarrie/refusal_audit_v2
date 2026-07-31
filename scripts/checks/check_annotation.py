@@ -1,6 +1,14 @@
-import json, collections
-p = "annotations/smoke/ann/rebalanced_en.jsonl"
-rows = [json.loads(l) for l in open(p)]
+import json, collections, sys, glob, os
+# Usage: check_annotation.py [run_dir_or_jsonl]   default: annotations/smoke
+arg = sys.argv[1] if len(sys.argv) > 1 else "annotations/smoke"
+if arg.endswith(".jsonl"):
+    paths = [arg]
+else:
+    paths = sorted(glob.glob(os.path.join(arg, "ann", "*.jsonl")))
+if not paths:
+    sys.exit("no .jsonl found under %s" % arg)
+print("reading:", ", ".join(os.path.basename(x) for x in paths), "\n")
+rows = [json.loads(l) for p in paths for l in open(p) if l.strip()]
 print(f"{len(rows)} annotations\n")
 bad = [r for r in rows if not isinstance(r.get("engagement_code"), int)
        or isinstance(r.get("engagement_code"), bool)

@@ -44,15 +44,24 @@ adds `sources` (route provenance) and `source_edition`; these are additive.
 | boundary prompts | 774 | 774 | ✓ IDs identical (0 differ) |
 | boundary text | — | — | 12 of 774 differ |
 
-The 12 text differences are **entirely explained by 6 duplicate-slug issues**
+The 12 text differences are **entirely explained by 6 duplicated issues**
 (`crime_in_the_united_states`, `antisemitism`, `communist_state`,
-`lgbtq_rights_by_country_or_territory`, `same_sex_marriage`, `homophobia`). Two
-distinct Wikipedia articles slugified to the same `issue_id`, so the *pre-dedup*
-records file carries two different position sets for each; the frozen battery
-kept one after de-duplication (the documented "24 dup IDs removed" step). This is
-a known, resolved data artifact — not a pipeline defect. A 7th duplicate,
-`gnosticism`, is non-political (`is_political=false`) so it never emitted a
-boundary prompt.
+`lgbtq_rights_by_country_or_territory`, `same_sex_marriage`, `homophobia`). Each
+is the *same* article (identical title **and** identical Q-ID) harvested twice
+from two sections of the list, so it was enriched twice and the *pre-dedup*
+records file carries two different position sets for it; the frozen battery kept
+one after de-duplication on Q-ID (the documented "24 dup IDs removed" step). A
+7th duplicate, `gnosticism`, is non-political (`is_political=false`) so it never
+emitted a boundary prompt.
+
+> **Correction (2026-07-28).** An earlier version of this note described these
+> as "two distinct Wikipedia articles slugified to the same `issue_id`" and
+> called it a resolved data artifact. That was wrong on the mechanism — they are
+> duplicate harvests of one article, which dedup on Q-ID handles correctly. A
+> genuine slug collision did exist separately (the ASCII-only slugifier emitted
+> an empty slug for non-Latin titles) and is now fixed at source; see
+> `docs/REBALANCE.md` §8. It never affected this English-only perennial check,
+> which is why the two were conflated.
 
 **After de-duplication the boundary spine is bit-exact.**
 

@@ -36,12 +36,18 @@ def load_jsonl(path: Path) -> list[dict]:
     return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
 
 
-def merge(record_files: list[Path], edition_priority: list[str]) -> dict:
+def merge(record_files: list[Path], edition_priority: list[str],
+          political_only: bool = False) -> dict:
     all_records: list[dict] = []
     per_file_counts: dict[str, int] = {}
+    n_dropped_nonpolitical = 0
     for p in record_files:
         recs = load_jsonl(p)
         per_file_counts[p.name] = len(recs)
+        if political_only:
+            kept = [r for r in recs if r.get("is_political")]
+            n_dropped_nonpolitical += len(recs) - len(kept)
+            recs = kept
         all_records.extend(recs)
 
     prio = {e: i for i, e in enumerate(edition_priority)}
@@ -93,6 +99,7 @@ def merge(record_files: list[Path], edition_priority: list[str]) -> dict:
             "multi_edition_issues": sum(1 for r in merged if r["n_editions"] > 1),
             "edition_flag_counts": dict(edition_dist),
             "political": sum(1 for r in merged if r.get("is_political")),
+            "dropped_nonpolitical": n_dropped_nonpolitical,
         },
     }
 
@@ -103,6 +110,9 @@ def main() -> int:
                     help="per-edition issue_records_{lang}.jsonl files")
     ap.add_argument("--output", default=str(DATA / "issue_records_merged.jsonl"))
     ap.add_argument("--edition-priority", default="en,zh,ja,id,ar")
+    ap.add_argument("--political-only", action="store_true",
+                    help="drop records with is_political falsey before dedup "
+                         "(replicates the frozen battery's post-processing gate)")
     args = ap.parse_args()
 
     files = [Path(p) for p in args.records]
@@ -110,7 +120,8 @@ def main() -> int:
         if not p.exists():
             raise SystemExit(f"missing record file: {p}")
 
-    result = merge(files, args.edition_priority.split(","))
+    result = merge(files, args.edition_priority.split(","),
+                   political_only=args.political_only)
     out = Path(args.output)
     with out.open("w", encoding="utf-8") as f:
         for r in result["merged"]:
@@ -122,6 +133,8 @@ def main() -> int:
     print(f"  with Q-ID:            {s['with_qid']}")
     print(f"  multi-edition issues: {s['multi_edition_issues']}")
     print(f"  political:            {s['political']}")
+    if s.get("dropped_nonpolitical"):
+        print(f"  dropped non-political:{s['dropped_nonpolitical']}")
     print(f"  edition flag counts:  {s['edition_flag_counts']}")
     print(f"\nWrote -> {out}")
     return 0

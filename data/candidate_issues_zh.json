@@ -3,13 +3,22 @@
   "wiki": "zh.wikipedia.org",
   "list_page": null,
   "dispute_categories": [
-    "Category:有争议的地区",
     "Category:历史上有争议的岛屿",
     "Category:南海争议",
-    "Category:中印邊界爭議"
+    "Category:中印邊界爭議",
+    "Category:中印边界争议地区",
+    "Category:中印边境战争",
+    "Category:中华人民共和国政治",
+    "Category:臺灣政治",
+    "Category:香港政治",
+    "Category:香港選舉",
+    "Category:台灣海峽兩岸關係",
+    "Category:臺灣海峽兩岸關係術語",
+    "Category:克什米尔"
   ],
-  "n_candidates": 106,
-  "n_with_qid": 104,
+  "talk_categories": [],
+  "n_candidates": 466,
+  "n_with_qid": 420,
   "candidates": [
     {
       "title": "富國島",
@@ -599,6 +608,8 @@
     {
       "title": "中印边界问题",
       "sources": [
+        "cat:Category:中印边境战争",
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q5308408",
@@ -644,6 +655,7 @@
     {
       "title": "棒山口",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q16849017",
@@ -653,6 +665,7 @@
     {
       "title": "康格多山",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q6362901",
@@ -662,6 +675,7 @@
     {
       "title": "什布奇山口",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q547332",
@@ -671,6 +685,7 @@
     {
       "title": "斯潘古爾山口",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q15278845",
@@ -680,6 +695,7 @@
     {
       "title": "喀喇昆仑走廊",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q1819167",
@@ -725,6 +741,7 @@
     {
       "title": "加勒万河",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q13507935",
@@ -752,6 +769,7 @@
     {
       "title": "天南河",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q105492026",
@@ -770,6 +788,7 @@
     {
       "title": "巴里加斯",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q96807758",
@@ -806,6 +825,7 @@
     {
       "title": "曼冬错",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q11091346",
@@ -833,6 +853,8 @@
     {
       "title": "棒山口战斗",
       "sources": [
+        "cat:Category:中印边境战争",
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q117705921",
@@ -842,6 +864,7 @@
     {
       "title": "楚马要塞",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q16499643",
@@ -869,6 +892,7 @@
     {
       "title": "班公错",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q1032254",
@@ -905,6 +929,7 @@
     {
       "title": "西大溝",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q19853680",
@@ -932,6 +957,7 @@
     {
       "title": "達普桑盆地",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q5260936",
@@ -941,6 +967,7 @@
     {
       "title": "阿克赛钦",
       "sources": [
+        "cat:Category:中印边界争议地区",
         "cat:Category:中印邊界爭議"
       ],
       "qid": "Q230830",
@@ -964,6 +991,3255 @@
       "qid": "Q19854041",
       "source_edition": "zh",
       "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%89%8E%E6%9B%B2"
+    },
+    {
+      "title": "杰莫利县",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1797372",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%B0%E8%8E%AB%E5%88%A9%E5%8E%BF"
+    },
+    {
+      "title": "中印边境实际控制线",
+      "sources": [
+        "cat:Category:中印边境战争",
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1826411",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E8%BE%B9%E5%A2%83%E5%AE%9E%E9%99%85%E6%8E%A7%E5%88%B6%E7%BA%BF"
+    },
+    {
+      "title": "格多河",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q117474504",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A0%BC%E5%A4%9A%E6%B2%B3"
+    },
+    {
+      "title": "更巴拉山口",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q55694662",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9B%B4%E5%B7%B4%E6%8B%89%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "科马河",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q32490731",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%A7%91%E9%A9%AC%E6%B2%B3"
+    },
+    {
+      "title": "娘姆日河",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q32750801",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A8%98%E5%A7%86%E6%97%A5%E6%B2%B3"
+    },
+    {
+      "title": "热赞拉",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q4392354",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%83%AD%E8%B5%9E%E6%8B%89"
+    },
+    {
+      "title": "仰桑河",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q34954434",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BB%B0%E6%A1%91%E6%B2%B3"
+    },
+    {
+      "title": "东孜拉峰",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%9C%E5%AD%9C%E6%8B%89%E5%B3%B0"
+    },
+    {
+      "title": "久纽泽岗日",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%85%E7%BA%BD%E6%B3%BD%E5%B2%97%E6%97%A5"
+    },
+    {
+      "title": "乌德尔加希县",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1773437",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%8C%E5%BE%B7%E5%B0%94%E5%8A%A0%E5%B8%8C%E5%8E%BF"
+    },
+    {
+      "title": "乌间岭",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q112671578",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%8C%E9%97%B4%E5%B2%AD"
+    },
+    {
+      "title": "仁更",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q125546231",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BB%81%E6%9B%B4"
+    },
+    {
+      "title": "列城县",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1921210",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%88%97%E5%9F%8E%E5%8E%BF"
+    },
+    {
+      "title": "叠普日",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%A0%E6%99%AE%E6%97%A5"
+    },
+    {
+      "title": "古玉通",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%A4%E7%8E%89%E9%80%9A"
+    },
+    {
+      "title": "古里 (藏南)",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q107630168",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%A4%E9%87%8C_%28%E8%97%8F%E5%8D%97%29"
+    },
+    {
+      "title": "哈东山口",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q125262896",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%93%88%E4%B8%9C%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "塔克新",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q105359657",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A1%94%E5%85%8B%E6%96%B0"
+    },
+    {
+      "title": "墨脱县",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1028177",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A2%A8%E8%84%B1%E5%8E%BF"
+    },
+    {
+      "title": "尼玛岗峰",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%BC%E7%8E%9B%E5%B2%97%E5%B3%B0"
+    },
+    {
+      "title": "德馬吉縣",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q42473",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%BE%B7%E9%A6%AC%E5%90%89%E7%B8%A3"
+    },
+    {
+      "title": "打陇宗",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q124072097",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%89%93%E9%99%87%E5%AE%97"
+    },
+    {
+      "title": "拉则拉观察哨",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q113550949",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8B%89%E5%88%99%E6%8B%89%E8%A7%82%E5%AF%9F%E5%93%A8"
+    },
+    {
+      "title": "拉豪爾和斯皮提縣",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q837595",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8B%89%E8%B1%AA%E7%88%BE%E5%92%8C%E6%96%AF%E7%9A%AE%E6%8F%90%E7%B8%A3"
+    },
+    {
+      "title": "更仁",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q107394786",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9B%B4%E4%BB%81"
+    },
+    {
+      "title": "李错",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q138946292",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%8E%E9%94%99"
+    },
+    {
+      "title": "林济塘谷地",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q104904873",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9E%97%E6%B5%8E%E5%A1%98%E8%B0%B7%E5%9C%B0"
+    },
+    {
+      "title": "林芝市",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1012465",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9E%97%E8%8A%9D%E5%B8%82"
+    },
+    {
+      "title": "桑 (札达县)",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q14018093",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A1%91_%28%E6%9C%AD%E8%BE%BE%E5%8E%BF%29"
+    },
+    {
+      "title": "梅楚卡",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q6804757",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A2%85%E6%A5%9A%E5%8D%A1"
+    },
+    {
+      "title": "江卡宗",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q117456760",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B1%9F%E5%8D%A1%E5%AE%97"
+    },
+    {
+      "title": "波林三多",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q14008316",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B3%A2%E6%9E%97%E4%B8%89%E5%A4%9A"
+    },
+    {
+      "title": "济罗",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q663062",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B5%8E%E7%BD%97"
+    },
+    {
+      "title": "申隔宗",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q124072065",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%94%B3%E9%9A%94%E5%AE%97"
+    },
+    {
+      "title": "白则林",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q125508770",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%99%BD%E5%88%99%E6%9E%97"
+    },
+    {
+      "title": "白明拉山口",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%99%BD%E6%98%8E%E6%8B%89%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "米培",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q107484900",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B1%B3%E5%9F%B9"
+    },
+    {
+      "title": "罗素日",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BD%97%E7%B4%A0%E6%97%A5"
+    },
+    {
+      "title": "色拉山口",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q7447387",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%89%B2%E6%8B%89%E5%B1%B1%E5%8F%A3"
+    },
+    {
+      "title": "莫新",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q125397886",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%8E%AB%E6%96%B0"
+    },
+    {
+      "title": "葱莎",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q14010547",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%91%B1%E8%8E%8E"
+    },
+    {
+      "title": "藏南地區",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q606223",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%97%8F%E5%8D%97%E5%9C%B0%E5%8D%80"
+    },
+    {
+      "title": "赤朗错",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q133807976",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%B5%A4%E6%9C%97%E9%94%99"
+    },
+    {
+      "title": "达东",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q117373333",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%BE%BE%E4%B8%9C"
+    },
+    {
+      "title": "邦勾",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q125396973",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%82%A6%E5%8B%BE"
+    },
+    {
+      "title": "邦钦",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q107490269",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%82%A6%E9%92%A6"
+    },
+    {
+      "title": "都登",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q18355209",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%83%BD%E7%99%BB"
+    },
+    {
+      "title": "金瑙爾縣",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q1862950",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%87%91%E7%91%99%E7%88%BE%E7%B8%A3"
+    },
+    {
+      "title": "马加 (藏南)",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%8A%A0_%28%E8%97%8F%E5%8D%97%29"
+    },
+    {
+      "title": "马尼岗",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q110345116",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%B0%BC%E5%B2%97"
+    },
+    {
+      "title": "马果",
+      "sources": [
+        "cat:Category:中印边界争议地区"
+      ],
+      "qid": "Q18351556",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A9%AC%E6%9E%9C"
+    },
+    {
+      "title": "班公洛之战",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q112728845",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8F%AD%E5%85%AC%E6%B4%9B%E4%B9%8B%E6%88%98"
+    },
+    {
+      "title": "中印边境战争",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q208694",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E8%BE%B9%E5%A2%83%E6%88%98%E4%BA%89"
+    },
+    {
+      "title": "中印边境战争东线中部战役",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E8%BE%B9%E5%A2%83%E6%88%98%E4%BA%89%E4%B8%9C%E7%BA%BF%E4%B8%AD%E9%83%A8%E6%88%98%E5%BD%B9"
+    },
+    {
+      "title": "中印边境战争作战序列",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%B0%E8%BE%B9%E5%A2%83%E6%88%98%E4%BA%89%E4%BD%9C%E6%88%98%E5%BA%8F%E5%88%97"
+    },
+    {
+      "title": "亨德森·布鲁克斯-巴贾特报告",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q5713233",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BA%A8%E5%BE%B7%E6%A3%AE%C2%B7%E5%B8%83%E9%B2%81%E5%85%8B%E6%96%AF-%E5%B7%B4%E8%B4%BE%E7%89%B9%E6%8A%A5%E5%91%8A"
+    },
+    {
+      "title": "克节朗战役",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q112728034",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%8B%E8%8A%82%E6%9C%97%E6%88%98%E5%BD%B9"
+    },
+    {
+      "title": "瓦弄战役",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q112728777",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%93%A6%E5%BC%84%E6%88%98%E5%BD%B9"
+    },
+    {
+      "title": "西山口-邦迪拉战役",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q112729210",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%B1%B1%E5%8F%A3-%E9%82%A6%E8%BF%AA%E6%8B%89%E6%88%98%E5%BD%B9"
+    },
+    {
+      "title": "阿克赛钦战役",
+      "sources": [
+        "cat:Category:中印边境战争"
+      ],
+      "qid": "Q112729334",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E5%85%8B%E8%B5%9B%E9%92%A6%E6%88%98%E5%BD%B9"
+    },
+    {
+      "title": "中华人民共和国政治",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q904852",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E6%94%BF%E6%B2%BB"
+    },
+    {
+      "title": "中华人民共和国政治体制",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E6%94%BF%E6%B2%BB%E4%BD%93%E5%88%B6"
+    },
+    {
+      "title": "政治波普",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q2462197",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%BF%E6%B2%BB%E6%B3%A2%E6%99%AE"
+    },
+    {
+      "title": "中华人民共和国法治",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q17013694",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E6%B3%95%E6%B2%BB"
+    },
+    {
+      "title": "中华人民共和国被迫害人士列表",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q97197575",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E8%A2%AB%E8%BF%AB%E5%AE%B3%E4%BA%BA%E5%A3%AB%E5%88%97%E8%A1%A8"
+    },
+    {
+      "title": "中國例外主義",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q22078739",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E4%BE%8B%E5%A4%96%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "中國新左派",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q1921434",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E6%96%B0%E5%B7%A6%E6%B4%BE"
+    },
+    {
+      "title": "中華人民共和國選舉",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q5354902",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9C%8B%E9%81%B8%E8%88%89"
+    },
+    {
+      "title": "中華聯邦主義",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q3091390",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E8%81%AF%E9%82%A6%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "人事档案",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q7257963",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BA%BA%E4%BA%8B%E6%A1%A3%E6%A1%88"
+    },
+    {
+      "title": "保守派 (中国共产党)",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q116008271",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%BF%9D%E5%AE%88%E6%B4%BE_%28%E4%B8%AD%E5%9B%BD%E5%85%B1%E4%BA%A7%E5%85%9A%29"
+    },
+    {
+      "title": "兩岸共同議會",
+      "sources": [
+        "cat:Category:中华人民共和国政治",
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E5%85%B1%E5%90%8C%E8%AD%B0%E6%9C%83"
+    },
+    {
+      "title": "剥夺政治权利",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q841613",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%89%A5%E5%A4%BA%E6%94%BF%E6%B2%BB%E6%9D%83%E5%88%A9"
+    },
+    {
+      "title": "愛國是工作",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q111620818",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%84%9B%E5%9C%8B%E6%98%AF%E5%B7%A5%E4%BD%9C"
+    },
+    {
+      "title": "愛國生意",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%84%9B%E5%9C%8B%E7%94%9F%E6%84%8F"
+    },
+    {
+      "title": "改革派 (中国共产党)",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q115987678",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%B9%E9%9D%A9%E6%B4%BE_%28%E4%B8%AD%E5%9B%BD%E5%85%B1%E4%BA%A7%E5%85%9A%29"
+    },
+    {
+      "title": "文化中國",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q24840873",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%96%87%E5%8C%96%E4%B8%AD%E5%9C%8B"
+    },
+    {
+      "title": "新权威主义",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q48729819",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%96%B0%E6%9D%83%E5%A8%81%E4%B8%BB%E4%B9%89"
+    },
+    {
+      "title": "村霸",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q109348020",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%91%E9%9C%B8"
+    },
+    {
+      "title": "简化字",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q185614",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%AE%80%E5%8C%96%E5%AD%97"
+    },
+    {
+      "title": "西台灣 (網絡用語)",
+      "sources": [
+        "cat:Category:中华人民共和国政治",
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q111799972",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A5%BF%E5%8F%B0%E7%81%A3_%28%E7%B6%B2%E7%B5%A1%E7%94%A8%E8%AA%9E%29"
+    },
+    {
+      "title": "離岸愛國主義",
+      "sources": [
+        "cat:Category:中华人民共和国政治"
+      ],
+      "qid": "Q108003329",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9B%A2%E5%B2%B8%E6%84%9B%E5%9C%8B%E4%B8%BB%E7%BE%A9"
+    },
+    {
+      "title": "台灣政治",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q10915507",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E6%94%BF%E6%B2%BB"
+    },
+    {
+      "title": "凱達格蘭大道",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q697197",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%87%B1%E9%81%94%E6%A0%BC%E8%98%AD%E5%A4%A7%E9%81%93"
+    },
+    {
+      "title": "對中國國民黨的批評與爭議",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q11092060",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%8D%E4%B8%AD%E5%9C%8B%E5%9C%8B%E6%B0%91%E9%BB%A8%E7%9A%84%E6%89%B9%E8%A9%95%E8%88%87%E7%88%AD%E8%AD%B0"
+    },
+    {
+      "title": "中國統合",
+      "sources": [
+        "cat:Category:臺灣政治",
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E7%B5%B1%E5%90%88"
+    },
+    {
+      "title": "中華民國地方性公民投票",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q15923787",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%9C%B0%E6%96%B9%E6%80%A7%E5%85%AC%E6%B0%91%E6%8A%95%E7%A5%A8"
+    },
+    {
+      "title": "中華民國憲法增修條文",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q3458244",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%86%B2%E6%B3%95%E5%A2%9E%E4%BF%AE%E6%A2%9D%E6%96%87"
+    },
+    {
+      "title": "中華民國臺灣時期憲政危機",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q137439642",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E8%87%BA%E7%81%A3%E6%99%82%E6%9C%9F%E6%86%B2%E6%94%BF%E5%8D%B1%E6%A9%9F"
+    },
+    {
+      "title": "台湾统治者列表",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q6637074",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E7%BB%9F%E6%B2%BB%E8%80%85%E5%88%97%E8%A1%A8"
+    },
+    {
+      "title": "台灣再生能源",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q17015303",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E5%86%8D%E7%94%9F%E8%83%BD%E6%BA%90"
+    },
+    {
+      "title": "台灣地方派系",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q15897425",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E5%9C%B0%E6%96%B9%E6%B4%BE%E7%B3%BB"
+    },
+    {
+      "title": "台灣能源",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q5377149",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E8%83%BD%E6%BA%90"
+    },
+    {
+      "title": "統獨問題",
+      "sources": [
+        "cat:Category:臺灣政治",
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B5%B1%E7%8D%A8%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "臺中縣地方派系",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E4%B8%AD%E7%B8%A3%E5%9C%B0%E6%96%B9%E6%B4%BE%E7%B3%BB"
+    },
+    {
+      "title": "臺灣人權",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q5938468",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E4%BA%BA%E6%AC%8A"
+    },
+    {
+      "title": "臺灣北部地區選舉地理",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q15895616",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E5%8C%97%E9%83%A8%E5%9C%B0%E5%8D%80%E9%81%B8%E8%88%89%E5%9C%B0%E7%90%86"
+    },
+    {
+      "title": "臺灣親中共派",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q85883730",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E8%A6%AA%E4%B8%AD%E5%85%B1%E6%B4%BE"
+    },
+    {
+      "title": "臺灣開放國會",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E9%96%8B%E6%94%BE%E5%9C%8B%E6%9C%83"
+    },
+    {
+      "title": "重北輕南",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q45804831",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%87%8D%E5%8C%97%E8%BC%95%E5%8D%97"
+    },
+    {
+      "title": "闽台关系",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係",
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q28414158",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%97%BD%E5%8F%B0%E5%85%B3%E7%B3%BB"
+    },
+    {
+      "title": "雲林張派",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q24836636",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9B%B2%E6%9E%97%E5%BC%B5%E6%B4%BE"
+    },
+    {
+      "title": "青島東路",
+      "sources": [
+        "cat:Category:臺灣政治"
+      ],
+      "qid": "Q134318408",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9D%92%E5%B3%B6%E6%9D%B1%E8%B7%AF"
+    },
+    {
+      "title": "香港政治",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q1154404",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E6%94%BF%E6%B2%BB"
+    },
+    {
+      "title": "$6,000計劃",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7431137",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%246%2C000%E8%A8%88%E5%8A%83"
+    },
+    {
+      "title": "六四事件十週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q4547197",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E5%8D%81%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "2021年社交移民潮",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q109257727",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2021%E5%B9%B4%E7%A4%BE%E4%BA%A4%E7%A7%BB%E6%B0%91%E6%BD%AE"
+    },
+    {
+      "title": "2025年香港立法會不尋求連任風波",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q136647628",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2025%E5%B9%B4%E9%A6%99%E6%B8%AF%E7%AB%8B%E6%B3%95%E6%9C%83%E4%B8%8D%E5%B0%8B%E6%B1%82%E9%80%A3%E4%BB%BB%E9%A2%A8%E6%B3%A2"
+    },
+    {
+      "title": "六四事件二十一週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q4631187",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E4%BA%8C%E5%8D%81%E4%B8%80%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "六四事件三週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E4%B8%89%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "六四事件七週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E4%B8%83%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "六四事件八周年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E5%85%AB%E5%91%A8%E5%B9%B4"
+    },
+    {
+      "title": "六四事件九週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E4%B9%9D%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "卑利得",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q5238533",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%91%E5%88%A9%E5%BE%97"
+    },
+    {
+      "title": "杜葉錫恩",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q5367634",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%9C%E8%91%89%E9%8C%AB%E6%81%A9"
+    },
+    {
+      "title": "一国两制",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q723713",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%9B%BD%E4%B8%A4%E5%88%B6"
+    },
+    {
+      "title": "一國兩制臺灣方案",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語",
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q85352688",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%9C%8B%E5%85%A9%E5%88%B6%E8%87%BA%E7%81%A3%E6%96%B9%E6%A1%88"
+    },
+    {
+      "title": "中國人民政治協商會議全國委員會香港地區委員",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q10874414",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E4%BA%BA%E6%B0%91%E6%94%BF%E6%B2%BB%E5%8D%94%E5%95%86%E6%9C%83%E8%AD%B0%E5%85%A8%E5%9C%8B%E5%A7%94%E5%93%A1%E6%9C%83%E9%A6%99%E6%B8%AF%E5%9C%B0%E5%8D%80%E5%A7%94%E5%93%A1"
+    },
+    {
+      "title": "僱員再培訓徵款",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q9397209",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%83%B1%E5%93%A1%E5%86%8D%E5%9F%B9%E8%A8%93%E5%BE%B5%E6%AC%BE"
+    },
+    {
+      "title": "兩岸三地",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語",
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q131427333",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E4%B8%89%E5%9C%B0"
+    },
+    {
+      "title": "八十後浪",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q28417077",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%81%E5%BE%8C%E6%B5%AA"
+    },
+    {
+      "title": "公共廣播服務檢討委員會",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q10892605",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AC%E5%85%B1%E5%BB%A3%E6%92%AD%E6%9C%8D%E5%8B%99%E6%AA%A2%E8%A8%8E%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "六四事件二十四週年",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q16000984",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6%E4%BA%8C%E5%8D%81%E5%9B%9B%E9%80%B1%E5%B9%B4"
+    },
+    {
+      "title": "功能界別",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q5508804",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8A%9F%E8%83%BD%E7%95%8C%E5%88%A5"
+    },
+    {
+      "title": "勇武派",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8B%87%E6%AD%A6%E6%B4%BE"
+    },
+    {
+      "title": "北區動源",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q28416963",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8C%97%E5%8D%80%E5%8B%95%E6%BA%90"
+    },
+    {
+      "title": "反對逃犯條例修訂草案運動",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q64509602",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%B0%8D%E9%80%83%E7%8A%AF%E6%A2%9D%E4%BE%8B%E4%BF%AE%E8%A8%82%E8%8D%89%E6%A1%88%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "可加可減機制",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q9570098",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%AF%E5%8A%A0%E5%8F%AF%E6%B8%9B%E6%A9%9F%E5%88%B6"
+    },
+    {
+      "title": "商界 (香港政治派別)",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%95%86%E7%95%8C_%28%E9%A6%99%E6%B8%AF%E6%94%BF%E6%B2%BB%E6%B4%BE%E5%88%A5%29"
+    },
+    {
+      "title": "回購領展",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q85877853",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9B%9E%E8%B3%BC%E9%A0%98%E5%B1%95"
+    },
+    {
+      "title": "地區管理委員會",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q10928251",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9C%B0%E5%8D%80%E7%AE%A1%E7%90%86%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "政制向前走大聯盟",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%BF%E5%88%B6%E5%90%91%E5%89%8D%E8%B5%B0%E5%A4%A7%E8%81%AF%E7%9B%9F"
+    },
+    {
+      "title": "政制改革方案辯論",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q11078928",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%BF%E5%88%B6%E6%94%B9%E9%9D%A9%E6%96%B9%E6%A1%88%E8%BE%AF%E8%AB%96"
+    },
+    {
+      "title": "政制發展綠皮書",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q5602942",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%BF%E5%88%B6%E7%99%BC%E5%B1%95%E7%B6%A0%E7%9A%AE%E6%9B%B8"
+    },
+    {
+      "title": "數碼21資訊科技策略",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q11079483",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%95%B8%E7%A2%BC21%E8%B3%87%E8%A8%8A%E7%A7%91%E6%8A%80%E7%AD%96%E7%95%A5"
+    },
+    {
+      "title": "最低工資委員會",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q11091689",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9C%80%E4%BD%8E%E5%B7%A5%E8%B3%87%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "校本條例",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7432128",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A0%A1%E6%9C%AC%E6%A2%9D%E4%BE%8B"
+    },
+    {
+      "title": "梁振英涉嫌收取澳洲企業款項事件",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q29970321",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%A2%81%E6%8C%AF%E8%8B%B1%E6%B6%89%E5%AB%8C%E6%94%B6%E5%8F%96%E6%BE%B3%E6%B4%B2%E4%BC%81%E6%A5%AD%E6%AC%BE%E9%A0%85%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "民主派 (香港)",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7129523",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B0%91%E4%B8%BB%E6%B4%BE_%28%E9%A6%99%E6%B8%AF%29"
+    },
+    {
+      "title": "民間記者會",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q67934054",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B0%91%E9%96%93%E8%A8%98%E8%80%85%E6%9C%83"
+    },
+    {
+      "title": "港人民權民生黨",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q97780268",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B8%AF%E4%BA%BA%E6%B0%91%E6%AC%8A%E6%B0%91%E7%94%9F%E9%BB%A8"
+    },
+    {
+      "title": "爱国者治港",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q106899047",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%88%B1%E5%9B%BD%E8%80%85%E6%B2%BB%E6%B8%AF"
+    },
+    {
+      "title": "福佳歌曲系列",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7216603",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%A6%8F%E4%BD%B3%E6%AD%8C%E6%9B%B2%E7%B3%BB%E5%88%97"
+    },
+    {
+      "title": "福建—香港关系",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q30944454",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%A6%8F%E5%BB%BA%E2%80%94%E9%A6%99%E6%B8%AF%E5%85%B3%E7%B3%BB"
+    },
+    {
+      "title": "維園阿哥",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q15904978",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B6%AD%E5%9C%92%E9%98%BF%E5%93%A5"
+    },
+    {
+      "title": "親中華民國派 (香港)",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q15902939",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A6%AA%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%B4%BE_%28%E9%A6%99%E6%B8%AF%29"
+    },
+    {
+      "title": "軟對抗",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q135455817",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%BB%9F%E5%B0%8D%E6%8A%97"
+    },
+    {
+      "title": "道瓊斯內幕交易案",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7207800",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%93%E7%93%8A%E6%96%AF%E5%85%A7%E5%B9%95%E4%BA%A4%E6%98%93%E6%A1%88"
+    },
+    {
+      "title": "選舉管理委員會 (香港)",
+      "sources": [
+        "cat:Category:香港政治",
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q5354970",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%B8%E8%88%89%E7%AE%A1%E7%90%86%E5%A7%94%E5%93%A1%E6%9C%83_%28%E9%A6%99%E6%B8%AF%29"
+    },
+    {
+      "title": "雙非問題",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q278118",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9B%99%E9%9D%9E%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "香港—上海关系",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q28416874",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E2%80%94%E4%B8%8A%E6%B5%B7%E5%85%B3%E7%B3%BB"
+    },
+    {
+      "title": "香港中學生聯盟",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q5895021",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E4%B8%AD%E5%AD%B8%E7%94%9F%E8%81%AF%E7%9B%9F"
+    },
+    {
+      "title": "香港前途問題",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q28418574",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E5%89%8D%E9%80%94%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "香港居民的身份認同",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q67935086",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E5%B1%85%E6%B0%91%E7%9A%84%E8%BA%AB%E4%BB%BD%E8%AA%8D%E5%90%8C"
+    },
+    {
+      "title": "香港數碼廣播停播風波",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q15896990",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E6%95%B8%E7%A2%BC%E5%BB%A3%E6%92%AD%E5%81%9C%E6%92%AD%E9%A2%A8%E6%B3%A2"
+    },
+    {
+      "title": "香港特別行政區第4屆區議會補選",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q15899531",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E7%AC%AC4%E5%B1%86%E5%8D%80%E8%AD%B0%E6%9C%83%E8%A3%9C%E9%81%B8"
+    },
+    {
+      "title": "香港監察",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q50143866",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%9B%A3%E5%AF%9F"
+    },
+    {
+      "title": "香港行政長官會同行政會議",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q24255490",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E9%95%B7%E5%AE%98%E6%9C%83%E5%90%8C%E8%A1%8C%E6%94%BF%E6%9C%83%E8%AD%B0"
+    },
+    {
+      "title": "香港調查研究中心",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q7191267",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%AA%BF%E6%9F%A5%E7%A0%94%E7%A9%B6%E4%B8%AD%E5%BF%83"
+    },
+    {
+      "title": "香港重光",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q15901651",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E9%87%8D%E5%85%89"
+    },
+    {
+      "title": "馬文輝 (1905年)",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q19854054",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%AC%E6%96%87%E8%BC%9D_%281905%E5%B9%B4%29"
+    },
+    {
+      "title": "黃毓民立法會擲蕉事件",
+      "sources": [
+        "cat:Category:香港政治"
+      ],
+      "qid": "Q11176514",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%BB%83%E6%AF%93%E6%B0%91%E7%AB%8B%E6%B3%95%E6%9C%83%E6%93%B2%E8%95%89%E4%BA%8B%E4%BB%B6"
+    },
+    {
+      "title": "香港選舉制度",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q8424783",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E9%81%B8%E8%88%89%E5%88%B6%E5%BA%A6"
+    },
+    {
+      "title": "1896年香港潔淨局組成辦法公投",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q5894983",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/1896%E5%B9%B4%E9%A6%99%E6%B8%AF%E6%BD%94%E6%B7%A8%E5%B1%80%E7%B5%84%E6%88%90%E8%BE%A6%E6%B3%95%E5%85%AC%E6%8A%95"
+    },
+    {
+      "title": "2012年香港民主黨領導層選舉",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q15149025",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2012%E5%B9%B4%E9%A6%99%E6%B8%AF%E6%B0%91%E4%B8%BB%E9%BB%A8%E9%A0%98%E5%B0%8E%E5%B1%A4%E9%81%B8%E8%88%89"
+    },
+    {
+      "title": "中華人民共和國香港特別行政區第十一屆全國人民代表大會代表選舉",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q16922435",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9C%8B%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E7%AC%AC%E5%8D%81%E4%B8%80%E5%B1%86%E5%85%A8%E5%9C%8B%E4%BA%BA%E6%B0%91%E4%BB%A3%E8%A1%A8%E5%A4%A7%E6%9C%83%E4%BB%A3%E8%A1%A8%E9%81%B8%E8%88%89"
+    },
+    {
+      "title": "全国人民代表大会关于完善香港特别行政区选举制度的决定",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q105755166",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A8%E5%9B%BD%E4%BA%BA%E6%B0%91%E4%BB%A3%E8%A1%A8%E5%A4%A7%E4%BC%9A%E5%85%B3%E4%BA%8E%E5%AE%8C%E5%96%84%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%AB%E8%A1%8C%E6%94%BF%E5%8C%BA%E9%80%89%E4%B8%BE%E5%88%B6%E5%BA%A6%E7%9A%84%E5%86%B3%E5%AE%9A"
+    },
+    {
+      "title": "八八直選",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q9410248",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AB%E5%85%AB%E7%9B%B4%E9%81%B8"
+    },
+    {
+      "title": "公民提名",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q18651641",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%AC%E6%B0%91%E6%8F%90%E5%90%8D"
+    },
+    {
+      "title": "區議會資格審查委員會",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q118978130",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%80%E8%AD%B0%E6%9C%83%E8%B3%87%E6%A0%BC%E5%AF%A9%E6%9F%A5%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "掌心雷",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q97279614",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8E%8C%E5%BF%83%E9%9B%B7"
+    },
+    {
+      "title": "荃灣選舉聯盟",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q15914853",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%8D%83%E7%81%A3%E9%81%B8%E8%88%89%E8%81%AF%E7%9B%9F"
+    },
+    {
+      "title": "蛇齋餅糭",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q60990720",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%9B%87%E9%BD%8B%E9%A4%85%E7%B3%AD"
+    },
+    {
+      "title": "選舉事務處",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q2968414",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%B8%E8%88%89%E4%BA%8B%E5%8B%99%E8%99%95"
+    },
+    {
+      "title": "選舉委員會 (香港)",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q843995",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%B8%E8%88%89%E5%A7%94%E5%93%A1%E6%9C%83_%28%E9%A6%99%E6%B8%AF%29"
+    },
+    {
+      "title": "選舉資訊中心",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q109418264",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%81%B8%E8%88%89%E8%B3%87%E8%A8%8A%E4%B8%AD%E5%BF%83"
+    },
+    {
+      "title": "鐵票",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q8425817",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%90%B5%E7%A5%A8"
+    },
+    {
+      "title": "香港特別行政區候選人資格審查委員會",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q108294525",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E5%80%99%E9%81%B8%E4%BA%BA%E8%B3%87%E6%A0%BC%E5%AF%A9%E6%9F%A5%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "香港特別行政區第一屆政府推選委員會",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q7191972",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%E7%AC%AC%E4%B8%80%E5%B1%86%E6%94%BF%E5%BA%9C%E6%8E%A8%E9%81%B8%E5%A7%94%E5%93%A1%E6%9C%83"
+    },
+    {
+      "title": "香港特别行政区全国人民代表大会代表",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q4603574",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%AB%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%85%A8%E5%9B%BD%E4%BA%BA%E6%B0%91%E4%BB%A3%E8%A1%A8%E5%A4%A7%E4%BC%9A%E4%BB%A3%E8%A1%A8"
+    },
+    {
+      "title": "香港立法會主席選舉",
+      "sources": [
+        "cat:Category:香港選舉"
+      ],
+      "qid": "Q9626411",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E7%AB%8B%E6%B3%95%E6%9C%83%E4%B8%BB%E5%B8%AD%E9%81%B8%E8%88%89"
+    },
+    {
+      "title": "海峽兩岸關係",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q591903",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E9%97%9C%E4%BF%82"
+    },
+    {
+      "title": "臺灣海峽兩岸關係史",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q30947202",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E9%97%9C%E4%BF%82%E5%8F%B2"
+    },
+    {
+      "title": "Ven (迷因)",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q138299057",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/Ven_%28%E8%BF%B7%E5%9B%A0%29"
+    },
+    {
+      "title": "不征之國",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q9383946",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%8D%E5%BE%81%E4%B9%8B%E5%9C%8B"
+    },
+    {
+      "title": "东西洋考",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q10870955",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%9C%E8%A5%BF%E6%B4%8B%E8%80%83"
+    },
+    {
+      "title": "夷洲",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q10942054",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%B7%E6%B4%B2"
+    },
+    {
+      "title": "岛夷志略",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q5221512",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B2%9B%E5%A4%B7%E5%BF%97%E7%95%A5"
+    },
+    {
+      "title": "東番記",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q11103880",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%B1%E7%95%AA%E8%A8%98"
+    },
+    {
+      "title": "流求國",
+      "sources": [
+        "cat:Category:台灣海峽兩岸關係"
+      ],
+      "qid": "Q2969231",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B5%81%E6%B1%82%E5%9C%8B"
+    },
+    {
+      "title": "一中一台",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q21468686",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AD%E4%B8%80%E5%8F%B0"
+    },
+    {
+      "title": "中國代表權",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q123663562",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E4%BB%A3%E8%A1%A8%E6%AC%8A"
+    },
+    {
+      "title": "反共義士",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q4774151",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%85%B1%E7%BE%A9%E5%A3%AB"
+    },
+    {
+      "title": "中國問題",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E5%95%8F%E9%A1%8C"
+    },
+    {
+      "title": "戴維森窗口",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q135069643",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%88%B4%E7%B6%AD%E6%A3%AE%E7%AA%97%E5%8F%A3"
+    },
+    {
+      "title": "涉台用语",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q109342960",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B6%89%E5%8F%B0%E7%94%A8%E8%AF%AD"
+    },
+    {
+      "title": "三不政策",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7797666",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E4%B8%8D%E6%94%BF%E7%AD%96"
+    },
+    {
+      "title": "中華台北",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q216923",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E5%8F%B0%E5%8C%97"
+    },
+    {
+      "title": "中国台北",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q30940804",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E5%8F%B0%E5%8C%97"
+    },
+    {
+      "title": "中国大陆",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q19188",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86"
+    },
+    {
+      "title": "一个中华",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AA%E4%B8%AD%E5%8D%8E"
+    },
+    {
+      "title": "一中兩國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q41517347",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AD%E5%85%A9%E5%9C%8B"
+    },
+    {
+      "title": "一中共表",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q8320901",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AD%E5%85%B1%E8%A1%A8"
+    },
+    {
+      "title": "一中各表",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10863794",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AD%E5%90%84%E8%A1%A8"
+    },
+    {
+      "title": "一中同表",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q20687975",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%B8%AD%E5%90%8C%E8%A1%A8"
+    },
+    {
+      "title": "一五新觀點",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q19851567",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E4%BA%94%E6%96%B0%E8%A7%80%E9%BB%9E"
+    },
+    {
+      "title": "一個中國框架",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q28414395",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%80%8B%E4%B8%AD%E5%9C%8B%E6%A1%86%E6%9E%B6"
+    },
+    {
+      "title": "一個中國，兩個政治實體",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q123593831",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%80%8B%E4%B8%AD%E5%9C%8B%EF%BC%8C%E5%85%A9%E5%80%8B%E6%94%BF%E6%B2%BB%E5%AF%A6%E9%AB%94"
+    },
+    {
+      "title": "一個分治的中國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q123593361",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%80%8B%E5%88%86%E6%B2%BB%E7%9A%84%E4%B8%AD%E5%9C%8B"
+    },
+    {
+      "title": "一個原則、三個堅持、五個反對",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10863821",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%80%8B%E5%8E%9F%E5%89%87%E3%80%81%E4%B8%89%E5%80%8B%E5%A0%85%E6%8C%81%E3%80%81%E4%BA%94%E5%80%8B%E5%8F%8D%E5%B0%8D"
+    },
+    {
+      "title": "一国两区",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10863869",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%9B%BD%E4%B8%A4%E5%8C%BA"
+    },
+    {
+      "title": "一国两府",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10863870",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E5%9B%BD%E4%B8%A4%E5%BA%9C"
+    },
+    {
+      "title": "一纲四目",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10864053",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E7%BA%B2%E5%9B%9B%E7%9B%AE"
+    },
+    {
+      "title": "一邊一國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7092544",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%80%E9%82%8A%E4%B8%80%E5%9C%8B"
+    },
+    {
+      "title": "三个可以谈",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q65051391",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%B0%88"
+    },
+    {
+      "title": "三民主義統一中國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q22074556",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E6%B0%91%E4%B8%BB%E7%BE%A9%E7%B5%B1%E4%B8%80%E4%B8%AD%E5%9C%8B"
+    },
+    {
+      "title": "三通",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q3275016",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E9%80%9A"
+    },
+    {
+      "title": "三通四流",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q30948017",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%89%E9%80%9A%E5%9B%9B%E6%B5%81"
+    },
+    {
+      "title": "不承诺放弃使用武力",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q135191057",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%8D%E6%89%BF%E8%AF%BA%E6%94%BE%E5%BC%83%E4%BD%BF%E7%94%A8%E6%AD%A6%E5%8A%9B"
+    },
+    {
+      "title": "不統、不獨、不武",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q21449305",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%8D%E7%B5%B1%E3%80%81%E4%B8%8D%E7%8D%A8%E3%80%81%E4%B8%8D%E6%AD%A6"
+    },
+    {
+      "title": "两个中国",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7559326",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%A4%E4%B8%AA%E4%B8%AD%E5%9B%BD"
+    },
+    {
+      "title": "两岸一家亲 (方针)",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q133418813",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%A4%E5%B2%B8%E4%B8%80%E5%AE%B6%E4%BA%B2_%28%E6%96%B9%E9%92%88%29"
+    },
+    {
+      "title": "两岸领导人会面",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q19849335",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%A4%E5%B2%B8%E9%A2%86%E5%AF%BC%E4%BA%BA%E4%BC%9A%E9%9D%A2"
+    },
+    {
+      "title": "中国北京",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E5%8C%97%E4%BA%AC"
+    },
+    {
+      "title": "中国台湾",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7676514",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E5%8F%B0%E6%B9%BE"
+    },
+    {
+      "title": "中國因素",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q17014695",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E5%9B%A0%E7%B4%A0"
+    },
+    {
+      "title": "中國孤立台灣政策",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E5%AD%A4%E7%AB%8B%E5%8F%B0%E7%81%A3%E6%94%BF%E7%AD%96"
+    },
+    {
+      "title": "中國特工",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q9384393",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E7%89%B9%E5%B7%A5"
+    },
+    {
+      "title": "中國當局",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E7%95%B6%E5%B1%80"
+    },
+    {
+      "title": "中國讓利政策",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E5%9C%8B%E8%AE%93%E5%88%A9%E6%94%BF%E7%AD%96"
+    },
+    {
+      "title": "中港澳",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q131427333",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E6%B8%AF%E6%BE%B3"
+    },
+    {
+      "title": "中華北京",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q216923",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E5%8C%97%E4%BA%AC"
+    },
+    {
+      "title": "中華民國四階段論",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10925409",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%9B%9B%E9%9A%8E%E6%AE%B5%E8%AB%96"
+    },
+    {
+      "title": "中華民國在台灣",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10876358",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%9C%A8%E5%8F%B0%E7%81%A3"
+    },
+    {
+      "title": "中華民國是臺灣",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q19851748",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E6%98%AF%E8%87%BA%E7%81%A3"
+    },
+    {
+      "title": "中華民國臺灣",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q85874526",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E8%87%BA%E7%81%A3"
+    },
+    {
+      "title": "中華民國臺灣地區入出境許可證",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q5420380",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E8%87%BA%E7%81%A3%E5%9C%B0%E5%8D%80%E5%85%A5%E5%87%BA%E5%A2%83%E8%A8%B1%E5%8F%AF%E8%AD%89"
+    },
+    {
+      "title": "中華民國（臺灣）",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10876495",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%EF%BC%88%E8%87%BA%E7%81%A3%EF%BC%89"
+    },
+    {
+      "title": "九二共識",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q834354",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%9D%E4%BA%8C%E5%85%B1%E8%AD%98"
+    },
+    {
+      "title": "九二香港會談",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10878660",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%9D%E4%BA%8C%E9%A6%99%E6%B8%AF%E6%9C%83%E8%AB%87"
+    },
+    {
+      "title": "九六共識",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10878684",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%9D%E5%85%AD%E5%85%B1%E8%AD%98"
+    },
+    {
+      "title": "习五条",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q60370532",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%A0%E4%BA%94%E6%9D%A1"
+    },
+    {
+      "title": "兩國一制",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q22101535",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%9C%8B%E4%B8%80%E5%88%B6"
+    },
+    {
+      "title": "兩岸一中",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10891818",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E4%B8%80%E4%B8%AD"
+    },
+    {
+      "title": "兩岸一國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E4%B8%80%E5%9C%8B"
+    },
+    {
+      "title": "兩岸一家親",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q97352049",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E4%B8%80%E5%AE%B6%E8%A6%AA"
+    },
+    {
+      "title": "兩岸互不承認主權，互不否認治權",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7574844",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E4%BA%92%E4%B8%8D%E6%89%BF%E8%AA%8D%E4%B8%BB%E6%AC%8A%EF%BC%8C%E4%BA%92%E4%B8%8D%E5%90%A6%E8%AA%8D%E6%B2%BB%E6%AC%8A"
+    },
+    {
+      "title": "兩岸共同市場",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10891819",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E5%85%B1%E5%90%8C%E5%B8%82%E5%A0%B4"
+    },
+    {
+      "title": "兩岸定期航線",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q5188205",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%A9%E5%B2%B8%E5%AE%9A%E6%9C%9F%E8%88%AA%E7%B7%9A"
+    },
+    {
+      "title": "关闭政策",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q48886701",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%B3%E9%97%AD%E6%94%BF%E7%AD%96"
+    },
+    {
+      "title": "分裂國家平行代表權",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%88%86%E8%A3%82%E5%9C%8B%E5%AE%B6%E5%B9%B3%E8%A1%8C%E4%BB%A3%E8%A1%A8%E6%AC%8A"
+    },
+    {
+      "title": "半山仔",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10905164",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%8A%E5%B1%B1%E4%BB%94"
+    },
+    {
+      "title": "协防台湾",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q109415842",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%8F%E9%98%B2%E5%8F%B0%E6%B9%BE"
+    },
+    {
+      "title": "去中國化",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q5264465",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8E%BB%E4%B8%AD%E5%9C%8B%E5%8C%96"
+    },
+    {
+      "title": "反共抗俄",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10912662",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%85%B1%E6%8A%97%E4%BF%84"
+    },
+    {
+      "title": "反攻大陸",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15920064",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%8D%E6%94%BB%E5%A4%A7%E9%99%B8"
+    },
+    {
+      "title": "台海紀事",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q60994953",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B5%B7%E7%B4%80%E4%BA%8B"
+    },
+    {
+      "title": "台湾地区居民",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q124062627",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E5%9C%B0%E5%8C%BA%E5%B1%85%E6%B0%91"
+    },
+    {
+      "title": "台湾地区领导人",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10914639",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E5%9C%B0%E5%8C%BA%E9%A2%86%E5%AF%BC%E4%BA%BA"
+    },
+    {
+      "title": "台湾当局",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q124528764",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E5%BD%93%E5%B1%80"
+    },
+    {
+      "title": "台湾海峡国际化",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E6%B5%B7%E5%B3%A1%E5%9B%BD%E9%99%85%E5%8C%96"
+    },
+    {
+      "title": "台湾问题国际化",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E6%B9%BE%E9%97%AE%E9%A2%98%E5%9B%BD%E9%99%85%E5%8C%96"
+    },
+    {
+      "title": "台灣共識",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7676585",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E5%85%B1%E8%AD%98"
+    },
+    {
+      "title": "台灣海峽航行自由",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E6%B5%B7%E5%B3%BD%E8%88%AA%E8%A1%8C%E8%87%AA%E7%94%B1"
+    },
+    {
+      "title": "台灣獨立運動",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q708772",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%B0%E7%81%A3%E7%8D%A8%E7%AB%8B%E9%81%8B%E5%8B%95"
+    },
+    {
+      "title": "告台湾同胞书",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10920057",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%91%8A%E5%8F%B0%E6%B9%BE%E5%90%8C%E8%83%9E%E4%B9%A6"
+    },
+    {
+      "title": "和平政綱",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q30947869",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%92%8C%E5%B9%B3%E6%94%BF%E7%B6%B1"
+    },
+    {
+      "title": "和平统一方针",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q113584727",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%92%8C%E5%B9%B3%E7%BB%9F%E4%B8%80%E6%96%B9%E9%92%88"
+    },
+    {
+      "title": "和戰兩手策略",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q7887796",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%92%8C%E6%88%B0%E5%85%A9%E6%89%8B%E7%AD%96%E7%95%A5"
+    },
+    {
+      "title": "四不一沒有",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q696680",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9B%9B%E4%B8%8D%E4%B8%80%E6%B2%92%E6%9C%89"
+    },
+    {
+      "title": "四個堅持 (蔡英文)",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q110832714",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%80%8B%E5%A0%85%E6%8C%81_%28%E8%94%A1%E8%8B%B1%E6%96%87%29"
+    },
+    {
+      "title": "四個必須、三道防護網",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q60994916",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%80%8B%E5%BF%85%E9%A0%88%E3%80%81%E4%B8%89%E9%81%93%E9%98%B2%E8%AD%B7%E7%B6%B2"
+    },
+    {
+      "title": "四要一没有",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q5367161",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9B%9B%E8%A6%81%E4%B8%80%E6%B2%A1%E6%9C%89"
+    },
+    {
+      "title": "國家統一綱領",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q910962",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%9C%8B%E5%AE%B6%E7%B5%B1%E4%B8%80%E7%B6%B1%E9%A0%98"
+    },
+    {
+      "title": "境外敵對勢力",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q108002948",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A2%83%E5%A4%96%E6%95%B5%E5%B0%8D%E5%8B%A2%E5%8A%9B"
+    },
+    {
+      "title": "大一中架構",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q17023627",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A7%E4%B8%80%E4%B8%AD%E6%9E%B6%E6%A7%8B"
+    },
+    {
+      "title": "大膽西進",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A7%E8%86%BD%E8%A5%BF%E9%80%B2"
+    },
+    {
+      "title": "大陸地區人民",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A7%E9%99%B8%E5%9C%B0%E5%8D%80%E4%BA%BA%E6%B0%91"
+    },
+    {
+      "title": "大陸妹",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10938384",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A7%E9%99%B8%E5%A6%B9"
+    },
+    {
+      "title": "天然台",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q95039585",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A9%E7%84%B6%E5%8F%B0"
+    },
+    {
+      "title": "天然獨",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q24840229",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A9%E7%84%B6%E7%8D%A8"
+    },
+    {
+      "title": "对台工作",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q48897276",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%AF%B9%E5%8F%B0%E5%B7%A5%E4%BD%9C"
+    },
+    {
+      "title": "小三通",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10957641",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%8F%E4%B8%89%E9%80%9A"
+    },
+    {
+      "title": "憲法一中",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q11074248",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%86%B2%E6%B3%95%E4%B8%80%E4%B8%AD"
+    },
+    {
+      "title": "憲法各表",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15895069",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%86%B2%E6%B3%95%E5%90%84%E8%A1%A8"
+    },
+    {
+      "title": "戒急用忍",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10296979",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%88%92%E6%80%A5%E7%94%A8%E5%BF%8D"
+    },
+    {
+      "title": "政治實體 (臺灣)",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q16562419",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%94%BF%E6%B2%BB%E5%AF%A6%E9%AB%94_%28%E8%87%BA%E7%81%A3%29"
+    },
+    {
+      "title": "新四不",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q48910947",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%96%B0%E5%9B%9B%E4%B8%8D"
+    },
+    {
+      "title": "日本协防台湾",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q109411641",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E5%8D%8F%E9%98%B2%E5%8F%B0%E6%B9%BE"
+    },
+    {
+      "title": "未來一中",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9C%AA%E4%BE%86%E4%B8%80%E4%B8%AD"
+    },
+    {
+      "title": "李六條",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q21449420",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9D%8E%E5%85%AD%E6%A2%9D"
+    },
+    {
+      "title": "殺朱拔毛",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q11125809",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%AE%BA%E6%9C%B1%E6%8B%94%E6%AF%9B"
+    },
+    {
+      "title": "民进党当局",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q28212951",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B0%91%E8%BF%9B%E5%85%9A%E5%BD%93%E5%B1%80"
+    },
+    {
+      "title": "江八点",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q11133658",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B1%9F%E5%85%AB%E7%82%B9"
+    },
+    {
+      "title": "活路外交",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q10932254",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B4%BB%E8%B7%AF%E5%A4%96%E4%BA%A4"
+    },
+    {
+      "title": "海峽兩岸互不隸屬",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q121282605",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E4%BA%92%E4%B8%8D%E9%9A%B8%E5%B1%AC"
+    },
+    {
+      "title": "海峽兩岸分裂分治",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B5%B7%E5%B3%BD%E5%85%A9%E5%B2%B8%E5%88%86%E8%A3%82%E5%88%86%E6%B2%BB"
+    },
+    {
+      "title": "港澳地區",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15903360",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B8%AF%E6%BE%B3%E5%9C%B0%E5%8D%80"
+    },
+    {
+      "title": "漢賊不兩立",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15915144",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%BC%A2%E8%B3%8A%E4%B8%8D%E5%85%A9%E7%AB%8B"
+    },
+    {
+      "title": "特殊的國與國關係",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q231932",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%89%B9%E6%AE%8A%E7%9A%84%E5%9C%8B%E8%88%87%E5%9C%8B%E9%97%9C%E4%BF%82"
+    },
+    {
+      "title": "獨台",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q22773558",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8D%A8%E5%8F%B0"
+    },
+    {
+      "title": "磁吸效應 (臺灣)",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q134572259",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%A3%81%E5%90%B8%E6%95%88%E6%87%89_%28%E8%87%BA%E7%81%A3%29"
+    },
+    {
+      "title": "窮台策略",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%AA%AE%E5%8F%B0%E7%AD%96%E7%95%A5"
+    },
+    {
+      "title": "終極統一",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q21449477",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B5%82%E6%A5%B5%E7%B5%B1%E4%B8%80"
+    },
+    {
+      "title": "統派",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15897823",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%B5%B1%E6%B4%BE"
+    },
+    {
+      "title": "统战团",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q48897210",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BB%9F%E6%88%98%E5%9B%A2"
+    },
+    {
+      "title": "美国协防台湾",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q109415845",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%8D%8F%E9%98%B2%E5%8F%B0%E6%B9%BE"
+    },
+    {
+      "title": "習馬二會",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q125410334",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BF%92%E9%A6%AC%E4%BA%8C%E6%9C%83"
+    },
+    {
+      "title": "聯合國大會第2758號決議",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q1334327",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%81%AF%E5%90%88%E5%9C%8B%E5%A4%A7%E6%9C%83%E7%AC%AC2758%E8%99%9F%E6%B1%BA%E8%AD%B0"
+    },
+    {
+      "title": "胡六点",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q17034513",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%83%A1%E5%85%AD%E7%82%B9"
+    },
+    {
+      "title": "胡四点",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q17034520",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%83%A1%E5%9B%9B%E7%82%B9"
+    },
+    {
+      "title": "脫古改新",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q20063979",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%84%AB%E5%8F%A4%E6%94%B9%E6%96%B0"
+    },
+    {
+      "title": "自由中國 (名稱)",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q97186783",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%AA%E7%94%B1%E4%B8%AD%E5%9C%8B_%28%E5%90%8D%E7%A8%B1%29"
+    },
+    {
+      "title": "臺海現狀",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q646109",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E6%B5%B7%E7%8F%BE%E7%8B%80"
+    },
+    {
+      "title": "臺港澳地區",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q131418590",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E6%B8%AF%E6%BE%B3%E5%9C%B0%E5%8D%80"
+    },
+    {
+      "title": "臺灣地區",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q245107",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E5%9C%B0%E5%8D%80"
+    },
+    {
+      "title": "臺灣海峽中線",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q11150686",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E6%B5%B7%E5%B3%BD%E4%B8%AD%E7%B7%9A"
+    },
+    {
+      "title": "臺灣海峽內海化",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E6%B5%B7%E5%B3%BD%E5%85%A7%E6%B5%B7%E5%8C%96"
+    },
+    {
+      "title": "臺灣海峽戰爭",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q137363561",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%BA%E7%81%A3%E6%B5%B7%E5%B3%BD%E6%88%B0%E7%88%AD"
+    },
+    {
+      "title": "華獨",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q22774431",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%8F%AF%E7%8D%A8"
+    },
+    {
+      "title": "葉九條",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q15941594",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%91%89%E4%B9%9D%E6%A2%9D"
+    },
+    {
+      "title": "蔡英文当局",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q24835676",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%94%A1%E8%8B%B1%E6%96%87%E5%BD%93%E5%B1%80"
+    },
+    {
+      "title": "親台派",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q11630387",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A6%AA%E5%8F%B0%E6%B4%BE"
+    },
+    {
+      "title": "解放台湾",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q27990945",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%A7%A3%E6%94%BE%E5%8F%B0%E6%B9%BE"
+    },
+    {
+      "title": "赖清德当局",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q124707332",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%B5%96%E6%B8%85%E5%BE%B7%E5%BD%93%E5%B1%80"
+    },
+    {
+      "title": "金馬放棄論",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q114699340",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%87%91%E9%A6%AC%E6%94%BE%E6%A3%84%E8%AB%96"
+    },
+    {
+      "title": "阿陸仔",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q19853961",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%98%BF%E9%99%B8%E4%BB%94"
+    },
+    {
+      "title": "陸獨",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q140158800",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%99%B8%E7%8D%A8"
+    },
+    {
+      "title": "階段性兩個中國",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9A%8E%E6%AE%B5%E6%80%A7%E5%85%A9%E5%80%8B%E4%B8%AD%E5%9C%8B"
+    },
+    {
+      "title": "雙重代表權",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9B%99%E9%87%8D%E4%BB%A3%E8%A1%A8%E6%AC%8A"
+    },
+    {
+      "title": "雙重承認",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": "Q123599442",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%9B%99%E9%87%8D%E6%89%BF%E8%AA%8D"
+    },
+    {
+      "title": "首戰即終戰",
+      "sources": [
+        "cat:Category:臺灣海峽兩岸關係術語"
+      ],
+      "qid": null,
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%A6%96%E6%88%B0%E5%8D%B3%E7%B5%82%E6%88%B0"
+    },
+    {
+      "title": "克什米尔",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q43100",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94"
+    },
+    {
+      "title": "2005年克什米尔大地震",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q210137",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/2005%E5%B9%B4%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94%E5%A4%A7%E5%9C%B0%E9%9C%87"
+    },
+    {
+      "title": "自由克什米爾",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q200130",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%AA%E7%94%B1%E5%85%8B%E4%BB%80%E7%B1%B3%E7%88%BE"
+    },
+    {
+      "title": "查谟和克什米尔土邦",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q2571484",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9F%A5%E8%B0%9F%E5%92%8C%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94%E5%9C%9F%E9%82%A6"
+    },
+    {
+      "title": "拉達克",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q200667",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%8B%89%E9%81%94%E5%85%8B"
+    },
+    {
+      "title": "自由查谟和克什米尔电视台",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q4652059",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%87%AA%E7%94%B1%E6%9F%A5%E8%B0%9F%E5%92%8C%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94%E7%94%B5%E8%A7%86%E5%8F%B0"
+    },
+    {
+      "title": "乔戈里萨峰",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q1061065",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E4%B9%94%E6%88%88%E9%87%8C%E8%90%A8%E5%B3%B0"
+    },
+    {
+      "title": "克什米尔谷地",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q2361576",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94%E8%B0%B7%E5%9C%B0"
+    },
+    {
+      "title": "印巴控制線",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q1366583",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%B0%E5%B7%B4%E6%8E%A7%E5%88%B6%E7%B7%9A"
+    },
+    {
+      "title": "印控喀什米爾獨立運動時期的強姦",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q30324807",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8D%B0%E6%8E%A7%E5%96%80%E4%BB%80%E7%B1%B3%E7%88%BE%E7%8D%A8%E7%AB%8B%E9%81%8B%E5%8B%95%E6%99%82%E6%9C%9F%E7%9A%84%E5%BC%B7%E5%A7%A6"
+    },
+    {
+      "title": "古拉卜·辛格",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q12446041",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%8F%A4%E6%8B%89%E5%8D%9C%C2%B7%E8%BE%9B%E6%A0%BC"
+    },
+    {
+      "title": "多格拉人",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q1287427",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%9A%E6%A0%BC%E6%8B%89%E4%BA%BA"
+    },
+    {
+      "title": "天主教查谟暨斯利那加教区",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q869937",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%A4%A9%E4%B8%BB%E6%95%99%E6%9F%A5%E8%B0%9F%E6%9A%A8%E6%96%AF%E5%88%A9%E9%82%A3%E5%8A%A0%E6%95%99%E5%8C%BA"
+    },
+    {
+      "title": "左拉瓦爾·辛格",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q5532311",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B7%A6%E6%8B%89%E7%93%A6%E7%88%BE%C2%B7%E8%BE%9B%E6%A0%BC"
+    },
+    {
+      "title": "巴尔蒂斯坦",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q805804",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B7%B4%E5%B0%94%E8%92%82%E6%96%AF%E5%9D%A6"
+    },
+    {
+      "title": "布魯紹人",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q367765",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B8%83%E9%AD%AF%E7%B4%B9%E4%BA%BA"
+    },
+    {
+      "title": "帕哈里语",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q105724340",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B8%95%E5%93%88%E9%87%8C%E8%AF%AD"
+    },
+    {
+      "title": "查谟专区",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q2817363",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9F%A5%E8%B0%9F%E4%B8%93%E5%8C%BA"
+    },
+    {
+      "title": "查谟和克什米尔",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q2746364",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9F%A5%E8%B0%9F%E5%92%8C%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94"
+    },
+    {
+      "title": "查谟和克什米尔 (中央直辖区)",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q66278313",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E6%9F%A5%E8%B0%9F%E5%92%8C%E5%85%8B%E4%BB%80%E7%B1%B3%E5%B0%94_%28%E4%B8%AD%E5%A4%AE%E7%9B%B4%E8%BE%96%E5%8C%BA%29"
+    },
+    {
+      "title": "玛夏布洛姆山脉",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q1582651",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%8E%9B%E5%A4%8F%E5%B8%83%E6%B4%9B%E5%A7%86%E5%B1%B1%E8%84%89"
+    },
+    {
+      "title": "真主穆斯林游擊隊",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q3242242",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E7%9C%9F%E4%B8%BB%E7%A9%86%E6%96%AF%E6%9E%97%E6%B8%B8%E6%93%8A%E9%9A%8A"
+    },
+    {
+      "title": "联合国安全理事会第38号决议",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q639105",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%81%94%E5%90%88%E5%9B%BD%E5%AE%89%E5%85%A8%E7%90%86%E4%BA%8B%E4%BC%9A%E7%AC%AC38%E5%8F%B7%E5%86%B3%E8%AE%AE"
+    },
+    {
+      "title": "联合国安全理事会第39号决议",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q639751",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%81%94%E5%90%88%E5%9B%BD%E5%AE%89%E5%85%A8%E7%90%86%E4%BA%8B%E4%BC%9A%E7%AC%AC39%E5%8F%B7%E5%86%B3%E8%AE%AE"
+    },
+    {
+      "title": "肯考迪亚",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q1124225",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%82%AF%E8%80%83%E8%BF%AA%E4%BA%9A"
+    },
+    {
+      "title": "赫里雅特會",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q2722920",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E8%B5%AB%E9%87%8C%E9%9B%85%E7%89%B9%E6%9C%83"
+    },
+    {
+      "title": "锡亚琴冰川",
+      "sources": [
+        "cat:Category:克什米尔"
+      ],
+      "qid": "Q333946",
+      "source_edition": "zh",
+      "url": "https://zh.wikipedia.org/wiki/%E9%94%A1%E4%BA%9A%E7%90%B4%E5%86%B0%E5%B7%9D"
     }
   ]
 }

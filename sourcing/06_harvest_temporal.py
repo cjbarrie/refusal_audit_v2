@@ -259,7 +259,8 @@ def harvest(lang: str, days: int, min_prot: int, with_velocity: bool,
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lang", default="en", help="edition key from editions.yaml")
-    ap.add_argument("--days", type=int, default=90, help="protection-log window")
+    ap.add_argument("--days", type=int, default=180, help="protection-log window "
+                    "(widened from 90 to 180d 2026-07 to ~double US/Europe/Russia CT yield)")
     ap.add_argument("--min-protections", type=int, default=1)
     ap.add_argument("--with-velocity", action="store_true",
                     help="fetch talk-page edit velocity (extra API calls, concurrent)")

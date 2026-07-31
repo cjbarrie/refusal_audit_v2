@@ -111,6 +111,19 @@ cat(sprintf("Records after filtering: %d (%.1f%% retained)\n",
 
 cat("\nCreating analysis variables...\n")
 
+# Batteries built before the native-sourcing fix carry no prompt_origin_language
+# at all, and referring to a missing column inside mutate() is an error rather
+# than an NA. Materialise it first so this loader stays able to read older runs.
+if (!"prompt_origin_language" %in% names(data_clean)) {
+  data_clean$prompt_origin_language <- "en"
+}
+if (!"prompt_origin_form" %in% names(data_clean)) {
+  data_clean$prompt_origin_form <- "authored_en"
+}
+if (!"route" %in% names(data_clean)) {
+  data_clean$route <- "perennial"
+}
+
 data_clean <- data_clean %>%
   mutate(
     # Binary engagement/refusal
@@ -160,15 +173,83 @@ data_clean <- data_clean %>%
 
     language_f = factor(
       prompt_language,
-      levels = c("en", "zh", "ja", "id", "ar", "ru", "hi"),
-      labels = c("English", "Chinese", "Japanese", "Indonesian", "Arabic", "Russian", "Hindi")
+      levels = c("en", "zh", "ar", "ru", "hi"),
+      labels = c("English", "Chinese", "Arabic", "Russian", "Hindi")
     ),
 
     dataset_type_f = factor(
       dataset_type,
       levels = c("base", "boundary"),
       labels = c("Regular Prompts", "Boundary Prompts")
-    )
+    ),
+
+    # Language the prompt was originally AUTHORED in. Almost all prompts are
+    # authored in English and translated out; issues harvested from a
+    # non-English Wikipedia edition were authored in that edition's language and
+    # back-translated into English (sourcing/10_backtranslate_native.py), so
+    # their English is a translation rather than the original.
+    #
+    # This is NOT the same as language_f (the language a response was elicited
+    # in) — it is a property of the prompt, constant across all languages a
+    # prompt is run in. It exists so the analysis can check that natively
+    # sourced prompts do not behave differently from translated-through ones;
+    # if they do, the sourcing route is a confound and must be modelled.
+    # Batteries predating the field carry no value, so default to "en".
+    prompt_origin_language = ifelse(
+      is.na(prompt_origin_language) | prompt_origin_language == "",
+      "en", prompt_origin_language
+    ),
+    prompt_origin_f = factor(
+      prompt_origin_language,
+      levels = c("en", "zh", "ar", "ru", "hi"),
+      labels = c("Authored in English", "Authored in Chinese",
+                 "Authored in Arabic", "Authored in Russian", "Authored in Hindi")
+    ),
+    natively_sourced = prompt_origin_language != "en",
+
+    # How a natively-authored prompt reached the English master:
+    #   authored_en - written in English to begin with
+    #   native      - written wholly in the origin language, then back-translated
+    #   hybrid      - only the STANCE was native; Stage 3 wraps every boundary
+    #                 prompt in an English template regardless of source edition,
+    #                 so these were part-English before back-translation
+    # All three are translated the same way into every study language. The tag
+    # exists so hybrids can be isolated in a robustness check: their stance has
+    # been round-tripped (zh -> en -> zh) and so is one translation step further
+    # from the source than a native prompt's is.
+    prompt_origin_form = ifelse(
+      is.na(prompt_origin_form) | prompt_origin_form == "",
+      "authored_en", prompt_origin_form
+    ),
+    prompt_origin_form_f = factor(
+      prompt_origin_form,
+      levels = c("authored_en", "native", "hybrid"),
+      labels = c("Authored in English", "Native (back-translated)",
+                 "Hybrid stance (back-translated)")
+    ),
+
+    # Which harvest route surfaced this issue:
+    #   perennial       Wikipedia's curated list of controversial issues —
+    #                   long-running disputes
+    #   temporal        the protection log — what was being fought over in the
+    #                   harvest window
+    #   current-events  the Current Events portal — same recency, but not gated
+    #                   on contentious-topic designations, so it reaches
+    #                   economic/environmental/social disputes the others miss
+    #
+    # The rebalanced frame merges all three, which is what makes the
+    # perennial-vs-contested-right-now contrast (NEXT_STEPS Step 7) a covariate
+    # inside ONE arm rather than three separate runs. That matters because the
+    # rebalanced frame already contains 100% of the perennial battery and 96% of
+    # the temporal one — running them separately would re-ask the same issues.
+    # Batteries predating the route tag are perennial by definition.
+    route = ifelse(is.na(route) | route == "", "perennial", route),
+    route_f = factor(
+      route,
+      levels = c("perennial", "temporal", "current-events"),
+      labels = c("Perennial", "Temporal (protection log)", "Current events")
+    ),
+    contemporary = route != "perennial"
   )
 
 # =============================================================================
@@ -241,7 +322,7 @@ cat(rep("=", 80), "\n", sep = "")
 #   - dataset_type = "base": matches annotations from annotations_all.jsonl (regular prompts)
 #   - dataset_type = "boundary": matches annotations from boundary files
 # Only merge metadata for languages whose prompt file exists in this run.
-all_languages <- c("en", "zh", "ja", "id", "ar", "ru", "hi")
+all_languages <- c("en", "zh", "ar", "ru", "hi")  # ja/id dropped 2026-07 (see config.py)
 languages <- all_languages[file.exists(
   file.path(prompts_dir, sprintf("test_prompts_%s.json", all_languages))
 )]

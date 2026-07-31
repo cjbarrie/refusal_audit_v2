@@ -5,7 +5,10 @@ Centralizes language codes and test models to avoid duplication across scripts.
 """
 
 # Supported languages for prompts and responses
-SUPPORTED_LANGUAGES = ["en", "zh", "ja", "id", "ar", "ru", "hi"]
+# ja/id dropped 2026-07 (thin region strata: Japan 11 / Indonesia 2 issues; no
+# home-jurisdiction model; not geopolitically central like ru). Translated
+# full_/temporal_ ja/id files remain on disk — restore by re-adding "ja","id".
+SUPPORTED_LANGUAGES = ["en", "zh", "ar", "ru", "hi"]
 
 # Models tested in the study.
 # Each entry: (display_name, model_id, jurisdiction, provider)

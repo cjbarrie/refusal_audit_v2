@@ -1,4 +1,40 @@
-# The legacy R analysis pipeline — what each script does, and why
+# The R analysis pipeline — what each script does, and why
+
+> **Reorganised 2026-07-30.** The directory was 23 scripts of which 7 could
+> never run (Study A/B side experiments whose runners have not been executed in
+> v2) and the numbering had a collision — two scripts were numbered `08`. The
+> seven are now in `archive/pipeline_study_ab/` with a README explaining each;
+> the remaining 16 are renumbered `01`–`16` in execution order: **01 load ·
+> 02–10 estimation and tables · 11–15 figures · 16 reliability.**
+>
+> | was | is now |
+> |---|---|
+> | `01_data_loading.R` | `01_data_loading.R` |
+> | `02_engagement_analysis.R` | `02_engagement_analysis.R` |
+> | `03_ideology_analysis.R` | `03_ideology_analysis.R` |
+> | `03b_ideology_extended.R` | `04_ideology_extended.R` |
+> | `03c_moral_extended.R` | `05_moral_extended.R` |
+> | `05_refusal_justifications.R` | `06_refusal_justifications.R` |
+> | `06_deepseek_language_analysis.R` | `07_deepseek_language_analysis.R` |
+> | `07_deepseek_chinese_analysis.R` | `08_deepseek_chinese_analysis.R` |
+> | `07b_pnas_stats.R` | `09_deepseek_stats.R` |
+> | `06b_ideology_moral_patterns.R` | `10_ideology_moral_patterns.R` |
+> | `04_visualizations.R` | `11_visualizations.R` |
+> | `04b_visualizations_extended.R` | `12_visualizations_extended.R` |
+> | `04c_report_figures.R` | `13_report_figures.R` |
+> | `15_pilot_deepseek_dotplots.R` | `14_deepseek_brief_figures.R` |
+> | `09_pnas_figures.R` | `15_pnas_figures.R` |
+> | `08_irr_analysis.R` | `16_irr_analysis.R` |
+> | `08_study_a_prompt_variance.R` | archived |
+> | `10_study_a_panel.R` | archived |
+> | `11_study_b_lang_mechanism.R` | archived |
+> | `12_stance_analysis.R` | archived |
+> | `13_deepseek_dotplots.R` | archived |
+> | `14_refusal_vs_engaged_stance.R` | archived |
+> | `16_engaged_state_alignment.R` | archived |
+>
+> All 16 share one publication theme and validated palette
+> (`pipeline/_theme.R`); none sets its own theme any more.
 
 This is a plain-English map of the 23 R scripts in `pipeline/`, inherited from
 the former collaborator. The goal is to understand them well enough to decide
@@ -51,31 +87,31 @@ the numbers match.
 | **01_data_loading.R** | Builds `data_clean` from the raw annotations; writes the by-model / by-language / by-category summaries. | The foundation. Everything else needs it. |
 | **02_engagement_analysis.R** | The headline **refusal/engagement** analysis: engagement rate per model × language, the DeepSeek Chinese effect, refusal by category, controversial-vs-domestic splits. Fits a logistic mixed model (`glm`/`lme4`). 10 tables. | This is the paper's central result — who refuses, in which language, on what. |
 | **03_ideology_analysis.R** | For *engaged* answers, scores **ideological lean** and **moral-foundations** usage per model × language; fits models; predicts marginal means. 8 tables. | The second research question: not just *whether* models engage, but *how they slant* when they do. |
-| **05_refusal_justifications.R** | Among refusals, tabulates the **stated reason** (refusal-code A–G) per model × language, and for strategic/controversial/domestic subsets. 5 tables. | Characterizes *how* models refuse, not just how often. |
+| **06_refusal_justifications.R** | Among refusals, tabulates the **stated reason** (refusal-code A–G) per model × language, and for strategic/controversial/domestic subsets. 5 tables. | Characterizes *how* models refuse, not just how often. |
 
 ### Extended analyses — keep if the corresponding result is in the paper
 
 | script | what it does | keep? |
 |---|---|---|
-| **03b_ideology_extended.R** | Ideology consistency across categories and base-vs-boundary; ideology "shifts". | If the base-vs-boundary ideology-shift result is reported. |
-| **03c_moral_extended.R** | Moral foundations by language × category; foundation co-occurrence. | If the moral co-occurrence result is reported. |
+| **04_ideology_extended.R** | Ideology consistency across categories and base-vs-boundary; ideology "shifts". | If the base-vs-boundary ideology-shift result is reported. |
+| **05_moral_extended.R** | Moral foundations by language × category; foundation co-occurrence. | If the moral co-occurrence result is reported. |
 
 ### Study A / Study B — separate experiments, port only if you're re-running them
 
 | script | what it does |
 |---|---|
-| **08_study_a_prompt_variance.R** | Picks Study A's frozen 30-prompt subset by cross-model refusal variance. |
-| **10_study_a_panel.R** | Study A jurisdiction-panel `glmer` (45 prompts × 13 models × 3 languages). |
-| **11_study_b_lang_mechanism.R** | Study B: language-register + entity-swap paired mixed models. |
+| **archive/pipeline_study_ab/08_study_a_prompt_variance.R** | Picks Study A's frozen 30-prompt subset by cross-model refusal variance. |
+| **archive/pipeline_study_ab/10_study_a_panel.R** | Study A jurisdiction-panel `glmer` (45 prompts × 13 models × 3 languages). |
+| **archive/pipeline_study_ab/11_study_b_lang_mechanism.R** | Study B: language-register + entity-swap paired mixed models. |
 
 ### DeepSeek deep-dive — one finding, many scripts (candidates to consolidate)
 
 | script | what it does |
 |---|---|
-| **06_deepseek_language_analysis.R** | DeepSeek Chinese-vs-English refusal, tables 35–38 + 1 figure. |
-| **07_deepseek_chinese_analysis.R** | Formal tests (chi-square, Fisher, `glmer`, odds ratios) for the DeepSeek gap. |
-| **07b_pnas_stats.R** | Re-does those tests PNAS-grade: bootstrap OR CIs, Cramér's V, BH-corrected p-values. |
-| **06b_ideology_moral_patterns.R** | Ideology variance + moral co-occurrence beyond the libertarian shift. |
+| **07_deepseek_language_analysis.R** | DeepSeek Chinese-vs-English refusal, tables 35–38 + 1 figure. |
+| **08_deepseek_chinese_analysis.R** | Formal tests (chi-square, Fisher, `glmer`, odds ratios) for the DeepSeek gap. |
+| **09_deepseek_stats.R** | Re-does those tests PNAS-grade: bootstrap OR CIs, Cramér's V, BH-corrected p-values. |
+| **10_ideology_moral_patterns.R** | Ideology variance + moral co-occurrence beyond the libertarian shift. |
 
 These four all interrogate the **same** result (DeepSeek refuses more in
 Chinese). If we port, this collapses to **one** Python module: compute the
@@ -86,8 +122,8 @@ correction built in.
 
 | script | what it does |
 |---|---|
-| **08_irr_analysis.R** | Cohen's κ (engagement) and Krippendorff's α (ordinal) between the primary judge and a second judge. |
-| **12_stance_analysis.R** | Also computes inter-judge κ for the *stance* pass (primary vs secondary stance judge), plus state-alignment. |
+| **16_irr_analysis.R** | Cohen's κ (engagement) and Krippendorff's α (ordinal) between the primary judge and a second judge. |
+| **archive/pipeline_study_ab/12_stance_analysis.R** | Also computes inter-judge κ for the *stance* pass (primary vs secondary stance judge), plus state-alignment. |
 
 Any credible audit needs an IRR number, so this logic ports regardless of which
 figures survive.
@@ -96,9 +132,9 @@ figures survive.
 
 | script | what it does | keep? |
 |---|---|---|
-| **04_visualizations.R** (14 figs) | The main figure set — dotplots with Wilson CIs. | Re-implement in matplotlib **from the ported tables**, not 1:1. |
+| **11_visualizations.R** (14 figs) | The main figure set — dotplots with Wilson CIs. | Re-implement in matplotlib **from the ported tables**, not 1:1. |
 | **04b / 04c** | Extended + KEY_FINDINGS report figures. | Drop unless those exact figures are needed. |
-| **09_pnas_figures.R**, **13**, **14**, **15**, **16** | Paper-specific standalone dotplots for `pnas_paper.tex` / `deepseek_brief.tex`. | **Drop.** These are figure-production for specific old manuscripts. Regenerate fresh figures for the new battery. |
+| **15_pnas_figures.R**, **13**, **14**, **15**, **16** | Paper-specific standalone dotplots for `pnas_paper.tex` / `deepseek_brief.tex`. | **Drop.** These are figure-production for specific old manuscripts. Regenerate fresh figures for the new battery. |
 
 ---
 

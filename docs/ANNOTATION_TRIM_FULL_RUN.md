@@ -78,27 +78,27 @@ it); it simply isn't invoked.
 23 scripts in `pipeline/`. Classification by field dependency:
 
 **KEEP (13) — refusal-only, no slant fields:**
-`01_data_loading.R`, `02_engagement_analysis.R`, `04_visualizations.R`,
-`04b_visualizations_extended.R`, `04c_report_figures.R`,
-`05_refusal_justifications.R` (the A–G "nature of refusal" script),
-`07_deepseek_chinese_analysis.R`, `07b_pnas_stats.R`,
-`08_study_a_prompt_variance.R`, `09_pnas_figures.R`,
-`15_pilot_deepseek_dotplots.R`, plus study-arm scripts `10_study_a_panel.R`
-and `11_study_b_lang_mechanism.R` (separate arms — review when those arms run).
+`01_data_loading.R`, `02_engagement_analysis.R`, `11_visualizations.R`,
+`12_visualizations_extended.R`, `13_report_figures.R`,
+`06_refusal_justifications.R` (the A–G "nature of refusal" script),
+`08_deepseek_chinese_analysis.R`, `09_deepseek_stats.R`,
+`archive/pipeline_study_ab/08_study_a_prompt_variance.R`, `15_pnas_figures.R`,
+`14_deepseek_brief_figures.R`, plus study-arm scripts `archive/pipeline_study_ab/10_study_a_panel.R`
+and `archive/pipeline_study_ab/11_study_b_lang_mechanism.R` (separate arms — review when those arms run).
 
 **DROP (8) — consume only Pass 2 / Pass 3 / stance:**
-`03_ideology_analysis.R`, `03b_ideology_extended.R`, `03c_moral_extended.R`,
-`06b_ideology_moral_patterns.R`, `12_stance_analysis.R`,
-`13_deepseek_dotplots.R`, `14_refusal_vs_engaged_stance.R`,
-`16_engaged_state_alignment.R`.
+`03_ideology_analysis.R`, `04_ideology_extended.R`, `05_moral_extended.R`,
+`10_ideology_moral_patterns.R`, `archive/pipeline_study_ab/12_stance_analysis.R`,
+`archive/pipeline_study_ab/13_deepseek_dotplots.R`, `archive/pipeline_study_ab/14_refusal_vs_engaged_stance.R`,
+`archive/pipeline_study_ab/16_engaged_state_alignment.R`.
 "Drop" = exclude from the full-run analysis driver; do **not** delete the files
 (the pilot still uses them). If there is a master run-list/driver, comment these
 out for the full run.
 
 **TRIM (2) — mixed; keep the refusal half, remove the slant block:**
-- `06_deepseek_language_analysis.R` — 10 refusal refs + 8 slant refs. Keep the
+- `07_deepseek_language_analysis.R` — 10 refusal refs + 8 slant refs. Keep the
   language×refusal analysis; strip the ideology block.
-- `08_irr_analysis.R` — inter-rater reliability, primary vs second judge; 12
+- `16_irr_analysis.R` — inter-rater reliability, primary vs second judge; 12
   refusal + 12 slant refs. Keep engagement/refusal IRR; drop the ideology/MFT
   IRR (with Pass 2/3 gone there's no second-judge slant coding to correlate).
 

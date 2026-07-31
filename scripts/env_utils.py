@@ -65,14 +65,27 @@ def _candidate_paths(extra_paths: Optional[Iterable[Path]] = None) -> list[Path]
 def load_env_from_file(
     env_path: Optional[Path] = None,
     *,
-    override: bool = False,
+    override: bool = True,
     extra_paths: Optional[Iterable[Path]] = None,
 ) -> Dict[str, str]:
     """
     Load environment variables from a `.env` file if present.
 
-    Does not overwrite existing environment variables unless `override=True`.
-    Returns a dict of variables read (whether or not they were set due to override=False).
+    `.env` is AUTHORITATIVE: a value found in a `.env` file overwrites whatever
+    is already in `os.environ`. Pass `override=False` for the opposite (a
+    pre-existing environment variable wins).
+
+    The default was `override=False` until 2026-07-31. That let a stale
+    `export OPENROUTER_API_KEY=...` in a shell rc file silently shadow the real
+    key in `.env`, so every script in the repo authenticated with the wrong
+    credential and OpenRouter returned `401 User not found` -- a failure that
+    reads as a revoked key or a closed account rather than as a shadowed
+    variable. CLAUDE.md already documented `.env` as the source of secrets and
+    said they are "never read from the shell directly"; this makes the code
+    match that contract.
+
+    Returns a dict of variables read from the file (regardless of whether they
+    were written to `os.environ`).
     """
     paths = [env_path] if env_path is not None else _candidate_paths(extra_paths=extra_paths)
     loaded: Dict[str, str] = {}

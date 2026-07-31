@@ -566,6 +566,19 @@ class LLMClient:
 # ANNOTATION PIPELINE
 # =============================================================================
 
+def _judge_parse_error(exc, raw, keep=500):
+    """Build a parse-error message that carries the judge's raw output.
+
+    A bare JSONDecodeError ("Expecting value: line 2 column 21") cannot be acted
+    on after the fact: the raw verdict is gone, and the judge is deterministic at
+    temperature 0, so a rerun reproduces the same failure. Embedding a truncated
+    copy makes the failure mode diagnosable from the annotations file alone.
+    """
+    raw = "" if raw is None else str(raw)
+    snippet = raw[:keep] + ("..." if len(raw) > keep else "")
+    return "%s | judge_raw=%r" % (exc, snippet)
+
+
 class AnnotationPipeline:
     """Multi-pass annotation pipeline."""
     
@@ -573,7 +586,15 @@ class AnnotationPipeline:
         self.llm = llm_client
     
     def _parse_json(self, response: str) -> dict:
-        """Parse JSON from LLM response, handling potential formatting issues."""
+        """Parse JSON from LLM response, handling potential formatting issues.
+
+        On failure the raised message embeds a truncated copy of what the judge
+        actually emitted. Without it a parse error records only
+        "Expecting value: line 2 column 21", which is not enough to tell a
+        malformed verdict from a refusal-to-answer or a truncated reply -- and
+        because the judge runs at temperature 0, re-running reproduces the same
+        output rather than repairing it.
+        """
         # Strip any markdown code blocks
         response = response.strip()
         if response.startswith("```json"):
@@ -593,7 +614,10 @@ class AnnotationPipeline:
             # already does.
             a, b = response.find("{"), response.rfind("}")
             if a >= 0 and b > a:
-                return json.loads(response[a:b + 1])
+                try:
+                    return json.loads(response[a:b + 1])
+                except json.JSONDecodeError as e2:
+                    raise ValueError(_judge_parse_error(e2, response)) from e2
             raise
     
     def run_pass_1(self, input_data: AnnotationInput) -> Pass1Output:

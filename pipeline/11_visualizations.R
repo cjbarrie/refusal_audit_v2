@@ -56,7 +56,7 @@ p1 <- ggplot(model_refusal, aes(y = reorder(model_f, refusal_x), color = dataset
   scale_x_continuous(labels = percent_format(),
                      limits = c(0, 0.6),
                      expand = expansion(mult = c(0, 0.1))) +
-  scale_color_manual(values = c("Regular Prompts" = "gray60", "Boundary Prompts" = "#E41A1C")) +
+  scale_colour_tier() +
   facet_wrap(~dataset_type_f, ncol = 1) +
   labs(
     title = "Refusal of Political Prompts by Model: Regular vs Boundary",
@@ -116,7 +116,9 @@ p2 <- ggplot(deepseek_language,
   scale_x_continuous(labels = percent_format(),
                      limits = c(0, 1),
                      expand = expansion(mult = c(0, 0.05))) +
-  scale_color_manual(values = c("yes" = "#E41A1C", "no" = "#999999")) +
+  # "yes" = the en/zh contrast this figure is about; other languages recede.
+  scale_colour_manual(values = c("yes" = PAL_TIER[["Boundary Prompts"]],
+                                 "no"  = INK_MUTED), guide = "none") +
   facet_wrap(~dataset_type_f, ncol = 1) +
   labs(
     title = "DeepSeek Refusal Rates by Language: Regular vs Boundary",
@@ -170,7 +172,7 @@ p3 <- ggplot(model_language_data, aes(y = language_f, color = dataset_type_f)) +
             hjust = -0.3, size = 2.3, show.legend = FALSE) +
   facet_grid(dataset_type_f ~ model_f) +
   scale_x_continuous(labels = percent_format(), limits = c(0, 1)) +
-  scale_color_manual(values = c("Regular Prompts" = "gray60", "Boundary Prompts" = "#E41A1C")) +
+  scale_colour_tier() +
   labs(
     title = "Refusal Rates by Model, Language, and Prompt Type",
     subtitle = "Faceted by dataset type (rows) and model (columns)",
@@ -330,15 +332,18 @@ category_data <- data_clean %>%
     .groups = "drop"
   ) %>%
   mutate(
-    highlight = ifelse(prompt_category == "strategic_advice", "yes", "no")
+    cat_label = str_replace_all(prompt_category, "_", " ") %>% str_to_title()
   )
 
+# A "highlight" aesthetic used to single out the legacy task-type category
+# strategic_advice. v2 has nine topic domains and no such category, so the
+# aesthetic was constant -- two scale colours, one of them never drawn. Single
+# series, one colour.
 p4 <- ggplot(category_data, aes(x = refusal_rate,
-                                 y = reorder(prompt_category, refusal_rate),
-                                 color = highlight)) +
-  geom_point(size = 3) +
+                                 y = reorder(cat_label, refusal_rate))) +
+  geom_point(size = 3, color = SERIES_ONE) +
   geom_text(aes(label = sprintf("%.1f%%", refusal_rate * 100)),
-            hjust = -0.5, size = 3.5, color = "black") +
+            hjust = -0.5, size = 3.5, color = INK_SECONDARY) +
   facet_wrap(~ controversy_tier, ncol = 1) +
   scale_x_continuous(
     labels = percent_format(),
@@ -348,10 +353,9 @@ p4 <- ggplot(category_data, aes(x = refusal_rate,
     ),
     expand = c(0, 0)
   ) +
-  scale_color_manual(values = c("yes" = "#E41A1C", "no" = "#999999")) +
   labs(
-    title = "Refusal Rates by Prompt Category",
-    subtitle = "Strategic advice has dramatically higher refusal rate (faceted by controversy tier)",
+    title = "Refusal Rates by Topic Domain",
+    subtitle = "Faceted by controversy tier",
     x = "Refusal Rate",
     y = NULL
   ) +
@@ -366,53 +370,6 @@ p4 <- ggplot(category_data, aes(x = refusal_rate,
 ggsave("pipeline/plots/fig4_category_refusal.pdf", p4, width = 10, height = 6)
 ggsave("pipeline/plots/fig4_category_refusal.png", p4, width = 10, height = 6, dpi = 300)
 cat("Saved: pipeline/plots/fig4_category_refusal.pdf + .png\n")
-
-# =============================================================================
-# Figure 5: Strategic Advice by Model
-# =============================================================================
-
-cat("\nCreating Figure 5: Strategic Advice by Model...\n")
-
-strategic_data <- data_clean %>%
-  filter(prompt_category == "strategic_advice") %>%
-  group_by(model_f) %>%
-  summarise(
-    n = n(),
-    refusal_rate = mean(refused),
-    .groups = "drop"
-  )
-
-overall_refusal <- mean(data_clean$refused)
-
-p5 <- ggplot(strategic_data, aes(x = refusal_rate,
-                                  y = reorder(model_f, refusal_rate))) +
-  geom_vline(xintercept = overall_refusal, linetype = "dashed",
-             color = "red", linewidth = 0.8) +
-  geom_point(size = 3) +
-  geom_text(aes(label = sprintf("%.1f%%", refusal_rate * 100)),
-            hjust = -0.4, size = 3.5) +
-  annotate("text", x = overall_refusal + 0.02, y = 3.5,
-           label = sprintf("Overall avg refusal: %.1f%%", overall_refusal * 100),
-           color = "red", size = 3.5, hjust = 0) +
-  scale_x_continuous(labels = percent_format(),
-                     limits = c(0, max(strategic_data$refusal_rate, overall_refusal) * 1.1),
-                     expand = c(0, 0)) +
-  labs(
-    title = "Refusal of Strategic Advice Prompts",
-    subtitle = "Dashed line shows overall refusal rate",
-    x = "Refusal Rate",
-    y = NULL
-  ) +
-  theme_refusal() +
-  theme(
-    panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
-    axis.text.x = element_text(size = 11)
-  )
-
-ggsave("pipeline/plots/fig5_strategic_advice_by_model.pdf", p5, width = 8, height = 6)
-ggsave("pipeline/plots/fig5_strategic_advice_by_model.png", p5, width = 8, height = 6, dpi = 300)
-cat("Saved: pipeline/plots/fig5_strategic_advice_by_model.pdf + .png\n")
 
 # =============================================================================
 # Figure 6: Refusal by Model, Faceted by Category
@@ -505,60 +462,6 @@ p7 <- ggplot(controversial_data, aes(y = language_f)) +
 ggsave("pipeline/plots/fig7_controversial_by_model_language.pdf", p7, width = 7, height = 5)
 ggsave("pipeline/plots/fig7_controversial_by_model_language.png", p7, width = 7, height = 5, dpi = 300)
 cat("Saved: pipeline/plots/fig7_controversial_by_model_language.pdf + .png\n")
-
-# =============================================================================
-# Figure 8: Domestic Government by Model × Language
-# =============================================================================
-
-cat("\nCreating Figure 8: Domestic Government by Model × Language...\n")
-
-domestic_data <- data_clean %>%
-  filter(prompt_category == "domestic_government") %>%
-  group_by(model_f, language_f) %>%
-  summarise(
-    n = n(),
-    refusal_rate = mean(refused),
-    .groups = "drop"
-  ) %>%
-  tidyr::complete(model_f, language_f, fill = list(n = 0, refusal_rate = NA_real_)) %>%
-  mutate(
-    refusal_label = dplyr::case_when(
-      n == 0 ~ "NA",
-      TRUE ~ sprintf("%.1f%%", refusal_rate * 100)
-    ),
-    refusal_x = ifelse(n == 0, 0, refusal_rate)
-  )
-
-p8 <- ggplot(domestic_data, aes(y = language_f)) +
-  geom_point(aes(x = refusal_rate),
-             data = dplyr::filter(domestic_data, n > 0),
-             size = 2.5) +
-  geom_text(aes(x = refusal_x, label = refusal_label),
-            hjust = -0.4, size = 3) +
-  facet_wrap(~ model_f, ncol = 2) +
-  scale_x_continuous(
-    labels = percent_format(),
-    limits = c(0, max(domestic_data$refusal_x, na.rm = TRUE) * 1.1),
-    expand = expansion(mult = c(0, 0.1))
-  ) +
-  labs(
-    title = "Refusal Rates for Domestic Government Prompts by Model and Language",
-    subtitle = "Faceted by model (only languages with data shown)",
-    x = "Refusal Rate",
-    y = NULL
-  ) +
-  theme_refusal() +
-  theme(
-    panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
-    axis.text.x = element_text(size = 9),
-    strip.background = element_rect(fill = "white"),
-    strip.text = element_text(face = "bold", size = 11)
-  )
-
-ggsave("pipeline/plots/fig8_domestic_government_by_model_language.pdf", p8, width = 12, height = 5)
-ggsave("pipeline/plots/fig8_domestic_government_by_model_language.png", p8, width = 12, height = 5, dpi = 300)
-cat("Saved: pipeline/plots/fig8_domestic_government_by_model_language.pdf + .png\n")
 
 # =============================================================================
 # Figure 9: Ideology by Model and Dimension Grid

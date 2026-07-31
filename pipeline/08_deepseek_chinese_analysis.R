@@ -290,11 +290,11 @@ fig22 <- ggplot(viz_data, aes(x = reorder(prompt_category, refusal_rate),
             position = position_dodge(width = 0.7),
             vjust = -0.8, size = 2.3) +
   facet_wrap(~tier_label, ncol = 1, scales = "free_y") +
-  scale_fill_manual(values = c("English" = "#377EB8", "Chinese" = "#E41A1C")) +
+  scale_fill_language() +
   scale_y_continuous(labels = percent, limits = c(0, 1.1)) +
   labs(
     title = "DeepSeek Refusal Rates by Category: Chinese vs English",
-    subtitle = "With 95% confidence intervals. Gap is largest for domestic_government and candidate_comparison.",
+    subtitle = "With 95% confidence intervals.",
     x = "Prompt Category",
     y = "Refusal Rate",
     fill = "Prompt Language"

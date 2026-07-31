@@ -131,7 +131,7 @@ fig19 <- ggplot(viz_data, aes(x = category, y = refusal_rate, fill = language_la
             position = position_dodge(width = 0.7),
             vjust = -0.3, size = 2.5) +
   facet_wrap(~dataset_type_f, ncol = 1) +
-  scale_fill_manual(values = c("English" = "#377EB8", "Chinese" = "#E41A1C")) +
+  scale_fill_language() +
   scale_y_continuous(labels = percent, limits = c(0, 1.05)) +
   labs(
     title = "DeepSeek Refusal Rates: Chinese vs English",

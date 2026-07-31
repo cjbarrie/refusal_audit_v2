@@ -48,8 +48,7 @@ fig12 <- ggplot(refusal_by_dataset, aes(x = model_f, y = refusal_rate,
             position = position_dodge(width = 0.7),
             vjust = -0.5, size = 3) +
   scale_y_continuous(labels = percent, limits = c(0, 0.6)) +
-  scale_fill_manual(values = c("Regular Prompts" = "gray60",
-                                "Boundary Prompts" = "#E41A1C")) +
+  scale_fill_tier() +
   labs(
     title = "Refusal Rates: Regular vs Boundary Prompts",
     x = NULL,
@@ -63,6 +62,12 @@ ggsave("pipeline/plots/fig12_base_vs_boundary.pdf", fig12, width = 10, height = 
 ggsave("pipeline/plots/fig12_base_vs_boundary.png", fig12, width = 10, height = 6, dpi = 300)
 cat("Saved: pipeline/plots/fig12_base_vs_boundary.pdf + .png\n")
 
+# Figure 13 (ideology shifts) depends on annotation Pass 2 (ideology/moral foundations), which the
+# canonical Pass-1-only run does not produce (docs/ANNOTATION_TRIM_FULL_RUN.md).
+# The table below is written by a script now in archive/pipeline_slant/, so an
+# unguarded read_csv() aborted this script and every figure after it. Runs
+# normally against a run annotated with --all-passes.
+if (file.exists("pipeline/tables/27_ideology_shifts.csv")) {
 # =============================================================================
 # Figure 13: Ideology Shifts (Base → Boundary)
 # =============================================================================
@@ -92,6 +97,15 @@ ggsave("pipeline/plots/fig13_ideology_shifts.pdf", fig13, width = 12, height = 7
 ggsave("pipeline/plots/fig13_ideology_shifts.png", fig13, width = 12, height = 7, dpi = 300)
 cat("Saved: pipeline/plots/fig13_ideology_shifts.pdf + .png\n")
 
+} else {
+  cat("\nSKIP Figure 13 (ideology shifts): pipeline/tables/27_ideology_shifts.csv absent (Pass-1-only run).\n")
+}
+# Figure 14 (moral foundations heatmap) depends on annotation Pass 2 (ideology/moral foundations), which the
+# canonical Pass-1-only run does not produce (docs/ANNOTATION_TRIM_FULL_RUN.md).
+# The table below is written by a script now in archive/pipeline_slant/, so an
+# unguarded read_csv() aborted this script and every figure after it. Runs
+# normally against a run annotated with --all-passes.
+if (file.exists("pipeline/tables/29_moral_by_language_category.csv")) {
 # =============================================================================
 # Figure 14: Moral Foundations Heatmap (Language × Category)
 # =============================================================================
@@ -134,3 +148,7 @@ cat("EXTENDED VISUALIZATION CREATION COMPLETE\n")
 cat(rep("=", 80), "\n", sep = "")
 cat("\nCreated 3 additional figures (fig12-fig14)\n")
 cat("Total figures: 14 (11 from 11_visualizations.R + 3 extended)\n\n")
+
+} else {
+  cat("\nSKIP Figure 14 (moral foundations heatmap): pipeline/tables/29_moral_by_language_category.csv absent (Pass-1-only run).\n")
+}

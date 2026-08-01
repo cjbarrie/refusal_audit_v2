@@ -130,39 +130,6 @@ cat("\nMost common justification by model:\n")
 print(most_common_by_model)
 
 # =============================================================================
-# ANALYSIS 4: Refusal Justifications for Strategic Advice
-# =============================================================================
-
-cat("\n")
-cat(rep("=", 80), "\n", sep = "")
-cat("ANALYSIS 4: REFUSAL JUSTIFICATIONS FOR STRATEGIC ADVICE\n")
-cat(rep("=", 80), "\n", sep = "")
-
-# Filter to strategic advice refusals
-strategic_refusals <- refusals_with_justification %>%
-  filter(prompt_category == "strategic_advice")
-
-cat(sprintf("\nStrategic advice refusals: %d\n", nrow(strategic_refusals)))
-
-if (nrow(strategic_refusals) > 0) {
-  strategic_justifications <- strategic_refusals %>%
-    group_by(model_f, refusal_justification_f) %>%
-    summarise(n = n(), .groups = "drop") %>%
-    group_by(model_f) %>%
-    mutate(
-      total = sum(n),
-      prop = n / total
-    ) %>%
-    ungroup()
-
-  cat("\nRefusal justifications for strategic advice by model:\n")
-  print(strategic_justifications)
-
-  # Save summary
-  write_csv(strategic_justifications, "pipeline/tables/21_strategic_refusal_justifications.csv")
-}
-
-# =============================================================================
 # ANALYSIS 5: Refusal Justifications for Controversial Prompts
 # =============================================================================
 
@@ -196,39 +163,6 @@ if (nrow(controversial_refusals) > 0) {
 }
 
 # =============================================================================
-# ANALYSIS 6: Refusal Justifications for Domestic Government
-# =============================================================================
-
-cat("\n")
-cat(rep("=", 80), "\n", sep = "")
-cat("ANALYSIS 6: REFUSAL JUSTIFICATIONS FOR DOMESTIC GOVERNMENT\n")
-cat(rep("=", 80), "\n", sep = "")
-
-# Filter to domestic_government refusals
-domestic_refusals <- refusals_with_justification %>%
-  filter(prompt_category == "domestic_government")
-
-cat(sprintf("\nDomestic government refusals: %d\n", nrow(domestic_refusals)))
-
-if (nrow(domestic_refusals) > 0) {
-  domestic_justifications <- domestic_refusals %>%
-    group_by(model_f, refusal_justification_f) %>%
-    summarise(n = n(), .groups = "drop") %>%
-    group_by(model_f) %>%
-    mutate(
-      total = sum(n),
-      prop = n / total
-    ) %>%
-    ungroup()
-
-  cat("\nRefusal justifications for domestic government prompts by model:\n")
-  print(domestic_justifications)
-
-  # Save summary
-  write_csv(domestic_justifications, "pipeline/tables/23_domestic_refusal_justifications.csv")
-}
-
-# =============================================================================
 # Summary Statistics
 # =============================================================================
 
@@ -240,9 +174,7 @@ cat(rep("=", 80), "\n", sep = "")
 summary_stats <- list(
   total_refusals = nrow(refusals),
   refusals_with_justification = nrow(refusals_with_justification),
-  strategic_refusals = nrow(strategic_refusals),
   controversial_refusals = nrow(controversial_refusals),
-  domestic_refusals = nrow(domestic_refusals),
   refusal_pct = nrow(refusals) / nrow(data_clean)
 )
 

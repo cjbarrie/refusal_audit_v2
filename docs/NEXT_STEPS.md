@@ -7,8 +7,12 @@ downstream of the sourcing rebuild; the sourcing stage itself is done.*
 
 ## ⏱ RESUME HERE — 2026-07-30 (authoritative; supersedes everything below)
 
-Nothing is running. No background job to reattach. All work is on disk and
-uncommitted (~153 changed/untracked files).
+Nothing is running. No background job to reattach.
+
+**Committed and pushed 2026-07-31**: branch `battery-repairs-and-sampling`
+(commit `4299158`, 103 files), open as PR #1 against `main`. Working tree
+clean. Repair snapshots (`*.pre_*`, 364 MB) are gitignored — still on local
+disk for revert, deliberately not in history.
 
 ### State in one table
 

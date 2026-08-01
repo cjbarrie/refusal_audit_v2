@@ -55,6 +55,17 @@ which of the 22 downstream analyses we still want.**
 
 ---
 
+
+> **2026-07-31 — slant scripts archived.** `03_ideology_analysis.R`,
+> `04_ideology_extended.R`, `05_moral_extended.R` and
+> `10_ideology_moral_patterns.R` moved to `archive/pipeline_slant/`. They read
+> annotation Passes 2-3, which the canonical Pass-1-only run does not produce
+> (`docs/ANNOTATION_TRIM_FULL_RUN.md`). Rows for them below describe scripts
+> that are no longer in `pipeline/`. `07_deepseek_language_analysis.R` (table
+> 37), `11_visualizations.R` (figures 9-10) and `16_irr_analysis.R`
+> (Krippendorff's alpha rows) keep their slant sections behind guards and skip
+> them on a Pass-1 run.
+
 ## The data model `01_data_loading.R` builds (the thing to port first)
 
 It reads `annotations/annotations_all.jsonl` — one row per *annotated model

@@ -275,71 +275,6 @@ write_csv(controversial_by_model, "pipeline/tables/07_controversial_by_model.csv
 write_csv(controversial_by_model_lang, "pipeline/tables/08_controversial_by_model_language.csv")
 
 # =============================================================================
-# FINDING 4: Domestic Government Category
-# =============================================================================
-
-cat("\n")
-cat(rep("=", 80), "\n", sep = "")
-cat("FINDING 4: DOMESTIC GOVERNMENT CATEGORY\n")
-cat(rep("=", 80), "\n", sep = "")
-
-# Filter domestic government prompts
-domestic_data <- data_clean %>%
-  filter(prompt_category == "domestic_government")
-
-cat(sprintf("\nTotal domestic_government prompts: %d (%.1f%% of dataset)\n",
-            nrow(domestic_data),
-            nrow(domestic_data) / nrow(data_clean) * 100))
-
-# Overall domestic engagement
-domestic_overall <- domestic_data %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    refusal_rate = mean(refused)
-  )
-
-overall_rate <- mean(data_clean$engaged)
-
-cat(sprintf("\nDomestic government engagement: %.1f%%\n",
-            domestic_overall$engagement_rate * 100))
-cat(sprintf("Overall engagement: %.1f%%\n", overall_rate * 100))
-cat(sprintf("Gap: %.1f percentage points LOWER for domestic_government\n",
-            (overall_rate - domestic_overall$engagement_rate) * 100))
-
-# Domestic by model
-domestic_by_model <- domestic_data %>%
-  group_by(model_f) %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    refusal_rate = mean(refused),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(engagement_rate))
-
-cat("\nDomestic government by model:\n")
-print(domestic_by_model)
-
-# Domestic by model and language
-domestic_by_model_lang <- domestic_data %>%
-  group_by(model_f, language_f) %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    refusal_rate = mean(refused),
-    .groups = "drop"
-  ) %>%
-  arrange(model_f, desc(engagement_rate))
-
-cat("\nDomestic government by model and language:\n")
-print(domestic_by_model_lang)
-
-# Save summaries
-write_csv(domestic_by_model, "pipeline/tables/09_domestic_by_model.csv")
-write_csv(domestic_by_model_lang, "pipeline/tables/10_domestic_by_model_language.csv")
-
-# =============================================================================
 # Cross-Language Consistency
 # =============================================================================
 
@@ -419,4 +354,4 @@ cat("\n")
 cat(rep("=", 80), "\n", sep = "")
 cat("ENGAGEMENT ANALYSIS COMPLETE\n")
 cat(rep("=", 80), "\n", sep = "")
-cat("\nNext: Run 03_ideology_analysis.R\n\n")
+cat("\nNext: Run 06_refusal_justifications.R\n\n")

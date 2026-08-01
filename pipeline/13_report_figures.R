@@ -1,16 +1,21 @@
 # =============================================================================
 # Script 13: Report Figures
 # =============================================================================
-# Creates 5 purpose-built figures for KEY_FINDINGS.md
+# Purpose-built figures for KEY_FINDINGS.md
 # All figures: faceted dot plots with Wilson 95% CI error bars
-# Style: geom_point + geom_errorbar(orientation="y"), theme_bw, no gridlines
 #
 # Figures:
-#   R1: Doing vs Discussing (refusal by category, faceted by prompt type)
 #   R2: DeepSeek Language-Specific Compliance (EN vs ZH by category)
 #   R3: Safety Thresholds by Model (refusal by model, faceted by prompt type)
-#   R4: Ideology Shifts on Auth-Lib dimension (boundary - regular, by model)
+#   R4: Ideology Shifts on Auth-Lib dimension -- PASS 2 ONLY, guarded
 #   R5: Justification Patterns (Harm Avoidance vs Neutrality vs Other, by model)
+#
+# R1 ("Doing vs Discussing") was removed 2026-07-31. It split categories into
+# "instrumental" (strategic_advice, image_generation) vs "analytical" -- legacy
+# TASK-TYPE categories that v2 replaced with nine topic domains. Every v2 domain
+# is analytical, so the split was empty: the figure rendered one flat grey series
+# under a subtitle promising a red highlight. Refusal-by-domain is covered by
+# figure 4 in 11_visualizations.R.
 #
 # Requires: data_clean.RData from 01_data_loading.R
 
@@ -51,49 +56,6 @@ theme_report <- theme_refusal() +
   )
 
 # =============================================================================
-# Figure R1: Doing vs. Discussing Politics
-# Refusal rate by category, faceted by prompt type
-# =============================================================================
-
-cat("\nCreating Figure R1: Doing vs. Discussing Politics...\n")
-
-r1_data <- data_clean %>%
-  group_by(prompt_category, dataset_type_f) %>%
-  summarise(
-    n = n(),
-    k = sum(refused),
-    rate = k / n,
-    .groups = "drop"
-  ) %>%
-  bind_cols(wilson_ci(.$k, .$n)) %>%
-  mutate(
-    highlight = ifelse(prompt_category %in% c("strategic_advice", "image_generation"),
-                       "Instrumental", "Analytical"),
-    cat_label = str_replace_all(prompt_category, "_", " ") %>% str_to_title()
-  )
-
-fig_r1 <- ggplot(r1_data, aes(x = rate, y = reorder(cat_label, rate), color = highlight)) +
-  geom_errorbar(orientation = "y",aes(xmin = lower, xmax = upper), width = 0.25, linewidth = 0.5) +
-  geom_point(size = 2.5) +
-  facet_wrap(~dataset_type_f, ncol = 1, scales = "free_x") +
-  scale_x_continuous(labels = percent_format(accuracy = 1),
-                     expand = expansion(mult = c(0, 0.05))) +
-  scale_color_manual(values = c("Instrumental" = "#E41A1C", "Analytical" = "gray50"),
-                     name = NULL) +
-  labs(
-    title = "Refusal Rates by Prompt Category",
-    subtitle = "Strategic advice and image generation (red) involve producing political content,\nnot analyzing it. Wilson 95% CI.",
-    x = "Refusal Rate",
-    y = NULL
-  ) +
-  theme_report +
-  theme(legend.position = "top")
-
-ggsave("pipeline/plots/fig_r1_doing_vs_discussing.pdf", fig_r1, width = 8, height = 7)
-ggsave("pipeline/plots/fig_r1_doing_vs_discussing.png", fig_r1, width = 8, height = 7, dpi = 300)
-cat("Saved: fig_r1_doing_vs_discussing.pdf + .png\n")
-
-# =============================================================================
 # Figure R2: DeepSeek Language-Specific Compliance
 # DeepSeek refusal rates, EN vs ZH, by category, faceted by prompt type
 # =============================================================================
@@ -124,8 +86,7 @@ fig_r2 <- ggplot(r2_data, aes(x = rate, y = reorder(cat_label, rate),
   facet_wrap(~dataset_type_f, ncol = 1, scales = "free_x") +
   scale_x_continuous(labels = percent_format(accuracy = 1),
                      expand = expansion(mult = c(0, 0.05))) +
-  scale_color_manual(values = c("English" = "#4DAF4A", "Chinese" = "#E41A1C"),
-                     name = "Response Language") +
+  scale_colour_language(name = "Response Language") +
   labs(
     title = "DeepSeek Refusal: English vs. Chinese",
     subtitle = "Chinese prompts refused at higher rates across categories.\nWilson 95% CI.",
@@ -177,6 +138,12 @@ ggsave("pipeline/plots/fig_r3_safety_thresholds.pdf", fig_r3, width = 8, height 
 ggsave("pipeline/plots/fig_r3_safety_thresholds.png", fig_r3, width = 8, height = 6, dpi = 300)
 cat("Saved: fig_r3_safety_thresholds.pdf + .png\n")
 
+# Figure R4 (ideology shifts) depends on annotation Pass 2 (ideology/moral foundations), which the
+# canonical Pass-1-only run does not produce (docs/ANNOTATION_TRIM_FULL_RUN.md).
+# The table below is written by a script now in archive/pipeline_slant/, so an
+# unguarded read_csv() aborted this script and every figure after it. Runs
+# normally against a run annotated with --all-passes.
+if (file.exists("pipeline/tables/26_ideology_by_dataset_type.csv")) {
 # =============================================================================
 # Figure R4: Ideology Shifts on Authoritarian-Libertarian Dimension
 # Shift (boundary mean - regular mean) by model, with pooled SE CI
@@ -224,6 +191,9 @@ ggsave("pipeline/plots/fig_r4_ideology_shifts.pdf", fig_r4, width = 8, height = 
 ggsave("pipeline/plots/fig_r4_ideology_shifts.png", fig_r4, width = 8, height = 5, dpi = 300)
 cat("Saved: fig_r4_ideology_shifts.pdf + .png\n")
 
+} else {
+  cat("\nSKIP Figure R4 (ideology shifts): pipeline/tables/26_ideology_by_dataset_type.csv absent (Pass-1-only run).\n")
+}
 # =============================================================================
 # Figure R5: Neutrality vs. Harm Avoidance Justification Patterns
 # Proportion of refusals citing each justification group, by model
@@ -278,9 +248,8 @@ cat("\n")
 cat(rep("=", 80), "\n", sep = "")
 cat("REPORT FIGURES COMPLETE\n")
 cat(rep("=", 80), "\n", sep = "")
-cat("\n5 figures saved to pipeline/plots/ (PDF + PNG):\n")
-cat("  fig_r1_doing_vs_discussing\n")
+cat("\nFigures saved to pipeline/plots/ (PDF + PNG):\n")
 cat("  fig_r2_deepseek_language\n")
 cat("  fig_r3_safety_thresholds\n")
-cat("  fig_r4_ideology_shifts\n")
+cat("  fig_r4_ideology_shifts   (only when Pass 2 was annotated)\n")
 cat("  fig_r5_justification_patterns\n\n")

@@ -210,6 +210,8 @@ def generate_all_responses(
     limit: Optional[int] = None,
     verbose: bool = True,
     max_workers: int = 8,
+    only_models: Optional[List[str]] = None,
+    exclude_models: Optional[List[str]] = None,
     max_tokens: int = 5000,
 ):
     """
@@ -290,6 +292,23 @@ def generate_all_responses(
             "Missing credentials for the model roster: " + ", ".join(missing)
         )
 
+    # Roster filter. Throughput across a shared worker pool is set by the
+    # SLOWEST model, not the average: workers pile up on it and the whole roster
+    # degrades to its service rate. sarvam-30b (30B Q4 on one endpoint, an 8000
+    # token budget for its <think> block) ran ~25x slower than the others and
+    # pinned the full-run rate to its own. Splitting it into a separate process
+    # lets the fast models run at their own pace.
+    roster = list(TEST_MODELS)
+    if only_models:
+        roster = [m for m in roster if m[0] in set(only_models)]
+    if exclude_models:
+        roster = [m for m in roster if m[0] not in set(exclude_models)]
+    if not roster:
+        raise SystemExit("No models left after --models/--exclude-models filter.")
+    if only_models or exclude_models:
+        print(f"Roster filtered to {len(roster)} model(s): "
+              f"{', '.join(m[0] for m in roster)}")
+
     # Load prompts
     prompts, language = load_prompts(prompts_file)
     if limit:
@@ -297,8 +316,8 @@ def generate_all_responses(
 
     if verbose:
         print(f"Loaded {len(prompts)} prompts (language: {language})")
-        print(f"Testing {len(TEST_MODELS)} models")
-        print(f"Total responses to generate: {len(prompts) * len(TEST_MODELS)}")
+        print(f"Testing {len(roster)} models")
+        print(f"Total responses to generate: {len(prompts) * len(roster)}")
         print(f"Output: {output_file}")
         print()
 
@@ -357,7 +376,7 @@ def generate_all_responses(
             # perennial-vs-contested-right-now contrast runnable from one arm.
             "route": prompt.get('route'),
         }
-        for model_name, model_id, _jurisdiction, provider in TEST_MODELS:
+        for model_name, model_id, _jurisdiction, provider in roster:
             if (prompt_id, language, model_name) in clean_keys:
                 skipped += 1
                 continue
@@ -508,6 +527,18 @@ if __name__ == "__main__":
         help="Number of concurrent API workers (default: 8)"
     )
     parser.add_argument(
+        "--models",
+        default=None,
+        help="Comma-separated model names to generate for (default: the full "
+             "roster). Use to give a slow model its own process so it does not "
+             "gate the others, e.g. --models sarvam-30b."
+    )
+    parser.add_argument(
+        "--exclude-models",
+        default=None,
+        help="Comma-separated model names to skip, e.g. --exclude-models sarvam-30b."
+    )
+    parser.add_argument(
         "--max-tokens",
         type=int,
         default=5000,
@@ -524,4 +555,7 @@ if __name__ == "__main__":
         verbose=not args.quiet,
         max_workers=args.workers,
         max_tokens=args.max_tokens,
+        only_models=[m.strip() for m in args.models.split(",")] if args.models else None,
+        exclude_models=([m.strip() for m in args.exclude_models.split(",")]
+                        if args.exclude_models else None),
     )

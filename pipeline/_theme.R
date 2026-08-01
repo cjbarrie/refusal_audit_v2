@@ -62,6 +62,13 @@ PAL_LANGUAGE <- c(
 )
 PAL_LANGUAGE_CODE <- setNames(unname(PAL_LANGUAGE), c("en", "zh", "ar", "ru", "hi"))
 
+# --- categorical: prompt tier (regular vs boundary) ------------------------
+# Two levels only, and the contrast is "baseline vs the probe" -- so the
+# baseline recedes to muted ink and only the boundary tier takes a hue. The
+# lightness gap (L* 57 vs 43) carries the distinction independently of hue,
+# which is what keeps it readable under deutan/protan.
+PAL_TIER <- c("Regular Prompts" = INK_MUTED, "Boundary Prompts" = "#c0392b")
+
 # --- sequential: engagement 1-5 is ORDERED, so one hue, light -> dark ------
 # Not a categorical palette: 1 (full engagement) .. 5 (hard refusal) is a scale,
 # and giving it five unrelated hues would encode order as identity.
@@ -162,6 +169,12 @@ scale_color_language <- scale_colour_language
 
 scale_fill_engagement <- function(...)
   scale_fill_manual(values = PAL_ENGAGEMENT, na.value = INK_MUTED, ...)
+
+scale_fill_tier <- function(...)
+  scale_fill_manual(values = PAL_TIER, na.value = INK_MUTED, ...)
+scale_colour_tier <- function(...)
+  scale_colour_manual(values = PAL_TIER, na.value = INK_MUTED, ...)
+scale_color_tier <- scale_colour_tier
 
 # Diverging scales take a midpoint of 0 by default (no lean).
 scale_fill_stance <- function(midpoint = 0, ...)

@@ -18,9 +18,22 @@ suppressPackageStartupMessages({
 })
 
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())  # portable root (was hardcoded)
-# --- STUDY-A/B INPUT GUARD (v2) ---------------------------------------
-if (!file.exists("annotations/annotations_second_judge.jsonl")) {
-  cat("SKIP 16_irr_analysis.R: required input (second-judge IRR annotations) not present in this run.\n")
+
+# Read from the SAME run directory 01_data_loading.R used. These paths were
+# hardcoded to annotations/ (the v1 layout, where annotation files sat at the
+# top level). In v2 every run lives in annotations/<run_id>/, so the hardcoded
+# form pointed at files that do not exist -- and the skip guard below fired
+# first, which is why it never surfaced as an error. Once a second-judge pass
+# exists, the old paths would have loaded the WRONG primary labels or none.
+run_dir <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/pilot_v1")
+cat(sprintf("IRR run dir: %s\n", run_dir))
+
+# --- INPUT GUARD ------------------------------------------------------
+second_judge_file <- file.path(run_dir, "annotations_second_judge.jsonl")
+if (!file.exists(second_judge_file)) {
+  cat(sprintf("SKIP 16_irr_analysis.R: %s not present in this run.\n", second_judge_file))
+  cat("  Produce it with scripts/sample_for_second_judge.py, then re-run the\n")
+  cat("  annotate stage against that sample with a different --judge-model.\n")
   quit(save = "no", status = 0)
 }
 # ---------------------------------------------------------------------
@@ -35,16 +48,18 @@ read_jsonl <- function(path) {
 # -----------------------------------------------------------------------------
 # Load primary + second-judge annotations for the IRR sample
 # -----------------------------------------------------------------------------
-second <- read_jsonl("annotations/annotations_second_judge.jsonl") %>%
+second <- read_jsonl(second_judge_file) %>%
   filter(!is.na(engagement_code))
 
 # Primary labels come from the main annotation files; we load them and
 # restrict to records present in the second-judge output (IRR sample).
-primary_regular <- read_jsonl("annotations/annotations_all.jsonl")
+primary_regular <- read_jsonl(file.path(run_dir, "annotations_all.jsonl"))
 # Study languages (config.SUPPORTED_LANGUAGES); only read boundary files that
-# exist, since a run may cover a subset of languages.
-irr_boundary_files <- sprintf("annotations/annotations_%s_boundary.jsonl",
-                              c("en", "zh", "ja", "id", "ar", "ru"))
+# exist, since a run may cover a subset of languages. ja/id were dropped as
+# study languages in 2026-07 and are no longer produced.
+irr_boundary_files <- file.path(run_dir,
+                                sprintf("annotations_%s_boundary.jsonl",
+                                        c("en", "zh", "ar", "ru", "hi")))
 irr_boundary_files <- irr_boundary_files[file.exists(irr_boundary_files)]
 primary_boundary <- map_dfr(irr_boundary_files, read_jsonl)
 primary <- bind_rows(primary_regular, primary_boundary) %>%
@@ -137,7 +152,14 @@ irr_summary <- bind_rows(
     n = kappa_binary$subjects,
     p_value = kappa_binary$p.value
   ),
+  # Pass 2 rows only when the run actually carries ideology codes. The main run
+  # is Pass-1-only (docs/ANNOTATION_TRIM_FULL_RUN.md), which leaves the four
+  # ideology columns all-NA; kripp_dim() then returns alpha = NA, n = 0, and
+  # emitting those rows would put four meaningless NA lines in the reported IRR
+  # table next to the two real kappas. Dropping them keeps the table honest
+  # while a pilot-style run annotated with every pass still reports all six.
   dims %>%
+    filter(n > 0) %>%
     transmute(
       pass = paste0("Pass 2 (", dimension, ", -2..+2)"),
       statistic = "Krippendorff's alpha (ordinal)",

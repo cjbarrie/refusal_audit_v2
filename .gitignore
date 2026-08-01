@@ -32,3 +32,8 @@ writeup/p[0-9].log
 
 # Resumable API-lookup cache (regenerable, read-only Wikipedia)
 data/_provenance_cache.json
+
+# Live run outputs and logs (regenerable; annotations/<run_id>/ is run state)
+annotations/full_v1/
+logs_*.txt
+pipeline/data_clean.RData

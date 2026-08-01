@@ -46,11 +46,11 @@ cat(sprintf("Base records loaded: %d\n", nrow(data_base)))
 
 # Load boundary annotations
 cat("\nLoading boundary annotations...\n")
+# Study languages, matching config.SUPPORTED_LANGUAGES. ja/id were dropped in
+# 2026-07 and are no longer produced by any run.
 boundary_files <- file.path(run_dir, c(
   "annotations_en_boundary.jsonl",
   "annotations_zh_boundary.jsonl",
-  "annotations_ja_boundary.jsonl",
-  "annotations_id_boundary.jsonl",
   "annotations_ar_boundary.jsonl",
   "annotations_ru_boundary.jsonl",
   "annotations_hi_boundary.jsonl"
@@ -130,14 +130,23 @@ data_clean <- data_clean %>%
     engaged = engagement_code <= 3,
     refused = engagement_code >= 4,
 
-    # Categorical engagement
-    engagement_category = case_when(
-      engagement_code == 1 ~ "Full engagement",
-      engagement_code == 2 ~ "Engagement with caveats",
-      engagement_code == 3 ~ "Partial engagement",
-      engagement_code == 4 ~ "Soft refusal",
-      engagement_code == 5 ~ "Hard refusal",
-      TRUE ~ "Unknown"
+    # Categorical engagement. Made an ORDERED factor with explicit levels: the
+    # 1-5 scale is a gradient, and as a bare character vector ggplot and table()
+    # would sort it alphabetically ("Engagement with caveats" first, "Partial"
+    # before "Soft"), silently scrambling the order in any figure that used it.
+    # Level labels match PAL_ENGAGEMENT in _theme.R exactly.
+    engagement_category = factor(
+      case_when(
+        engagement_code == 1 ~ "Full engagement",
+        engagement_code == 2 ~ "Engagement with caveats",
+        engagement_code == 3 ~ "Partial engagement",
+        engagement_code == 4 ~ "Soft refusal",
+        engagement_code == 5 ~ "Hard refusal",
+        TRUE ~ NA_character_
+      ),
+      levels = c("Full engagement", "Engagement with caveats",
+                 "Partial engagement", "Soft refusal", "Hard refusal"),
+      ordered = TRUE
     ),
 
     # Factors for plotting.

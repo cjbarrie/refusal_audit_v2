@@ -24,8 +24,28 @@ Usage:
     python preflight_providers.py --hf-only  # only the MENA endpoints
 """
 import argparse
+import hashlib
 import os
 import sys
+
+# Credentials whose provenance is worth reporting. Values are NEVER printed --
+# only a short SHA-256 fingerprint, which is enough to tell two keys apart and
+# to match a key against the one your provider dashboard shows.
+_CRED_VARS = (
+    "OPENROUTER_API_KEY",
+    "HF_TOKEN",
+    "ALLAM_ENDPOINT_URL",
+    "FALCON3_ENDPOINT_URL",
+    "JAIS_ENDPOINT_URL",
+    "SARVAM_ENDPOINT_URL",
+)
+
+# Snapshot the inherited (shell) credentials HERE, at the top of the module and
+# before any import that might load `.env`. `config` is imported a few lines
+# down and calls load_env_from_file() at import time, which now overrides
+# os.environ -- so a snapshot taken inside main() would already be the .env
+# values and could never detect shadowing. This must stay above that import.
+_SHELL_CREDS = {k: os.environ.get(k) for k in _CRED_VARS}
 
 # Provider endpoints
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
@@ -139,6 +159,47 @@ def check_hf_endpoints():
     return all_ok
 
 
+def _fingerprint(value):
+    if not value:
+        return "-"
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
+
+
+def report_credential_sources(shell_creds):
+    """
+    Print where each credential came from, and flag any that a shell export was
+    shadowing before `.env` took precedence.
+
+    This exists because a stale `export OPENROUTER_API_KEY=...` in a shell rc
+    file once shadowed the real key in `.env`. Both were well-formed and the
+    same length, so the only visible symptom was a 401 that looked like a
+    revoked key. A fingerprint makes the substitution obvious at a glance.
+    """
+    print("-" * 68)
+    print("CREDENTIALS  (fingerprints only -- no secret is printed or written)")
+    shadowed = []
+    for var in _CRED_VARS:
+        now = os.environ.get(var)
+        was = shell_creds.get(var)
+        if not now:
+            print(f"  {var:22s} : absent")
+            continue
+        if was and was != now:
+            print(f"  {var:22s} : {_fingerprint(now)}  <- .env  "
+                  f"(OVERRODE shell export {_fingerprint(was)})")
+            shadowed.append(var)
+        elif was:
+            print(f"  {var:22s} : {_fingerprint(now)}  (shell and .env agree, or shell only)")
+        else:
+            print(f"  {var:22s} : {_fingerprint(now)}  <- .env")
+    if shadowed:
+        print()
+        print("  NOTE: a shell export was overridden for: " + ", ".join(shadowed))
+        print("        `.env` is authoritative, so the run below uses the .env value.")
+        print("        Remove the stale export from your shell rc to avoid confusion")
+        print("        in tools that do not use this loader.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--openrouter-only", action="store_true")
@@ -146,6 +207,8 @@ def main():
     args = ap.parse_args()
 
     # Try to load a .env if the project loader is available (never writes anything).
+    # The pre-load snapshot is _SHELL_CREDS, taken at module import time -- see
+    # the note there for why it cannot be taken here.
     try:
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
         from env_utils import load_env_from_file  # type: ignore
@@ -156,6 +219,7 @@ def main():
     print("=" * 68)
     print("PROVIDER PREFLIGHT")
     print("=" * 68)
+    report_credential_sources(_SHELL_CREDS)
 
     results = {}
     if not args.hf_only:

@@ -566,6 +566,19 @@ class LLMClient:
 # ANNOTATION PIPELINE
 # =============================================================================
 
+def _judge_parse_error(exc, raw, keep=500):
+    """Build a parse-error message that carries the judge's raw output.
+
+    A bare JSONDecodeError ("Expecting value: line 2 column 21") cannot be acted
+    on after the fact: the raw verdict is gone, and the judge is deterministic at
+    temperature 0, so a rerun reproduces the same failure. Embedding a truncated
+    copy makes the failure mode diagnosable from the annotations file alone.
+    """
+    raw = "" if raw is None else str(raw)
+    snippet = raw[:keep] + ("..." if len(raw) > keep else "")
+    return "%s | judge_raw=%r" % (exc, snippet)
+
+
 class AnnotationPipeline:
     """Multi-pass annotation pipeline."""
     
@@ -573,7 +586,15 @@ class AnnotationPipeline:
         self.llm = llm_client
     
     def _parse_json(self, response: str) -> dict:
-        """Parse JSON from LLM response, handling potential formatting issues."""
+        """Parse JSON from LLM response, handling potential formatting issues.
+
+        On failure the raised message embeds a truncated copy of what the judge
+        actually emitted. Without it a parse error records only
+        "Expecting value: line 2 column 21", which is not enough to tell a
+        malformed verdict from a refusal-to-answer or a truncated reply -- and
+        because the judge runs at temperature 0, re-running reproduces the same
+        output rather than repairing it.
+        """
         # Strip any markdown code blocks
         response = response.strip()
         if response.startswith("```json"):
@@ -593,7 +614,10 @@ class AnnotationPipeline:
             # already does.
             a, b = response.find("{"), response.rfind("}")
             if a >= 0 and b > a:
-                return json.loads(response[a:b + 1])
+                try:
+                    return json.loads(response[a:b + 1])
+                except json.JSONDecodeError as e2:
+                    raise ValueError(_judge_parse_error(e2, response)) from e2
             raise
     
     def run_pass_1(self, input_data: AnnotationInput) -> Pass1Output:
@@ -864,6 +888,17 @@ def annotate_responses_file(
     client = LLMClient(model=judge_model, max_tokens=max_tokens)
     pipeline = AnnotationPipeline(client)
 
+    # Ensure the output directory exists. Annotations are appended with
+    # open(..., 'a'), which does NOT create parent directories, so invoking this
+    # script directly against a fresh run dir raised FileNotFoundError.
+    # run_pilot.py mkdirs the run layout itself, so this only ever bit direct
+    # invocation. The open() precedes the thread pool, so the failure cost
+    # nothing -- but it aborted after the resume scan, which is the point at
+    # which a long run looks like it is about to start.
+    out_dir = os.path.dirname(os.path.abspath(output_file))
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
     # Load responses
     responses = []
     with open(responses_file, 'r') as f:
@@ -1007,7 +1042,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--judge-model",
         default="google/gemini-2.5-flash-lite",
-        help="Model to use as judge (default: Gemini Flash 1.5 8B)"
+        help="Model to use as judge (default: google/gemini-2.5-flash-lite)"
     )
     parser.add_argument(
         "--limit",
@@ -1033,14 +1068,28 @@ if __name__ == "__main__":
         help="Max tokens per judge verdict (default: 1000). OpenRouter reserves "
              "credits against this ceiling; the judge emits short JSON."
     )
+    # Pass 1 alone is the canonical annotation (docs/ANNOTATION_TRIM_FULL_RUN.md):
+    # the study measures refusal and the nature of refusal, both of which come
+    # from Pass 1. Passes 2-3 measure the slant of answers that were given, a
+    # different question. Defaulting to Pass 1 means the documented design is
+    # what runs when no flag is passed.
+    parser.add_argument(
+        "--all-passes",
+        dest="pass1_only",
+        action="store_false",
+        default=True,
+        help="Also run Pass 2 (ideology) and Pass 3 (moral foundations) on "
+             "engaged responses. Off by default: the study's target is refusal "
+             "+ nature of refusal, which is Pass 1 alone. Slant columns are "
+             "always emitted (null when the passes are skipped), so the record "
+             "schema is identical either way."
+    )
     parser.add_argument(
         "--pass1-only",
+        dest="pass1_only",
         action="store_true",
-        help="Full-run mode: run only Pass 1 (engagement 1-5 + refusal "
-             "justification A-G). Skip Pass 2 (ideology) and Pass 3 (moral "
-             "foundations) on every response. Slant columns are still emitted "
-             "but null, so the record schema is unchanged. Default off (the "
-             "pilot keeps all passes)."
+        help="Deprecated no-op: Pass-1-only is now the default. Accepted so "
+             "existing commands and docs keep working."
     )
 
     args = parser.parse_args()

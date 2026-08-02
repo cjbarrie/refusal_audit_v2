@@ -127,12 +127,37 @@ cat(sprintf("\nDeepSeek EN+ZH observations: %d\n", nrow(deepseek_en_zh)))
 
 # Mixed-effects logistic regression with prompt_id random intercept
 cat("\nFitting mixed-effects model: refused ~ lang_zh * category_f + (1|prompt_id)\n")
-model_mixed <- glmer(
-  refused_num ~ lang_zh * category_f + (1 | prompt_id),
-  data = deepseek_en_zh,
-  family = binomial(link = "logit"),
-  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000))
+# The prompt_id random intercept is near-degenerate here: each prompt_id has at
+# most two observations (EN and ZH), and within several topic domains DeepSeek
+# refuses almost never, so the interaction cells approach separation. lme4 then
+# fails in PIRLS with "Downdated VtV is not positive definite" -- an
+# UNRECOVERABLE error, not a warning, which took the whole script down and every
+# table and figure after it. Fall back to a fixed-effects logit with
+# cluster-free SEs and say so, rather than losing the rest of the analysis.
+model_mixed <- tryCatch(
+  glmer(
+    refused_num ~ lang_zh * category_f + (1 | prompt_id),
+    data = deepseek_en_zh,
+    family = binomial(link = "logit"),
+    control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000))
+  ),
+  error = function(e) {
+    cat(sprintf("\n  NOTE: mixed model did not converge (%s).\n",
+                sub("\n.*", "", conditionMessage(e))))
+    cat("  Falling back to fixed-effects logit without the prompt random intercept.\n")
+    cat("  Standard errors below do NOT account for the EN/ZH pairing, so they\n")
+    cat("  are anti-conservative; treat the ORs as descriptive.\n")
+    NULL
+  }
 )
+
+if (is.null(model_mixed)) {
+  model_mixed <- glm(refused_num ~ lang_zh * category_f,
+                     data = deepseek_en_zh, family = binomial(link = "logit"))
+  mixed_converged <- FALSE
+} else {
+  mixed_converged <- TRUE
+}
 
 cat("\nModel summary:\n")
 print(summary(model_mixed))
@@ -280,94 +305,108 @@ viz_data <- deepseek_all_lang %>%
     .groups = "drop"
   )
 
-fig22 <- ggplot(viz_data, aes(x = reorder(prompt_category, refusal_rate),
-                              y = refusal_rate, fill = language_label)) +
-  geom_col(position = position_dodge(width = 0.7), width = 0.65) +
-  geom_errorbar(aes(ymin = pmax(refusal_rate - 1.96 * se, 0),
-                    ymax = pmin(refusal_rate + 1.96 * se, 1)),
-                position = position_dodge(width = 0.7), width = 0.2) +
-  geom_text(aes(label = sprintf("%.0f%%", refusal_rate * 100)),
-            position = position_dodge(width = 0.7),
-            vjust = -0.8, size = 2.3) +
-  facet_wrap(~tier_label, ncol = 1, scales = "free_y") +
-  scale_fill_language() +
-  scale_y_continuous(labels = percent, limits = c(0, 1.1)) +
+# -----------------------------------------------------------------------------
+# Figure 22. DeepSeek's language gap, by topic domain
+# -----------------------------------------------------------------------------
+# MESSAGE: the Chinese-English gap is not uniform -- it is concentrated in
+# sovereignty, security and governance. Rewritten 2026-08-02: the bar version
+# ran its y-axis to 90% for a 43% maximum (half the panel empty), collided its
+# value labels with the error bars, and ordered the tiers Boundary-above-Regular.
+# Dot + interval instead of bars: the quantity is a point estimate with
+# uncertainty, not a magnitude to be filled in with ink.
+viz_data <- viz_data %>%
+  mutate(domain = pretty_domain(prompt_category)) %>%
+  bind_cols(wilson_ci(round(.$refusal_rate * .$n), .$n)) %>%
+  mutate(tier_label = factor(tier_label, levels = c("Regular", "Boundary")))
+
+# Order domains by the size of the Chinese-English gap in the regular tier:
+# the figure is about where the gap opens, so that is the vertical ordering.
+gap_ord <- viz_data %>%
+  filter(tier_label == "Regular") %>%
+  select(domain, language_label, refusal_rate) %>%
+  tidyr::pivot_wider(names_from = language_label, values_from = refusal_rate) %>%
+  mutate(gap = Chinese - English) %>% arrange(gap) %>% pull(domain)
+viz_data$domain <- factor(viz_data$domain, levels = gap_ord)
+
+fig22 <- ggplot(viz_data, aes(x = refusal_rate, y = domain,
+                              colour = language_label)) +
+  geom_line(aes(group = domain), colour = RULE, linewidth = 0.8,
+            lineend = "round") +
+  geom_errorbar(aes(xmin = lo, xmax = hi), orientation = "y",
+                width = 0, linewidth = 0.4) +
+  geom_point(size = 1.9) +
+  facet_wrap(~ tier_label) +
+  scale_colour_manual(values = c(Chinese = ACCENT, English = INK_FAINT)) +
+  scale_x_rate(limit = 0.50, breaks = seq(0, 0.5, 0.1)) +
   labs(
-    title = "DeepSeek Refusal Rates by Category: Chinese vs English",
-    subtitle = "With 95% confidence intervals.",
-    x = "Prompt Category",
-    y = "Refusal Rate",
-    fill = "Prompt Language"
+    title = "DeepSeek's Chinese-English gap is concentrated in sovereignty and security topics",
+    subtitle = key_sentence(
+      "Refusal rate by topic domain, DeepSeek V3.1, with 95% Wilson intervals. Segment joins",
+      c(English = INK_FAINT, Chinese = ACCENT), "within a domain."),
+    x = "Refusal rate", y = NULL
   ) +
-  theme_nature() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
-    legend.position = "top",
-    panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 13),
-    plot.subtitle = element_text(size = 10, color = "grey40")
-  )
+  theme_nature(grid = "x", md_subtitle = TRUE)
 
-save_fig(fig22, "pipeline/figures/fig22_deepseek_language_gap_by_category.png", width = 7.20, height = 5.24)
-cat("Saved: pipeline/figures/fig22_deepseek_language_gap_by_category.png\n")
+save_fig(fig22, "pipeline/figures/fig22_deepseek_language_gap_by_category.png",
+         width = W2, height = h_rows(9, per = 0.17, chrome = 1.2))
 
-# =============================================================================
-# 6. Figure 23: Heat Map (Category × Language × Tier)
-# =============================================================================
+# -----------------------------------------------------------------------------
+# Figure 23. The same gap, every model
+# -----------------------------------------------------------------------------
+# MESSAGE: only DeepSeek and Qwen show a systematic Chinese penalty; for the
+# rest the gap sits on zero. Replaces a category x language x tier x model
+# heatmap that was unreadable -- four crossed factors in one panel produced
+# smeared axis labels, overlapping cell values, and a 0-100% diverging scale on
+# data that never exceeded 50%, so every cell rendered the same blue.
+#
+# Plotting the GAP (zh - en) rather than two rates halves the marks and puts the
+# comparison on a common zero, where "no language effect" is a single readable
+# reference line rather than a judgement about two bar heights.
+# Restrict to models with COMPLETE Chinese coverage. The MENA endpoint models
+# have ~470 Chinese responses so far against 2,496 English; their gaps are drawn
+# from three domains and swing 20 points on tens of observations. Including them
+# put ALLaM further right than DeepSeek and would have supported the opposite
+# conclusion from a coverage artefact.
+ZH_COMPLETE <- data_clean %>%
+  filter(prompt_language == "zh") %>% count(model) %>%
+  filter(n >= 2000) %>% pull(model)
 
-cat("\n")
-cat(rep("-", 80), "\n", sep = "")
-cat("GENERATING FIGURE 23: REFUSAL HEAT MAP\n")
-cat(rep("-", 80), "\n", sep = "")
+gap_by_model <- data_clean %>%
+  filter(prompt_language %in% c("en", "zh"), model %in% ZH_COMPLETE) %>%
+  group_by(model, prompt_category, prompt_language) %>%
+  summarise(n = n(), rate = mean(refused), .groups = "drop") %>%
+  filter(n >= 50) %>%
+  tidyr::pivot_wider(names_from = prompt_language,
+                     values_from = c(rate, n)) %>%
+  filter(!is.na(rate_en), !is.na(rate_zh)) %>%
+  mutate(gap = rate_zh - rate_en, domain = pretty_domain(prompt_category))
 
-# Use all models for comparison
-heatmap_data <- data_clean %>%
-  filter(prompt_language %in% c("en", "zh")) %>%
-  mutate(
-    language_label = ifelse(prompt_language == "en", "English", "Chinese"),
-    model_short = case_when(
-      model == "deepseek-chat-v3.1" ~ "DeepSeek",
-      model == "gpt-5.1" ~ "GPT-5.1",
-      model == "claude-opus-4.5" ~ "Claude",
-      model == "gpt-4o" ~ "GPT-4o",
-      model == "grok-4.3" ~ "Grok",
-      TRUE ~ model
-    )
-  ) %>%
-  group_by(model_short, prompt_category, language_label, controversy_tier) %>%
-  summarise(
-    refusal_rate = mean(refused),
-    n = n(),
-    .groups = "drop"
-  )
+if (nrow(gap_by_model) > 0) {
+  model_ord <- gap_by_model %>% group_by(model) %>%
+    summarise(m = median(gap)) %>% arrange(desc(m)) %>% pull(model)
+  gap_by_model <- gap_by_model %>%
+    mutate(model = factor(model, levels = rev(model_ord)),
+           mark  = model == "deepseek-chat-v3.1")
 
-fig23 <- ggplot(heatmap_data,
-                aes(x = prompt_category, y = interaction(language_label, controversy_tier),
-                    fill = refusal_rate)) +
-  geom_tile(color = "white", linewidth = 0.5) +
-  geom_text(aes(label = sprintf("%.0f%%", refusal_rate * 100)),
-            size = 2.2, color = ifelse(heatmap_data$refusal_rate > 0.5, "white", "black")) +
-  facet_wrap(~model_short, ncol = 2) +
-  scale_fill_gradient2(low = "#2166AC", mid = "#F7F7F7", high = "#B2182B",
-                       midpoint = 0.5, labels = percent, limits = c(0, 1)) +
-  labs(
-    title = "Refusal Rate Heat Map: Category × Language × Tier by Model",
-    subtitle = "DeepSeek shows distinct Chinese-specific refusal patterns vs other models",
-    x = "Category",
-    y = "Language × Tier",
-    fill = "Refusal\nRate"
-  ) +
-  theme_nature() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
-    axis.text.y = element_text(size = 7),
-    legend.position = "right",
-    panel.grid = element_blank(),
-    plot.title = element_text(face = "bold", size = 12),
-    strip.text = element_text(face = "bold")
-  )
+  fig23 <- ggplot(gap_by_model, aes(x = gap, y = model)) +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    geom_point(aes(colour = mark), size = 1.5, alpha = 0.75) +
+    scale_colour_manual(values = c(`TRUE` = ACCENT, `FALSE` = INK_FAINT)) +
+    scale_x_continuous(labels = scales::label_percent(accuracy = 1),
+                       breaks = seq(-0.2, 0.4, 0.1)) +
+    labs(
+      title = "DeepSeek is the only model that refuses more in Chinese in every topic domain",
+      subtitle = "One point per topic domain: refusal rate in Chinese minus English. Zero means no language effect.\nModels with incomplete Chinese coverage are omitted.",
+      x = "Chinese − English refusal rate (percentage points)", y = NULL
+    ) +
+    theme_nature(grid = "x", mono_y = TRUE)
 
-save_fig(fig23, "pipeline/figures/fig23_deepseek_refusal_heatmap.png", width = 7.20, height = 4.11)
+  save_fig(fig23, "pipeline/figures/fig23_language_gap_all_models.png",
+           width = W2, height = h_rows(nlevels(droplevels(gap_by_model$model)),
+                                       per = 0.17, chrome = 1.1))
+} else {
+  cat("  SKIP figure 23: no model has both en and zh coverage yet\n")
+}
 cat("Saved: pipeline/figures/fig23_deepseek_refusal_heatmap.png\n")
 
 # =============================================================================

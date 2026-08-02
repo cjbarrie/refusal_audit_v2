@@ -101,8 +101,8 @@ for f in pipeline/0[2-9]_*.R pipeline/1[0-6]_*.R; do Rscript "$f"; done
 * **Figure output is `pipeline/figures/` only.** `pipeline/plots/` was removed
   2026-08-02; it had held 13 of 14 figures while `figures/` held one, with no
   rule distinguishing them. `save_fig()` in `_theme.R` is the only writer.
-* **Four PNAS panels never produced.** `15_pnas_figures.R` guards
-  `fig_pnas_3/4/5/6` on tables written only by archived Study A/B scripts.
+* **Four finding panels never produced.** `15_finding_figures.R` guards
+  `fig_f3/f4/f5/f6` on tables written only by archived Study A/B scripts.
   Silent, because the guard is a plain `if`.
 * **`OR7` in `11_visualizations.R` is a literal.** Figure 3 hardcodes the seven
   OpenRouter models because they were the only ones with non-English coverage.

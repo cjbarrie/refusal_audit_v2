@@ -8,7 +8,7 @@
 #
 # Also re-runs the DeepSeek regular-prompt Chinese vs English chi-squared
 # test on the second-judge labels for the DeepSeek subset of the IRR sample
-# and emits it for side-by-side reporting in the PNAS paper.
+# and emits it for side-by-side reporting in the paper.
 # =============================================================================
 
 suppressPackageStartupMessages({
@@ -95,7 +95,7 @@ pass1_mat <- paired %>%
 
 kappa_pass1 <- irr::kappa2(pass1_mat, weight = "unweighted")
 
-# Also binary: refused (>=4) vs engaged (<4) — the main PNAS-paper outcome
+# Also binary: refused (>=4) vs engaged (<4) — the main reported outcome
 binary_mat <- paired %>%
   mutate(primary_refused = as.integer(engagement_primary >= 4),
          second_refused  = as.integer(engagement_second  >= 4)) %>%

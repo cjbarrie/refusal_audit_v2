@@ -109,47 +109,14 @@ write_csv(t38, "pipeline/tables/38_deepseek_justifications_by_language.csv")
 cat("Saved: pipeline/tables/38_deepseek_justifications_by_language.csv\n")
 
 # =============================================================================
-# Figure 19: DeepSeek Refusal Rates (Chinese vs English)
+# Figure 19 REMOVED 2026-08-02 -- superseded by figure 22
 # =============================================================================
-
-cat("\nGenerating Figure 19: DeepSeek Language Patterns...\n")
-
-# Prepare data for visualization
-viz_data <- deepseek %>%
-  filter(response_language %in% c("en", "zh")) %>%
-  mutate(language_label = ifelse(response_language == "en", "English", "Chinese")) %>%
-  group_by(language_label, category, dataset_type_f) %>%
-  summarise(
-    n = n(),
-    refusal_rate = mean(refused),
-    .groups = "drop"
-  )
-
-fig19 <- ggplot(viz_data, aes(x = category, y = refusal_rate, fill = language_label)) +
-  geom_col(position = "dodge", width = 0.7) +
-  geom_text(aes(label = percent(refusal_rate, accuracy = 1)),
-            position = position_dodge(width = 0.7),
-            vjust = -0.3, size = 2.5) +
-  facet_wrap(~dataset_type_f, ncol = 1) +
-  scale_fill_language() +
-  scale_y_continuous(labels = percent, limits = c(0, 1.05)) +
-  labs(
-    title = "DeepSeek Refusal Rates: Chinese vs English",
-    subtitle = "Higher refusal rates in Chinese suggest more extensive post-training",
-    x = "Category",
-    y = "Refusal Rate",
-    fill = "Language"
-  ) +
-  theme_nature() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
-    legend.position = "top",
-    panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 14)
-  )
-
-save_fig(fig19, "pipeline/figures/fig19_deepseek_language_patterns.png", width = 7.20, height = 3.60)
-cat("Saved: pipeline/figures/fig19_deepseek_language_patterns.pdf\n")
+# It plotted exactly the data in fig22 (DeepSeek, topic domain, zh vs en, split
+# by tier) but as bars on a 0-100% axis for a 43% maximum, categories in
+# alphabetical rather than substantive order, a detached legend, and no
+# uncertainty. fig22 in 08_deepseek_chinese_analysis.R shows the same comparison
+# as estimates with Wilson intervals, ordered by the size of the gap.
+# This script keeps tables 35, 36 and 38.
 
 # =============================================================================
 # Summary Statistics

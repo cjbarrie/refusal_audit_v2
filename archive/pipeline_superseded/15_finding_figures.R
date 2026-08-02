@@ -1,17 +1,17 @@
 # =============================================================================
-# Script 15: PNAS per-finding figures
+# Script 15: Per-finding figures
 # =============================================================================
-# One standalone horizontal dotplot per finding in pnas_paper.tex, title-free
+# One standalone horizontal dotplot per finding in the paper, title-free
 # (the LaTeX \caption carries the description). Replaces the old four-panel
-# composite fig_pnas_main.pdf.
+# composite fig_main_composite.pdf.
 #
 # Outputs (pipeline/figures/):
-#   fig_pnas_1_tasktype.pdf       F1  task-type refusal, Regular vs Boundary
-#   fig_pnas_2_deepseek_pilot.pdf F2  DeepSeek pilot EN vs ZH, 5 audit models
-#   fig_pnas_3_study_a.pdf        F3  Study A jurisdiction x language, 2 strata
-#   fig_pnas_4_entity_swap.pdf    F4  Study B-refined DeepSeek entity swap
-#   fig_pnas_5_native_mt.pdf      F5  Study B-orig refusal by prompt variant
-#   fig_pnas_6_stance.pdf         F6  engaged-only CCP state-alignment, 12 models
+#   fig_f1_tasktype.pdf       F1  task-type refusal, Regular vs Boundary
+#   fig_f2_deepseek_pilot.pdf F2  DeepSeek pilot EN vs ZH, 5 audit models
+#   fig_f3_study_a.pdf        F3  Study A jurisdiction x language, 2 strata
+#   fig_f4_entity_swap.pdf    F4  Study B-refined DeepSeek entity swap
+#   fig_f5_native_mt.pdf      F5  Study B-orig refusal by prompt variant
+#   fig_f6_stance.pdf         F6  engaged-only CCP state-alignment, 12 models
 #
 # Run AFTER archive/pipeline_study_ab/10_study_a_panel.R, archive/pipeline_study_ab/13_deepseek_dotplots.R,
 # 14_deepseek_brief_figures.R and archive/pipeline_study_ab/16_engaged_state_alignment.R, whose output
@@ -42,7 +42,7 @@ lang_fill  <- scale_fill_manual(values = c(English = "white",
 pct_x <- scale_x_continuous(labels = percent_format(accuracy = 1),
                             limits = c(0, NA),
                             expand = expansion(mult = c(0, 0.06)))
-pnas_theme <- theme_nature() +
+panel_theme <- theme_nature() +
   theme(panel.grid.major.y = element_blank(),
         legend.position = "top")
 
@@ -76,7 +76,7 @@ f1_dat <- data_clean %>%
     cat_label = factor(cat_pretty[as.character(prompt_category)],
                        levels = rev(unname(cat_pretty[cat_levels])))
   )
-write_csv(f1_dat, "pipeline/tables/45_pnas_tasktype.csv")
+write_csv(f1_dat, "pipeline/tables/45_tasktype.csv")
 
 p1 <- ggplot(f1_dat, aes(x = refusal_rate, y = cat_label, colour = instrumental)) +
   geom_segment(aes(x = 0, xend = refusal_rate, yend = cat_label),
@@ -87,9 +87,9 @@ p1 <- ggplot(f1_dat, aes(x = refusal_rate, y = cat_label, colour = instrumental)
                       guide = "none") +
   pct_x +
   labs(x = "Refusal rate", y = NULL) +
-  pnas_theme +
+  panel_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p1, "pipeline/figures/fig_pnas_1_tasktype.png", width = 6.50, height = 5.00)
+save_fig(p1, "pipeline/figures/fig_f1_tasktype.png", width = 6.50, height = 5.00)
 
 # =============================================================================
 # F2 - DeepSeek pilot EN vs ZH, five audit models (36_pilot_deepseek_fig1.csv)
@@ -120,8 +120,8 @@ p2 <- ggplot(f2_dat, aes(x = refusal_rate, y = model_label,
                       guide = "none") +
   lang_shape + lang_fill + pct_x +
   labs(x = "Refusal rate", y = NULL) +
-  pnas_theme
-save_fig(p2, "pipeline/figures/fig_pnas_2_deepseek_pilot.png", width = 6.50, height = 3.20)
+  panel_theme
+save_fig(p2, "pipeline/figures/fig_f2_deepseek_pilot.png", width = 6.50, height = 3.20)
 
 # =============================================================================
 # F3 - Study A jurisdiction x language, two content strata
@@ -152,9 +152,9 @@ p3 <- ggplot(f3_dat, aes(x = predicted_refused, y = jurisdiction,
                                  Arabic  = "#2980b9"), name = NULL) +
   scale_x_continuous(labels = percent_format(accuracy = 1), limits = c(0, NA)) +
   labs(x = "Model-estimated refusal probability (95% CI)", y = NULL) +
-  pnas_theme +
+  panel_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p3, "pipeline/figures/fig_pnas_3_study_a.png", width = 6.50, height = 4.00)
+save_fig(p3, "pipeline/figures/fig_f3_study_a.png", width = 6.50, height = 4.00)
 } else cat("F3 skipped: Study A table not present in this run.\n")
 
 # =============================================================================
@@ -184,8 +184,8 @@ p4 <- ggplot(f4_dat, aes(x = refusal_rate, y = entity_label,
   geom_point(size = 4, stroke = 0.7, colour = deepseek_color) +
   lang_shape + lang_fill + pct_x +
   labs(x = "Refusal rate", y = NULL) +
-  pnas_theme
-save_fig(p4, "pipeline/figures/fig_pnas_4_entity_swap.png", width = 6.50, height = 3.60)
+  panel_theme
+save_fig(p4, "pipeline/figures/fig_f4_entity_swap.png", width = 6.50, height = 3.60)
 } else cat("F4 skipped: Study B-refined table not present in this run.\n")
 
 # =============================================================================
@@ -213,9 +213,9 @@ p5 <- ggplot(f5_dat, aes(x = refusal_rate, y = variant,
                       guide = "none") +
   pct_x +
   labs(x = "Refusal rate", y = NULL) +
-  pnas_theme +
+  panel_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p5, "pipeline/figures/fig_pnas_5_native_mt.png", width = 6.00, height = 5.50)
+save_fig(p5, "pipeline/figures/fig_f5_native_mt.png", width = 6.00, height = 5.50)
 } else cat("F5 skipped: native/MT table not present in this run.\n")
 
 # =============================================================================
@@ -253,11 +253,11 @@ p6 <- ggplot(f6_dat, aes(x = mean_state_aligned, y = model_label,
                      labels = c("−2\nanti-CCP", "−1", "0",
                                 "+1", "+2\npro-CCP")) +
   labs(x = NULL, y = NULL) +
-  pnas_theme
-save_fig(p6, "pipeline/figures/fig_pnas_6_stance.png", width = 6.50, height = 4.80)
+  panel_theme
+save_fig(p6, "pipeline/figures/fig_f6_stance.png", width = 6.50, height = 4.80)
 } else cat("F6 skipped: engaged state-alignment table not present in this run.\n")
 
-cat("Wrote PNAS figures to pipeline/figures/ (F1, F2 always; F3-F6 when Study A/B tables present):\n",
-    " fig_pnas_1_tasktype.pdf\n fig_pnas_2_deepseek_pilot.pdf\n",
-    "fig_pnas_3_study_a.pdf\n fig_pnas_4_entity_swap.pdf\n",
-    "fig_pnas_5_native_mt.pdf\n fig_pnas_6_stance.pdf\n", sep = "")
+cat("Wrote finding figures to pipeline/figures/ (F1, F2 always; F3-F6 when Study A/B tables present):\n",
+    " fig_f1_tasktype.pdf\n fig_f2_deepseek_pilot.pdf\n",
+    "fig_f3_study_a.pdf\n fig_f4_entity_swap.pdf\n",
+    "fig_f5_native_mt.pdf\n fig_f6_stance.pdf\n", sep = "")

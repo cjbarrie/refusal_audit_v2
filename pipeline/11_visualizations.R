@@ -103,10 +103,12 @@ p2 <- ggplot(f2, aes(x = rate, y = language_f)) +
   geom_errorbar(aes(xmin = lo, xmax = hi, colour = mark),
                 orientation = "y", width = 0, linewidth = 0.45) +
   geom_point(aes(colour = mark), size = 2.2) +
-  geom_text(aes(label = percent(rate, accuracy = 0.1), colour = mark),
-            hjust = -0.65, size = 2.3, family = FONT_SANS) +
+  # Anchor the label to the UPPER INTERVAL BOUND, not the point: hjust on the
+  # point put the text on top of its own error bar.
+  geom_text(aes(x = hi, label = percent(rate, accuracy = 0.1), colour = mark),
+            hjust = -0.25, size = 2.3, family = FONT_SANS) +
   scale_colour_manual(values = c(`TRUE` = ACCENT, `FALSE` = INK_FAINT)) +
-  scale_x_rate(limit = 0.20, breaks = seq(0, 0.20, 0.05)) +
+  scale_x_rate(limit = 0.215, breaks = seq(0, 0.20, 0.05)) +
   labs(
     title = "DeepSeek refuses three times as often in Chinese as in English",
     subtitle = "Refusal rate by prompt language, DeepSeek V3.1. Bars are 95% Wilson intervals.",

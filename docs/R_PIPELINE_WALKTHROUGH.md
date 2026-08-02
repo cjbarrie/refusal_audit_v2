@@ -23,7 +23,7 @@
 > | `04b_visualizations_extended.R` | `12_visualizations_extended.R` |
 > | `04c_report_figures.R` | `13_report_figures.R` |
 > | `15_pilot_deepseek_dotplots.R` | `14_deepseek_brief_figures.R` |
-> | `09_pnas_figures.R` | `15_pnas_figures.R` |
+> | `09_pnas_figures.R` | `15_finding_figures.R` |
 > | `08_irr_analysis.R` | `16_irr_analysis.R` |
 > | `08_study_a_prompt_variance.R` | archived |
 > | `10_study_a_panel.R` | archived |
@@ -121,7 +121,7 @@ the numbers match.
 |---|---|
 | **07_deepseek_language_analysis.R** | DeepSeek Chinese-vs-English refusal, tables 35–38 + 1 figure. |
 | **08_deepseek_chinese_analysis.R** | Formal tests (chi-square, Fisher, `glmer`, odds ratios) for the DeepSeek gap. |
-| **09_deepseek_stats.R** | Re-does those tests PNAS-grade: bootstrap OR CIs, Cramér's V, BH-corrected p-values. |
+| **09_deepseek_stats.R** | Re-does those tests publication-grade: bootstrap OR CIs, Cramér's V, BH-corrected p-values. |
 | **10_ideology_moral_patterns.R** | Ideology variance + moral co-occurrence beyond the libertarian shift. |
 
 These four all interrogate the **same** result (DeepSeek refuses more in
@@ -145,7 +145,7 @@ figures survive.
 |---|---|---|
 | **11_visualizations.R** (14 figs) | The main figure set — dotplots with Wilson CIs. | Re-implement in matplotlib **from the ported tables**, not 1:1. |
 | **04b / 04c** | Extended + KEY_FINDINGS report figures. | Drop unless those exact figures are needed. |
-| **15_pnas_figures.R**, **13**, **14**, **15**, **16** | Paper-specific standalone dotplots for `pnas_paper.tex` / `deepseek_brief.tex`. | **Drop.** These are figure-production for specific old manuscripts. Regenerate fresh figures for the new battery. |
+| **15_finding_figures.R**, **13**, **14**, **15**, **16** | Paper-specific standalone dotplots for the paper / `deepseek_brief.tex`. | **Drop.** These are figure-production for specific old manuscripts. Regenerate fresh figures for the new battery. |
 
 ---
 

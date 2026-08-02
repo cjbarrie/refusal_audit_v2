@@ -1,12 +1,12 @@
 # =============================================================================
-# Script 09: PNAS-grade stats augmentation for the DeepSeek finding
+# Script 09: Publication-grade stats augmentation for the DeepSeek finding
 # =============================================================================
 # Recomputes the headline DeepSeek Chinese-vs-English chi-squared tests with
 # bootstrap 95% odds-ratio CIs, Cramer's V effect sizes, and Benjamini-Hochberg-
 # corrected p-values across the per-model and per-category test families.
 #
 # Does NOT modify 08_deepseek_chinese_analysis.R or the tables it produces.
-# Emits new tables 43/44 that the PNAS paper pulls from directly.
+# Emits tables 43/44 that the paper pulls from directly.
 # =============================================================================
 
 suppressPackageStartupMessages({
@@ -90,7 +90,7 @@ cat("\n=== Per-model Chinese vs English refusal: bootstrap OR + BH-adjusted p ==
 print(results_per_model, n = Inf)
 
 dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
-write_csv(results_per_model, "pipeline/tables/43_per_model_lang_tests_pnas.csv")
+write_csv(results_per_model, "pipeline/tables/43_per_model_lang_tests.csv")
 
 # -----------------------------------------------------------------------------
 # DeepSeek per-category tests (regular prompts only, BH-corrected across categories)
@@ -145,6 +145,6 @@ results_per_cat <- results_per_cat %>%
 cat("\n=== DeepSeek per-category regular-prompt language tests (BH-adjusted) ===\n")
 print(results_per_cat, n = Inf)
 
-write_csv(results_per_cat, "pipeline/tables/44_deepseek_per_category_pnas.csv")
+write_csv(results_per_cat, "pipeline/tables/44_deepseek_per_category.csv")
 
-cat("\nWrote: tables/43_per_model_lang_tests_pnas.csv, tables/44_deepseek_per_category_pnas.csv\n")
+cat("\nWrote: tables/43_per_model_lang_tests.csv, tables/44_deepseek_per_category.csv\n")

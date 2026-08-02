@@ -87,7 +87,7 @@ it); it simply isn't invoked.
 `12_visualizations_extended.R`, `13_report_figures.R`,
 `06_refusal_justifications.R` (the A–G "nature of refusal" script),
 `08_deepseek_chinese_analysis.R`, `09_deepseek_stats.R`,
-`archive/pipeline_study_ab/08_study_a_prompt_variance.R`, `15_pnas_figures.R`,
+`archive/pipeline_study_ab/08_study_a_prompt_variance.R`, `15_finding_figures.R`,
 `14_deepseek_brief_figures.R`, plus study-arm scripts `archive/pipeline_study_ab/10_study_a_panel.R`
 and `archive/pipeline_study_ab/11_study_b_lang_mechanism.R` (separate arms — review when those arms run).
 

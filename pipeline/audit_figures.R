@@ -1,8 +1,9 @@
 source("pipeline/_theme.R")
 figs <- list.files("pipeline/figures", pattern = "[.]png$")
-svgs <- list.files("pipeline/figures", pattern = "[.]svg$")
-cat(sprintf("1. exports         : %d png, %d svg   %s\n", length(figs), length(svgs),
-    ifelse(length(figs) == length(svgs), "PAIRED", "*** MISMATCH ***")))
+other <- setdiff(list.files("pipeline/figures"), figs)
+cat(sprintf("1. exports         : %d png   %s\n", length(figs),
+    ifelse(length(other) == 0, "OK - png only",
+           paste("*** STRAY:", paste(other, collapse = ", "), "***"))))
 src <- readLines("pipeline/11_figures.R", warn = FALSE)
 hex <- grep("#[0-9A-Fa-f]{6}", src, value = TRUE)
 cat(sprintf("2. hardcoded hex   : %d  %s\n", length(hex),

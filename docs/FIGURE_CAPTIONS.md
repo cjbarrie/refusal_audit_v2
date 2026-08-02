@@ -2,7 +2,7 @@
 
 Publication-ready captions for `pipeline/figures/`. The figures deliberately
 carry no titles, subtitles or explanatory prose; everything needed to interpret
-them is here. Each figure is exported as PNG (600 dpi) and SVG (vector).
+them is here. Each figure is exported as PNG at 600 dpi.
 
 Unless stated otherwise: the unit of observation is one model response to one
 prompt; refusal is `engagement_code >= 4` on the judge's 1–5 engagement scale

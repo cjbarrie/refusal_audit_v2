@@ -27,8 +27,7 @@
 #
 # EXPORT
 #   PNG only, 600 dpi, via ragg (better hinting and metric-accurate text than
-#   grDevices). No PDF: the two formats drifted out of sync and doubled the
-#   directory. save_fig() is the ONLY sanctioned writer -- do not call ggsave()
+#   grDevices). save_fig() is the ONLY sanctioned writer -- do not call ggsave()
 #   directly, or figures will disagree about dpi and size.
 
 suppressPackageStartupMessages({
@@ -221,14 +220,11 @@ theme_set(theme_nature())
 # =============================================================================
 # PNG at 600 dpi through ragg. `height` is in inches; pick it from the number of
 # rows so row spacing stays constant across figures rather than stretching.
-save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
-                     vector = TRUE) {
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
   dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
   stem <- sub("\\.[a-z]+$", "", file)
-  # Raster at 600 dpi through ragg (better hinting and metric-accurate text than
-  # grDevices), plus a vector copy for typesetting. Both come from ONE plot
-  # object and one set of dimensions, so they cannot drift apart the way the
-  # previously hand-maintained PDF/PNG pairs did.
+  # PNG at 600 dpi through ragg -- better hinting and metric-accurate text than
+  # grDevices. One writer, one format: figures cannot disagree about dpi or size.
   dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
   if (is.null(dev)) {
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
@@ -237,21 +233,7 @@ save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
            units = "in", dpi = dpi, device = dev, bg = "white")
   }
-  if (vector) {
-    # Vector companion. NOTE: on macOS the base pdf() and cairo_pdf() devices
-    # both reject a system font family with "invalid font type", so a PDF here
-    # would either fail or silently substitute a different face and change every
-    # metric. svglite embeds the real font and produces true vector output.
-    # Convert to PDF/EPS at submission time if the journal requires it:
-    #   rsvg-convert -f pdf -o fig.pdf fig.svg     (or: inkscape, cairosvg)
-    if (requireNamespace("svglite", quietly = TRUE)) {
-      ggsave(paste0(stem, ".svg"), plot, width = width, height = height,
-             units = "in", device = svglite::svglite, bg = "white")
-    } else {
-      cat("    (no vector export: install svglite)\n")
-    }
-  }
-  cat(sprintf("  saved %-46s %.2f x %.2f in  png+svg @ %d dpi\n",
+  cat(sprintf("  saved %-46s %.2f x %.2f in @ %d dpi\n",
               basename(stem), width, height, dpi))
   invisible(stem)
 }

@@ -2,7 +2,7 @@
 # Script 11: The figure system
 # =============================================================================
 # Requires: pipeline/data_clean.RData (01_data_loading.R)
-# Writes:   pipeline/figures/*.png (600 dpi) + *.pdf (vector)
+# Writes:   pipeline/figures/*.png (600 dpi)
 #
 # NO TITLES, SUBTITLES OR PROSE INSIDE ANY PANEL. Every figure carries only what
 # is needed to read the values: axes, tick labels, direct series labels, panel

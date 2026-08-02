@@ -299,7 +299,7 @@ fig22 <- ggplot(viz_data, aes(x = reorder(prompt_category, refusal_rate),
     y = "Refusal Rate",
     fill = "Prompt Language"
   ) +
-  theme_refusal() +
+  theme_nature() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
     legend.position = "top",
@@ -308,8 +308,7 @@ fig22 <- ggplot(viz_data, aes(x = reorder(prompt_category, refusal_rate),
     plot.subtitle = element_text(size = 10, color = "grey40")
   )
 
-ggsave("pipeline/plots/fig22_deepseek_language_gap_by_category.png",
-       fig22, width = 11, height = 8, dpi = 300)
+save_fig(fig22, "pipeline/plots/fig22_deepseek_language_gap_by_category.png", width = 7.20, height = 5.24)
 cat("Saved: pipeline/plots/fig22_deepseek_language_gap_by_category.png\n")
 
 # =============================================================================
@@ -358,7 +357,7 @@ fig23 <- ggplot(heatmap_data,
     y = "Language × Tier",
     fill = "Refusal\nRate"
   ) +
-  theme_refusal() +
+  theme_nature() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
     axis.text.y = element_text(size = 7),
@@ -368,8 +367,7 @@ fig23 <- ggplot(heatmap_data,
     strip.text = element_text(face = "bold")
   )
 
-ggsave("pipeline/plots/fig23_deepseek_refusal_heatmap.png",
-       fig23, width = 14, height = 8, dpi = 300)
+save_fig(fig23, "pipeline/plots/fig23_deepseek_refusal_heatmap.png", width = 7.20, height = 4.11)
 cat("Saved: pipeline/plots/fig23_deepseek_refusal_heatmap.png\n")
 
 # =============================================================================

@@ -140,7 +140,7 @@ fig19 <- ggplot(viz_data, aes(x = category, y = refusal_rate, fill = language_la
     y = "Refusal Rate",
     fill = "Language"
   ) +
-  theme_refusal() +
+  theme_nature() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
     legend.position = "top",
@@ -148,7 +148,7 @@ fig19 <- ggplot(viz_data, aes(x = category, y = refusal_rate, fill = language_la
     plot.title = element_text(face = "bold", size = 14)
   )
 
-ggsave("pipeline/figures/fig19_deepseek_language_patterns.pdf", fig19, width = 12, height = 6)
+save_fig(fig19, "pipeline/figures/fig19_deepseek_language_patterns.png", width = 7.20, height = 3.60)
 cat("Saved: pipeline/figures/fig19_deepseek_language_patterns.pdf\n")
 
 # =============================================================================

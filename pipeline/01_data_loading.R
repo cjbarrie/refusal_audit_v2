@@ -134,7 +134,7 @@ data_clean <- data_clean %>%
     # 1-5 scale is a gradient, and as a bare character vector ggplot and table()
     # would sort it alphabetically ("Engagement with caveats" first, "Partial"
     # before "Soft"), silently scrambling the order in any figure that used it.
-    # Level labels match PAL_ENGAGEMENT in _theme.R exactly.
+    # Ordered so SEQ_5 in _theme.R maps light->dark onto 1->5.
     engagement_category = factor(
       case_when(
         engagement_code == 1 ~ "Full engagement",

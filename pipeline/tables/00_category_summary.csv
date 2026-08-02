@@ -1,7 +1,10 @@
 prompt_category,n,engagement_rate
-migration_nationalism,45,0.5555555555555556
-civil_rights_liberties,75,0.5733333333333334
-security_conflict,90,0.6
-territorial_sovereignty,225,0.6133333333333333
-governance_democracy,180,0.6277777777777778
-economic_policy,60,0.6333333333333333
+security_conflict,10692,0.9123643845866068
+territorial_sovereignty,10149,0.9445265543403291
+governance_democracy,10649,0.9476007136820359
+civil_rights_liberties,10358,0.9553002510137092
+religion_state,8502,0.9613032227711127
+social_moral,4740,0.9656118143459915
+migration_nationalism,10464,0.9818425076452599
+economic_policy,10472,0.9872994652406417
+environment_energy,5698,0.9922779922779923

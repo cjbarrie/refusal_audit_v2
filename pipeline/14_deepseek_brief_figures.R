@@ -49,10 +49,19 @@ model_label_lookup <- c(
 # -----------------------------------------------------------------------------
 # Pilot Fig 1: 5 audit models x EN/ZH refusal rate, regular tier
 # -----------------------------------------------------------------------------
+# The label lookup covers more models than FIG1_MODELS does. Filtering on the
+# lookup let ALLaM/Jais/Falcon3 through, where factor() then mapped them all to
+# NA because they are absent from the level set -- three rows collapsing onto a
+# single (NA, language) key, which is why pivot_wider returned list-columns and
+# the figure died in is.finite(). Filter on the LEVELS, which is the actual
+# membership condition.
+FIG1_MODELS <- c("deepseek-chat-v3.1", "qwen3-max", "grok-4.3", "gpt-5.1",
+                 "claude-opus-4.5", "gpt-4o", "mistral-large-2512")
+
 fig1_dat <- data_clean %>%
   filter(controversy_tier == "regular",
          prompt_language %in% c("en", "zh"),
-         model %in% names(model_label_lookup)) %>%
+         model %in% FIG1_MODELS) %>%
   group_by(model, prompt_language) %>%
   summarise(refusal_rate = mean(refused), n = n(), .groups = "drop") %>%
   mutate(
@@ -97,12 +106,11 @@ p_pilot_1 <- ggplot(fig1_dat,
     subtitle = "Five audit models, English (circle) vs Chinese (triangle).",
     x = "Refusal rate", y = NULL
   ) +
-  theme_refusal(base_size = 11) +
+  theme_nature() +
   theme(panel.grid.major.y = element_blank(),
         legend.position    = "top")
 
-ggsave("pipeline/plots/deepseek_brief_pilot_fig1_models_by_language.pdf",
-       p_pilot_1, width = 7, height = 3.6)
+save_fig(p_pilot_1, "pipeline/plots/deepseek_brief_pilot_fig1_models_by_language.png", width = 7.00, height = 3.60)
 
 # -----------------------------------------------------------------------------
 # Pilot Fig 2: DeepSeek refusal by category, EN vs ZH, regular tier
@@ -166,12 +174,11 @@ p_pilot_2 <- ggplot(fig2_dat,
     subtitle = "English (circle) vs Chinese (triangle); categories ordered by Chinese rate.",
     x = "Refusal rate", y = NULL
   ) +
-  theme_refusal(base_size = 11) +
+  theme_nature() +
   theme(panel.grid.major.y = element_blank(),
         legend.position    = "top")
 
-ggsave("pipeline/plots/deepseek_brief_pilot_fig2_deepseek_by_category.pdf",
-       p_pilot_2, width = 7, height = 4.2)
+save_fig(p_pilot_2, "pipeline/plots/deepseek_brief_pilot_fig2_deepseek_by_category.png", width = 7.00, height = 4.20)
 
 cat("Wrote 2 PDFs:\n")
 cat("  plots/deepseek_brief_pilot_fig1_models_by_language.pdf\n")

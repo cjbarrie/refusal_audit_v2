@@ -1,0 +1,155 @@
+model_f,language_f,refusal_justification_f,n,total,prop
+GPT-5.1,English,Neutrality/Balance,61,104,0.5865384615384616
+GPT-5.1,English,Harm Avoidance,34,104,0.3269230769230769
+GPT-5.1,English,Expertise Limitation,1,104,0.009615384615384616
+GPT-5.1,English,No Justification,1,104,0.009615384615384616
+GPT-5.1,English,Other,7,104,0.0673076923076923
+GPT-5.1,Chinese,Neutrality/Balance,31,61,0.5081967213114754
+GPT-5.1,Chinese,Harm Avoidance,23,61,0.3770491803278688
+GPT-5.1,Chinese,Other,7,61,0.11475409836065574
+GPT-5.1,Arabic,Neutrality/Balance,49,120,0.4083333333333333
+GPT-5.1,Arabic,Complexity/Uncertainty,1,120,0.008333333333333333
+GPT-5.1,Arabic,Harm Avoidance,58,120,0.48333333333333334
+GPT-5.1,Arabic,No Justification,1,120,0.008333333333333333
+GPT-5.1,Arabic,Other,11,120,0.09166666666666666
+GPT-5.1,Russian,Neutrality/Balance,19,51,0.37254901960784315
+GPT-5.1,Russian,Harm Avoidance,19,51,0.37254901960784315
+GPT-5.1,Russian,No Justification,1,51,0.0196078431372549
+GPT-5.1,Russian,Other,12,51,0.23529411764705882
+GPT-5.1,Hindi,Harm Avoidance,1,2,0.5
+GPT-5.1,Hindi,Other,1,2,0.5
+Claude Opus 4.5,English,Neutrality/Balance,28,98,0.2857142857142857
+Claude Opus 4.5,English,Complexity/Uncertainty,1,98,0.01020408163265306
+Claude Opus 4.5,English,Harm Avoidance,23,98,0.23469387755102042
+Claude Opus 4.5,English,Expertise Limitation,15,98,0.15306122448979592
+Claude Opus 4.5,English,User Autonomy,2,98,0.02040816326530612
+Claude Opus 4.5,English,No Justification,5,98,0.05102040816326531
+Claude Opus 4.5,English,Other,24,98,0.24489795918367346
+Claude Opus 4.5,Chinese,Neutrality/Balance,21,77,0.2727272727272727
+Claude Opus 4.5,Chinese,Complexity/Uncertainty,1,77,0.012987012987012988
+Claude Opus 4.5,Chinese,Harm Avoidance,18,77,0.23376623376623376
+Claude Opus 4.5,Chinese,Expertise Limitation,3,77,0.03896103896103896
+Claude Opus 4.5,Chinese,User Autonomy,1,77,0.012987012987012988
+Claude Opus 4.5,Chinese,Other,33,77,0.42857142857142855
+Claude Opus 4.5,Arabic,Neutrality/Balance,18,52,0.34615384615384615
+Claude Opus 4.5,Arabic,Complexity/Uncertainty,1,52,0.019230769230769232
+Claude Opus 4.5,Arabic,Harm Avoidance,14,52,0.2692307692307692
+Claude Opus 4.5,Arabic,Expertise Limitation,3,52,0.057692307692307696
+Claude Opus 4.5,Arabic,User Autonomy,1,52,0.019230769230769232
+Claude Opus 4.5,Arabic,Other,15,52,0.28846153846153844
+Claude Opus 4.5,Russian,Neutrality/Balance,19,57,0.3333333333333333
+Claude Opus 4.5,Russian,Complexity/Uncertainty,1,57,0.017543859649122806
+Claude Opus 4.5,Russian,Harm Avoidance,12,57,0.21052631578947367
+Claude Opus 4.5,Russian,Expertise Limitation,6,57,0.10526315789473684
+Claude Opus 4.5,Russian,No Justification,1,57,0.017543859649122806
+Claude Opus 4.5,Russian,Other,18,57,0.3157894736842105
+Claude Opus 4.5,Hindi,Neutrality/Balance,1,11,0.09090909090909091
+Claude Opus 4.5,Hindi,Complexity/Uncertainty,1,11,0.09090909090909091
+Claude Opus 4.5,Hindi,Harm Avoidance,7,11,0.6363636363636364
+Claude Opus 4.5,Hindi,Other,2,11,0.18181818181818182
+GPT-4o,English,Neutrality/Balance,49,55,0.8909090909090909
+GPT-4o,English,Harm Avoidance,1,55,0.01818181818181818
+GPT-4o,English,Expertise Limitation,3,55,0.05454545454545454
+GPT-4o,English,No Justification,2,55,0.03636363636363636
+GPT-4o,Chinese,Neutrality/Balance,24,28,0.8571428571428571
+GPT-4o,Chinese,Expertise Limitation,1,28,0.03571428571428571
+GPT-4o,Chinese,No Justification,2,28,0.07142857142857142
+GPT-4o,Chinese,Other,1,28,0.03571428571428571
+GPT-4o,Arabic,Neutrality/Balance,35,41,0.8536585365853658
+GPT-4o,Arabic,Complexity/Uncertainty,3,41,0.07317073170731707
+GPT-4o,Arabic,Expertise Limitation,2,41,0.04878048780487805
+GPT-4o,Arabic,No Justification,1,41,0.024390243902439025
+GPT-4o,Russian,Neutrality/Balance,48,60,0.8
+GPT-4o,Russian,Complexity/Uncertainty,5,60,0.08333333333333333
+GPT-4o,Russian,Expertise Limitation,5,60,0.08333333333333333
+GPT-4o,Russian,No Justification,2,60,0.03333333333333333
+GPT-4o,Hindi,Neutrality/Balance,2,4,0.5
+GPT-4o,Hindi,Complexity/Uncertainty,1,4,0.25
+GPT-4o,Hindi,No Justification,1,4,0.25
+Grok 4.3,English,Neutrality/Balance,23,50,0.46
+Grok 4.3,English,Harm Avoidance,5,50,0.1
+Grok 4.3,English,Expertise Limitation,3,50,0.06
+Grok 4.3,English,No Justification,10,50,0.2
+Grok 4.3,English,Other,9,50,0.18
+Grok 4.3,Chinese,Neutrality/Balance,15,38,0.39473684210526316
+Grok 4.3,Chinese,Harm Avoidance,8,38,0.21052631578947367
+Grok 4.3,Chinese,No Justification,7,38,0.18421052631578946
+Grok 4.3,Chinese,Other,8,38,0.21052631578947367
+Grok 4.3,Arabic,Neutrality/Balance,14,30,0.4666666666666667
+Grok 4.3,Arabic,Harm Avoidance,8,30,0.26666666666666666
+Grok 4.3,Arabic,No Justification,4,30,0.13333333333333333
+Grok 4.3,Arabic,Other,4,30,0.13333333333333333
+Grok 4.3,Russian,Neutrality/Balance,5,31,0.16129032258064516
+Grok 4.3,Russian,Harm Avoidance,6,31,0.1935483870967742
+Grok 4.3,Russian,Expertise Limitation,4,31,0.12903225806451613
+Grok 4.3,Russian,No Justification,6,31,0.1935483870967742
+Grok 4.3,Russian,Other,10,31,0.3225806451612903
+Grok 4.3,Hindi,Neutrality/Balance,1,3,0.3333333333333333
+Grok 4.3,Hindi,Harm Avoidance,1,3,0.3333333333333333
+Grok 4.3,Hindi,Other,1,3,0.3333333333333333
+DeepSeek V3.1,English,Neutrality/Balance,88,124,0.7096774193548387
+DeepSeek V3.1,English,Harm Avoidance,12,124,0.0967741935483871
+DeepSeek V3.1,English,No Justification,3,124,0.024193548387096774
+DeepSeek V3.1,English,Other,21,124,0.1693548387096774
+DeepSeek V3.1,Chinese,Neutrality/Balance,172,407,0.4226044226044226
+DeepSeek V3.1,Chinese,Harm Avoidance,5,407,0.012285012285012284
+DeepSeek V3.1,Chinese,Expertise Limitation,1,407,0.002457002457002457
+DeepSeek V3.1,Chinese,No Justification,180,407,0.44226044226044225
+DeepSeek V3.1,Chinese,Other,49,407,0.12039312039312039
+DeepSeek V3.1,Arabic,Neutrality/Balance,154,260,0.5923076923076923
+DeepSeek V3.1,Arabic,Complexity/Uncertainty,1,260,0.0038461538461538464
+DeepSeek V3.1,Arabic,Harm Avoidance,12,260,0.046153846153846156
+DeepSeek V3.1,Arabic,Expertise Limitation,6,260,0.023076923076923078
+DeepSeek V3.1,Arabic,No Justification,59,260,0.22692307692307692
+DeepSeek V3.1,Arabic,Other,28,260,0.1076923076923077
+DeepSeek V3.1,Russian,Neutrality/Balance,92,218,0.42201834862385323
+DeepSeek V3.1,Russian,Harm Avoidance,11,218,0.05045871559633028
+DeepSeek V3.1,Russian,Expertise Limitation,2,218,0.009174311926605505
+DeepSeek V3.1,Russian,No Justification,94,218,0.43119266055045874
+DeepSeek V3.1,Russian,Other,19,218,0.0871559633027523
+DeepSeek V3.1,Hindi,Neutrality/Balance,9,11,0.8181818181818182
+DeepSeek V3.1,Hindi,Harm Avoidance,1,11,0.09090909090909091
+DeepSeek V3.1,Hindi,Other,1,11,0.09090909090909091
+Qwen3-Max,English,Neutrality/Balance,122,184,0.6630434782608695
+Qwen3-Max,English,Harm Avoidance,16,184,0.08695652173913043
+Qwen3-Max,English,Expertise Limitation,1,184,0.005434782608695652
+Qwen3-Max,English,No Justification,30,184,0.16304347826086957
+Qwen3-Max,English,Other,15,184,0.08152173913043478
+Qwen3-Max,Chinese,Neutrality/Balance,114,162,0.7037037037037037
+Qwen3-Max,Chinese,Harm Avoidance,6,162,0.037037037037037035
+Qwen3-Max,Chinese,No Justification,21,162,0.12962962962962962
+Qwen3-Max,Chinese,Other,21,162,0.12962962962962962
+Qwen3-Max,Arabic,Neutrality/Balance,27,34,0.7941176470588235
+Qwen3-Max,Arabic,Harm Avoidance,1,34,0.029411764705882353
+Qwen3-Max,Arabic,No Justification,3,34,0.08823529411764706
+Qwen3-Max,Arabic,Other,3,34,0.08823529411764706
+Qwen3-Max,Russian,Neutrality/Balance,29,36,0.8055555555555556
+Qwen3-Max,Russian,No Justification,6,36,0.16666666666666666
+Qwen3-Max,Russian,Other,1,36,0.027777777777777776
+Qwen3-Max,Hindi,Neutrality/Balance,2,3,0.6666666666666666
+Qwen3-Max,Hindi,No Justification,1,3,0.3333333333333333
+ALLaM 7B,English,Neutrality/Balance,260,418,0.6220095693779905
+ALLaM 7B,English,Harm Avoidance,17,418,0.04066985645933014
+ALLaM 7B,English,No Justification,10,418,0.023923444976076555
+ALLaM 7B,English,Other,131,418,0.3133971291866029
+ALLaM 7B,Chinese,Neutrality/Balance,40,146,0.273972602739726
+ALLaM 7B,Chinese,Complexity/Uncertainty,1,146,0.00684931506849315
+ALLaM 7B,Chinese,Other,105,146,0.7191780821917808
+Jais 8B,English,Neutrality/Balance,10,59,0.1694915254237288
+Jais 8B,English,Harm Avoidance,48,59,0.8135593220338984
+Jais 8B,English,Other,1,59,0.01694915254237288
+Jais 8B,Chinese,Neutrality/Balance,12,21,0.5714285714285714
+Jais 8B,Chinese,Other,9,21,0.42857142857142855
+Falcon3 10B,English,Neutrality/Balance,127,153,0.8300653594771242
+Falcon3 10B,English,Complexity/Uncertainty,1,153,0.006535947712418301
+Falcon3 10B,English,Harm Avoidance,14,153,0.0915032679738562
+Falcon3 10B,English,Expertise Limitation,4,153,0.026143790849673203
+Falcon3 10B,English,No Justification,6,153,0.0392156862745098
+Falcon3 10B,English,Other,1,153,0.006535947712418301
+Falcon3 10B,Chinese,Neutrality/Balance,19,23,0.8260869565217391
+Falcon3 10B,Chinese,No Justification,1,23,0.043478260869565216
+Falcon3 10B,Chinese,Other,3,23,0.13043478260869565
+Sarvam 30B,English,Neutrality/Balance,98,148,0.6621621621621622
+Sarvam 30B,English,Harm Avoidance,42,148,0.28378378378378377
+Sarvam 30B,English,Expertise Limitation,1,148,0.006756756756756757
+Sarvam 30B,English,Other,7,148,0.0472972972972973

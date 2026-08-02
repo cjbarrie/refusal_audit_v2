@@ -19,7 +19,7 @@ cat(rep("=", 80), "\n", sep = "")
 load("pipeline/data_clean.RData")
 
 # Base theme
-theme_custom <- theme_refusal() +
+theme_custom <- theme_nature() +
   theme(
     panel.grid = element_blank(),
     plot.title = element_text(face = "bold", size = 14),
@@ -58,8 +58,7 @@ fig12 <- ggplot(refusal_by_dataset, aes(x = model_f, y = refusal_rate,
   theme_custom +
   theme(legend.position = "top")
 
-ggsave("pipeline/plots/fig12_base_vs_boundary.pdf", fig12, width = 10, height = 6)
-ggsave("pipeline/plots/fig12_base_vs_boundary.png", fig12, width = 10, height = 6, dpi = 300)
+save_fig(fig12, "pipeline/plots/fig12_base_vs_boundary.png", width = 7.20, height = 4.32)
 cat("Saved: pipeline/plots/fig12_base_vs_boundary.pdf + .png\n")
 
 # Figure 13 (ideology shifts) depends on annotation Pass 2 (ideology/moral foundations), which the
@@ -93,8 +92,7 @@ fig13 <- ggplot(ideology_shifts,
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "top")
 
-ggsave("pipeline/plots/fig13_ideology_shifts.pdf", fig13, width = 12, height = 7)
-ggsave("pipeline/plots/fig13_ideology_shifts.png", fig13, width = 12, height = 7, dpi = 300)
+save_fig(fig13, "pipeline/plots/fig13_ideology_shifts.png", width = 7.20, height = 4.20)
 cat("Saved: pipeline/plots/fig13_ideology_shifts.pdf + .png\n")
 
 } else {
@@ -138,8 +136,7 @@ fig14 <- ggplot(moral_heatmap_data,
   theme_custom +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggsave("pipeline/plots/fig14_moral_heatmap.pdf", fig14, width = 12, height = 10)
-ggsave("pipeline/plots/fig14_moral_heatmap.png", fig14, width = 12, height = 10, dpi = 300)
+save_fig(fig14, "pipeline/plots/fig14_moral_heatmap.png", width = 7.20, height = 6.00)
 cat("Saved: pipeline/plots/fig14_moral_heatmap.pdf + .png\n")
 
 cat("\n")

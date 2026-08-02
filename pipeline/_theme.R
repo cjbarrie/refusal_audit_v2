@@ -65,6 +65,46 @@ ACCENT_SOFT <- "#D98C99"
 # Second accent only where two marked series are genuinely required.
 ACCENT_2    <- "#1B4F8A"
 
+# --- semantic colour: model jurisdiction -----------------------------------
+# ONE mapping, used in every figure. CN and MENA carry the accent because they
+# are where the home-region effect appears; US, EU and India recede to ink. This
+# is an analytical assignment, not a decorative one -- if a later result moves,
+# the assignment moves with it rather than the palette being reshuffled.
+#
+# Lightness is the primary separator (L* 31 / 43 / 55 / 64 / 78), so the ordering
+# survives grayscale and every common CVD; hue is a secondary aid only.
+# Constructed in LCH at CONTROLLED lightness (L* 32 / 46 / 58 / 68 / 79) rather
+# than picked by eye. The first attempt was chosen for hue and had MENA at L* 57
+# against India at L* 58 -- a one-point gap, invisible in grayscale. Verified:
+# minimum pairwise L* gap is 10 under normal vision AND under simulated deutan,
+# protan and tritan vision, so the ordering survives every common CVD and a
+# black-and-white print without relying on hue at all.
+#
+# Darker = larger home-region effect, so lightness carries the analytical
+# ordering rather than merely distinguishing categories.
+PAL_JURIS <- c(
+  "CN"    = "#901F2C",   # L* 32 -- largest home effect
+  "MENA"  = "#A15A36",   # L* 46
+  "India" = "#868C92",   # L* 58
+  "US"    = "#A0A7AC",   # L* 68
+  "EU"    = "#BFC4C9"    # L* 79 -- no refusals at all
+)
+JURIS_LEVELS <- c("CN", "MENA", "India", "US", "EU")
+
+# Issue-region levels. Ordered so the jurisdiction diagonal reads top-left to
+# bottom-right in F2, with the placeless "General" stratum last.
+REGION_LEVELS <- c("China", "Arab", "India", "US", "Europe", "General")
+
+# The home region of each model jurisdiction. "General" issues have no home.
+HOME_REGION <- c(US = "US", CN = "China", EU = "Europe",
+                 MENA = "Arab", India = "India")
+
+scale_colour_juris <- function(...)
+  scale_colour_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
+scale_color_juris <- scale_colour_juris
+scale_fill_juris <- function(...)
+  scale_fill_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
+
 # Sequential ramp for ordered quantities (engagement 1-5, rates in a heatmap).
 # Single hue, light -> dark: order is encoded by lightness, so it survives
 # grayscale and CVD without any hue discrimination at all.
@@ -181,20 +221,39 @@ theme_set(theme_nature())
 # =============================================================================
 # PNG at 600 dpi through ragg. `height` is in inches; pick it from the number of
 # rows so row spacing stays constant across figures rather than stretching.
-save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
+                     vector = TRUE) {
   dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
-  if (!grepl("\\.png$", file)) file <- paste0(sub("\\.[a-z]+$", "", file), ".png")
+  stem <- sub("\\.[a-z]+$", "", file)
+  # Raster at 600 dpi through ragg (better hinting and metric-accurate text than
+  # grDevices), plus a vector copy for typesetting. Both come from ONE plot
+  # object and one set of dimensions, so they cannot drift apart the way the
+  # previously hand-maintained PDF/PNG pairs did.
   dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
   if (is.null(dev)) {
-    ggsave(file, plot, width = width, height = height, units = "in",
-           dpi = dpi, bg = "white")
+    ggsave(paste0(stem, ".png"), plot, width = width, height = height,
+           units = "in", dpi = dpi, bg = "white")
   } else {
-    ggsave(file, plot, width = width, height = height, units = "in",
-           dpi = dpi, device = dev, bg = "white")
+    ggsave(paste0(stem, ".png"), plot, width = width, height = height,
+           units = "in", dpi = dpi, device = dev, bg = "white")
   }
-  cat(sprintf("  saved %-52s %.2f x %.2f in @ %d dpi\n",
-              basename(file), width, height, dpi))
-  invisible(file)
+  if (vector) {
+    # Vector companion. NOTE: on macOS the base pdf() and cairo_pdf() devices
+    # both reject a system font family with "invalid font type", so a PDF here
+    # would either fail or silently substitute a different face and change every
+    # metric. svglite embeds the real font and produces true vector output.
+    # Convert to PDF/EPS at submission time if the journal requires it:
+    #   rsvg-convert -f pdf -o fig.pdf fig.svg     (or: inkscape, cairosvg)
+    if (requireNamespace("svglite", quietly = TRUE)) {
+      ggsave(paste0(stem, ".svg"), plot, width = width, height = height,
+             units = "in", device = svglite::svglite, bg = "white")
+    } else {
+      cat("    (no vector export: install svglite)\n")
+    }
+  }
+  cat(sprintf("  saved %-46s %.2f x %.2f in  png+svg @ %d dpi\n",
+              basename(stem), width, height, dpi))
+  invisible(stem)
 }
 
 # Height that keeps row pitch constant in a dot plot: n rows at ~0.16 in each

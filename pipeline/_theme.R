@@ -43,9 +43,14 @@ suppressPackageStartupMessages({
   hit <- candidates[candidates %in% fams]
   if (length(hit)) hit[1] else fallback
 }
-FONT_SANS <- .pick_font(c("Helvetica Neue", "Helvetica", "Arial", "Inter"), "sans")
-FONT_MONO <- .pick_font(c("Menlo", "SF Mono", "Consolas", "Andale Mono",
-                          "Courier New"), "mono")
+# Both families must be renderable by ragg (PNG) AND by the pdf device (vector).
+# The pdf device only accepts a small set of families and rejects anything else
+# with "invalid font type" -- Menlo, used previously, fails there, which is why
+# vector export was impossible before. Helvetica and Courier are accepted by
+# both, so the two exports are now byte-for-byte the same design rather than one
+# format silently substituting a different face and changing every metric.
+FONT_SANS <- .pick_font(c("Helvetica", "Arial"), "sans")
+FONT_MONO <- "Courier"
 
 # --- ink and rules ---------------------------------------------------------
 INK        <- "#111111"   # primary text, data marks
@@ -64,39 +69,39 @@ ACCENT_SOFT <- "#D98C99"
 # Second accent only where two marked series are genuinely required.
 ACCENT_2    <- "#1B4F8A"
 
-# --- semantic colour: model jurisdiction -----------------------------------
-# ONE mapping, used in every figure. CN and MENA carry the accent because they
-# are where the home-region effect appears; US, EU and India recede to ink. This
-# is an analytical assignment, not a decorative one -- if a later result moves,
-# the assignment moves with it rather than the palette being reshuffled.
+# --- semantic colour: jurisdiction and region ------------------------------
+# ONE identity-based mapping. A model inherits its developer jurisdiction's
+# colour, and an issue inherits its region's colour -- so the locator map, the
+# home-region estimates, the region matrix and the model plots all speak the
+# same language, and the map can act as the palette key.
 #
-# Lightness is the primary separator (L* 31 / 43 / 55 / 64 / 78), so the ordering
-# survives grayscale and every common CVD; hue is a secondary aid only.
-# Constructed in LCH at CONTROLLED lightness (L* 32 / 46 / 58 / 68 / 79) rather
-# than picked by eye. The first attempt was chosen for hue and had MENA at L* 57
-# against India at L* 58 -- a one-point gap, invisible in grayscale. Verified:
-# minimum pairwise L* gap is 10 under normal vision AND under simulated deutan,
-# protan and tritan vision, so the ordering survives every common CVD and a
-# black-and-white print without relying on hue at all.
+# Identity-based, NOT effect-based: if an estimate moves, the colours stay put.
+# An earlier version keyed lightness to effect size, which would have silently
+# recoloured the whole system the first time a number changed.
 #
-# Darker = larger home-region effect, so lightness carries the analytical
-# ordering rather than merely distinguishing categories.
+# Constructed in LCH at controlled lightness (L* 35/47/58/68/81/92), not picked
+# by eye. Minimum pairwise L* gap is 10 under normal vision and 6-7 under
+# simulated protan/deutan vision, so the ordering survives grayscale and CVD.
+# Colour is nevertheless a SECONDARY encoding throughout -- position and direct
+# labels carry the information.
 PAL_JURIS <- c(
-  "CN"    = "#901F2C",   # L* 32 -- largest home effect
-  "MENA"  = "#A15A36",   # L* 46
-  "India" = "#868C92",   # L* 58
-  "US"    = "#A0A7AC",   # L* 68
-  "EU"    = "#BFC4C9"    # L* 79 -- no refusals at all
+  "CN"    = "#8C363C",   # deep muted red      L* 35
+  "India" = "#4F748F",   # slate blue          L* 47
+  "MENA"  = "#B88047",   # burnt ochre         L* 58
+  "US"    = "#96A8B6",   # cool grey-blue      L* 68
+  "EU"    = "#C0CBD3"    # light cool slate    L* 81
 )
-JURIS_LEVELS <- c("CN", "MENA", "India", "US", "EU")
+# Issue regions carry the colour of the jurisdiction whose home they are;
+# "General" has no jurisdiction and is a neutral near-white.
+PAL_REGION <- c(
+  "China"   = "#8C363C", "India" = "#4F748F", "Arab" = "#B88047",
+  "US"      = "#96A8B6", "Europe" = "#C0CBD3", "General" = "#E5E9EC"
+)
 
-# Issue-region levels. Ordered so the jurisdiction diagonal reads top-left to
-# bottom-right in F2, with the placeless "General" stratum last.
+JURIS_LEVELS  <- c("CN", "MENA", "India", "US", "EU")
 REGION_LEVELS <- c("China", "Arab", "India", "US", "Europe", "General")
-
-# The home region of each model jurisdiction. "General" issues have no home.
-HOME_REGION <- c(US = "US", CN = "China", EU = "Europe",
-                 MENA = "Arab", India = "India")
+HOME_REGION   <- c(US = "US", CN = "China", EU = "Europe",
+                   MENA = "Arab", India = "India")
 
 scale_colour_juris <- function(...)
   scale_colour_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
@@ -220,11 +225,10 @@ theme_set(theme_nature())
 # =============================================================================
 # PNG at 600 dpi through ragg. `height` is in inches; pick it from the number of
 # rows so row spacing stays constant across figures rather than stretching.
-save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
+                     vector = TRUE) {
   dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
   stem <- sub("\\.[a-z]+$", "", file)
-  # PNG at 600 dpi through ragg -- better hinting and metric-accurate text than
-  # grDevices. One writer, one format: figures cannot disagree about dpi or size.
   dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
   if (is.null(dev)) {
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
@@ -233,8 +237,14 @@ save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
            units = "in", dpi = dpi, device = dev, bg = "white")
   }
-  cat(sprintf("  saved %-46s %.2f x %.2f in @ %d dpi\n",
-              basename(stem), width, height, dpi))
+  if (vector) {
+    tryCatch(
+      ggsave(paste0(stem, ".pdf"), plot, width = width, height = height,
+             units = "in", bg = "white"),
+      error = function(e)
+        cat("    (vector export failed:", sub("\n.*", "", conditionMessage(e)), ")\n"))
+  }
+  cat(sprintf("  saved %-42s %.2f x %.2f in\n", basename(stem), width, height))
   invisible(stem)
 }
 

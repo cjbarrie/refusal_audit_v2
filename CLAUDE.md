@@ -170,7 +170,7 @@ main-path run passes over them cleanly rather than erroring.
 
 Run with: `REFUSAL_RUN_DIR=annotations/<run_id> Rscript pipeline/01_data_loading.R`,
 then the numbered scripts in order (most read `data_clean.RData`, write to
-`pipeline/plots/` and `pipeline/tables/`). `docs/R_PIPELINE_WALKTHROUGH.md` maps
+`pipeline/figures/` and `pipeline/tables/`). `docs/R_PIPELINE_WALKTHROUGH.md` maps
 what each of the 23 scripts does and which are core vs. optional/consolidatable
 (several — `06`/`07`/`07b`/`06b` — investigate the same DeepSeek finding at
 different rigor levels).

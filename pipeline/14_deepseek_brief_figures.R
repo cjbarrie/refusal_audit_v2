@@ -27,7 +27,6 @@ source("pipeline/_theme.R")  # shared publication theme + validated palettes
 # Cleaned pilot dataset assembled by 01_data_loading.R.
 load("pipeline/data_clean.RData")
 
-dir.create("pipeline/plots",  showWarnings = FALSE, recursive = TRUE)
 dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
 
 deepseek_color <- "#c0392b"
@@ -110,7 +109,7 @@ p_pilot_1 <- ggplot(fig1_dat,
   theme(panel.grid.major.y = element_blank(),
         legend.position    = "top")
 
-save_fig(p_pilot_1, "pipeline/plots/deepseek_brief_pilot_fig1_models_by_language.png", width = 7.00, height = 3.60)
+save_fig(p_pilot_1, "pipeline/figures/deepseek_brief_pilot_fig1_models_by_language.png", width = 7.00, height = 3.60)
 
 # -----------------------------------------------------------------------------
 # Pilot Fig 2: DeepSeek refusal by category, EN vs ZH, regular tier
@@ -178,7 +177,7 @@ p_pilot_2 <- ggplot(fig2_dat,
   theme(panel.grid.major.y = element_blank(),
         legend.position    = "top")
 
-save_fig(p_pilot_2, "pipeline/plots/deepseek_brief_pilot_fig2_deepseek_by_category.png", width = 7.00, height = 4.20)
+save_fig(p_pilot_2, "pipeline/figures/deepseek_brief_pilot_fig2_deepseek_by_category.png", width = 7.00, height = 4.20)
 
 cat("Wrote 2 PDFs:\n")
 cat("  plots/deepseek_brief_pilot_fig1_models_by_language.pdf\n")

@@ -95,21 +95,18 @@ for f in pipeline/0[2-9]_*.R pipeline/1[0-6]_*.R; do Rscript "$f"; done
 
 ### Known issues NOT yet fixed (all downstream of annotation)
 
-* **Legacy category filters.** `11_visualizations.R` filters
-  `prompt_category == "strategic_advice"` — a *legacy task-type* category that
-  v2 replaced with the 9 topic domains. **Returns zero rows**, so `fig5` comes
-  out empty. Same in `06_refusal_justifications.R` (~line 143) and
-  `13_report_figures.R`. `08_deepseek_chinese_analysis.R` has a subtitle
-  hardcoding "largest for domestic_government and candidate_comparison" —
-  categories that no longer exist.
+* **RESOLVED 2026-07-31/08-02** — legacy task-type category filters (removed),
+  the stale `08` subtitle (removed), PDF/PNG duplication (PNG only now), and the
+  un-migrated `scale_*_manual()` calls (migrated to `pipeline/_theme.R`).
+* **Figure output is `pipeline/figures/` only.** `pipeline/plots/` was removed
+  2026-08-02; it had held 13 of 14 figures while `figures/` held one, with no
+  rule distinguishing them. `save_fig()` in `_theme.R` is the only writer.
 * **Four PNAS panels never produced.** `15_pnas_figures.R` guards
   `fig_pnas_3/4/5/6` on tables written only by archived Study A/B scripts.
   Silent, because the guard is a plain `if`.
-* **Two figures are PNG-only** (`fig22`, `fig23`) while the other 34 emit vector
-  PDF — they would be the only pixelated figures in the paper.
-* **31 `scale_*_manual()` calls** still carry pre-theme hex codes. The validated
-  helpers exist (`scale_colour_jurisdiction()` etc.); migration was left undone
-  deliberately, since blind replacement risks changing what a colour *means*.
+* **`OR7` in `11_visualizations.R` is a literal.** Figure 3 hardcodes the seven
+  OpenRouter models because they were the only ones with non-English coverage.
+  Widen it once the MENA models have Arabic data.
 * **80 prompts (20 issues) have no `qid`** — fine on `issue_id`, but any
   `qid`-keyed join or exclusion silently skips them.
 
@@ -585,7 +582,7 @@ jurisdiction figures/tables on the new data.
   instead of eight task types) — check axis labels and any hardcoded category
   strings in the plotting scripts.
 
-**Output:** `pipeline/plots/*.pdf`, `pipeline/tables/*.csv`.
+**Output:** `pipeline/figures/*.png` (600 dpi), `pipeline/tables/*.csv`.
 
 ---
 

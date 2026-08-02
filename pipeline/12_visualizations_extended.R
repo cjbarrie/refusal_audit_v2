@@ -58,8 +58,8 @@ fig12 <- ggplot(refusal_by_dataset, aes(x = model_f, y = refusal_rate,
   theme_custom +
   theme(legend.position = "top")
 
-save_fig(fig12, "pipeline/plots/fig12_base_vs_boundary.png", width = 7.20, height = 4.32)
-cat("Saved: pipeline/plots/fig12_base_vs_boundary.pdf + .png\n")
+save_fig(fig12, "pipeline/figures/fig12_base_vs_boundary.png", width = 7.20, height = 4.32)
+cat("Saved: pipeline/figures/fig12_base_vs_boundary.pdf + .png\n")
 
 # Figure 13 (ideology shifts) depends on annotation Pass 2 (ideology/moral foundations), which the
 # canonical Pass-1-only run does not produce (docs/ANNOTATION_TRIM_FULL_RUN.md).
@@ -92,8 +92,8 @@ fig13 <- ggplot(ideology_shifts,
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "top")
 
-save_fig(fig13, "pipeline/plots/fig13_ideology_shifts.png", width = 7.20, height = 4.20)
-cat("Saved: pipeline/plots/fig13_ideology_shifts.pdf + .png\n")
+save_fig(fig13, "pipeline/figures/fig13_ideology_shifts.png", width = 7.20, height = 4.20)
+cat("Saved: pipeline/figures/fig13_ideology_shifts.pdf + .png\n")
 
 } else {
   cat("\nSKIP Figure 13 (ideology shifts): pipeline/tables/27_ideology_shifts.csv absent (Pass-1-only run).\n")
@@ -136,8 +136,8 @@ fig14 <- ggplot(moral_heatmap_data,
   theme_custom +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-save_fig(fig14, "pipeline/plots/fig14_moral_heatmap.png", width = 7.20, height = 6.00)
-cat("Saved: pipeline/plots/fig14_moral_heatmap.pdf + .png\n")
+save_fig(fig14, "pipeline/figures/fig14_moral_heatmap.png", width = 7.20, height = 6.00)
+cat("Saved: pipeline/figures/fig14_moral_heatmap.pdf + .png\n")
 
 cat("\n")
 cat(rep("=", 80), "\n", sep = "")

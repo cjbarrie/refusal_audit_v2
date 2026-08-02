@@ -5,7 +5,7 @@
 # (the LaTeX \caption carries the description). Replaces the old four-panel
 # composite fig_pnas_main.pdf.
 #
-# Outputs (pipeline/plots/):
+# Outputs (pipeline/figures/):
 #   fig_pnas_1_tasktype.pdf       F1  task-type refusal, Regular vs Boundary
 #   fig_pnas_2_deepseek_pilot.pdf F2  DeepSeek pilot EN vs ZH, 5 audit models
 #   fig_pnas_3_study_a.pdf        F3  Study A jurisdiction x language, 2 strata
@@ -27,7 +27,6 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())  # portable ro
 source("pipeline/_theme.R")  # shared publication theme + validated palettes
 load("pipeline/data_clean.RData")
 
-dir.create("pipeline/plots",  showWarnings = FALSE, recursive = TRUE)
 dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
 
 # --- shared style ------------------------------------------------------------
@@ -90,7 +89,7 @@ p1 <- ggplot(f1_dat, aes(x = refusal_rate, y = cat_label, colour = instrumental)
   labs(x = "Refusal rate", y = NULL) +
   pnas_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p1, "pipeline/plots/fig_pnas_1_tasktype.png", width = 6.50, height = 5.00)
+save_fig(p1, "pipeline/figures/fig_pnas_1_tasktype.png", width = 6.50, height = 5.00)
 
 # =============================================================================
 # F2 - DeepSeek pilot EN vs ZH, five audit models (36_pilot_deepseek_fig1.csv)
@@ -122,7 +121,7 @@ p2 <- ggplot(f2_dat, aes(x = refusal_rate, y = model_label,
   lang_shape + lang_fill + pct_x +
   labs(x = "Refusal rate", y = NULL) +
   pnas_theme
-save_fig(p2, "pipeline/plots/fig_pnas_2_deepseek_pilot.png", width = 6.50, height = 3.20)
+save_fig(p2, "pipeline/figures/fig_pnas_2_deepseek_pilot.png", width = 6.50, height = 3.20)
 
 # =============================================================================
 # F3 - Study A jurisdiction x language, two content strata
@@ -155,7 +154,7 @@ p3 <- ggplot(f3_dat, aes(x = predicted_refused, y = jurisdiction,
   labs(x = "Model-estimated refusal probability (95% CI)", y = NULL) +
   pnas_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p3, "pipeline/plots/fig_pnas_3_study_a.png", width = 6.50, height = 4.00)
+save_fig(p3, "pipeline/figures/fig_pnas_3_study_a.png", width = 6.50, height = 4.00)
 } else cat("F3 skipped: Study A table not present in this run.\n")
 
 # =============================================================================
@@ -186,7 +185,7 @@ p4 <- ggplot(f4_dat, aes(x = refusal_rate, y = entity_label,
   lang_shape + lang_fill + pct_x +
   labs(x = "Refusal rate", y = NULL) +
   pnas_theme
-save_fig(p4, "pipeline/plots/fig_pnas_4_entity_swap.png", width = 6.50, height = 3.60)
+save_fig(p4, "pipeline/figures/fig_pnas_4_entity_swap.png", width = 6.50, height = 3.60)
 } else cat("F4 skipped: Study B-refined table not present in this run.\n")
 
 # =============================================================================
@@ -216,7 +215,7 @@ p5 <- ggplot(f5_dat, aes(x = refusal_rate, y = variant,
   labs(x = "Refusal rate", y = NULL) +
   pnas_theme +
   theme(strip.text = element_text(face = "bold", hjust = 0))
-save_fig(p5, "pipeline/plots/fig_pnas_5_native_mt.png", width = 6.00, height = 5.50)
+save_fig(p5, "pipeline/figures/fig_pnas_5_native_mt.png", width = 6.00, height = 5.50)
 } else cat("F5 skipped: native/MT table not present in this run.\n")
 
 # =============================================================================
@@ -255,10 +254,10 @@ p6 <- ggplot(f6_dat, aes(x = mean_state_aligned, y = model_label,
                                 "+1", "+2\npro-CCP")) +
   labs(x = NULL, y = NULL) +
   pnas_theme
-save_fig(p6, "pipeline/plots/fig_pnas_6_stance.png", width = 6.50, height = 4.80)
+save_fig(p6, "pipeline/figures/fig_pnas_6_stance.png", width = 6.50, height = 4.80)
 } else cat("F6 skipped: engaged state-alignment table not present in this run.\n")
 
-cat("Wrote PNAS figures to pipeline/plots/ (F1, F2 always; F3-F6 when Study A/B tables present):\n",
+cat("Wrote PNAS figures to pipeline/figures/ (F1, F2 always; F3-F6 when Study A/B tables present):\n",
     " fig_pnas_1_tasktype.pdf\n fig_pnas_2_deepseek_pilot.pdf\n",
     "fig_pnas_3_study_a.pdf\n fig_pnas_4_entity_swap.pdf\n",
     "fig_pnas_5_native_mt.pdf\n fig_pnas_6_stance.pdf\n", sep = "")

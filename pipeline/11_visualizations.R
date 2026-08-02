@@ -2,7 +2,7 @@
 # Script 11: Publication figures
 # =============================================================================
 # Requires: pipeline/data_clean.RData from 01_data_loading.R
-# Writes:   pipeline/plots/*.png  (600 dpi, PNG only -- see _theme.R)
+# Writes:   pipeline/figures/*.png  (600 dpi, PNG only -- see _theme.R)
 #
 # Each figure is built around ONE analytical message, stated in its title.
 # Design rules live in pipeline/_theme.R; this file should contain no colours,
@@ -24,8 +24,7 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("pipeline/_theme.R")
 load("pipeline/data_clean.RData")
 
-PLOTS <- "pipeline/plots"
-dir.create(PLOTS, showWarnings = FALSE, recursive = TRUE)
+FIGS <- "pipeline/figures"
 
 cat(strrep("=", 78), "\nPUBLICATION FIGURES\n", strrep("=", 78), "\n", sep = "")
 
@@ -80,7 +79,7 @@ p1 <- ggplot(f1, aes(y = model)) +
   ) +
   theme_nature(grid = "x", mono_y = TRUE, md_subtitle = TRUE)
 
-save_fig(p1, file.path(PLOTS, "fig1_refusal_by_model.png"),
+save_fig(p1, file.path(FIGS, "fig1_refusal_by_model.png"),
          width = W2, height = h_rows(nlevels(f1$model)))
 
 # =============================================================================
@@ -115,7 +114,7 @@ p2 <- ggplot(f2, aes(x = rate, y = language_f)) +
   ) +
   theme_nature(grid = "x")
 
-save_fig(p2, file.path(PLOTS, "fig2_deepseek_language.png"),
+save_fig(p2, file.path(FIGS, "fig2_deepseek_language.png"),
          width = W15, height = h_rows(nrow(f2), per = 0.21, chrome = 0.95))
 
 # =============================================================================
@@ -152,7 +151,7 @@ p3 <- ggplot(f3, aes(x = rate, y = fct_rev(language_f))) +
   theme(strip.text = element_text(family = FONT_MONO, face = "plain",
                                   colour = INK, size = rel(0.95), hjust = 0))
 
-save_fig(p3, file.path(PLOTS, "fig3_language_gap_by_model.png"),
+save_fig(p3, file.path(FIGS, "fig3_language_gap_by_model.png"),
          width = W2, height = 3.2)
 
 # =============================================================================
@@ -187,7 +186,7 @@ p4 <- ggplot(f4, aes(x = rate, y = domain)) +
   ) +
   theme_nature(grid = "x")
 
-save_fig(p4, file.path(PLOTS, "fig4_refusal_by_domain.png"),
+save_fig(p4, file.path(FIGS, "fig4_refusal_by_domain.png"),
          width = W2, height = h_rows(9, per = 0.17, chrome = 1.15))
 
 # =============================================================================
@@ -247,7 +246,7 @@ if (nrow(f5) > 0) {
           legend.key.height = unit(5, "pt"), legend.key.width = unit(9, "pt"),
           legend.spacing.x = unit(2, "pt"))
 
-  save_fig(p5, file.path(PLOTS, "fig5_refusal_justifications.png"),
+  save_fig(p5, file.path(FIGS, "fig5_refusal_justifications.png"),
            width = W2,
            height = h_rows(nlevels(droplevels(f5$model)), per = 0.21, chrome = 1.15))
 } else {
@@ -289,7 +288,7 @@ p6 <- ggplot(f6, aes(x = language_f, y = model, fill = rate)) +
         legend.position = "right",
         legend.key.width = unit(6, "pt"), legend.key.height = unit(22, "pt"))
 
-save_fig(p6, file.path(PLOTS, "fig6_model_language_matrix.png"),
+save_fig(p6, file.path(FIGS, "fig6_model_language_matrix.png"),
          width = W15,
          height = h_rows(nlevels(droplevels(f6$model)), per = 0.20, chrome = 1.2))
 

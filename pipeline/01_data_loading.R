@@ -20,7 +20,6 @@ cat(sprintf("Run dir: %s\nPrompts dir: %s\n", run_dir, prompts_dir))
 
 # Create output directories
 dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
-dir.create("pipeline/figures", showWarnings = FALSE, recursive = TRUE)
 
 cat(rep("=", 80), "\n", sep = "")
 cat("LOADING MULTILINGUAL ANNOTATION DATA\n")

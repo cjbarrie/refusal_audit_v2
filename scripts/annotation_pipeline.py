@@ -9,6 +9,7 @@ Multi-pass annotation system for political behavior in LLM responses.
 
 import json
 import os
+import random
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -868,6 +869,9 @@ def annotate_responses_file(
     max_workers: int = 8,
     max_tokens: int = 1000,
     pass1_only: bool = False,
+    subsample_frac: float = 1.0,
+    subsample_seed: int = 20260803,
+    subsample_manifest: Optional[str] = None,
 ) -> List[AnnotationOutput]:
     """
     Load responses from JSONL and annotate them using the pipeline.
@@ -912,6 +916,52 @@ def annotate_responses_file(
     if limit:
         valid_responses = valid_responses[:limit]
 
+    # ---------------------------------------------------------------------
+    # Subsampling for passes 2/3.
+    #
+    # SAMPLE ISSUES, NOT RESPONSES. A random subset of responses would break the
+    # within-issue structure every mixed model in this project relies on: the
+    # identifying comparisons hold the issue fixed and vary model, language or
+    # tier. Drawing whole issues keeps all eleven models, five languages, both
+    # tiers, all regions and all domains balanced by construction, and keeps the
+    # issue-level clustering intact.
+    #
+    # Pass 1 still runs on EVERYTHING. Only the deep passes are subsampled, so
+    # refusal rates remain full-sample and only the slant measures are on the
+    # subsample.
+    deep_issues = None
+    if not pass1_only and subsample_frac < 1.0:
+        issues = sorted({r.get("issue_id") for r in valid_responses
+                         if r.get("issue_id")})
+        # An EXISTING manifest is authoritative. Re-drawing per language would
+        # give a different set whenever a language file covers a different issue
+        # set (generation is incomplete, so it does), and unioning those draws
+        # would inflate the subsample past the requested fraction and unbalance
+        # it. Draw once, reuse everywhere.
+        if subsample_manifest and os.path.exists(subsample_manifest):
+            with open(subsample_manifest) as f:
+                deep_issues = set(json.load(f).get("issue_ids", []))
+            if verbose:
+                print(f"Deep-pass subsample: reusing manifest "
+                      f"({len(deep_issues)} issues) from {subsample_manifest}")
+        else:
+            k = max(1, int(round(len(issues) * subsample_frac)))
+            rng = random.Random(subsample_seed)
+            deep_issues = set(rng.sample(issues, k))
+            if verbose:
+                print(f"Deep-pass subsample: drew {k}/{len(issues)} issues "
+                      f"({100*k/max(len(issues),1):.1f}%), seed {subsample_seed}")
+            if subsample_manifest:
+                d = os.path.dirname(os.path.abspath(subsample_manifest))
+                if d:
+                    os.makedirs(d, exist_ok=True)
+                with open(subsample_manifest, "w") as f:
+                    json.dump({"subsample_frac": subsample_frac,
+                               "seed": subsample_seed,
+                               "unit": "issue_id",
+                               "n_issues": len(deep_issues),
+                               "issue_ids": sorted(deep_issues)}, f, indent=2)
+
     # Resume support: keep clean rows from any prior run, retry errored/missing.
     #
     # "Clean" is MODE-DEPENDENT. Under --all-passes a row that carries only a
@@ -925,16 +975,24 @@ def annotate_responses_file(
     # no position to score), so such a row is complete without them.
     existing = load_existing_annotations(output_file)
 
-    def _is_clean(r):
+    def _wants_deep(rec):
+        """Does THIS response get passes 2/3?"""
+        if pass1_only:
+            return False
+        return deep_issues is None or rec.get("issue_id") in deep_issues
+
+    def _is_clean(r, deep):
         if r.get("engagement_code") is None or r.get("error"):
             return False
-        if pass1_only:
+        if not deep:
             return True
         if r.get("engagement_code") >= 4:
             return True          # passes 2/3 legitimately skipped
         return r.get("economic_left_right") is not None
 
-    clean_keys = {k for k, r in existing.items() if _is_clean(r)}
+    # Whether a stored row counts as complete depends on whether ITS issue is in
+    # the deep-pass subsample, so the check is made per response below.
+    existing_by_key = existing
 
     if verbose:
         print(f"Loaded {len(responses)} total records")
@@ -942,18 +1000,22 @@ def annotate_responses_file(
         print(f"Mode: {'PASS 1 ONLY (refusal + nature; no ideology/MFT)' if pass1_only else 'full (Pass 1 + ideology/MFT on engaged)'}")
         print(f"Judge model: {judge_model}")
         print(f"Output: {output_file}")
-        if clean_keys:
-            print(f"Resume: {len(clean_keys)} annotations already present; "
-                  f"skipping those and (re)annotating the rest.")
+        if existing_by_key:
+            print(f"Resume: {len(existing_by_key)} annotations on file; "
+                  f"completeness is judged per row against the mode.")
         print()
 
     # Build the todo list: responses not already cleanly annotated.
     todo = []
     skipped = 0
+    deep_flags = {}
     for record in valid_responses:
         key = (record['prompt_id'], record.get('prompt_language', 'en'),
                record['model'])
-        if key in clean_keys:
+        deep = _wants_deep(record)
+        deep_flags[key] = deep
+        prior = existing_by_key.get(key)
+        if prior is not None and _is_clean(prior, deep):
             skipped += 1
             continue
         todo.append(record)
@@ -988,7 +1050,10 @@ def annotate_responses_file(
                     ) if k in record
                 },
             )
-            result = pipeline.annotate(annotation_input, pass1_only=pass1_only)
+            row_key = (prompt_id, record_language, model)
+            result = pipeline.annotate(
+                annotation_input,
+                pass1_only=not deep_flags.get(row_key, not pass1_only))
             return result.to_dict(), False
         except Exception as e:
             # Error record carries the resume key (incl. language) so a rerun
@@ -1102,6 +1167,22 @@ if __name__ == "__main__":
              "schema is identical either way."
     )
     parser.add_argument(
+        "--subsample-frac", type=float, default=1.0,
+        help="Fraction of ISSUES whose responses receive passes 2/3 (default 1.0 "
+             "= all). Pass 1 always runs on everything. Issues, not responses, "
+             "are sampled so every model/language/tier cell stays balanced and "
+             "issue-level clustering is preserved. Ignored under --pass1-only."
+    )
+    parser.add_argument(
+        "--subsample-seed", type=int, default=20260803,
+        help="Seed for the deep-pass issue subsample (default 20260803)."
+    )
+    parser.add_argument(
+        "--subsample-manifest", default=None,
+        help="Path to write/merge the selected issue_ids, so every language file "
+             "uses the SAME issue set and the draw is reproducible."
+    )
+    parser.add_argument(
         "--pass1-only",
         dest="pass1_only",
         action="store_true",
@@ -1120,4 +1201,7 @@ if __name__ == "__main__":
         max_workers=args.workers,
         max_tokens=args.max_tokens,
         pass1_only=args.pass1_only,
+        subsample_frac=args.subsample_frac,
+        subsample_seed=args.subsample_seed,
+        subsample_manifest=args.subsample_manifest,
     )

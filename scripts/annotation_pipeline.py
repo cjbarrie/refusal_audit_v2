@@ -913,11 +913,28 @@ def annotate_responses_file(
         valid_responses = valid_responses[:limit]
 
     # Resume support: keep clean rows from any prior run, retry errored/missing.
+    #
+    # "Clean" is MODE-DEPENDENT. Under --all-passes a row that carries only a
+    # Pass-1 verdict is NOT complete: it still needs ideology and moral
+    # foundations. Treating any row with an engagement_code as done -- which is
+    # correct for pass1-only -- made re-running with --all-passes a silent no-op
+    # on an already-annotated file, so the only way to add passes 2/3 was to
+    # rewrite from scratch and pay for Pass 1 twice.
+    #
+    # Passes 2/3 are skipped by design when engagement_code >= 4 (a refusal has
+    # no position to score), so such a row is complete without them.
     existing = load_existing_annotations(output_file)
-    clean_keys = {
-        k for k, r in existing.items()
-        if r.get("engagement_code") is not None and not r.get("error")
-    }
+
+    def _is_clean(r):
+        if r.get("engagement_code") is None or r.get("error"):
+            return False
+        if pass1_only:
+            return True
+        if r.get("engagement_code") >= 4:
+            return True          # passes 2/3 legitimately skipped
+        return r.get("economic_left_right") is not None
+
+    clean_keys = {k for k, r in existing.items() if _is_clean(r)}
 
     if verbose:
         print(f"Loaded {len(responses)} total records")

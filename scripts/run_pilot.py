@@ -314,8 +314,11 @@ def stage_annotate(args, run_dir):
                    "--responses", resp, "--output", out,
                    "--judge-model", args.judge,
                    "--workers", str(args.workers)]
-            if args.pass1_only:
-                cmd.append("--pass1-only")
+            # Pass the mode through EXPLICITLY in both directions. Appending
+            # nothing when pass1_only is False let annotation_pipeline fall back
+            # to its own default -- which is pass1-only -- so `run_pilot
+            # --all-passes` silently produced Pass-1 output.
+            cmd.append("--pass1-only" if args.pass1_only else "--all-passes")
             _run(cmd)
     return ann_dir
 

@@ -199,3 +199,18 @@ output schema, check that contract for what fields/joins R depends on.
   for the exact list of R-side edits a roster change requires.
 - `archive/` holds superseded pilot/probe artifacts (old annotations, sampled
   prompts) kept for reference — don't treat it as live pipeline input.
+
+## Figure output policy — PNG ONLY
+
+Every figure in `pipeline/figures/` is a **600 dpi PNG and nothing else**. No
+PDF, no SVG, no EPS. Enforced in three places, all of which must stay true:
+
+1. `pipeline/_theme.R::save_fig()` is the only sanctioned writer and emits PNG
+   only. Do not add a vector branch, a `device =` argument, or a second format.
+2. No script in `pipeline/` may call `ggsave()` directly.
+3. `pipeline/audit_figures.R` **fails** if any non-PNG file appears in
+   `pipeline/figures/`.
+
+Multi-format export was tried and removed twice: the formats drifted apart
+(different fonts, different metrics) and stale files from superseded designs
+accumulated in the directory. One writer, one format.

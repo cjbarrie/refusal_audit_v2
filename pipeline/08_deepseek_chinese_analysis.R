@@ -127,16 +127,20 @@ cat(sprintf("\nDeepSeek EN+ZH observations: %d\n", nrow(deepseek_en_zh)))
 
 # Mixed-effects logistic regression with prompt_id random intercept
 cat("\nFitting mixed-effects model: refused ~ lang_zh * category_f + (1|prompt_id)\n")
-# The prompt_id random intercept is near-degenerate here: each prompt_id has at
-# most two observations (EN and ZH), and within several topic domains DeepSeek
-# refuses almost never, so the interaction cells approach separation. lme4 then
-# fails in PIRLS with "Downdated VtV is not positive definite" -- an
-# UNRECOVERABLE error, not a warning, which took the whole script down and every
-# table and figure after it. Fall back to a fixed-effects logit with
-# cluster-free SEs and say so, rather than losing the rest of the analysis.
+# RANDOM EFFECT IS issue_id, NOT prompt_id. Each prompt_id has exactly TWO
+# observations here (the same prompt in English and Chinese, one model), and a
+# variance component estimated from 2-observation groups with a rare outcome is
+# not identifiable: lme4 previously returned a random-intercept SD of 13.8 on the
+# logit scale with a degenerate Hessian, or failed outright in PIRLS. issue_id
+# groups the ~4 prompts per issue across both languages, giving 8 observations
+# per group, which is identifiable -- it converges in 6s with SD 1.36 and no
+# convergence warnings.
+#
+# This is the correct clustering level anyway: prompts drawn from the same
+# Wikipedia issue share content, so the issue is the unit that repeats.
 model_mixed <- tryCatch(
   glmer(
-    refused_num ~ lang_zh * category_f + (1 | prompt_id),
+    refused_num ~ lang_zh * category_f + (1 | issue_id),
     data = deepseek_en_zh,
     family = binomial(link = "logit"),
     control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000))
@@ -144,9 +148,8 @@ model_mixed <- tryCatch(
   error = function(e) {
     cat(sprintf("\n  NOTE: mixed model did not converge (%s).\n",
                 sub("\n.*", "", conditionMessage(e))))
-    cat("  Falling back to fixed-effects logit without the prompt random intercept.\n")
-    cat("  Standard errors below do NOT account for the EN/ZH pairing, so they\n")
-    cat("  are anti-conservative; treat the ORs as descriptive.\n")
+    cat("  Falling back to fixed-effects logit; SEs then ignore issue-level\n")
+    cat("  clustering and are anti-conservative.\n")
     NULL
   }
 )
@@ -157,6 +160,10 @@ if (is.null(model_mixed)) {
   mixed_converged <- FALSE
 } else {
   mixed_converged <- TRUE
+  msgs <- model_mixed@optinfo$conv$lme4$messages
+  cat(sprintf("  mixed model converged; issue-level SD = %.3f; warnings: %s\n",
+              sqrt(unlist(lme4::VarCorr(model_mixed))),
+              if (is.null(msgs)) "none" else paste(msgs, collapse = "; ")))
 }
 
 cat("\nModel summary:\n")

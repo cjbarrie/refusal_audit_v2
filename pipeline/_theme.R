@@ -25,10 +25,17 @@
 #   "GPT-5.1" and "Grok 4.3" hard to scan as a column. Mono also aligns the
 #   digits, which is what the reader is comparing.
 #
-# EXPORT
-#   PNG only, 600 dpi, via ragg (better hinting and metric-accurate text than
-#   grDevices). save_fig() is the ONLY sanctioned writer -- do not call ggsave()
-#   directly, or figures will disagree about dpi and size.
+# EXPORT -- PNG ONLY. THIS IS A PROJECT RULE, NOT A DEFAULT.
+#   Every figure is written as a 600 dpi PNG and NOTHING ELSE. No PDF, no SVG,
+#   no EPS. Do not add a vector branch to save_fig(), do not call ggsave()
+#   directly, and do not add a `device =` argument anywhere in pipeline/.
+#   Rationale: multi-format export repeatedly drifted out of sync here (formats
+#   rendered with different fonts and different metrics, and stale files from a
+#   previous design lingered in the directory). One writer, one format, one
+#   source of truth. pipeline/audit_figures.R FAILS if any non-PNG appears in
+#   pipeline/figures/.
+#   Rendering is via ragg, which has better hinting and more accurate text
+#   metrics than grDevices.
 
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -43,12 +50,9 @@ suppressPackageStartupMessages({
   hit <- candidates[candidates %in% fams]
   if (length(hit)) hit[1] else fallback
 }
-# Both families must be renderable by ragg (PNG) AND by the pdf device (vector).
-# The pdf device only accepts a small set of families and rejects anything else
-# with "invalid font type" -- Menlo, used previously, fails there, which is why
-# vector export was impossible before. Helvetica and Courier are accepted by
-# both, so the two exports are now byte-for-byte the same design rather than one
-# format silently substituting a different face and changing every metric.
+# Helvetica and Courier are kept (rather than Helvetica Neue / Menlo) so the
+# design does not depend on macOS-only faces and renders identically on another
+# machine. Output is PNG only, so there is no second device to keep in sync.
 FONT_SANS <- .pick_font(c("Helvetica", "Arial"), "sans")
 FONT_MONO <- "Courier"
 
@@ -225,10 +229,11 @@ theme_set(theme_nature())
 # =============================================================================
 # PNG at 600 dpi through ragg. `height` is in inches; pick it from the number of
 # rows so row spacing stays constant across figures rather than stretching.
-save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
-                     vector = TRUE) {
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
   dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
   stem <- sub("\\.[a-z]+$", "", file)
+  # PNG ONLY -- see the export rule at the top of this file. Do not reinstate a
+  # vector branch here.
   dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
   if (is.null(dev)) {
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
@@ -237,14 +242,8 @@ save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
     ggsave(paste0(stem, ".png"), plot, width = width, height = height,
            units = "in", dpi = dpi, device = dev, bg = "white")
   }
-  if (vector) {
-    tryCatch(
-      ggsave(paste0(stem, ".pdf"), plot, width = width, height = height,
-             units = "in", bg = "white"),
-      error = function(e)
-        cat("    (vector export failed:", sub("\n.*", "", conditionMessage(e)), ")\n"))
-  }
-  cat(sprintf("  saved %-42s %.2f x %.2f in\n", basename(stem), width, height))
+  cat(sprintf("  saved %-42s %.2f x %.2f in @ %d dpi\n",
+              basename(stem), width, height, dpi))
   invisible(stem)
 }
 

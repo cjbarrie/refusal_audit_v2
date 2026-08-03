@@ -55,6 +55,8 @@ PLAN <- list(
        what = "DeepSeek zh-vs-en chi-squared, mixed model, figs 22-23"),
   list(id = "09", file = "09_deepseek_stats.R",             stage = "tables",
        what = "bootstrap ORs, Cramer's V, BH-corrected p-values"),
+  list(id = "10", file = "10_home_region_model.R",           stage = "tables",
+       what = "home-region mixed model, issue random intercept (tables 45-46)"),
   list(id = "11", file = "11_figures.R",                    stage = "figures",
        what = "F1-F6 + combined FC; png 600 dpi"),
   list(id = "16", file = "16_irr_analysis.R",               stage = "irr",

@@ -11,10 +11,10 @@ CN,0.13097097009692993,0.09279973935582293,0.17484593319166486,2080,120,520,boun
 MENA,0.006254259255572624,-0.015690914941978024,0.032586448731672345,3120,259,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
 India,0.054116049031055345,0.004325220885765903,0.11830951037731696,1040,116,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
 US,-0.016783377787001404,-0.026940598587013805,-0.00480237946809879,4160,128,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-CN,0.20049753564370895,0.14981226090022604,0.25896722554904406,3608,175,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-MENA,6.35708958322356e-5,-0.018935145470302134,0.02090501322109175,5412,476,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-India,0.030487604953517468,8.665439280860356e-4,0.06830993581537692,1801,130,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-US,-0.0067946498720504005,-0.015220857657521014,0.003600541437415427,7216,232,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+CN,0.20085680553244334,0.1500707027484346,0.25946929069540786,3608,175,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+MENA,-1.0820467382268917e-4,-0.019081549512549936,0.020688762753246846,5412,476,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+India,0.03041527637790957,7.640101504571872e-4,0.06822777589356621,1801,130,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+US,-0.006732949262104642,-0.015182196178115332,0.0036882767426229435,7216,232,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
 CN,0.16219812996412217,0.12227569828741801,0.20474401957608265,2080,115,520,drop_qwen3-max,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
 CN,0.19208127600825414,0.14973513206241215,0.23864880484802975,2080,167,520,drop_deepseek-chat-v3.1,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
 MENA,0.001758511593724873,-0.019750995773621695,0.025822584606959072,4160,415,520,drop_falcon3-10b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE

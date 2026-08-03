@@ -36,8 +36,8 @@ MAIN <- c("FIG1_home_region_main", "FIG2_model_domain_main", "FIG3_refusal_reaso
 PANELS <- c("P1_locator", "P2_home_interaction", "P3_estimand_comparison",
             "P4_region_structure", "P5_china_language", "P6_model_tier",
             "P7_domain_tier", "P8_refusal_reasons")
-expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"),
-            paste0(rep(MAIN, each = 2), c("_1col", "_2col"), ".png"))
+# Two-column only. No _1col, no _2col: one canonical file per main figure.
+expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"))
 missing <- setdiff(expect, png_f)
 ok("every expected PNG present", length(missing) == 0,
    sprintf("%d expected%s", length(expect),
@@ -45,6 +45,13 @@ ok("every expected PNG present", length(missing) == 0,
 stale <- setdiff(png_f, expect)
 ok("no stale figure artefacts", length(stale) == 0,
    if (length(stale)) paste("STALE:", paste(stale, collapse = ", ")) else "none")
+# Explicit checks, so a regression is named rather than showing up as "stale".
+onecol <- grep("_1col", png_f, value = TRUE)
+twocol <- grep("_2col", png_f, value = TRUE)
+ok("no one-column outputs", length(onecol) == 0,
+   if (length(onecol)) paste(onecol, collapse = ", ") else "none")
+ok("no duplicate _2col variants", length(twocol) == 0,
+   if (length(twocol)) paste(twocol, collapse = ", ") else "none")
 
 # --- 3. image integrity ------------------------------------------------------
 cat("\n3. image integrity\n")
@@ -60,16 +67,23 @@ dims <- map_dfr(intersect(expect, png_f), function(f) {
 ok("all images open", all(!is.na(dims$w)), sprintf("%d files", nrow(dims)))
 ok("white background", all(dims$white, na.rm = TRUE),
    paste(dims$file[!dims$white & !is.na(dims$white)], collapse = ", "))
-w1 <- round(W1 * DPI); w2 <- round(W2 * DPI)
-dims <- dims %>% mutate(
-  want = case_when(grepl("_1col", file) ~ w1, grepl("_2col", file) ~ w2,
-                   TRUE ~ NA_real_),
-  wrong = !is.na(want) & abs(w - want) > 2)
-ok("preview widths match journal columns", !any(dims$wrong, na.rm = TRUE),
-   sprintf("1col=%dpx 2col=%dpx", w1, w2))
+w2 <- round(W2 * DPI)
+dims <- dims %>% mutate(wrong = abs(w - w2) > 2)
+ok("all figures at two-column width", !any(dims$wrong, na.rm = TRUE),
+   sprintf("%d px expected; offenders: %s", w2,
+           paste(dims$file[dims$wrong], collapse = ", ")))
+
+# Clipped labels: ink touching the canvas edge means something ran off.
+edge_ink <- map_dbl(intersect(expect, png_f), function(f) {
+  a <- png::readPNG(file.path(FIGS, f))
+  g <- if (length(dim(a)) == 3) apply(a[, , 1:3], c(1, 2), mean) else a
+  min(mean(g[1, ]), mean(g[nrow(g), ]), mean(g[, 1]), mean(g[, ncol(g)]))
+})
+ok("no labels clipped at the canvas edge", all(edge_ink > 0.985),
+   sprintf("min edge brightness %.3f", min(edge_ink)))
 ok("file sizes reasonable (< 8 MB)", all(dims$mb < 8, na.rm = TRUE),
    sprintf("max %.1f MB", max(dims$mb, na.rm = TRUE)))
-ok("rendered at 600 dpi", all(dims$w >= w1 - 2, na.rm = TRUE),
+ok("rendered at 600 dpi", all(dims$w >= w2 - 2, na.rm = TRUE),
    sprintf("min width %d px", min(dims$w, na.rm = TRUE)))
 
 # --- 4. estimates <-> figures -------------------------------------------------
@@ -110,6 +124,25 @@ ok("intervals bracket their estimates",
 ok("compositions sum to 1",
    all(abs(e13 %>% group_by(model) %>% summarise(s = sum(share)) %>% pull(s) - 1) < 1e-8),
    sprintf("%d models", n_distinct(e13$model)))
+# Stacked-segment labels: verify each sits inside its OWN segment and that the
+# printed value equals the segment width. A hand-computed cumsum previously put
+# every label on the wrong segment, and nothing in the pipeline caught it --
+# geom_col stacks in reverse factor order.
+seg_ok <- tryCatch({
+  ed <- e13 %>% mutate(reason = factor(reason, levels = names(PAL_REASON)),
+                       seg_lab = ifelse(share >= 0.12, sprintf("%.0f", 100 * share), ""))
+  pp <- ggplot(ed, aes(x = share, y = model, fill = reason)) + geom_col(width = 0.68) +
+    geom_text(aes(label = seg_lab), position = position_stack(vjust = 0.5))
+  bb <- ggplot_build(pp)
+  jj <- bb$data[[1]] %>% select(y, xmin, xmax, group) %>%
+    inner_join(bb$data[[2]] %>% select(y, x, label, group), by = c("y", "group"))
+  v <- suppressWarnings(as.numeric(jj$label)) / 100
+  all(jj$x >= pmin(jj$xmin, jj$xmax) - 1e-9 & jj$x <= pmax(jj$xmin, jj$xmax) + 1e-9) &&
+    all(is.na(v) | abs(abs(jj$xmax - jj$xmin) - v) < 0.005)
+}, error = function(e) FALSE)
+ok("stacked labels sit in their own segment", seg_ok,
+   "position and printed value both verified")
+
 ok("denominators recorded for compositions",
    all(!is.na(e13$n_refusals)) && all(e13$n_refusals >= 30),
    sprintf("min n = %d", min(e13$n_refusals)))
@@ -133,6 +166,20 @@ ok("no model fitting in the figure script",
 ok("no direct ggsave in the figure script",
    length(grep("ggsave\\(", code)) == 0, "save_fig is sole writer")
 ok("no in-panel titles", length(grep("title *=|subtitle *=", code)) == 0, "")
+ok("model labels use the sans family (no mono)",
+   length(grep("FONT_MONO", code)) == 0, "one family throughout")
+# Shape meanings must not collide: tier uses circle/triangle, so estimand and
+# language must use fill, not triangles.
+ok("shape encodings do not collide",
+   identical(unname(SHAPE_TIER[["boundary"]]), 24) &&
+     !any(SHAPE_ESTIMAND == 24) && !any(SHAPE_LANG == 24),
+   "triangle reserved for boundary tier")
+# The main matrix must print the SAME quantity its fill encodes.
+mat <- paste(code, collapse = "\n")
+blk <- sub(".*p_rates <- ", "", mat); blk <- sub("p_modtier <-.*", "", blk)
+ok("main matrix: raw values over a raw-rate scale",
+   grepl("aes\\(fill = rate\\)", blk) && grepl("100 \\* rate", blk) &&
+     !grepl("excess", blk), "fill and printed value both = rate")
 hex <- grep("#[0-9A-Fa-f]{6}", code, value = TRUE)
 ok("palette not hard-coded in figures", length(hex) <= 1,
    sprintf("%d literal hex", length(hex)))

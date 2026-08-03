@@ -20,10 +20,10 @@
 #     must not name them again.
 #
 # TYPOGRAPHY
-#   Model identifiers are MONOSPACE. They are version strings ("gpt-4o",
-#   "claude-opus-4.5"), not prose, and setting them in a proportional face makes
-#   "GPT-5.1" and "Grok 4.3" hard to scan as a column. Mono also aligns the
-#   digits, which is what the reader is comparing.
+#   ONE sans family throughout, including model names. Monospaced model labels
+#   were tried and dropped: at 7 pt Courier is wide and pale next to the sans
+#   axis text, so the labels read as a different kind of object from the rest of
+#   the figure. FONT_MONO is retained only for any future code listing.
 #
 # EXPORT -- PNG ONLY. THIS IS A PROJECT RULE, NOT A DEFAULT.
 #   Every figure is written as a 600 dpi PNG and NOTHING ELSE. No PDF, no SVG,
@@ -126,14 +126,20 @@ scale_fill_juris <- function(...)
 #
 # Refusal reasons are response types, not model origins, so they must not borrow
 # jurisdiction hues. Four qualitative colours, lightness-separated for grayscale.
+# Refusal reasons are NOMINAL categories, so they get four distinct hues, not
+# four shades of one. Built in LCH at controlled lightness (L* 38/52/64/76;
+# min pairwise gap 12 normal, 8 protan) and verified disjoint from PAL_JURIS,
+# because a reason must never be mistaken for a model origin.
 PAL_REASON <- c(
-  "neutrality" = "#3E5C76",   # restrained neutral-blue: the modal reason
-  "harm"       = "#7E9AAE",
-  "unstated"   = "#B9C3CB",
-  "epistemic"  = "#E1E5E9"
+  "neutrality" = "#325D83",   # slate blue   L* 38  -- the modal reason
+  "harm"       = "#AD6C48",   # muted rust   L* 52
+  "epistemic"  = "#A994B4",   # muted violet L* 64
+  "unstated"   = "#B7BCC0"    # neutral grey L* 76
 )
+
 SHAPE_TIER <- c("regular" = 21, "boundary" = 24)   # circle / triangle, fillable
-SHAPE_LANG <- c("en" = 21, "zh" = 24)
+SHAPE_ESTIMAND <- c(primary = 21, descriptive = 1)  # filled vs hollow
+SHAPE_LANG <- c("en" = 21, "zh" = 1)               # filled vs hollow
 LTY_LANG   <- c("en" = "solid", "zh" = "22")
 
 # Sequential ramp for ordered quantities (engagement 1-5, rates in a heatmap).

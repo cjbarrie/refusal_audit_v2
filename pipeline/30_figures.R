@@ -62,6 +62,52 @@ pretty_dom <- function(x) {
 }
 
 # =============================================================================
+# Locator strip -- palette key for FIG1, and standalone as P1
+# =============================================================================
+cat("locator\n")
+ARAB <- c("DZA","BHR","COM","DJI","EGY","IRQ","JOR","KWT","LBN","LBY","MRT",
+          "MAR","OMN","PSE","QAT","SAU","SOM","SDN","SYR","TUN","ARE","YEM")
+world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf") %>%
+  mutate(reg = case_when(
+    iso_a3 == "CHN" ~ "China", iso_a3 == "IND" ~ "India", iso_a3 == "USA" ~ "US",
+    iso_a3 %in% ARAB ~ "Arab",
+    continent == "Europe" & iso_a3 != "RUS" ~ "Europe", TRUE ~ NA_character_)) %>%
+  st_transform("+proj=robin")
+
+make_locator <- function(labels = FALSE) {
+  g <- ggplot() +
+    geom_sf(data = filter(world, is.na(reg)), fill = MAP_LAND, colour = "white",
+            linewidth = 0.05) +
+    geom_sf(data = filter(world, !is.na(reg)), aes(fill = reg), colour = "white",
+            linewidth = 0.05) +
+    scale_fill_manual(values = PAL_REGION, guide = "none") +
+    # Tight crop: drop the southern ocean and the empty Pacific so the strip is
+    # mostly land. Antarctica and the far south carry no coloured region.
+    coord_sf(xlim = c(-1.30e7, 1.45e7), ylim = c(-1.0e6, 6.3e6), expand = FALSE) +
+    theme_void() +
+    theme(plot.margin = margin(0, 2, 0, 2),
+          plot.background = element_rect(fill = "white", colour = NA))
+  if (labels) {
+    lab <- tribble(~reg, ~lon, ~lat,
+                   "US", -100, 41, "Europe", 14, 57, "Arab", 22, 26,
+                   "India", 94, 9, "China", 104, 40) %>%
+      st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% st_transform("+proj=robin")
+    lab <- bind_cols(st_drop_geometry(lab), as_tibble(st_coordinates(lab)))
+    g <- g + geom_text(data = lab, aes(X, Y, label = reg, colour = reg),
+                       size = 2.1, family = FONT_SANS, fontface = "bold") +
+      scale_colour_manual(guide = "none",
+                          values = c(China = "white", Arab = "white",
+                                     India = unname(PAL_REGION[["India"]]),
+                                     US = INK, Europe = INK))
+  }
+  g
+}
+# In FIG1 the map is a key beside labelled statistical panels, so it carries no
+# labels of its own; standalone it does.
+p_locator_strip <- make_locator(labels = TRUE)
+p_locator       <- make_locator(labels = TRUE)
+
+# =============================================================================
 # FIG1 A -- primary within-issue home premium  (the dominant panel)
 # =============================================================================
 cat("A  home premium\n")
@@ -184,10 +230,11 @@ p_rates <- ggplot(e8, aes(x = juris, y = fct_rev(region))) +
         plot.tag.position = c(0, 1))
 
 cat("FIG1 assembling\n")
-fig1 <- ((p_home + labs(tag = "A")) | (p_cmp + labs(tag = "B"))) /
-        (p_rates + labs(tag = "C")) +
-  plot_layout(heights = c(1, 1.15))
-save_fig(fig1, file.path(FIGS, "FIG1_home_region_main.png"), width = W2, height = 4.3)
+fig1 <- (p_locator_strip + labs(tag = "A")) /
+        ((p_home + labs(tag = "B")) | (p_cmp + labs(tag = "C"))) /
+        (p_rates + labs(tag = "D")) +
+  plot_layout(heights = c(0.95, 0.88, 1.02))
+save_fig(fig1, file.path(FIGS, "FIG1_home_region_main.png"), width = W2, height = 5.7)
 
 # =============================================================================
 # FIG2 A -- model x prompt tier, integrated
@@ -310,24 +357,7 @@ save_fig(p_reasons, file.path(FIGS, "FIG3_refusal_reasons_main.png"),
 # =============================================================================
 cat("standalone panels\n")
 
-# P1 locator -- removed from FIG1, kept for methods / presentation use.
-ARAB <- c("DZA","BHR","COM","DJI","EGY","IRQ","JOR","KWT","LBN","LBY","MRT",
-          "MAR","OMN","PSE","QAT","SAU","SOM","SDN","SYR","TUN","ARE","YEM")
-world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf") %>%
-  mutate(reg = case_when(
-    iso_a3 == "CHN" ~ "China", iso_a3 == "IND" ~ "India", iso_a3 == "USA" ~ "US",
-    iso_a3 %in% ARAB ~ "Arab",
-    continent == "Europe" & iso_a3 != "RUS" ~ "Europe", TRUE ~ NA_character_)) %>%
-  st_transform("+proj=robin")
-p_locator <- ggplot() +
-  geom_sf(data = filter(world, is.na(reg)), fill = MAP_LAND, colour = "white",
-          linewidth = 0.06) +
-  geom_sf(data = filter(world, !is.na(reg)), aes(fill = reg), colour = "white",
-          linewidth = 0.06) +
-  scale_fill_manual(values = PAL_REGION, guide = "none") +
-  coord_sf(xlim = c(-1.34e7, 1.6e7), ylim = c(-3.6e6, 8.4e6), expand = FALSE) +
-  theme_void() + theme(plot.margin = margin(1, 2, 1, 2),
-                       plot.background = element_rect(fill = "white", colour = NA))
+# P1 locator is built above (it is now part of FIG1 as well).
 
 # P4 residual matrix -- the analytically sharper view, kept out of the main
 # figure because raw rates read faster there.

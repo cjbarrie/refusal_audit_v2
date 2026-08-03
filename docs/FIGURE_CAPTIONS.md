@@ -30,7 +30,16 @@ jurisdictions to refuse China-focused issues; no other jurisdiction shows a
 comparable effect on the same comparison, and simpler home-versus-away contrasts
 overstate MENA.**
 
-**(A) Primary estimand — model-based.** Adjusted **home premium**: the
+**(A) Regional key.** Locator identifying the five issue regions in the colours
+used throughout the figure. It carries no estimates and is subordinate to the
+statistical panels. "Arab" is operationalised as the 22 Arab League member
+states; "Europe" as countries with continent = *Europe* excluding Russia; China,
+India and the US as those single countries. A sixth issue stratum, **General**
+(17% of issues; no regional focus), has no geographic location and is not shown.
+Shading marks **issue-region classification**, not the location of model
+developers — distinct objects that happen to use aligned category names.
+
+**(B) Primary estimand — model-based.** Adjusted **home premium**: the
 difference in predicted probability of refusal between a jurisdiction's
 own-region issues and other issues, **holding the issue fixed**. From
 `refused ~ home × jurisdiction + prompt tier + (1 | issue)`, binomial, on
@@ -46,8 +55,8 @@ with a hollow square and stated in words, never plotted as an estimate of zero.
 India's +3.0 pp rests on a **single model** (Sarvam) and **reverses sign**
 between the two estimands in panel B; it should not be read as a finding.
 
-**(B) Why the estimand matters — model-based.** One row per jurisdiction showing
-both contrasts: the within-issue premium from panel A (filled point, with its
+**(C) Why the estimand matters — model-based.** One row per jurisdiction showing
+both contrasts: the within-issue premium from panel B (filled point, with its
 95% interval) and an adjusted **within-jurisdiction** home-versus-away
 difference (hollow point) that does **not** condition on the issue. The
 descriptive contrast has no interval drawn, to keep the row readable; its values
@@ -58,11 +67,11 @@ within-jurisdiction contrast cannot distinguish "this jurisdiction is sensitive
 about its own region" from "this region is sensitive to everyone", which is why
 it is descriptive only.
 
-**(C) Raw regional structure — descriptive.** Observed refusal rate (%) for each
+**(D) Raw regional structure — descriptive.** Observed refusal rate (%) for each
 model-jurisdiction × issue-region cell. Fill encodes the same quantity that is
 printed, on one sequential scale. Thin grey outlines mark home cells; the single
 red outline marks CN × China. **General** issues (no regional focus, 17% of the
-battery) are excluded here for consistency with the estimand in panels A and B,
+battery) are excluded here for consistency with the estimand in panels B and C,
 which is undefined for them. The Arab row is elevated across every jurisdiction
 — India's models refuse Arab issues at 12.5% against MENA's 13.4%, from a much
 lower baseline — which is why MENA's home effect does not survive the
@@ -128,12 +137,8 @@ harm-dominant at the bottom.
 `P1`–`P8` are two-column PNGs for individual use. Two are **not** part of the
 main sequence:
 
-- **`P1_locator.png`** — world locator identifying the five issue regions in the
-  same colours used throughout. It is a key, not evidence, and was removed from
-  Figure 1 for that reason. "Arab" is the 22 Arab League member states; "Europe"
-  is countries with continent = *Europe* excluding Russia; China, India and the
-  US are those single countries. Shading marks **issue-region classification**,
-  not the location of model developers.
+- **`P1_locator.png`** — the same locator as Figure 1A, sized for standalone or
+  presentation use.
 - **`P5_china_language.png`** — home premium for the two Chinese-developed
   models, estimated separately in English and Chinese from
   `refused ~ home × language + tier + (1 | issue)`, with 95%

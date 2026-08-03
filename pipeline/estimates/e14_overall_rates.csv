@@ -1,0 +1,12 @@
+model,juris,n,events,rate,conf_low,conf_high,estimable,spec,sample,scale,contrast
+allam-7b,MENA,2496,418,0.16746794871794854,0.1533325710553766,0.18262535523883341,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+claude-opus-4.5,US,2496,98,0.0392628205128203,0.03232435230729172,0.047617352799143836,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+deepseek-chat-v3.1,CN,2496,124,0.04967948717948734,0.04182572455432581,0.058917298523616414,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+falcon3-10b,MENA,2496,153,0.06129807692307624,0.052544663109428444,0.07139983001365584,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+gpt-4o,US,2496,55,0.02203525641025649,0.016968406411003275,0.028571118973325083,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+gpt-5.1,US,2496,104,0.041666666666665984,0.03450596369901377,0.050236045554692556,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+grok-4.3,US,2496,50,0.020032051282051332,0.015227852296596265,0.026311419631673116,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+jais-8b,MENA,2496,59,0.023637820512820106,0.018369667150050825,0.03037006099912471,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+mistral-large-2512,EU,2496,0,0,0,0.0015367373676796162,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+qwen3-max,CN,2496,184,0.07371794871794857,0.06410837866268128,0.08463768588796865,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+sarvam-30b,India,2490,152,0.061044176706826894,0.05229955667410116,0.07114116225528071,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate

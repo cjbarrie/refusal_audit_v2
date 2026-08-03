@@ -1,0 +1,6 @@
+jurisdiction,estimate,conf_low,conf_high,n,events,n_issues,spec,scale,contrast,sample,estimable
+CN,0.17725147244285078,0.14664781607188268,0.21346576970779285,4160,282,520,primary,probability,"within-issue home premium (DiD): P(refuse|home) - P(refuse|away), issue held fixed","English, non-General, EU excluded",TRUE
+MENA,7.902285517785019e-4,-0.01708210804795074,0.020295479271555325,6240,547,520,primary,probability,"within-issue home premium (DiD): P(refuse|home) - P(refuse|away), issue held fixed","English, non-General, EU excluded",TRUE
+India,0.030257759915456806,0.0020967628499289803,0.06662411308546735,2076,139,520,primary,probability,"within-issue home premium (DiD): P(refuse|home) - P(refuse|away), issue held fixed","English, non-General, EU excluded",TRUE
+US,-0.007968886368185282,-0.016463149637107634,0.0018085298490629481,8320,271,520,primary,probability,"within-issue home premium (DiD): P(refuse|home) - P(refuse|away), issue held fixed","English, non-General, EU excluded",TRUE
+EU,NA,NA,NA,2080,0,520,primary,probability,0 observed refusals; contrast not estimable,"English, non-General",FALSE

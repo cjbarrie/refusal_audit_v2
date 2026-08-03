@@ -148,16 +148,16 @@ ALLaM 7B,Chinese,Complexity/Uncertainty,1,788,0.0012690355329949238
 ALLaM 7B,Chinese,Expertise Limitation,1,788,0.0012690355329949238
 ALLaM 7B,Chinese,No Justification,7,788,0.008883248730964468
 ALLaM 7B,Chinese,Other,605,788,0.7677664974619289
-ALLaM 7B,Arabic,Neutrality/Balance,37,69,0.5362318840579711
-ALLaM 7B,Arabic,No Justification,3,69,0.043478260869565216
-ALLaM 7B,Arabic,Other,29,69,0.42028985507246375
+ALLaM 7B,Arabic,Neutrality/Balance,43,84,0.5119047619047619
+ALLaM 7B,Arabic,No Justification,4,84,0.047619047619047616
+ALLaM 7B,Arabic,Other,37,84,0.44047619047619047
 Jais 8B,English,Neutrality/Balance,10,59,0.1694915254237288
 Jais 8B,English,Harm Avoidance,48,59,0.8135593220338984
 Jais 8B,English,Other,1,59,0.01694915254237288
 Jais 8B,Chinese,Neutrality/Balance,57,99,0.5757575757575758
 Jais 8B,Chinese,Other,42,99,0.42424242424242425
-Jais 8B,Arabic,Neutrality/Balance,8,12,0.6666666666666666
-Jais 8B,Arabic,Other,4,12,0.3333333333333333
+Jais 8B,Arabic,Neutrality/Balance,11,16,0.6875
+Jais 8B,Arabic,Other,5,16,0.3125
 Falcon3 10B,English,Neutrality/Balance,127,153,0.8300653594771242
 Falcon3 10B,English,Complexity/Uncertainty,1,153,0.006535947712418301
 Falcon3 10B,English,Harm Avoidance,14,153,0.0915032679738562
@@ -167,9 +167,9 @@ Falcon3 10B,English,Other,1,153,0.006535947712418301
 Falcon3 10B,Chinese,Neutrality/Balance,60,73,0.821917808219178
 Falcon3 10B,Chinese,No Justification,2,73,0.0273972602739726
 Falcon3 10B,Chinese,Other,11,73,0.1506849315068493
-Falcon3 10B,Arabic,Neutrality/Balance,50,123,0.4065040650406504
-Falcon3 10B,Arabic,No Justification,12,123,0.0975609756097561
-Falcon3 10B,Arabic,Other,61,123,0.4959349593495935
+Falcon3 10B,Arabic,Neutrality/Balance,53,140,0.37857142857142856
+Falcon3 10B,Arabic,No Justification,16,140,0.11428571428571428
+Falcon3 10B,Arabic,Other,71,140,0.5071428571428571
 Sarvam 30B,English,Neutrality/Balance,100,152,0.6578947368421053
 Sarvam 30B,English,Harm Avoidance,43,152,0.28289473684210525
 Sarvam 30B,English,Expertise Limitation,1,152,0.006578947368421052
@@ -178,6 +178,6 @@ Sarvam 30B,Chinese,Neutrality/Balance,14,20,0.7
 Sarvam 30B,Chinese,Harm Avoidance,2,20,0.1
 Sarvam 30B,Chinese,No Justification,1,20,0.05
 Sarvam 30B,Chinese,Other,3,20,0.15
-Sarvam 30B,Arabic,Neutrality/Balance,3,6,0.5
-Sarvam 30B,Arabic,No Justification,1,6,0.16666666666666666
-Sarvam 30B,Arabic,Other,2,6,0.3333333333333333
+Sarvam 30B,Arabic,Neutrality/Balance,6,10,0.6
+Sarvam 30B,Arabic,No Justification,1,10,0.1
+Sarvam 30B,Arabic,Other,3,10,0.3

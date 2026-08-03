@@ -113,6 +113,29 @@ scale_color_juris <- scale_colour_juris
 scale_fill_juris <- function(...)
   scale_fill_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
 
+# --- ENCODING RULES (enforced by audit_figures.R) --------------------------
+# A visual variable must never carry two meanings. Jurisdiction colour is
+# reserved for jurisdiction / home-region / the locator map. Everything else
+# gets its own channel:
+#
+#   language        -> shape + linetype (NOT the China red)
+#   prompt tier     -> shape: circle = regular, triangle = boundary
+#   refusal reason  -> its own qualitative palette, below
+#   increase/decr.  -> sign and direction, never a second colour scheme
+#   not estimable   -> hollow square, and the words "not estimable"
+#
+# Refusal reasons are response types, not model origins, so they must not borrow
+# jurisdiction hues. Four qualitative colours, lightness-separated for grayscale.
+PAL_REASON <- c(
+  "neutrality" = "#3E5C76",   # restrained neutral-blue: the modal reason
+  "harm"       = "#7E9AAE",
+  "unstated"   = "#B9C3CB",
+  "epistemic"  = "#E1E5E9"
+)
+SHAPE_TIER <- c("regular" = 21, "boundary" = 24)   # circle / triangle, fillable
+SHAPE_LANG <- c("en" = 21, "zh" = 24)
+LTY_LANG   <- c("en" = "solid", "zh" = "22")
+
 # Sequential ramp for ordered quantities (engagement 1-5, rates in a heatmap).
 # Single hue, light -> dark: order is encoded by lightness, so it survives
 # grayscale and CVD without any hue discrimination at all.
@@ -120,6 +143,16 @@ SEQ_5 <- c("#E8EDF3", "#C2D0E0", "#8FA8C6", "#5A7CA5", "#2A5183")
 
 # Regular vs boundary: the baseline recedes, the probe is marked.
 PAL_TIER <- c("Regular Prompts" = INK_FAINT, "Boundary Prompts" = ACCENT)
+
+# Diverging, centred at zero: for the excess-refusal (interaction residual)
+# matrix, where the sign is the whole point. Neutral grey at the midpoint so
+# "no excess" reads as absence rather than as a category.
+PAL_DIVERGE <- c("#2C5F7C", "#8FAFC2", "#EFEFEF", "#D69B7A", "#8C363C")
+
+# Neutral land on the locator map, and the fill for a cell whose value is not
+# estimable. Defined here so no colour literal appears in a figure script.
+MAP_LAND   <- "#F4F5F6"
+CELL_EMPTY <- "#FBFBFC"
 
 # Languages: ink by default; scripts that must distinguish all five use this
 # ordered ramp, which is again lightness-ordered rather than hue-coded.

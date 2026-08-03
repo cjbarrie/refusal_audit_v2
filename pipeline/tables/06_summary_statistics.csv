@@ -1,8 +1,8 @@
 statistic,value
-overall_engagement,0.9552019922523519
-overall_refusal,0.044798007747648035
+overall_engagement,0.9549411115200589
+overall_refusal,0.04505888847994111
 deepseek_en_engagement,0.9503205128205128
 deepseek_zh_engagement,0.8369391025641025
 deepseek_gap,0.11338141025641024
-top_refusal_domain_engagement,0.9076758300606926
-top_refusal_domain_gap,0.04752616219165928
+top_refusal_domain_engagement,0.9075672205976749
+top_refusal_domain_gap,0.04737389092238398

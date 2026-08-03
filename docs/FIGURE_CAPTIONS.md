@@ -53,7 +53,7 @@ slightly heavier because it carries the result. Mistral Large 2512 records **0
 refusals in 2,080 responses**, so the EU contrast is not estimable; it is marked
 with a hollow square and stated in words, never plotted as an estimate of zero.
 India's +3.0 pp rests on a **single model** (Sarvam) and **reverses sign**
-between the two estimands in panel B; it should not be read as a finding.
+between the two estimands in panel C; it should not be read as a finding.
 
 **(C) Why the estimand matters — model-based.** One row per jurisdiction showing
 both contrasts: the within-issue premium from panel B (filled point, with its
@@ -134,8 +134,8 @@ harm-dominant at the bottom.
 
 ## Standalone panels
 
-`P1`–`P8` are two-column PNGs for individual use. Two are **not** part of the
-main sequence:
+`P1`–`P8` are two-column PNGs for individual use. `P5` and `P4` carry analyses
+that are **not** in the main three-figure sequence:
 
 - **`P1_locator.png`** — the same locator as Figure 1A, sized for standalone or
   presentation use.

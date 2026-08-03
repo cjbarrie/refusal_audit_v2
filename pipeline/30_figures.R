@@ -47,6 +47,21 @@ theme_fig <- function(grid = "x") theme_nature(grid = grid) +
                                 colour = INK),
         plot.tag.position = c(0, 1))
 
+
+# Tier legend that actually renders. SHAPE_TIER uses fillable glyphs (21/24), and
+# `fill` is mapped to jurisdiction with guide = "none", so without an override
+# the legend keys draw unfilled and invisible -- which is why the words "regular"
+# and "boundary" appeared with no symbol beside them.
+tier_guide <- function(fill = INK_SOFT)
+  guides(shape = guide_legend(
+    override.aes = list(fill = fill, colour = "white", size = PT_SM + 0.4,
+                        stroke = 0.4), order = 1))
+
+# Header for the right-hand signed-shift column, so the numbers are identified.
+shift_header <- function(x, y, label = "shift (pp)")
+  annotate("text", x = x, y = y, label = label, hjust = 1, size = TXT - 0.45,
+           colour = INK_FAINT)
+
 pretty_dom <- function(x) {
   x <- gsub("_", " ", x)
   x <- sub("^civil rights liberties$", "Civil rights and liberties", x)
@@ -266,13 +281,23 @@ p_modtier <- ggplot(e11, aes(y = model)) +
             hjust = 1, size = TXT - 0.3) +
   geom_text(data = no11, aes(x = XMAX11, label = "n/e"), hjust = 1,
             size = TXT - 0.4, colour = INK_FAINT) +
+  # A key for the structural zero, so the hollow square is identified rather
+  # than left as an unexplained mark.
+  geom_point(data = tibble(x = 0.163, y = nrow(e11) + 0.85), aes(x = x, y = y),
+             inherit.aes = FALSE, shape = 22, size = PT_SM - 0.2,
+             colour = INK_FAINT, fill = "white", stroke = 0.4) +
+  annotate("text", x = 0.169, y = nrow(e11) + 0.85, label = "not estimable",
+           hjust = 0, size = TXT - 0.45, colour = INK_FAINT) +
+  shift_header(XMAX11, nrow(e11) + 0.85) +
   scale_shape_manual(values = SHAPE_TIER, name = NULL) +
+  tier_guide() +
   scale_colour_manual(values = PAL_JURIS, guide = "none") +
   scale_fill_manual(values = PAL_JURIS, guide = "none") +
   scale_x_continuous(labels = label_percent(accuracy = 1, suffix = ""),
-                     limits = c(0, XMAX11), breaks = seq(0, 0.15, 0.05),
+                     limits = c(-0.004, XMAX11), breaks = seq(0, 0.15, 0.05),
                      expand = c(0, 0)) +
-  labs(x = "Refusal rate (%), with signed shift at right", y = NULL) +
+  scale_y_discrete(expand = expansion(add = c(0.6, 1.5))) +
+  labs(x = "Refusal rate (%)", y = NULL) +
   theme_fig() +
   theme(legend.position = "top", legend.justification = "left",
         legend.key.height = unit(6, "pt"), legend.key.width = unit(8, "pt"),
@@ -296,12 +321,19 @@ p_domtier <- ggplot(e12, aes(y = domain)) +
              fill = INK_SOFT, colour = "white", stroke = 0.4) +
   geom_text(aes(x = XMAX12, label = sprintf("%+.1f", 100 * shift)), hjust = 1,
             size = TXT - 0.3, colour = INK_SOFT) +
-  scale_shape_manual(values = SHAPE_TIER, guide = "none") +
+  shift_header(XMAX12, nlevels(e12$domain) + 0.85) +
+  scale_shape_manual(values = SHAPE_TIER, name = NULL) +
+  tier_guide() +
   scale_x_continuous(labels = label_percent(accuracy = 1, suffix = ""),
                      limits = c(0, XMAX12), breaks = seq(0, 0.12, 0.04),
                      expand = c(0, 0)) +
-  labs(x = "Refusal rate (%), with signed shift at right", y = NULL) +
-  theme_fig()
+  scale_y_discrete(expand = expansion(add = c(0.6, 1.5))) +
+  labs(x = "Refusal rate (%)", y = NULL) +
+  theme_fig() +
+  theme(legend.position = "top", legend.justification = "left",
+        legend.key.height = unit(6, "pt"), legend.key.width = unit(8, "pt"),
+        legend.text = element_text(size = rel(0.85)),
+        legend.margin = margin(0, 0, 1, 0))
 
 cat("FIG2 assembling\n")
 fig2 <- (p_modtier + labs(tag = "A")) | (p_domtier + labs(tag = "B"))
@@ -383,37 +415,55 @@ p_excess <- ggplot(e8, aes(x = juris, y = fct_rev(region))) +
         legend.position = "right", legend.key.width = unit(5, "pt"),
         legend.key.height = unit(20, "pt"))
 
-# P5 China language -- removed from FIG1; here it has room for the baselines.
+# P5 China language -- REDESIGNED.
+# The previous version plotted only the home PREMIUM, with the away baseline
+# relegated to an unexplained "away (%)" column and a legend that merely repeated
+# the y-axis. The claim is about two things at once -- similar gaps, different
+# baselines -- and neither was visible.
+#
+# Now it plots the underlying REFUSAL RATES: away and home as two points joined
+# by a segment. The baseline is a position, the premium is the segment length
+# (printed), and DeepSeek's Chinese baseline shift is the away point sliding
+# right. Wilson intervals on each rate show precision. The legend distinguishes
+# away from home, which the axis does not already say.
 e10 <- rd("e10_cn_home_by_language.csv")
 e9  <- rd("e09_cn_language_cells.csv")
 LL  <- c(en = "English", zh = "Chinese")
-away <- e9 %>% filter(home == 0) %>%
-  transmute(model, lang_f = factor(LL[lang], levels = c("English", "Chinese")),
-            away = rate)
-e10 <- e10 %>% mutate(lang_f = factor(LL[lang], levels = c("English", "Chinese"))) %>%
-  left_join(away, by = c("model", "lang_f"))
-p_lang <- ggplot(e10, aes(x = estimate, y = fct_rev(lang_f))) +
-  geom_vline(xintercept = 0, colour = RULE, linewidth = 0.45) +
+
+cells <- e9 %>%
+  mutate(lang_f = factor(LL[lang], levels = c("English", "Chinese")),
+         side   = factor(ifelse(home == 1, "home region", "elsewhere"),
+                         levels = c("elsewhere", "home region")))
+spans <- cells %>%
+  select(model, lang_f, side, rate) %>%
+  pivot_wider(names_from = side, values_from = rate) %>%
+  rename(away = elsewhere, home = `home region`) %>%
+  left_join(e10 %>% mutate(lang_f = factor(LL[lang], levels = c("English", "Chinese"))) %>%
+              select(model, lang_f, premium = estimate), by = c("model", "lang_f"))
+
+p_lang <- ggplot(cells, aes(y = fct_rev(lang_f))) +
+  geom_segment(data = spans, aes(x = away, xend = home, yend = fct_rev(lang_f)),
+               colour = lighten(PAL_JURIS[["CN"]], 0.72), linewidth = LW + 0.3,
+               lineend = "round") +
   geom_errorbar(aes(xmin = conf_low, xmax = conf_high), orientation = "y",
-                width = 0, linewidth = LW_CI,
-                colour = lighten(PAL_JURIS[["CN"]], 0.45)) +
-  # Language is filled vs hollow here, NOT circle vs triangle: triangle means
-  # boundary tier in FIG2 and the two must not collide.
-  geom_point(aes(shape = lang_f), size = PT, fill = PAL_JURIS[["CN"]],
+                width = 0, linewidth = 0.4, colour = INK_FAINT) +
+  geom_point(aes(x = rate, shape = side), size = PT, fill = PAL_JURIS[["CN"]],
              colour = PAL_JURIS[["CN"]], stroke = 0.7) +
-  # Away baselines as an aligned column, not floating annotations.
-  geom_text(aes(x = 0.335, label = sprintf("%.1f", 100 * away)), hjust = 1,
-            size = TXT - 0.3, colour = INK_SOFT) +
-  annotate("text", x = 0.335, y = 2.62, label = "away (%)", hjust = 1,
-           size = TXT - 0.45, colour = INK_FAINT) +
+  # The premium is the segment length, so it is labelled on the segment.
+  geom_text(data = spans, aes(x = (away + home) / 2, y = fct_rev(lang_f),
+                              label = sprintf("+%.0f pp", 100 * premium)),
+            inherit.aes = FALSE, vjust = -1.25, size = TXT - 0.4,
+            colour = INK_SOFT) +
   facet_wrap(~ model, nrow = 1) +
-  scale_shape_manual(values = SHAPE_LANG_LAB <- c(English = 21, Chinese = 1),
-                     name = NULL) +
+  # Hollow = elsewhere, filled = home region. Language is the y-axis, so shape
+  # is free to carry the contrast that actually needs a key.
+  scale_shape_manual(values = c("elsewhere" = 1, "home region" = 21), name = NULL) +
+  guides(shape = guide_legend(override.aes = list(size = PT, stroke = 0.7))) +
   scale_x_continuous(labels = label_percent(accuracy = 1, suffix = ""),
-                     limits = c(0, 0.35), breaks = seq(0, 0.30, 0.10),
+                     limits = c(0, 0.40), breaks = seq(0, 0.40, 0.10),
                      expand = c(0, 0)) +
-  scale_y_discrete(expand = expansion(add = c(0.7, 1.0))) +
-  labs(x = "Home premium (pp)", y = NULL) +
+  scale_y_discrete(expand = expansion(add = c(0.75, 1.05))) +
+  labs(x = "Refusal rate (%)", y = NULL) +
   theme_fig() +
   theme(legend.position = "top", legend.justification = "left",
         legend.key.height = unit(6, "pt"), legend.key.width = unit(8, "pt"),

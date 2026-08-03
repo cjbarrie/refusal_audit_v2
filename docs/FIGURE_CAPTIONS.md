@@ -11,8 +11,9 @@ Refusal is `engagement_code >= 4` on the judge's 1–5 engagement scale.
 | visual variable | meaning |
 |---|---|
 | colour | **model jurisdiction only** (CN deep red, India slate, MENA ochre, US grey-blue, EU light slate); issue regions inherit their jurisdiction's colour |
-| circle / triangle | prompt tier: regular / boundary |
-| filled / hollow | estimand: primary / descriptive — and language in P5 |
+| circle / triangle | prompt tier: regular / boundary (legend on every panel that uses it) |
+| filled / hollow | estimand: primary / descriptive; in P5, home region / elsewhere |
+| hollow square | contrast not estimable (0 observed refusals) |
 | four-hue palette | refusal reason (distinct from jurisdiction colours) |
 | thin light interval | uncertainty |
 
@@ -139,13 +140,16 @@ that are **not** in the main three-figure sequence:
 
 - **`P1_locator.png`** — the same locator as Figure 1A, sized for standalone or
   presentation use.
-- **`P5_china_language.png`** — home premium for the two Chinese-developed
-  models, estimated separately in English and Chinese from
-  `refused ~ home × language + tier + (1 | issue)`, with 95%
-  parametric-bootstrap intervals and the away-region baseline in an aligned
-  right-hand column. Language is filled versus hollow here, not circle versus
-  triangle, so it cannot be confused with the prompt-tier encoding in Figure 2.
-  The premium is of similar magnitude in both languages for both models, while
+- **`P5_china_language.png`** — refusal rate for the two Chinese-developed
+  models on **home-region (China) issues** versus **issues elsewhere**, shown
+  separately for English and Chinese prompts. Hollow points are elsewhere,
+  filled points are the home region; the joining segment is the home premium and
+  is labelled with its value. Points carry 95% Wilson intervals. Premiums are
+  estimated from `refused ~ home × language + tier + (1 | issue)` with
+  parametric-bootstrap intervals in
+  `pipeline/estimates/e10_cn_home_by_language.csv`. Shape distinguishes home
+  from elsewhere, not language — language is the y-axis — so it cannot be
+  confused with the prompt-tier encoding in Figure 2. The premium is of similar magnitude in both languages for both models, while
   the **baseline** rises sharply in Chinese for DeepSeek (2.6% → 14.5%) and not
   for Qwen (4.6% → 3.6%). The home × language interaction is not significant for
   Qwen (*p* = 0.48); for DeepSeek it is significant on the log-odds scale

@@ -41,3 +41,4 @@ annotations/panel_pilot/
 logs/
 logs_*.txt
 pipeline/data_clean.RData
+Rplots.pdf

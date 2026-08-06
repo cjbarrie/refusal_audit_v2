@@ -5,7 +5,104 @@ downstream of the sourcing rebuild; the sourcing stage itself is done.*
 
 ---
 
-## ⏱ RESUME HERE — 2026-08-06b (authoritative; supersedes everything below)
+## ⏱ RESUME HERE — 2026-08-06c (authoritative; supersedes everything below)
+
+**Running now:** the full canonical run (`CANONICAL_RUN_ID=canon_002
+Rscript pipeline/run_canonical.R`). Nothing else.
+
+### The canonical analysis layer — BUILT
+
+`pipeline/50_canonical_common.R` … `56_canonical_acceptance.R` + `run_canonical.R`
+are now **the analyses the paper reports**. Spec: **`docs/CANONICAL_ANALYSES.md`**
+(read it before touching any of them — it is the specification, not a summary).
+
+| part | script | tables | what it answers |
+|---|---|---|---|
+| 1 home | `51` | `c02`–`c07` | descriptive **and** standardized home−away, never collapsed |
+| 2 language + framing | `52` | `c08`–`c11` | paired within `model × prompt_id` / `issue × model × language` |
+| 3 content | `53` | `c12`–`c16` | ideology + moral foundations, conditional on engagement |
+| 4 measurement | `54` | `c17` | each judge separately; no majority vote |
+| figures | `55` | `FIG1`–`FIG3` | reads the c-tables, recomputes nothing |
+| tests | `56` | `c01b` | 37 adversarial acceptance tests |
+
+**The v1 (`20`–`30`) and v2 (`40`–`47`) layers are archived**, in
+`pipeline/archive/precanonical_v1|v2/`, with a file-by-file replacement mapping
+and a "not carried forward" list in `pipeline/archive/README.md`.
+`docs/ESTIMANDS.md` is now a **historical catalogue** — do not quote from it.
+`run_all.R` no longer registers the archived scripts; it runs the data build,
+the descriptive/case-study scripts, and `24_measurement.R` (which feeds `c17`).
+
+### Three things the canonical layer changed that a reader must know
+
+- **The bootstrap was wrong and is now right.** v2 keyed replicate statistics on
+  `issue_id`, so a replicate that drew the same issue twice collapsed the copies
+  into one unit and understated between-issue variance. The canonical bootstrap
+  labels each *draw* (`bootstrap_issue_instance`). Intervals are wider —
+  CN standardized is 16.48 pp **[9.95, 24.84]** against v2's [9.32, 24.89].
+- **Multiple judges are a sensitivity dimension, not a consensus.** No majority
+  vote is computed: without human calibration there is no basis for calling the
+  majority correct, and a consensus label would hide the disagreement. `c17`
+  reports each judge separately and the spread as a **range** labelled
+  *instrument sensitivity*, never pooled with a bootstrap interval. Under the
+  current panel the **sign and ordering of the headline findings are stable
+  across judges; the magnitudes are not** (overall English refusal 5.14% under
+  the canonical judge vs 2.97–4.43% under the others; CN home−away descriptive
+  ranges 7.4 pp across judges).
+- **The annotation-error correction stays disabled.** `draw_latent_labels()`
+  refuses to run without stratum-specific sensitivity/specificity/prevalence.
+  The design-based validation study that would supply them is specified in
+  `docs/CANONICAL_ANALYSES.md` §5d — **planned, not run**.
+
+### Also built: the refusal-text projection
+
+`scripts/refusal_umap.py` + `pipeline/57_refusal_umap_figure.R` → `P15`. UMAP of
+every refusal's text (TF-IDF → SVD → UMAP, local, no API spend), coloured by the
+judge's A–G justification code. Reason groups separate but overlap heavily:
+neighbourhood purity 0.60 vs 0.44 at random in English, 0.57 vs 0.35 across all
+five languages. A **diagnostic on the weakest-agreeing construct in the study**,
+not an estimand — nothing in the paper derives from it. Two things it found on
+the way: the response files carry retry attempts as duplicate rows whose failed
+copy is empty text (hi has 29,831 such rows), so anything reading
+`responses/*.jsonl` directly must keep the longest text per
+`prompt_id × language × model`, not the first; and only ~90 responses in the
+whole corpus are actually empty, none of them coded as refusals.
+
+### Next actions
+
+1. **Check `canon_002` finished green** — `c01b_acceptance_tests.csv` should be
+   37/37 (test D1b fails on mixed run ids if parts were run separately).
+2. **Re-assemble `annotations_panel.jsonl`** — it is stale relative to the
+   current run; `c17` uses what is on disk now.
+3. **Slant top-up**: ~5,200 eligible engaged rows still lack Pass 2/3 codes.
+   Would let Part 3 report more than English (`c12b` currently excludes zh/ar/ru
+   at 98.9/95.4/68.3% coverage).
+4. **Stance (Pass 4)** still unrun; whether it becomes a canonical outcome is
+   undecided.
+5. **`e20_moral_by_language.csv`** is retired as unsound (unpaired, with
+   language-varying denominators). A defensible version needs the `c08` paired
+   block design applied to a content outcome — not yet run.
+
+### Standing cautions
+
+- **Re-assemble before diagnosing coverage.** `data_clean` is built from
+  assembled annotations; a language can look absent when responses *and*
+  annotations exist. This caused two wrong diagnoses of a "Hindi gap".
+- **A weighting or balance check on a balanced design passes trivially.** The
+  English home arm is exactly 104 issues per model, so weighted equals
+  unweighted *exactly*. Test the weights against a constructed imbalance, or the
+  check proves nothing.
+- **A test whose condition returns `logical(0)` must fail, not vanish.** One
+  acceptance test silently disappeared from the report for exactly this reason.
+- **`--batteries rebalanced` is required**; the default matches nothing.
+- **Judge suitability cannot be read off a model card** — bake off on a pilot
+  slice and select on measured recall/α.
+- **Discrete-scale ordering**: a level supplied only by a second ggplot layer is
+  appended to the scale and renders at the top. Pin `limits=` explicitly. This
+  has now bitten three separate figures.
+
+---
+
+## ⏱ RESUME HERE — 2026-08-06b (superseded by the 2026-08-06c block above)
 
 **Running now:** the Tier-1 judge panel on `full_v1` English (`nemotron-3-nano`,
 then `nemotron-3-super`). Nothing else.

@@ -17,7 +17,7 @@
 # The reported contrast is a DESCRIPTIVE DIFFERENCE IN OBSERVED RATES. It is not
 # adjusted, not standardized, and not causal.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 cat(strrep("=", 78), "\nFAMILY A: DESCRIPTIVE HOME RESULTS\n", strrep("=", 78), "\n", sep = "")
 
 OUT <- "e32_home_descriptive.csv"

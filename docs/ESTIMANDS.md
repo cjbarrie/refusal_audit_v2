@@ -1,19 +1,30 @@
 # Every estimand in this repository
 
-Written 2026-08-06. A complete catalogue of what this project estimates, the
-model behind each quantity, and — the part that matters most — **what each one
-can and cannot support**.
+> **HISTORICAL CATALOGUE — superseded 2026-08-06.**
+> The canonical analyses are specified in
+> [`CANONICAL_ANALYSES.md`](CANONICAL_ANALYSES.md), and the scripts that produced
+> the v1 and v2 layers described below have been moved to `pipeline/archive/`
+> (file-by-file mapping in [`pipeline/archive/README.md`](../pipeline/archive/README.md)).
+> **Quote nothing from this document in the paper.** It is kept because every
+> number in an earlier draft came from one of these estimands, and a reader who
+> finds an old figure needs to be able to work out what it was.
 
-The repository currently carries **two layers, both live**:
+Written 2026-08-06. A complete catalogue of what this project estimated, the
+model behind each quantity, and — the part that matters most — **what each one
+could and could not support**.
+
+At the time of writing the repository carried **two layers, both live**:
 
 | layer | scripts | tables | figures | status |
 |---|---|---|---|---|
-| **v1** | `01`–`30` | `e01`–`e31`, `d01`–`d08` | `FIG1`–`FIG5`, `P1`–`P14` | plotted today |
-| **v2** | `40`–`47` | `e32`–`e40` | `FIGA`–`FIGC` | plotted today, alongside |
+| **v1** | `01`–`30` | `e01`–`e31`, `d01`–`d08` | `FIG1`–`FIG5`, `P1`–`P14` | archived → `precanonical_v1/` |
+| **v2** | `40`–`47` | `e32`–`e40` | `FIGA`–`FIGC` | archived → `precanonical_v2/` |
 
-They **disagree on the home-region question**, and both sets of figures are
-currently public. Part III says which to quote and why. Nothing in v2 overwrites
-v1: the split is deliberate while the canonical set is undecided.
+They **disagreed on the home-region question**, and both sets of figures were
+public at once. Part III below says which to quote and why — that comparison is
+now settled by the canonical layer, which supersedes both. The estimate CSVs
+themselves remain in `pipeline/estimates/`; `c01_reconciliation.csv` reads
+several of them to explain how the canonical numbers differ.
 
 **Conventions that hold everywhere unless a section says otherwise.** Unit of
 observation is one model response to one prompt in one language. The judge is

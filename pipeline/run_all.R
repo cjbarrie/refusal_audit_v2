@@ -55,23 +55,26 @@ PLAN <- list(
        what = "DeepSeek zh-vs-en chi-squared, mixed model, figs 22-23"),
   list(id = "09", file = "09_deepseek_stats.R",             stage = "tables",
        what = "bootstrap ORs, Cramer's V, BH-corrected p-values"),
-  list(id = "20", file = "20_estimates_home.R",              stage = "estimates",
-       what = "primary within-issue home premium + sensitivity (e01-e10)"),
-  list(id = "21", file = "21_estimates_support.R",           stage = "estimates",
-       what = "model/domain tier contrasts, refusal reasons (e11-e14)"),
-  list(id = "22", file = "22_estimates_slant.R",              stage = "estimates",
-       what = "ideology + moral foundations on the slant subsample (e15-e19)"),
-  list(id = "23", file = "23_diagnostics.R",                  stage = "estimates",
-       what = "measurement + coverage diagnostics (d01-d08)"),
   list(id = "24", file = "24_measurement.R",                  stage = "estimates",
-       what = "judge-panel reliability + measurement robustness (e23-e28)"),
-  list(id = "25", file = "25_estimates_language.R",            stage = "estimates",
-       what = "prompt-language effects, all models x languages (e29-e31)"),
-  list(id = "30", file = "30_figures.R",                     stage = "figures",
-       what = "FIG1-5 + panels, from saved estimates"),
+       what = "judge-panel reliability + measurement robustness (e23-e28); feeds c17"),
   list(id = "16", file = "16_irr_analysis.R",               stage = "irr",
-       what = "RETIRED stub; superseded by 24_measurement.R")
+       what = "RETIRED stub; superseded by 24_measurement.R"),
+  # Self-skips unless scripts/refusal_umap.py has written its coordinates: the
+  # projection is computed in Python and this script only draws it.
+  list(id = "57", file = "57_refusal_umap_figure.R",        stage = "figures",
+       what = "UMAP of refusal text (P15); needs scripts/refusal_umap.py first")
 )
+
+# NOT IN THIS PLAN. The estimand and figure layers -- v1's 20/21/22/23/25/30 and
+# v2's 40-47 -- have been superseded by the canonical layer and moved to
+# pipeline/archive/ (see pipeline/archive/README.md for the file-by-file
+# mapping). Headline estimates and figures now come from:
+#
+#     Rscript pipeline/run_canonical.R
+#
+# This driver still runs what the canonical layer depends on or does not cover:
+# the data build (01), the descriptive/case-study tabulations (02, 06-09), and
+# the judge-panel reliability tables (24) that 54_canonical_measurement.R reads.
 
 only <- get_flag("--only")
 if (!is.null(only)) {

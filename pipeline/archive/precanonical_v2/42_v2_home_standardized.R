@@ -44,7 +44,7 @@
 # replicates; percentile intervals. Fixed-coefficient simulation is not used as
 # the primary interval method anywhere in this family.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 cat(strrep("=", 78), "\nFAMILY B: STANDARDIZED HOME CONTRASTS\n", strrep("=", 78), "\n", sep = "")
 
 B_PRIMARY <- 2000L

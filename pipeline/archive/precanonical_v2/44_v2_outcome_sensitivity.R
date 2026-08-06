@@ -20,7 +20,7 @@
 # consensus label would hide exactly the disagreement this table exists to show.
 # Judge labels are read from <run_dir>/panel/<judge>/ directly, read-only.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 cat(strrep("=", 78), "\nOUTCOME DEFINITION + MEASUREMENT SENSITIVITY\n", strrep("=", 78), "\n", sep = "")
 
 B_OUT <- 1000L

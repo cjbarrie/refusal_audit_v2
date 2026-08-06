@@ -1,0 +1,26 @@
+file,path,rows,bytes,run_id,canonical_run_id,generated_at,git_commit,r_version
+c00_manifest.csv,pipeline/estimates/canonical/c00_manifest.csv,25,3707,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c00_timings.csv,pipeline/estimates/canonical/c00_timings.csv,0,0,NA,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c01_reconciliation.csv,pipeline/estimates/canonical/c01_reconciliation.csv,3,2171,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c01b_acceptance_tests.csv,pipeline/estimates/canonical/c01b_acceptance_tests.csv,37,3347,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c02_home_descriptive_english.csv,pipeline/estimates/canonical/c02_home_descriptive_english.csv,69,24813,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c03_home_descriptive_all_languages_supplement.csv,pipeline/estimates/canonical/c03_home_descriptive_all_languages_supplement.csv,100,26626,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c04_home_standardized.csv,pipeline/estimates/canonical/c04_home_standardized.csv,10,8698,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c05_home_by_model.csv,pipeline/estimates/canonical/c05_home_by_model.csv,15,6875,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c06_home_overlap.csv,pipeline/estimates/canonical/c06_home_overlap.csv,315,21053,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c07_home_sensitivities.csv,pipeline/estimates/canonical/c07_home_sensitivities.csv,74,36678,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c08_language_paired.csv,pipeline/estimates/canonical/c08_language_paired.csv,52,29352,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c09_language_by_model.csv,pipeline/estimates/canonical/c09_language_by_model.csv,64,25448,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c10_framing_paired.csv,pipeline/estimates/canonical/c10_framing_paired.csv,4,2502,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c11_framing_by_model_domain.csv,pipeline/estimates/canonical/c11_framing_by_model_domain.csv,22,8800,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c12_ideology_distribution.csv,pipeline/estimates/canonical/c12_ideology_distribution.csv,16,10134,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c12b_slant_coverage.csv,pipeline/estimates/canonical/c12b_slant_coverage.csv,60,5692,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c13_ideology_by_model.csv,pipeline/estimates/canonical/c13_ideology_by_model.csv,44,12868,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c14_moral_prevalence_equal_model.csv,pipeline/estimates/canonical/c14_moral_prevalence_equal_model.csv,36,21670,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c15_moral_by_model.csv,pipeline/estimates/canonical/c15_moral_by_model.csv,66,10081,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c16_content_joint_outcomes.csv,pipeline/estimates/canonical/c16_content_joint_outcomes.csv,192,35313,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c17_measurement_sensitivity.csv,pipeline/estimates/canonical/c17_measurement_sensitivity.csv,47,24100,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+c18_bootstrap_diagnostics.csv,pipeline/estimates/canonical/c18_bootstrap_diagnostics.csv,52,6650,canon_002,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+FIG1_canonical_home.png,pipeline/figures/canonical/FIG1_canonical_home.png,NA,458496,NA,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+FIG2_canonical_language_framing.png,pipeline/figures/canonical/FIG2_canonical_language_framing.png,NA,381092,NA,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1
+FIG3_canonical_content.png,pipeline/figures/canonical/FIG3_canonical_content.png,NA,262338,NA,canon_002,2026-08-06 20:56:12,9f87c69,4.4.1

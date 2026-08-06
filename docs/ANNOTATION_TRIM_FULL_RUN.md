@@ -1,5 +1,12 @@
 # Annotation trim: Pass-1-only full run
 
+> **⚠ SCRIPT PATHS BELOW ARE OUT OF DATE — 2026-08-06c.** The v1 estimand layer
+> (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer (`40`–`47`) have been
+> archived to `pipeline/archive/precanonical_v1|v2/`; `pipeline/archive/README.md`
+> maps each to its replacement. The analyses the paper reports are specified in
+> **`docs/CANONICAL_ANALYSES.md`**. This document is kept as a dated record of
+> what was true when it was written.
+
 > **⚠ SUPERSEDED IN PART, 2026-08-04.** Passes 2 and 3 have since been run over
 > a **25% issue subsample** of `full_v1` in all five languages, and the slant
 > analysis has been reinstated as `pipeline/22_estimates_slant.R` +

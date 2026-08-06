@@ -35,7 +35,7 @@
 # (discordant blocks only) and different scales (log-odds, conditional). They are
 # reported as secondary and are NOT the headline.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 cat(strrep("=", 78), "\nFAMILY C: PROMPT-FIXED LANGUAGE EFFECTS\n", strrep("=", 78), "\n", sep = "")
 
 B_LANG <- 2000L

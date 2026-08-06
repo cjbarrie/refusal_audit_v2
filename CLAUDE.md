@@ -160,26 +160,40 @@ Output surfaces per run dir: `responses/<battery>_<lang>.jsonl`,
 
 ### 3. R analysis (`pipeline/`)
 
-**Estimation and plotting are separate, and must stay separate.** `20_`–`25_`
-fit models and write tidy tables to `pipeline/estimates/`; `30_figures.R` reads
-those tables and draws, fitting nothing.
+**Estimation and plotting are separate, and must stay separate.** `51_`–`54_`
+fit models and write tidy tables to `pipeline/estimates/canonical/`;
+`55_canonical_figures.R` reads those tables and draws, fitting nothing.
 
-Current R layer (14 numbered scripts + `audit_figures.R` + `run_all.R` + `_theme.R`):
+**The canonical layer is what the paper reports.** Read
+`docs/CANONICAL_ANALYSES.md` before touching any of it — it is the spec, not a
+summary. The earlier v1 (`20`–`30`) and v2 (`40`–`47`) estimand layers are
+**superseded and archived** under `pipeline/archive/`; `pipeline/archive/README.md`
+maps every archived file to its replacement and lists what was deliberately not
+carried forward. Don't run archived scripts to produce new results — they
+overwrite the historical `e`-series CSVs in place.
 
 | script | role | outputs |
 |---|---|---|
 | `01_data_loading.R` | builds `data_clean.RData` — the foundation | tables 00 |
 | `02`,`06`,`07`,`08`,`09` | engagement, justifications, DeepSeek language | tables |
-| `20_estimates_home.R` | **primary** within-issue home premium | `e01`–`e10`, `e21`–`e22` |
-| `21_estimates_support.R` | model/domain tier contrasts, refusal reasons | `e11`–`e14` |
-| `22_estimates_slant.R` | ideology + moral foundations (25% subsample) | `e15`–`e20` |
-| `23_diagnostics.R` | measurement + coverage diagnostics | `d01`–`d08` |
-| `24_measurement.R` | **judge-panel reliability + robustness** | `e23`–`e28` |
-| `25_estimates_language.R` | prompt-language effects, all models × languages | `e29`–`e31` |
-| `30_figures.R` | **all** v1 figures; fits nothing | FIG1–5 + `P1`–`P14` |
-| **`40`–`47_v2_*.R`** | **v2 estimand layer** (see below); additive, overwrites nothing | `e32`–`e40`, `FIGA`–`FIGC` |
+| `24_measurement.R` | **judge-panel reliability + robustness**; feeds `c17` | `e23`–`e28` |
+| `50_canonical_common.R` | shared sample, nested weights, multiplicity-preserving bootstrap, judge accessors | — |
+| `51_canonical_home.R` | descriptive + standardized home contrast | `c02`–`c07` |
+| `52_canonical_language_framing.R` | paired language + framing effects | `c08`–`c11` |
+| `53_canonical_content.R` | ideology, moral foundations, joint outcomes | `c12`–`c16` |
+| `54_canonical_measurement.R` | per-judge sensitivity; no majority vote | `c17` |
+| `55_canonical_figures.R` | **all** canonical figures; fits nothing | `FIG1`–`FIG3` |
+| `56_canonical_acceptance.R` | 37 adversarial tests; non-zero exit on failure | `c01b` |
+| `run_canonical.R` | driver + reconciliation + manifest | `c00`, `c01`, `c18` |
 | `audit_figures.R` | PNG-only, figure↔estimate agreement, CVD | pass/fail |
 | `16_irr_analysis.R` | **RETIRED stub** — two-rater only; see `24_` | — |
+
+Two rules the canonical layer depends on and that are checked mechanically:
+the **issue-cluster bootstrap must label each draw** (`bootstrap_issue_instance`),
+so a resample that draws one issue twice keeps the copies distinct; and the
+**canonical outcome is one named judge**, with the rest of the panel reported as
+an instrument-sensitivity *range* that is never pooled with a bootstrap interval.
+`56_canonical_acceptance.R` fails the build on either.
 `pipeline/audit_figures.R` enforces this (it greps for `glmer(`/`glm(`/`lmer(`
 in the figure script) along with PNG-only output, estimates-to-figure agreement,
 and colour-vision separability. Run it after any figure change — it is the
@@ -232,22 +246,24 @@ output schema, check that contract for what fields/joins R depends on.
 - `archive/` holds superseded pilot/probe artifacts (old annotations, sampled
   prompts) kept for reference — don't treat it as live pipeline input.
   `archive/pipeline_slant/` is the *pre-trim* slant analysis; the live slant
-  path is `pipeline/22_estimates_slant.R` + FIG4, so don't reintroduce the
+  path is `pipeline/53_canonical_content.R` + FIG3, so don't reintroduce the
   archived scripts alongside it.
-- **The v2 estimand layer** (`docs/ESTIMANDS.md`) separates three questions
-  the earlier analysis ran as one, and is strictly **additive**: `e01`/`e29`/
-  `e30`/`e31` and FIG1–5 are untouched; v2 writes `e32`–`e40` and FIGA–FIGC.
-  * **A descriptive** (counts, no model) · **B standardized** (covariate-
-    adjusted, per jurisdiction) · **C prompt-fixed language** (paired within
-    `model × prompt_id`).
-  * **Family B must never be described as causal, a difference-in-differences,
-    or a within-issue effect.** `home` is a fixed property of an issue's region;
-    nothing randomises it. Those strings are banned — both
-    `46_v2_acceptance_tests.R` and `audit_figures.R` fail the build on an
-    unnegated use.
+- **The canonical estimand layer** (`docs/CANONICAL_ANALYSES.md`) reports three
+  separated families and is what the paper quotes: **Part 1 home** (descriptive
+  `c02` *and* standardized `c04`, never collapsed into one number) · **Part 2
+  language + framing** (paired within `model × prompt_id` and
+  `issue × model × language`) · **Part 3 content** (conditional on engagement).
+  * **The standardized contrast must never be described as causal, a
+    difference-in-differences, or a within-issue effect.** `home` is a fixed
+    property of an issue's region; nothing randomises it. Those strings are
+    banned — `56_canonical_acceptance.R` (test E1) fails the build on an
+    unnegated use anywhere in the canonical tables.
   * `General` is a THIRD region position, never folded into `away`.
-  * Every bootstrap resamples **whole issues** and refits inside the replicate.
-  * Not registered in `run_all.R` (~2 h runtime); invoke explicitly.
+  * Every bootstrap resamples **whole issues**, labels each draw, and refits
+    inside the replicate.
+  * Ideology and moral-foundation tables are **conditional on engagement** and
+    must say so; ideology additionally carries a weak-reliability warning.
+  * Not registered in `run_all.R` (~2 h runtime); run `pipeline/run_canonical.R`.
 - **Multi-judge reliability panel** (`docs/MULTI_JUDGE_PLAN.md`). Every
   annotation record carries `judge_model` / `judge_prompt_version` /
   `annotation_run_id`. `run_pilot.py --judge-panel [MODEL ...]` annotates the

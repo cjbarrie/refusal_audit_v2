@@ -1,11 +1,24 @@
 # The R analysis pipeline — what each script does, and why
 
-> **⚠ v2 ESTIMAND LAYER — 2026-08-06.** `pipeline/40_v2_*` through `47_v2_*`
-> add three explicitly separated estimand families (descriptive / standardized /
-> prompt-fixed language) writing `e32`–`e40` and `FIGA`–`FIGC`. It is ADDITIVE:
-> nothing in `01`–`30` changes and no earlier output is overwritten. Full
-> rationale, models and inferential limits: **`docs/ESTIMANDS.md`**.
-> Not registered in `run_all.R` — invoke explicitly.
+> **⚠ CANONICAL LAYER — 2026-08-06c. This block supersedes everything below.**
+>
+> `pipeline/50_canonical_common.R` … `56_canonical_acceptance.R`, driven by
+> `pipeline/run_canonical.R`, produce **the analyses the paper reports**:
+> `c00`–`c18` in `pipeline/estimates/canonical/` and `FIG1`–`FIG3` in
+> `pipeline/figures/canonical/`. Specification, statistical models and
+> inferential limits: **`docs/CANONICAL_ANALYSES.md`**.
+>
+> **The scripts described in the rest of this document are archived.** The v1
+> estimand layer (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer
+> (`40`–`47`) moved to `pipeline/archive/precanonical_v1|v2/`; see
+> `pipeline/archive/README.md` for the file-by-file mapping to their canonical
+> replacements and the list of outputs deliberately not carried forward.
+> `docs/ESTIMANDS.md` is a historical catalogue — do not quote from it.
+>
+> Still live and described accurately below: `01_data_loading.R` (the
+> foundation), the descriptive/case-study scripts `02`, `06`–`09`, and
+> `24_measurement.R`, whose reliability tables feed `c17`.
+> Not registered in `run_all.R` (~2 h) — run `pipeline/run_canonical.R`.
 
 > **⚠ CURRENT STRUCTURE — 2026-08-04. Read this block first; the 2026-07-30
 > reorganisation note and the per-script rows below describe an earlier layout

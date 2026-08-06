@@ -1,5 +1,12 @@
 # Analytical audit — home-region sensitivity
 
+> **⚠ SCRIPT PATHS BELOW ARE OUT OF DATE — 2026-08-06c.** The v1 estimand layer
+> (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer (`40`–`47`) have been
+> archived to `pipeline/archive/precanonical_v1|v2/`; `pipeline/archive/README.md`
+> maps each to its replacement. The analyses the paper reports are specified in
+> **`docs/CANONICAL_ANALYSES.md`**. This document is kept as a dated record of
+> what was true when it was written.
+
 Written 2026-08-03; slant section added 2026-08-04. Supersedes the estimand
 treatment in `ANALYSIS_HANDOFF.md`. Generation is still running; regenerate
 with

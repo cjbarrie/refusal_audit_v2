@@ -5,7 +5,7 @@
 # Each test recomputes its target INDEPENDENTLY of the script that produced it;
 # a test that merely re-read the output would prove nothing.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 suppressPackageStartupMessages(library(jsonlite))
 cat(strrep("=", 78), "\nv2 ACCEPTANCE TESTS\n", strrep("=", 78), "\n", sep = "")
 

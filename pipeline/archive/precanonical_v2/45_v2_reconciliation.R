@@ -11,7 +11,7 @@
 # and mark anything asserted at run level (rather than evidenced per row) as
 # exactly that. Row-level provenance is NOT fabricated for legacy labels.
 
-source("pipeline/40_v2_common.R")
+source("pipeline/archive/precanonical_v2/40_v2_common.R")
 suppressPackageStartupMessages(library(jsonlite))
 cat(strrep("=", 78), "\nRECONCILIATION + PROVENANCE + SPEC\n", strrep("=", 78), "\n", sep = "")
 

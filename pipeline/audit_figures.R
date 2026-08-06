@@ -23,10 +23,13 @@ cat(strrep("=", 78), "\nFIGURE + ESTIMATE AUDIT\n", strrep("=", 78), "\n", sep =
 
 # --- 1. PNG only -------------------------------------------------------------
 cat("\n1. output format\n")
-allf <- list.files(FIGS)
+# Recursive: the canonical figures sit in pipeline/figures/canonical/, and the
+# PNG-only rule applies there too. include.dirs = FALSE so a subdirectory entry
+# is not mistaken for a stray non-PNG file.
+allf <- list.files(FIGS, recursive = TRUE, include.dirs = FALSE)
 png_f <- grep("[.]png$", allf, value = TRUE)
 bad   <- setdiff(allf, png_f)
-ok("PNG only, no other format", length(bad) == 0,
+ok("PNG only, no other format (recursive)", length(bad) == 0,
    sprintf("%d png%s", length(png_f),
            if (length(bad)) paste0("; FOUND ", paste(bad, collapse = ", ")) else ""))
 
@@ -54,10 +57,25 @@ V2FIG <- if (file.exists("pipeline/estimates/e32_home_descriptive.csv"))
 # check, so the same condition drives both directions.
 SLANT <- if (file.exists("pipeline/estimates/e16b_ideology_summary.csv"))
   c("FIG4_slant_main", "P9_ideology_mean_neutral", "P9_ideology_distribution",
-    "P10_moral_foundations", "P11_moral_by_language") else character(0)
+    "P10_moral_foundations") else character(0)
+# P11_moral_by_language was WITHDRAWN, not superseded: it plotted e20, an
+# unpaired cross-language comparison whose denominators are not comparable
+# because both passes are conditional on engagement and engagement varies by
+# language. See pipeline/estimates/retired/README.md. Do not reinstate it
+# without the paired design.
+# The canonical figures live in a subdirectory and are expected once the
+# canonical estimates exist -- same optional treatment as the slant and language
+# figures, so present-but-unexpected does not trip the stale check.
+# The refusal-text projection exists only once scripts/refusal_umap.py has run.
+UMAPFIG <- if (file.exists("pipeline/estimates/u01_refusal_umap.csv"))
+  "P15_refusal_text_umap" else character(0)
+CANFIG <- if (file.exists("pipeline/estimates/canonical/c04_home_standardized.csv"))
+  file.path("canonical", c("FIG1_canonical_home", "FIG2_canonical_language_framing",
+                           "FIG3_canonical_content")) else character(0)
 # Two-column only. No _1col, no _2col: one canonical file per main figure.
 expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"), paste0(SLANT, ".png"),
-            paste0(LANG, ".png"), paste0(V2FIG, ".png"))
+            paste0(LANG, ".png"), paste0(V2FIG, ".png"), paste0(CANFIG, ".png"),
+            paste0(UMAPFIG, ".png"))
 missing <- setdiff(expect, png_f)
 ok("every expected PNG present", length(missing) == 0,
    sprintf("%d expected%s", length(expect),
@@ -170,7 +188,8 @@ ok("denominators recorded for compositions",
 # Legend order must equal the DRAWN stack order. geom_col stacks in reverse
 # factor order, so the legend has to be given breaks = rev(levels) -- and a
 # mismatch is invisible in the estimate tables, so only a source check finds it.
-src0 <- readLines("pipeline/30_figures.R", warn = FALSE)
+V1FIG_SRC <- "pipeline/archive/precanonical_v1/30_figures.R"
+src0 <- if (file.exists(V1FIG_SRC)) readLines(V1FIG_SRC, warn = FALSE) else character()
 ok("FIG3 legend order matches stack order",
    any(grepl("DRAWN_ORDER <- rev\\(names\\(PAL_REASON\\)\\)", src0)) &&
      any(grepl("breaks = DRAWN_ORDER", src0)),
@@ -247,7 +266,7 @@ ok("reason palette has a separate 'other' and 'none given'",
    all(c("other", "none given") %in% names(PAL_REASON)),
    "judge code G is not folded into F")
 
-src  <- readLines("pipeline/30_figures.R", warn = FALSE)
+src  <- if (file.exists(V1FIG_SRC)) readLines(V1FIG_SRC, warn = FALSE) else character()
 code <- grep("^\\s*#", src, value = TRUE, invert = TRUE)
 ok("no model fitting in the figure script",
    length(grep("glmer\\(|[^a-z.]glm\\(|lmer\\(", code)) == 0, "plotting only")
@@ -276,9 +295,9 @@ ok("palette not hard-coded in figures", length(hex) <= 1,
    sprintf("%d literal hex", length(hex)))
 
 # --- 5b. v2 figure layer ------------------------------------------------------
-if (length(V2FIG)) {
+if (length(V2FIG) && file.exists("pipeline/archive/precanonical_v2/47_v2_figures.R")) {
   cat("\n5b. v2 figures (alongside FIG1-5)\n")
-  v2src <- readLines("pipeline/47_v2_figures.R", warn = FALSE)
+  v2src <- readLines("pipeline/archive/precanonical_v2/47_v2_figures.R", warn = FALSE)
   v2code <- grep("^\\s*#", v2src, value = TRUE, invert = TRUE)
   # A Family B quantity must never be described as causal, a DiD, or a
   # within-issue effect. Only the CODE lines are scanned: the header comment
@@ -300,6 +319,35 @@ if (length(V2FIG)) {
   e32a <- read_csv("pipeline/estimates/e32_home_descriptive.csv", show_col_types = FALSE)
   ok("v2 descriptive carries the General category",
      "general" %in% e32a$home_status, "three region positions")
+}
+
+# --- 5c. canonical figure layer ----------------------------------------------
+# The v1/v2 checks above audit archived scripts kept for provenance. The
+# canonical figure script is the one the paper depends on, so it gets the same
+# rules enforced independently -- and if it goes missing this section fails
+# rather than silently passing.
+cat("\n5c. canonical figures\n")
+CANFIG_SRC <- "pipeline/55_canonical_figures.R"
+ok("canonical figure script exists", file.exists(CANFIG_SRC), CANFIG_SRC)
+if (file.exists(CANFIG_SRC)) {
+  csrc  <- readLines(CANFIG_SRC, warn = FALSE)
+  ccode <- grep("^\\s*#", csrc, value = TRUE, invert = TRUE)
+  ok("canonical figure script fits no models",
+     length(grep("glmer\\(|[^a-z.]glm\\(|lmer\\(", ccode)) == 0, "plotting only")
+  ok("canonical figure script never calls ggsave directly",
+     length(grep("ggsave\\(", ccode)) == 0, "save_fig is sole writer")
+  banned <- c("causal", "difference-in-differences", "\\bDiD\\b", "within-issue")
+  chit <- unlist(lapply(banned, function(b) grep(b, ccode, value = TRUE, perl = TRUE)))
+  chit <- chit[!grepl("\\b(not|NOT|never|NEVER|neither|no|cannot|rather than)\\b",
+                      chit)]
+  ok("canonical figures avoid unnegated causal/DiD language", length(chit) == 0,
+     if (length(chit)) substr(chit[1], 1, 60) else "4 terms checked")
+  ok("canonical figures read tables rather than recomputing",
+     any(grepl("estimates/canonical", ccode)), "reads c-tables")
+  cfg <- list.files("pipeline/figures/canonical")
+  ok("three canonical figures on disk", length(cfg) == 3, paste(cfg, collapse = ", "))
+  ok("canonical figures are PNG only",
+     length(cfg) > 0 && all(grepl("\\.png$", cfg)), "")
 }
 
 # --- 6. grayscale / CVD -------------------------------------------------------

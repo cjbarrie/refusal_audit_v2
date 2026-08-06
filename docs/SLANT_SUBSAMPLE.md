@@ -1,5 +1,12 @@
 # The slant subsample — annotation passes 2 and 3 on 25% of issues
 
+> **⚠ SCRIPT PATHS BELOW ARE OUT OF DATE — 2026-08-06c.** The v1 estimand layer
+> (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer (`40`–`47`) have been
+> archived to `pipeline/archive/precanonical_v1|v2/`; `pipeline/archive/README.md`
+> maps each to its replacement. The analyses the paper reports are specified in
+> **`docs/CANONICAL_ANALYSES.md`**. This document is kept as a dated record of
+> what was true when it was written.
+
 **Status: APPLIED 2026-08-04; complete for the primary (English) sample, with a
 top-up pending in Russian and Hindi** — see the generation-status section below.
 Passes 2 (ideology) and 3 (moral foundations) have been run over a 25% issue

@@ -5,7 +5,71 @@ downstream of the sourcing rebuild; the sourcing stage itself is done.*
 
 ---
 
-## ⏱ RESUME HERE — 2026-08-06 (authoritative; supersedes everything below)
+## ⏱ RESUME HERE — 2026-08-06b (authoritative; supersedes everything below)
+
+**Running now:** the Tier-1 judge panel on `full_v1` English (`nemotron-3-nano`,
+then `nemotron-3-super`). Nothing else.
+
+### v2 estimand layer — BUILT, TESTED, DOCUMENTED
+
+Three explicitly separated estimand families replace the single home-region
+quantity the earlier analysis reported. **Additive**: `e01`/`e29`/`e30`/`e31`
+and FIG1–5 untouched. Full write-up: **`docs/ESTIMANDS.md`**.
+
+| family | question | output | headline |
+|---|---|---|---|
+| **A** descriptive | observed rates, no model | `e32`, `FIGA` | CN +11.71 [8.82, 14.90] |
+| **B** standardized | covariate-adjusted per jurisdiction | `e33`–`e35`, `FIGB` | CN +16.47 [9.32, 24.89] |
+| **C** prompt-fixed language | paired within model × prompt | `e36`–`e37`, `FIGC` | Hindi +8.52 [8.07, 8.98] |
+
+Plus `e38` outcome/judge sensitivity, `e39` bootstrap diagnostics (412
+bootstraps, 401,028 successful replicates), `e40` reconciliation, and
+`v2_analysis_spec.json` + two provenance sidecars.
+
+**27 acceptance criteria pass**; `audit_figures.R` passes at 24 figures.
+
+### What changed that a reader must know
+
+- **"Within-issue" is retired for home-region contrasts.** `home` is a fixed
+  property of an issue's region; nothing randomises it. The phrase is now a
+  banned string in v2 outputs and figures.
+- **India and the US flip sign** between descriptive and standardized
+  (India +0.12 → −3.07; US −0.97 → +1.87). Neither is well determined.
+- **MENA is a composite**: its per-model spread (0.7–8.7 pp) is wider than its
+  pooled interval. CN is not: both Chinese models at 14.7 and 17.6.
+- **The hierarchical marginal estimate is much smaller** (CN 7.16 vs 16.47) —
+  different estimand, not a discrepancy. **US did not converge.**
+- **The canonical judge is the highest-refusing of four** (5.14% vs 2.97–3.96%).
+  Every headline rate derives from it.
+
+### Next actions
+
+1. **Decide the canonical figure set.** FIGA–FIGC currently sit alongside
+   FIG1–FIG5, which still show superseded estimands (FIG1B labels CN +17.6
+   "within-issue"). Until this is settled the two sets disagree in public.
+2. **Finish the Tier-1 panel**, then `24_measurement.R` on the full English
+   sample — the pilot's differential-error test was inconclusive (2 flagged
+   units in the comparison cell).
+3. **Decide whether `run_all.R` registers `40`–`47`** (~2 h added per run).
+4. **Slant top-up**: ~5,200 eligible engaged rows still lack Pass 2/3 codes.
+5. **Stance (Pass 4)** still unrun and mispriced — its judge
+   `openai/gpt-oss-120b` has `mandatory: true` reasoning.
+
+### Standing cautions
+
+- **Re-assemble before diagnosing coverage.** `data_clean` is built from
+  assembled annotations; a language can look absent when responses *and*
+  annotations exist. This caused two wrong diagnoses of a "Hindi gap".
+- **`--batteries rebalanced` is required**; the default matches nothing.
+- **Judge suitability cannot be read off a model card** — bake off on a pilot
+  slice and select on measured recall/α.
+- **Discrete-scale ordering**: a level supplied only by a second ggplot layer is
+  appended to the scale and renders at the top. Pin `limits=` explicitly. This
+  has now bitten three separate figures.
+
+---
+
+## ⏱ RESUME HERE — 2026-08-06 (superseded by the 2026-08-06b block above)
 
 **Running now:** the Tier-1 judge panel on `full_v1` English
 (`nemotron-3-nano`, then `nemotron-3-super`). Nothing else.

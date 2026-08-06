@@ -73,7 +73,7 @@ distinguish "this jurisdiction is sensitive about its own region" from "this
 region is sensitive to everyone".
 
 MENA moves from +2.9 to +0.2 pp and India from −1.4 to +3.0; CN is stable
-(+18.8 → +17.6). **India's +3.0 rests on a single model (Sarvam) and reverses
+(+18.8 → +17.5). **India's +3.0 rests on a single model (Sarvam) and reverses
 sign between estimands; it should not be read as a finding.** Mistral Large 2512
 records **0 refusals in 2,496 English responses**, so the EU contrast is not
 estimable; it is shown as a hollow square with the reason stated, never as an
@@ -265,6 +265,129 @@ noise, but their magnitudes should be read with that attached. Some of these
 refusals may also be **degenerate output** rather than refusal behaviour — judge
 code G ("other") is 31.7% of allam's refusals and its free text includes
 "nonsensical and rambling".
+
+---
+
+# v2 figure set — alongside, not replacing
+
+`FIGA`/`FIGB`/`FIGC` present the three v2 estimand families
+(`docs/ESTIMANDS.md`). They **sit alongside FIG1–FIG5** while the canonical
+set is undecided; the earlier figures remain reproducible from the earlier
+tables. Where the two disagree, the v2 tables are the later analysis.
+
+⚠ **Known disagreements with FIG1/FIG5**, which a reader comparing them will
+notice:
+
+| FIG1/FIG5 shows | v2 says |
+|---|---|
+| CN home premium **+17.5**, labelled "within-issue" | `e33` **+16.47**; "within-issue" is a prohibited description |
+| India **+3.0**, US **−0.7** | `e33` India **−3.07**, US **+1.87** — both flip sign |
+| FIG5B "within-jurisdiction premium by language" | superseded by `e35`'s language sensitivity |
+
+## Figure A — Descriptive home results
+
+`FIGA_home_descriptive.png` · from `e32` · **no model of any kind**
+
+**Models refuse more on issues about their own region — but the size of that gap
+differs enormously by jurisdiction, and for three of five it is indistinguishable
+from zero.**
+
+**(A) Observed refusal rates, three region positions.** `home` (own region),
+`away` (a different named region) and **`General`** (no regional focus, 17% of
+the battery). General is its own position and is **never part of the away
+reference** — folding it in would score every model "away" on a sixth of the
+battery. All five languages pooled, 137,186 responses. Home rates printed.
+
+**(B) Descriptive difference, home − away**, under response weighting and
+equal-model weighting. The two coincide to three decimals because the design is
+balanced (every model answers the same battery), which is worth knowing rather
+than assuming. Issue-cluster bootstrap intervals. EU is drawn as a hollow square
+reading "0 refusals observed" — Mistral Large records none anywhere, so there is
+no rate to plot and no interval to draw.
+
+CN +11.71 [8.82, 14.90] · MENA +4.78 [2.96, 6.67] · India +0.12 [−0.85, 1.16] ·
+US −0.97 [−2.08, 0.18].
+
+**Supports:** a description of these models on this battery. **Does not
+support:** any claim that region *caused* the difference — home and away issues
+differ systematically in topic (45% of China issues are territorial sovereignty).
+
+## Figure B — Covariate-standardized home contrasts
+
+`FIGB_home_standardized.png` · from `e33`/`e34`/`e35`
+
+**Only China's home-region contrast survives adjustment and every sensitivity;
+MENA's is a composite of heterogeneous models; India and the US are consistent
+with zero.**
+
+**This is a covariate-standardized contrast. It is NOT causal, NOT a
+difference-in-differences, and NOT a within-issue effect** — `home` is a fixed
+property of an issue's region and nothing randomises it. The axis says
+"covariate-standardized" for that reason, and `audit_figures.R` fails the build
+if the prohibited descriptions appear in the figure source.
+
+**(A) Primary contrast per jurisdiction.** `refused ~ home + tier + domain +
+route + model`, fitted separately by jurisdiction, English only (the
+specification carries no language term, so pooling languages would be
+misspecified). No region fixed effects: within a jurisdiction region
+*determines* home. Probability-scale g-computation, standardized to **equal
+weight per tested model and issue** (primary) and to empirical response
+composition (sensitivity). Intervals are issue-cluster bootstrap with the
+**complete model refit and re-standardized inside every one of 2,000
+replicates**. EU is marked not estimable — zero refusals is complete separation,
+not a small effect.
+
+CN **+16.47** [9.32, 24.89] · MENA **+3.76** [1.44, 6.34] · India −3.07
+[−5.81, 0.19] · US +1.87 [−0.74, 4.60].
+
+**(B) Sensitivity ladder**, faceted by jurisdiction: per model, leave-one-model-
+out, prompt type, language, minimum response length, and the hierarchical
+specification. CN holds throughout (14.5–27.3 across every cut, both Chinese
+models at 14.7 and 17.6). **MENA's per-model spread (0.7 to 8.7) is wider than
+its pooled interval**, so MENA is a composite of heterogeneous models rather than
+a jurisdiction-level regularity.
+
+The **hierarchical row is drawn as a triangle** because it has no bootstrap
+interval. It uses `+ (1|issue_id) + (1|prompt_id)` with **population-level
+(marginal) predictions** — integrating over the random-effect distribution rather
+than plugging in fitted BLUPs, which would answer a different question. CN falls
+from 16.47 to **7.16 pp**: expected, since marginalising a non-linear link over a
+large random-effect variance attenuates a probability-scale contrast. The two are
+different estimands, both reported. **US did not converge** (degenerate Hessian)
+and is omitted rather than imputed.
+
+## Figure C — Prompt-fixed language effects
+
+`FIGC_language_paired.png` · from `e36`/`e37`
+
+**Language moves refusal far more than jurisdiction does, and almost all of that
+movement comes from three models.**
+
+Paired within `block_id = model × prompt_id`: the same model, the same prompt,
+delivered in a different language. Computed directly from observed outcomes; an
+LPM with block fixed effects is algebraically the same number and is verified as
+a check.
+
+**(A) Pooled paired difference per language**, with complete/missing block counts
+printed on the panel (missing blocks are 16–54 of ~27,440, i.e. <0.2%).
+Chinese +1.32 · Arabic +2.33 · Russian +3.95 · Hindi **+8.52**.
+
+**(B) By model**, coloured by developer jurisdiction. The pooled figures conceal
+the actual pattern: allam-7b **+61.4 pp** in Hindi and **+51.7** in Russian;
+falcon3-10b +25.3 Hindi and +24.1 Arabic; jais-8b +17.3 Hindi — while the four US
+models sit near zero in every language. The three MENA models over-refuse
+dramatically outside their training focus.
+
+**Supports:** the effect of delivering the tested translated prompt version,
+among the tested prompt/model set, **conditional on translation equivalence and
+on no run-order or provider confounding**. If a translation is harder or
+differently loaded, that is inside the estimate. **Does not support:** a causal
+effect of a user's language, or generalisation beyond these prompts and models.
+
+**Caveat carried from the judge panel:** MENA labels are the least reliable in
+the study (positive specific agreement 0.05–0.09), and the largest effects here
+are all MENA models. The effects are far too large to be noise, but their
+magnitudes should be read with that attached.
 
 ---
 

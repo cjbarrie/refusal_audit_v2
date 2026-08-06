@@ -176,7 +176,8 @@ Current R layer (14 numbered scripts + `audit_figures.R` + `run_all.R` + `_theme
 | `23_diagnostics.R` | measurement + coverage diagnostics | `d01`–`d08` |
 | `24_measurement.R` | **judge-panel reliability + robustness** | `e23`–`e28` |
 | `25_estimates_language.R` | prompt-language effects, all models × languages | `e29`–`e31` |
-| `30_figures.R` | **all** figures; fits nothing | FIG1–5 + `P1`–`P14` |
+| `30_figures.R` | **all** v1 figures; fits nothing | FIG1–5 + `P1`–`P14` |
+| **`40`–`47_v2_*.R`** | **v2 estimand layer** (see below); additive, overwrites nothing | `e32`–`e40`, `FIGA`–`FIGC` |
 | `audit_figures.R` | PNG-only, figure↔estimate agreement, CVD | pass/fail |
 | `16_irr_analysis.R` | **RETIRED stub** — two-rater only; see `24_` | — |
 `pipeline/audit_figures.R` enforces this (it greps for `glmer(`/`glm(`/`lmer(`
@@ -233,6 +234,20 @@ output schema, check that contract for what fields/joins R depends on.
   `archive/pipeline_slant/` is the *pre-trim* slant analysis; the live slant
   path is `pipeline/22_estimates_slant.R` + FIG4, so don't reintroduce the
   archived scripts alongside it.
+- **The v2 estimand layer** (`docs/ESTIMANDS.md`) separates three questions
+  the earlier analysis ran as one, and is strictly **additive**: `e01`/`e29`/
+  `e30`/`e31` and FIG1–5 are untouched; v2 writes `e32`–`e40` and FIGA–FIGC.
+  * **A descriptive** (counts, no model) · **B standardized** (covariate-
+    adjusted, per jurisdiction) · **C prompt-fixed language** (paired within
+    `model × prompt_id`).
+  * **Family B must never be described as causal, a difference-in-differences,
+    or a within-issue effect.** `home` is a fixed property of an issue's region;
+    nothing randomises it. Those strings are banned — both
+    `46_v2_acceptance_tests.R` and `audit_figures.R` fail the build on an
+    unnegated use.
+  * `General` is a THIRD region position, never folded into `away`.
+  * Every bootstrap resamples **whole issues** and refits inside the replicate.
+  * Not registered in `run_all.R` (~2 h runtime); invoke explicitly.
 - **Multi-judge reliability panel** (`docs/MULTI_JUDGE_PLAN.md`). Every
   annotation record carries `judge_model` / `judge_prompt_version` /
   `annotation_run_id`. `run_pilot.py --judge-panel [MODEL ...]` annotates the

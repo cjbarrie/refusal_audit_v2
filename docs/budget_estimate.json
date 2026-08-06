@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06T09:42:41.727341+00:00",
+  "generated_at": "2026-08-06T11:27:06.232677+00:00",
   "assumptions": {
     "engage_rate": 0.944,
     "judge_calls_engaged": 3,
@@ -80,74 +80,62 @@
     ]
   },
   "configurations": {
-    "baseline (7 OpenRouter models x 1 langs)": {
+    "baseline (7 OpenRouter models x 4 langs)": {
       "n_models": 7,
-      "n_langs": 1,
-      "cells": 1,
+      "n_langs": 4,
+      "cells": 4,
       "prompts_per_lang": 2496,
-      "gens": 17472,
-      "gens_openrouter": 17472,
+      "gens": 69888,
+      "gens_openrouter": 69888,
       "gens_endpoint": 0,
-      "judge": 50459,
-      "stance": 8736,
-      "total_calls": 76667,
-      "gen_usd": 57.7928832,
-      "judge_usd": 10.6619867,
-      "stance_usd": 0.5254704,
-      "panel_usd": {
-        "nvidia/nemotron-3-nano-30b-a3b": 4.947072899999999,
-        "google/gemma-4-31b-it": 4.8532512,
-        "nvidia/nemotron-3-super-120b-a12b": 4.298833665
-      },
-      "panel_total_usd": 14.099157765,
-      "panel_calls": 77154,
-      "total_usd": 83.07949806500001
+      "judge": 69888,
+      "stance": 0,
+      "total_calls": 139776,
+      "gen_usd": 231.1715328,
+      "judge_usd": 14.7673344,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 245.9388672
     },
-    "+Russian  (7 OpenRouter models x 1 langs)": {
+    "+Russian  (7 OpenRouter models x 5 langs)": {
       "n_models": 7,
-      "n_langs": 1,
-      "cells": 1,
+      "n_langs": 5,
+      "cells": 5,
       "prompts_per_lang": 2496,
-      "gens": 17472,
-      "gens_openrouter": 17472,
+      "gens": 87360,
+      "gens_openrouter": 87360,
       "gens_endpoint": 0,
-      "judge": 50459,
-      "stance": 8736,
-      "total_calls": 76667,
-      "gen_usd": 57.7928832,
-      "judge_usd": 10.6619867,
-      "stance_usd": 0.5254704,
-      "panel_usd": {
-        "nvidia/nemotron-3-nano-30b-a3b": 4.947072899999999,
-        "google/gemma-4-31b-it": 4.8532512,
-        "nvidia/nemotron-3-super-120b-a12b": 4.298833665
-      },
-      "panel_total_usd": 14.099157765,
-      "panel_calls": 77154,
-      "total_usd": 83.07949806500001
+      "judge": 87360,
+      "stance": 0,
+      "total_calls": 174720,
+      "gen_usd": 288.96441599999997,
+      "judge_usd": 18.459168,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 307.42358399999995
     },
-    "+MENA/India (11 models x 1 langs)": {
+    "+MENA/India (11 models x 5 langs)": {
       "n_models": 11,
-      "n_langs": 1,
-      "cells": 1,
+      "n_langs": 5,
+      "cells": 5,
       "prompts_per_lang": 2496,
-      "gens": 27456,
-      "gens_openrouter": 17472,
-      "gens_endpoint": 9984,
-      "judge": 79293,
-      "stance": 13728,
-      "total_calls": 120477,
-      "gen_usd": 57.7928832,
-      "judge_usd": 16.7546109,
-      "stance_usd": 0.8257392,
-      "panel_usd": {
-        "nvidia/nemotron-3-nano-30b-a3b": 7.774430399999999,
-        "google/gemma-4-31b-it": 7.6269887999999995,
-        "nvidia/nemotron-3-super-120b-a12b": 6.75570744
-      },
-      "panel_total_usd": 22.157126639999998,
-      "panel_calls": 121248,
-      "total_usd": 97.53035994
+      "gens": 137280,
+      "gens_openrouter": 87360,
+      "gens_endpoint": 49920,
+      "judge": 137280,
+      "stance": 0,
+      "total_calls": 274560,
+      "gen_usd": 288.96441599999997,
+      "judge_usd": 29.007264,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 317.97168
     }
   }
 }

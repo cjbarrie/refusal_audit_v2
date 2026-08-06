@@ -1,0 +1,50 @@
+section,item,value,note
+artifact_chain,response keys attempted,137280,any row present in responses/
+artifact_chain,responses successful,137188,non-error with response_text
+artifact_chain,generation never succeeded,92,attempted but no successful response at any point
+artifact_chain,clean annotations (ann/),137187,non-error with engagement_code
+artifact_chain,assembled: annotations_all,68552,regular tier
+artifact_chain,assembled: boundary files,68634,boundary tier
+artifact_chain,assembled union,137186,what data_clean is built from
+artifact_chain,analysis rows (data_clean),137186,AUTHORITATIVE ANALYSIS SET
+artifact_chain,responses not annotated,1,lost between generation and judging
+artifact_chain,annotated not assembled,1,lost in assemble (last-wins picked an error row)
+artifact_chain,assembled not in data_clean,0,lost in the R loader
+assertion,one row per model x prompt_id x language,PASS,0 duplicate keys
+assertion,General never enters the away reference,PASS,0 General rows coded away
+assertion,home/away overlap in every jurisdiction x model,PASS,11 of 11 cells have both arms
+exclusion,issue_Q10932254__bndA|hi|allam-7b,generation_failed_latest,2026-08-04T22:11:36Z HTTP 400: prompt exceeded the served context window
+exclusion,issue_christina_bobb_Q122179069__reg2|hi|falcon3-10b,generation_failed_latest,2026-08-04T14:25:10Z empty response content (model returned no text)
+exclusion,issue_Q30895__reg2|hi|jais-8b,response_never_annotated,generation succeeded; no clean Pass-1 verdict exists for this key
+exclusion,issue_Q16000984__reg2|en|gpt-4o,annotation_superseded_by_error,"a clean verdict was followed by a later error row for the same key; assemble is last-wins, so the row is absent from the assembled surfaces"
+exclusion,generation_never_succeeded_keys,92,issue_anti_irish_sentiment_Q574680__reg2|ar|sarvam-30b ; issue_syrian_social_nationalist_party_in_lebanon_Q7663245__reg1|ar|sarvam-30b ; issue_list_of_wars_involving_india_Q6644961__reg2|ar|sarvam-30b ; issue_new_york_s_11th_congressional_district_Q13858944__reg2|ar|sarvam-30b ; issue_archbishopric_of_ohrid_Q134168__reg1|ar|sarvam-30b
+missing_cells,allam-7b hi,1,observed 2495 of ~2496
+missing_cells,deepseek-chat-v3.1 hi,2,observed 2494 of ~2496
+missing_cells,falcon3-10b hi,1,observed 2495 of ~2496
+missing_cells,falcon3-10b zh,7,observed 2489 of ~2496
+missing_cells,gpt-4o en,1,observed 2495 of ~2496
+missing_cells,jais-8b hi,1,observed 2495 of ~2496
+missing_cells,mistral-large-2512 hi,1,observed 2495 of ~2496
+missing_cells,qwen3-max hi,1,observed 2495 of ~2496
+missing_cells,sarvam-30b ar,12,observed 2484 of ~2496
+missing_cells,sarvam-30b en,6,observed 2490 of ~2496
+missing_cells,sarvam-30b hi,40,observed 2456 of ~2496
+missing_cells,sarvam-30b ru,19,observed 2477 of ~2496
+missing_cells,sarvam-30b zh,2,observed 2494 of ~2496
+home_away_overlap,CN deepseek-chat-v3.1,home=2080 away=8318,both arms present
+home_away_overlap,CN qwen3-max,home=2080 away=8319,both arms present
+home_away_overlap,EU mistral-large-2512,home=2080 away=8319,both arms present
+home_away_overlap,India sarvam-30b,home=2077 away=8251,both arms present
+home_away_overlap,MENA allam-7b,home=2080 away=8319,both arms present
+home_away_overlap,MENA falcon3-10b,home=2080 away=8316,both arms present
+home_away_overlap,MENA jais-8b,home=2080 away=8320,both arms present
+home_away_overlap,US claude-opus-4.5,home=2080 away=8320,both arms present
+home_away_overlap,US gpt-4o,home=2080 away=8319,both arms present
+home_away_overlap,US gpt-5.1,home=2080 away=8320,both arms present
+home_away_overlap,US grok-4.3,home=2080 away=8320,both arms present
+bootstrap_diagnostics,n_bootstraps,332,aggregated over e39
+bootstrap_diagnostics,total_replicates_successful,332228,aggregated over e39
+bootstrap_diagnostics,total_replicates_failed,5764,aggregated over e39
+bootstrap_diagnostics,max_failure_rate,0.369032258064516,aggregated over e39
+bootstrap_diagnostics,all_unit_issue_id,TRUE,aggregated over e39
+bootstrap_diagnostics,min_successful,500,aggregated over e39

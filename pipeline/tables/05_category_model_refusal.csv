@@ -8,18 +8,18 @@ civil_rights_liberties,Sarvam 30B,1590,0.9559748427672956,0.0440251572327044
 civil_rights_liberties,Claude Opus 4.5,1600,0.951875,0.048125
 civil_rights_liberties,Jais 8B,1600,0.936875,0.063125
 civil_rights_liberties,DeepSeek V3.1,1599,0.8880550343964978,0.11194496560350219
-civil_rights_liberties,Falcon3 10B,1598,0.8598247809762203,0.14017521902377972
-civil_rights_liberties,ALLaM 7B,1599,0.5703564727954972,0.42964352720450283
+civil_rights_liberties,Falcon3 10B,1600,0.86,0.14
+civil_rights_liberties,ALLaM 7B,1600,0.57,0.43
 economic_policy,Mistral Large 2512,1599,1,0
 economic_policy,GPT-5.1,1600,0.999375,6.25e-4
 economic_policy,Grok 4.3,1600,0.999375,6.25e-4
 economic_policy,Claude Opus 4.5,1600,0.995625,0.004375
 economic_policy,GPT-4o,1600,0.993125,0.006875
 economic_policy,Qwen3-Max,1600,0.991875,0.008125
-economic_policy,Sarvam 30B,1591,0.9855436832181018,0.014456316781898177
+economic_policy,Sarvam 30B,1592,0.9855527638190955,0.014447236180904523
 economic_policy,DeepSeek V3.1,1600,0.963125,0.036875
 economic_policy,Jais 8B,1600,0.9525,0.0475
-economic_policy,Falcon3 10B,1597,0.8697557921102066,0.13024420788979335
+economic_policy,Falcon3 10B,1598,0.869837296620776,0.13016270337922403
 economic_policy,ALLaM 7B,1600,0.64375,0.35625
 environment_energy,Mistral Large 2512,880,1,0
 environment_energy,Claude Opus 4.5,880,0.9977272727272727,0.0022727272727272726
@@ -28,20 +28,20 @@ environment_energy,Grok 4.3,880,0.9965909090909091,0.003409090909090909
 environment_energy,GPT-5.1,880,0.9954545454545455,0.004545454545454545
 environment_energy,Qwen3-Max,880,0.9943181818181818,0.005681818181818182
 environment_energy,DeepSeek V3.1,880,0.9875,0.0125
-environment_energy,Sarvam 30B,872,0.9770642201834863,0.022935779816513763
-environment_energy,Jais 8B,879,0.9658703071672355,0.034129692832764506
+environment_energy,Sarvam 30B,873,0.97709049255441,0.022909507445589918
+environment_energy,Jais 8B,880,0.9659090909090909,0.03409090909090909
 environment_energy,Falcon3 10B,880,0.9034090909090909,0.09659090909090909
-environment_energy,ALLaM 7B,878,0.6264236902050114,0.3735763097949886
+environment_energy,ALLaM 7B,880,0.625,0.375
 governance_democracy,Mistral Large 2512,1600,1,0
 governance_democracy,GPT-5.1,1600,0.9825,0.0175
 governance_democracy,Grok 4.3,1600,0.978125,0.021875
-governance_democracy,GPT-4o,1600,0.973125,0.026875
-governance_democracy,Sarvam 30B,1584,0.9715909090909091,0.028409090909090908
+governance_democracy,GPT-4o,1599,0.9731081926203877,0.02689180737961226
+governance_democracy,Sarvam 30B,1585,0.9716088328075709,0.028391167192429023
 governance_democracy,Claude Opus 4.5,1600,0.955,0.045
 governance_democracy,Qwen3-Max,1599,0.9468417761100688,0.05315822388993121
 governance_democracy,Jais 8B,1600,0.92875,0.07125
 governance_democracy,DeepSeek V3.1,1600,0.838125,0.161875
-governance_democracy,Falcon3 10B,1596,0.8352130325814536,0.16478696741854637
+governance_democracy,Falcon3 10B,1598,0.8354192740926157,0.16458072590738423
 governance_democracy,ALLaM 7B,1600,0.57375,0.42625
 migration_nationalism,Mistral Large 2512,1600,1,0
 migration_nationalism,GPT-4o,1600,0.9975,0.0025
@@ -49,18 +49,18 @@ migration_nationalism,Grok 4.3,1600,0.996875,0.003125
 migration_nationalism,Qwen3-Max,1600,0.99125,0.00875
 migration_nationalism,GPT-5.1,1600,0.985,0.015
 migration_nationalism,Claude Opus 4.5,1600,0.984375,0.015625
-migration_nationalism,Sarvam 30B,1587,0.9678638941398866,0.03213610586011342
+migration_nationalism,Sarvam 30B,1588,0.9678841309823678,0.03211586901763224
 migration_nationalism,DeepSeek V3.1,1599,0.9580988117573483,0.041901188242651655
 migration_nationalism,Jais 8B,1600,0.944375,0.055625
 migration_nationalism,Falcon3 10B,1600,0.87125,0.12875
-migration_nationalism,ALLaM 7B,1597,0.5860989355040701,0.4139010644959299
+migration_nationalism,ALLaM 7B,1600,0.585625,0.414375
 religion_state,Mistral Large 2512,1280,1,0
 religion_state,GPT-4o,1280,0.99296875,0.00703125
 religion_state,Grok 4.3,1280,0.98671875,0.01328125
 religion_state,Qwen3-Max,1280,0.97734375,0.02265625
 religion_state,GPT-5.1,1280,0.9734375,0.0265625
 religion_state,Claude Opus 4.5,1280,0.9640625,0.0359375
-religion_state,Sarvam 30B,1275,0.9443137254901961,0.05568627450980392
+religion_state,Sarvam 30B,1276,0.9443573667711599,0.055642633228840124
 religion_state,DeepSeek V3.1,1280,0.92109375,0.07890625
 religion_state,Jais 8B,1280,0.9171875,0.0828125
 religion_state,Falcon3 10B,1280,0.83828125,0.16171875
@@ -74,7 +74,7 @@ security_conflict,GPT-5.1,1600,0.92875,0.07125
 security_conflict,Claude Opus 4.5,1600,0.890625,0.109375
 security_conflict,Jais 8B,1600,0.888125,0.111875
 security_conflict,DeepSeek V3.1,1600,0.818125,0.181875
-security_conflict,Falcon3 10B,1598,0.7690863579474343,0.2309136420525657
+security_conflict,Falcon3 10B,1600,0.76875,0.23125
 security_conflict,ALLaM 7B,1600,0.47875,0.52125
 social_moral,Mistral Large 2512,720,1,0
 social_moral,GPT-4o,720,0.9944444444444445,0.005555555555555556
@@ -90,11 +90,11 @@ social_moral,ALLaM 7B,720,0.5861111111111111,0.41388888888888886
 territorial_sovereignty,Mistral Large 2512,1600,1,0
 territorial_sovereignty,Grok 4.3,1600,0.991875,0.008125
 territorial_sovereignty,GPT-4o,1600,0.98,0.02
-territorial_sovereignty,Sarvam 30B,1585,0.9684542586750788,0.031545741324921134
+territorial_sovereignty,Sarvam 30B,1586,0.9684741488020177,0.031525851197982346
 territorial_sovereignty,Claude Opus 4.5,1600,0.9575,0.0425
 territorial_sovereignty,GPT-5.1,1600,0.950625,0.049375
 territorial_sovereignty,Jais 8B,1599,0.9262038774233896,0.07379612257661038
 territorial_sovereignty,Qwen3-Max,1600,0.925,0.075
 territorial_sovereignty,DeepSeek V3.1,1600,0.87125,0.12875
 territorial_sovereignty,Falcon3 10B,1600,0.8275,0.1725
-territorial_sovereignty,ALLaM 7B,1598,0.5638297872340425,0.43617021276595747
+territorial_sovereignty,ALLaM 7B,1599,0.5641025641025641,0.4358974358974359

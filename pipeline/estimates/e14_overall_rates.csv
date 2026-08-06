@@ -3,7 +3,7 @@ allam-7b,MENA,2496,426,0.17067307692307712,0.15642207478682985,0.185936257037074
 claude-opus-4.5,US,2496,100,0.04006410256410285,0.03305074107598313,0.048491065412876025,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
 deepseek-chat-v3.1,CN,2496,124,0.04967948717948734,0.04182572455432581,0.058917298523616414,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
 falcon3-10b,MENA,2496,156,0.0625,0.05365942488978845,0.07268522030693123,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
-gpt-4o,US,2496,55,0.02203525641025649,0.016968406411003275,0.028571118973325083,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
+gpt-4o,US,2495,55,0.02204408817635203,0.016975222666186143,0.02858252697268653,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
 gpt-5.1,US,2496,104,0.041666666666665984,0.03450596369901377,0.050236045554692556,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
 grok-4.3,US,2496,51,0.020432692307692256,0.015574911532949414,0.02676441108653176,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate
 jais-8b,MENA,2496,59,0.023637820512820106,0.018369667150050825,0.03037006099912471,TRUE,descriptive rate,"English, all regions",probability,overall refusal rate

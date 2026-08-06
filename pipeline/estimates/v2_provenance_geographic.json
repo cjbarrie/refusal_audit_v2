@@ -1,0 +1,31 @@
+{
+  "claim": {
+    "statement": "Issue geographic classifications received manual review.",
+    "evidence_level": "RUN-LEVEL ASSERTION recorded at the project owner's direction",
+    "caveat": "The issue records carry NO reviewer, review-date or approval field, so this cannot be evidenced per row and no such field has been invented."
+  },
+  "fields_actually_present": {
+    "needs_review": {
+      "TRUE": 2773
+    },
+    "source_article_status": {
+      "deleted": 18,
+      "live": 2755
+    },
+    "region": {
+      "Arab": 774,
+      "China": 335,
+      "Europe": 204,
+      "General": 494,
+      "India": 555,
+      "Indonesia": 8,
+      "Japan": 13,
+      "Russia": 85,
+      "Taiwan": 1,
+      "US": 304
+    }
+  },
+  "reviewer_fields_present": false,
+  "review_date_fields_present": false,
+  "note": "`needs_review` is TRUE for all 2773 issue records, i.e. it records a review REQUIREMENT rather than a completed review. The region field is the classification used to derive home status."
+}

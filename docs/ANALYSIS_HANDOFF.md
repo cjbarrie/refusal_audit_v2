@@ -422,6 +422,14 @@ Standalone panels: `P1`–`P11`. All two-column; there are no `_1col` variants.
 10. **Descriptive, not causal.** Adjustment is for topic domain and tier only;
     region may proxy for unmeasured issue properties.
 
+**⚠ The v2 estimand layer supersedes §2.2 for home-region questions.**
+`docs/ESTIMANDS.md` splits what this document treats as one estimand into
+three, and retires the "within-issue" description entirely: `home` is a fixed
+property of an issue's region, so no comparison holds an issue fixed while
+varying it. The v2 numbers differ — CN **+16.47 pp** standardized against the
++17.5 reported here, and **India and the US flip sign** (India −3.07, US +1.87).
+Read `ESTIMANDS.md` before quoting any home-region figure from this file.
+
 **Resolved since the previous draft**
 - **Inter-rater reliability now exists.** A multi-judge panel
   (`docs/MULTI_JUDGE_PLAN.md`) replaced the never-run two-rater design. Pilot

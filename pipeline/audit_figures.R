@@ -42,6 +42,12 @@ PANELS <- c("P1_locator", "P2_home_interaction", "P3_estimand_comparison",
 LANG <- if (file.exists("pipeline/estimates/e29_language_by_model.csv"))
   c("FIG5_language_main", "P13_language_by_model",
     "P14_home_premium_by_language") else character(0)
+# v2 figures (FIGA/FIGB/FIGC) SIT ALONGSIDE FIG1-5 while the canonical set is
+# undecided, so they are expected only when the v2 estimates exist -- exactly the
+# same optional treatment as the slant and language figures.
+V2FIG <- if (file.exists("pipeline/estimates/e32_home_descriptive.csv"))
+  c("FIGA_home_descriptive", "FIGB_home_standardized",
+    "FIGC_language_paired") else character(0)
 # The slant figures (FIG4/P9/P10) come from annotation passes 2/3, which run on
 # a 25% issue subsample and may not have been run at all -- so they are expected
 # only when their estimates exist. Present-but-unexpected would trip the "stale"
@@ -51,7 +57,7 @@ SLANT <- if (file.exists("pipeline/estimates/e16b_ideology_summary.csv"))
     "P10_moral_foundations", "P11_moral_by_language") else character(0)
 # Two-column only. No _1col, no _2col: one canonical file per main figure.
 expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"), paste0(SLANT, ".png"),
-            paste0(LANG, ".png"))
+            paste0(LANG, ".png"), paste0(V2FIG, ".png"))
 missing <- setdiff(expect, png_f)
 ok("every expected PNG present", length(missing) == 0,
    sprintf("%d expected%s", length(expect),
@@ -268,6 +274,33 @@ ok("main matrix: raw values over a raw-rate scale",
 hex <- grep("#[0-9A-Fa-f]{6}", code, value = TRUE)
 ok("palette not hard-coded in figures", length(hex) <= 1,
    sprintf("%d literal hex", length(hex)))
+
+# --- 5b. v2 figure layer ------------------------------------------------------
+if (length(V2FIG)) {
+  cat("\n5b. v2 figures (alongside FIG1-5)\n")
+  v2src <- readLines("pipeline/47_v2_figures.R", warn = FALSE)
+  v2code <- grep("^\\s*#", v2src, value = TRUE, invert = TRUE)
+  # A Family B quantity must never be described as causal, a DiD, or a
+  # within-issue effect. Only the CODE lines are scanned: the header comment
+  # explains the prohibition and would otherwise trip its own rule.
+  banned <- c("causal", "difference-in-differences", "\\bDiD\\b", "within-issue")
+  hit <- unlist(lapply(banned, function(b) grep(b, v2code, value = TRUE, perl = TRUE)))
+  ok("v2 figures avoid causal/DiD/within-issue language", length(hit) == 0,
+     if (length(hit)) substr(hit[1], 1, 60) else "4 terms checked")
+  ok("v2 figure script fits no models",
+     length(grep("glmer\\(|[^a-z.]glm\\(|lmer\\(", v2code)) == 0, "plotting only")
+  ok("v2 axis names the standardization, not an effect",
+     any(grepl("Covariate-standardized", v2code)), "axis title checked")
+  # Non-estimable cells must never be drawn as an ordinary zero estimate.
+  ok("v2 marks non-estimable cells rather than plotting zero",
+     any(grepl("not estimable", v2code)) && any(grepl("0 refusals", v2code)),
+     "EU carried as a flagged square")
+  ok("v2 figures do not overwrite FIG1-5",
+     !any(grepl("FIG[1-5]_", v2code)), "separate FIGA/FIGB/FIGC namespace")
+  e32a <- read_csv("pipeline/estimates/e32_home_descriptive.csv", show_col_types = FALSE)
+  ok("v2 descriptive carries the General category",
+     "general" %in% e32a$home_status, "three region positions")
+}
 
 # --- 6. grayscale / CVD -------------------------------------------------------
 cat("\n6. grayscale / colour-vision\n")

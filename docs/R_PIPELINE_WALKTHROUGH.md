@@ -1,5 +1,12 @@
 # The R analysis pipeline — what each script does, and why
 
+> **⚠ v2 ESTIMAND LAYER — 2026-08-06.** `pipeline/40_v2_*` through `47_v2_*`
+> add three explicitly separated estimand families (descriptive / standardized /
+> prompt-fixed language) writing `e32`–`e40` and `FIGA`–`FIGC`. It is ADDITIVE:
+> nothing in `01`–`30` changes and no earlier output is overwritten. Full
+> rationale, models and inferential limits: **`docs/ESTIMANDS.md`**.
+> Not registered in `run_all.R` — invoke explicitly.
+
 > **⚠ CURRENT STRUCTURE — 2026-08-04. Read this block first; the 2026-07-30
 > reorganisation note and the per-script rows below describe an earlier layout
 > and are kept for provenance.**

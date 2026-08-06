@@ -1,0 +1,24 @@
+{
+  "canonical_outcome_labels": {
+    "judge": "google/gemini-2.5-flash-lite",
+    "temperature": 0,
+    "evidence_level": "RUN-LEVEL HISTORICAL METADATA, confirmed by the project owner",
+    "caveat": "Row-level judge provenance exists only for rows annotated on or after 2026-08-04, when judge_model was added to the schema. It has NOT been back-filled: doing so would fabricate row-level provenance for legacy labels.",
+    "rows_with_row_level_judge": 17305,
+    "rows_without_row_level_judge": 119881,
+    "total_rows": 137186
+  },
+  "judge_prompt_version_observed": {
+    "aaec235b0501": 7272,
+    "c369f0cb8194": 10033,
+    "NA_legacy": 119881
+  },
+  "judge_prompt_version_drift_diagnosis": "Two distinct judge_prompt_version hashes appear among rows that carry one. This is IMPLEMENTATION DRIFT, not codebook drift: the version is a hash over all large triple-quoted blocks in annotation_pipeline.py, so unrelated edits (added helper docstrings) changed it while the Pass 1-3 codebooks were untouched. Treat differing hashes here as manifest drift. It is NOT a reason to re-run paid annotation.",
+  "additional_judges": {
+    "storage": "long form under <run_dir>/panel/<judge>/, separate from the canonical outcome",
+    "kept_separate": true,
+    "majority_vote_used": false,
+    "note": "Every judge is reported separately in e38 with a judge-sensitivity range. No consensus label is treated as ground truth."
+  },
+  "panel_judge_id_drift": "Judge identifiers in panel artifacts are filesystem-safe slugs (slashes -> '__'), so they differ textually from the model IDs in the panel config. The mapping is mechanical and reversible. Config/manifest drift only."
+}

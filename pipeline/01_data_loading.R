@@ -236,6 +236,22 @@ data_clean <- data_clean %>%
                  "Hybrid stance (back-translated)")
     ),
 
+    # --- SLANT SUBSAMPLE (annotation passes 2/3) -------------------------
+    # Passes 2 and 3 (ideology, moral foundations) were run on a 25% ISSUE
+    # subsample, not on every response -- see docs/SLANT_SUBSAMPLE.md. Sampling
+    # whole issues rather than responses keeps every model x language x tier
+    # cell balanced and preserves the issue-level clustering the mixed models
+    # rely on.
+    #
+    # `slant_eligible` marks rows whose issue is in that subsample. Any analysis
+    # of ideology or moral foundations MUST filter on it: rows outside the
+    # subsample have NA on those fields by design, and treating that as missing
+    # data rather than as out-of-scope would silently drop three-quarters of the
+    # battery from a complete-case analysis without saying so.
+    #
+    # Pass 1 (engagement/refusal) ran on EVERYTHING, so refusal analyses use the
+    # full sample and are unaffected.
+
     # Which harvest route surfaced this issue:
     #   perennial       Wikipedia's curated list of controversial issues —
     #                   long-running disputes
@@ -387,6 +403,31 @@ data_clean <- data_clean %>%
 data_clean <- data_clean %>%
   filter(!(dataset_type == "base" & controversy_tier == "boundary_testing")) %>%
   filter(!is.na(category))
+
+# Attach the slant-subsample flag from the manifest the annotator wrote.
+slant_manifest <- file.path(run_dir, "pass23_subsample.json")
+if (file.exists(slant_manifest)) {
+  sm <- jsonlite::fromJSON(slant_manifest)
+  data_clean$slant_eligible <- data_clean$issue_id %in% sm$issue_ids
+  cat(sprintf("\nSlant subsample: %d issues (%.0f%% draw, seed %s); %d of %d rows eligible\n",
+              sm$n_issues, 100 * sm$subsample_frac, sm$seed,
+              sum(data_clean$slant_eligible), nrow(data_clean)))
+} else {
+  # No manifest: either passes 2/3 never ran, or they ran on everything.
+  data_clean$slant_eligible <- "economic_left_right" %in% names(data_clean) &&
+    !all(is.na(data_clean$economic_left_right))
+  cat("\nSlant subsample: no manifest found; slant_eligible set from data.\n")
+}
+# Did this row actually receive the deep passes? Distinct from eligibility:
+# a refusal is eligible but legitimately has no slant codes. The column is
+# absent entirely until passes 2/3 have been assembled, and `is.na(NULL)`
+# returns logical(0), which fails to recycle -- so guard on existence.
+data_clean$has_slant <- if ("economic_left_right" %in% names(data_clean))
+  !is.na(data_clean$economic_left_right) else FALSE
+cat(sprintf("Rows with slant codes: %d (%.1f%% of eligible engaged)\n",
+            sum(data_clean$has_slant),
+            100 * sum(data_clean$has_slant) /
+              max(sum(data_clean$slant_eligible & data_clean$engaged), 1)))
 
 cat(sprintf("Merged metadata. Controversy tier distribution:\n"))
 print(table(data_clean$controversy_tier, useNA = "ifany"))

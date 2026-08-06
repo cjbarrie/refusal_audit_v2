@@ -32,12 +32,26 @@ ok("PNG only, no other format", length(bad) == 0,
 
 # --- 2. expected files -------------------------------------------------------
 cat("\n2. expected files\n")
-MAIN <- c("FIG1_home_region_main", "FIG2_model_domain_main", "FIG3_refusal_reasons_main")
+MAIN <- c("FIG1_home_region_main", "FIG2_model_domain_main",
+          "FIG3_refusal_reasons_main")
 PANELS <- c("P1_locator", "P2_home_interaction", "P3_estimand_comparison",
-            "P4_region_structure", "P5_china_language", "P6_model_tier",
-            "P7_domain_tier", "P8_refusal_reasons")
+            "P4_region_structure_raw", "P4_region_structure_excess",
+            "P5_china_language", "P6_model_tier", "P7_domain_tier",
+            "P8_refusal_reasons", "P12_home_by_model")
+# Language figures exist only once 25_estimates_language.R has run.
+LANG <- if (file.exists("pipeline/estimates/e29_language_by_model.csv"))
+  c("FIG5_language_main", "P13_language_by_model",
+    "P14_home_premium_by_language") else character(0)
+# The slant figures (FIG4/P9/P10) come from annotation passes 2/3, which run on
+# a 25% issue subsample and may not have been run at all -- so they are expected
+# only when their estimates exist. Present-but-unexpected would trip the "stale"
+# check, so the same condition drives both directions.
+SLANT <- if (file.exists("pipeline/estimates/e16b_ideology_summary.csv"))
+  c("FIG4_slant_main", "P9_ideology_mean_neutral", "P9_ideology_distribution",
+    "P10_moral_foundations", "P11_moral_by_language") else character(0)
 # Two-column only. No _1col, no _2col: one canonical file per main figure.
-expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"))
+expect <- c(paste0(MAIN, ".png"), paste0(PANELS, ".png"), paste0(SLANT, ".png"),
+            paste0(LANG, ".png"))
 missing <- setdiff(expect, png_f)
 ok("every expected PNG present", length(missing) == 0,
    sprintf("%d expected%s", length(expect),
@@ -147,6 +161,71 @@ ok("denominators recorded for compositions",
    all(!is.na(e13$n_refusals)) && all(e13$n_refusals >= 30),
    sprintf("min n = %d", min(e13$n_refusals)))
 
+# Legend order must equal the DRAWN stack order. geom_col stacks in reverse
+# factor order, so the legend has to be given breaks = rev(levels) -- and a
+# mismatch is invisible in the estimate tables, so only a source check finds it.
+src0 <- readLines("pipeline/30_figures.R", warn = FALSE)
+ok("FIG3 legend order matches stack order",
+   any(grepl("DRAWN_ORDER <- rev\\(names\\(PAL_REASON\\)\\)", src0)) &&
+     any(grepl("breaks = DRAWN_ORDER", src0)),
+   "legend breaks = rev(factor levels)")
+
+# Stacked labels, checked with the REAL aesthetics. Mapping `colour` inside the
+# text layer introduces a second grouping variable; position_stack then orders
+# the labels by that group while geom_col orders by fill, and every label lands
+# on the wrong segment. An earlier version of this check omitted the colour aes
+# and therefore passed while the figure was wrong.
+seg_ok <- tryCatch({
+  ed <- e13 %>% mutate(reason = factor(reason, levels = names(PAL_REASON)),
+                       seg_lab = ifelse(share >= 0.15, sprintf("%.0f", 100 * share), ""))
+  ordm <- ed %>% filter(reason == "neutrality") %>% arrange(share) %>% pull(model)
+  ed <- ed %>% mutate(model = factor(model, levels = ordm))
+  pp <- ggplot(ed, aes(x = share, y = model, fill = reason)) + geom_col(width = 0.68) +
+    geom_text(aes(label = seg_lab, colour = reason %in% c("neutrality", "harm"),
+                  group = reason), position = position_stack(vjust = 0.5))
+  bb <- ggplot_build(pp)
+  bars <- bb$data[[1]] %>% select(y, xmin, xmax)
+  txt  <- bb$data[[2]] %>% filter(label != "") %>% select(y, x, label)
+  all(vapply(seq_len(nrow(txt)), function(i) {
+    sgs <- bars[bars$y == txt$y[i], ]
+    hit <- sgs[txt$x[i] >= pmin(sgs$xmin, sgs$xmax) &
+               txt$x[i] <= pmax(sgs$xmin, sgs$xmax), ]
+    nrow(hit) == 1 &&
+      abs(abs(hit$xmax - hit$xmin) * 100 - as.numeric(txt$label[i])) < 0.6
+  }, logical(1)))
+}, error = function(e) FALSE)
+ok("stacked labels match the segment they sit in", seg_ok,
+   "checked with the figure's real aesthetics, incl. colour mapping")
+
+ok("text layer pins its grouping to the fill factor",
+   any(grepl("group = reason", src0)), "prevents position_stack divergence")
+
+# Paired panels laid out side by side must state their category order
+# explicitly; relying on factor levels alone let the two FIG2A panels resolve a
+# different order and every shift lined up against the wrong model.
+ok("paired FIG2 panels share an explicit category order",
+   sum(grepl("limits = ord11", src0)) >= 2 && sum(grepl("limits = ord12", src0)) >= 2,
+   "limits = ord11/ord12 on both panels of each row")
+
+# Ideology: the neutral share must travel with the mean, never be omitted.
+ok("ideology panel carries the neutral share",
+   any(grepl("neutral_share", src0)) && any(grepl("% at 0", src0, fixed = TRUE)),
+   "mean is never shown without its denominator context")
+
+# EU must never appear as an ordinary zero estimate.
+ok("EU not plotted as an ordinary zero",
+   any(grepl("structural_zero", src0)) && any(grepl("not estimable", src0)),
+   "structural zero rendered distinctly")
+
+# Duplicated tick labels where two facets/panels meet (the "400" collision).
+dupe_tick <- tryCatch({
+  e10x <- read_csv(file.path(EST, "e10_cn_home_by_language.csv"), show_col_types = FALSE)
+  brk <- grep("breaks = seq\\(0, 0.30, 0.10\\)", src0)
+  length(brk) > 0
+}, error = function(e) FALSE)
+ok("no terminal tick at a panel boundary (P5)", dupe_tick,
+   "x breaks stop short of the panel edge")
+
 # --- 5. colour semantics ------------------------------------------------------
 cat("\n5. colour semantics\n")
 ok("jurisdiction palette complete",
@@ -158,6 +237,9 @@ ok("home region inherits jurisdiction colour",
 ok("reason palette disjoint from jurisdiction",
    length(intersect(toupper(PAL_REASON), toupper(PAL_JURIS))) == 0,
    sprintf("%d reason colours", length(PAL_REASON)))
+ok("reason palette has a separate 'other' and 'none given'",
+   all(c("other", "none given") %in% names(PAL_REASON)),
+   "judge code G is not folded into F")
 
 src  <- readLines("pipeline/30_figures.R", warn = FALSE)
 code <- grep("^\\s*#", src, value = TRUE, invert = TRUE)
@@ -177,9 +259,12 @@ ok("shape encodings do not collide",
 # The main matrix must print the SAME quantity its fill encodes.
 mat <- paste(code, collapse = "\n")
 blk <- sub(".*p_rates <- ", "", mat); blk <- sub("p_modtier <-.*", "", blk)
+# The fill and the printed number must be the SAME quantity. `fill_rate` is the
+# raw rate with structural zeros masked to NA so the EU column renders as empty
+# rather than as five ordinary zeros -- still the raw rate, never the residual.
 ok("main matrix: raw values over a raw-rate scale",
-   grepl("aes\\(fill = rate\\)", blk) && grepl("100 \\* rate", blk) &&
-     !grepl("excess", blk), "fill and printed value both = rate")
+   grepl("aes\\(fill = fill_rate\\)", blk) && grepl("100 \\* rate", blk) &&
+     !grepl("excess", blk), "fill and printed value both = raw rate")
 hex <- grep("#[0-9A-Fa-f]{6}", code, value = TRUE)
 ok("palette not hard-coded in figures", length(hex) <= 1,
    sprintf("%d literal hex", length(hex)))

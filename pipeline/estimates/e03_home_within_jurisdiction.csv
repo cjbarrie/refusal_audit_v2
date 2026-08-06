@@ -1,5 +1,5 @@
 jurisdiction,estimate,conf_low,conf_high,n,events,n_issues,spec,scale,contrast,sample,estimable
 CN,0.18820069904987394,0.13082088509407352,0.2389558051203597,4160,282,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE
-MENA,0.02741645078899335,0.006563814833402579,0.04960679536539331,6240,547,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE
+MENA,0.02918019751088037,0.00792618091208156,0.05120008285100546,6240,557,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE
 India,-0.013893401014193606,-0.03882925464215502,0.01491039144716585,2076,139,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE
-US,0.016252569840865025,-0.009378063036427197,0.0458636683303141,8320,271,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE
+US,0.016930087571996797,-0.008320761480634802,0.04680476423254523,8320,274,520,descriptive_within_jurisdiction,probability,adjusted within-jurisdiction home-vs-away difference (issue NOT held fixed),"English, non-General, EU excluded",TRUE

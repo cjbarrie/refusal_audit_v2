@@ -1,7 +1,8 @@
 # Analytical audit — home-region sensitivity
 
-Written 2026-08-03. Supersedes the estimand treatment in `ANALYSIS_HANDOFF.md`.
-Generation is still running; regenerate with
+Written 2026-08-03; slant section added 2026-08-04. Supersedes the estimand
+treatment in `ANALYSIS_HANDOFF.md`. Generation is still running; regenerate
+with
 
 ```bash
 REFUSAL_RUN_DIR=annotations/full_v1 Rscript pipeline/run_all.R
@@ -167,7 +168,57 @@ Qwen.** The earlier claim of additivity was not supported by any estimate.
    It is replaced by an excess-over-additive-baseline matrix, on which MENA's
    Arab cell is near zero.
 
-## 7. Limitations that shape presentation
+## 7. Slant (passes 2/3) — added 2026-08-04
+
+Ideology and moral-foundation coding was reinstated over a **25% issue
+subsample** (156 issues, seed 20260803) after having been dropped in the
+Pass-1-only trim. `pipeline/22_estimates_slant.R`, figures `FIG4` / `P9`–`P11`,
+rationale in `docs/SLANT_SUBSAMPLE.md`.
+
+**Three design points a reviewer will press on, and the answers.**
+
+1. **Why subsample at the issue level rather than the response level?** Because
+   responses are clustered within issue — every model answers every issue.
+   Response-level sampling would have broken the clustering every interval here
+   depends on and left ragged model × language × tier cells. Issue-level
+   sampling leaves the cell structure intact.
+2. **Why are the slant tables English-only when FIG1–3 are English for a
+   different reason?** FIG1–3 use English for comparability. FIG4 must, because
+   the roster is not constant across languages (11 models answer in en/zh/ar, 9
+   in ru, 7 in hi). Pooling would confound a jurisdiction's measured slant with
+   which of its models happen to answer in which language. `e20` compares the
+   three complete-roster languages and finds no meaningful difference.
+3. **Are slant and refusal comparable?** **No.** Passes 2/3 skip refusals by
+   design, so slant is conditional on engagement. A jurisdiction that refuses
+   more contributes a differently selected set of responses. Do not read FIG1
+   and FIG4 as two views of one quantity.
+
+**The ideology result is a near-null, and should be presented as one.** The
+judge codes 74–93% of engaged responses as exactly 0 on every dimension.
+Jurisdiction means span about +0.03 to −0.16 on a −2..+2 scale. The largest
+signals — US economic +0.032 [0.016, 0.048], EU social −0.119 [−0.163, −0.074],
+EU populist −0.162 — are statistically distinguishable from zero but
+substantively tiny.
+
+This is why FIG4A plots the **distribution** and not the mean: a
+mean-with-interval panel would put five dots on the origin and read as a failed
+instrument, when the actual result is that the instrument fired and found
+neutrality. The neutral category is removed from the bars and printed as a
+number so the tails are visible at the scale they occur.
+
+**The honest caveat**: a near-total concentration at 0 is consistent with
+genuinely neutral answers *and* with a judge reluctant to assign a side. This
+design cannot separate them. A second judge or a human-coded validation subset
+would; neither exists. State this whenever the ideology null is reported.
+
+**Moral foundations are where the variation is.** Prevalence ranges from 58–71%
+(fairness/cheating) to under 4% (sanctity/degradation), with clear jurisdiction
+ordering: EU models invoke care, fairness and liberty most; CN models lead on
+loyalty/betrayal and authority/subversion. The foundations are **not mutually
+exclusive**, so shares within a jurisdiction do not sum to 1 — do not present
+them as a composition.
+
+## 8. Limitations that shape presentation
 
 - **No inter-rater reliability.** Single Gemini judge; `16_irr_analysis.R` skips
   because no second-judge file exists. The pipeline reads that file from
@@ -178,4 +229,10 @@ Qwen.** The earlier claim of additivity was not supported by any estimate.
   models but not the four self-hosted ones.
 - **Descriptive, not causal.** The issue random intercept controls issue-level
   confounding; it does not licence a causal reading of jurisdiction.
-- **Counts will change.** Generation is incomplete.
+- **Counts will change.** Generation is incomplete: the four self-hosted models
+  are still missing most Russian and Hindi responses. The primary English
+  estimates are complete (11/11 models) and will not move.
+- **Slant rests on 156 issues** and is conditional on engagement; its intervals
+  are issue-clustered bootstrap (800 resamples) and are correspondingly wide.
+  When generation finishes, the subsample needs a top-up annotate pass to cover
+  the new ru/hi responses — the manifest is reused, so the draw does not change.

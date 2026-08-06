@@ -59,7 +59,11 @@ TOPIC_DOMAIN_TO_CATEGORY = {
 # rate). Boundary prompts get Pass 4 (stance) when that stage runs.
 JUDGE_CALLS_ENGAGED = 3          # pass1 + pass2 + pass3
 JUDGE_CALLS_REFUSED = 1          # pass1 only
-ASSUMED_ENGAGE_RATE = 0.83       # from legacy KEY_FINDINGS
+# Measured on the v2 battery (149,948 annotated rows): engagement codes
+# 1 78.8% / 2 15.0% / 3 0.7% = 94.4% engaged, 5.6% refused. The old 0.83 came
+# from the legacy v1 KEY_FINDINGS and understated passes 2/3 volume by ~14%,
+# which matters now that a judge panel multiplies that volume.
+ASSUMED_ENGAGE_RATE = 0.944
 
 # --- USD cost model -------------------------------------------------------
 # Per-token USD rates (input, output). OpenRouter rates snapshotted live from
@@ -82,7 +86,24 @@ PRICING = {
     # judges
     "google/gemini-2.5-flash-lite":   (1.0e-7,  4.0e-7),
     "openai/gpt-oss-120b":            (3.7e-8,  1.7e-7),
+    # multi-judge reliability panel (docs/MULTI_JUDGE_PLAN.md), live rates
+    # pulled 2026-08-04. Chosen for: structured-output support, reasoning that
+    # can be DISABLED, and a published quality index -- a weak judge depresses
+    # agreement for reasons unrelated to how hard the coding task is.
+    "google/gemma-4-31b-it":                  (1.0e-7,  3.4e-7),
+    "nvidia/nemotron-3-super-120b-a12b":      (8.5e-8,  4.0e-7),
+    "inclusionai/ling-2.6-flash":             (1.0e-8,  3.0e-8),
+    "cohere/command-r7b-12-2024":             (3.7e-8,  1.5e-7),
 }
+
+# The reliability panel actually recommended. The anchor is deliberately the
+# INCUMBENT judge: Pass 1 is already complete under it, and changing the anchor
+# would invalidate that work.
+JUDGE_PANEL_DEFAULT = [
+    "google/gemma-4-31b-it",
+    "nvidia/nemotron-3-super-120b-a12b",
+    "inclusionai/ling-2.6-flash",
+]
 # MENA models run on dedicated HF Inference Endpoints (per-hour billing, not
 # per-token), so their per-token generation rate is zero for the per-token model.
 # The real endpoint cost is uptime-based and reported separately.
@@ -94,11 +115,20 @@ HF_ENDPOINT_HOURLY = 1.00
 
 # ASSUMPTION: average tokens per call, by call type (input, output). Used only
 # for the USD estimate; call COUNTS above are exact.
+# Judge input was measured, not assumed: mean prompt+response across the real
+# battery is 3,696 characters (~1,027 tokens at 3.6 ch/tok), plus the pass
+# template (Pass 1 ~300, Pass 2 ~800, Pass 3 ~740 tokens). The old flat
+# (620, 60) under-priced judging ~4x; the calibrated figures below reproduce
+# observed spend to within ~2%. See docs/MULTI_JUDGE_PLAN.md section 2.
 TOK = {
     "gen":    (140, 400),   # prompt in, model answer out
-    "judge":  (620, 60),    # prompt+response in, short JSON verdict out
-    "stance": (620, 60),    # boundary response in, stance JSON out
+    "judge":  (1865, 62),   # MEASURED over passes 1-3 on the panel pilot
+    "stance": (1350, 60),   # boundary response + stance codebook in
 }
+# Per-pass detail, used for the panel estimate.
+# Scaled to the measured per-call average (1,865 in / 62 out over passes 1-3
+# on the panel pilot); the pre-pilot estimate was ~14% low on input.
+TOK_PASS = {"pass1": (1509, 60), "pass2": (2078, 65), "pass3": (2009, 60)}
 
 
 def _fetch_live_pricing():
@@ -185,7 +215,8 @@ def _battery_counts(battery, n_issues, strategy="proportional"):
 
 
 def _config_budget(n_issues, batteries, languages, models, pass1_only=False,
-                   strategy="proportional"):
+                   strategy="proportional", judge_panel=None,
+                   pass23_subsample=1.0):
     """Return exact call counts + USD for one (models x languages) configuration.
 
     pass1_only reflects the full-run annotation mode: exactly one judge call per
@@ -208,6 +239,11 @@ def _config_budget(n_issues, batteries, languages, models, pass1_only=False,
 
     gens = prompts_per_lang * n_langs * len(models)
     judge = int(round(gens * per_resp))
+    # Pass-count split, needed to price a panel judge correctly: Pass 1 covers
+    # every response, passes 2/3 only the engaged ones inside the subsample.
+    n_pass1 = gens
+    n_deep = 0 if pass1_only else int(round(gens * ASSUMED_ENGAGE_RATE
+                                            * float(pass23_subsample)))
     stance = 0 if pass1_only else bnd_per_lang * n_langs * len(models)
 
     # USD: generations priced per subject model; judge/stance at their model rate.
@@ -226,6 +262,21 @@ def _config_budget(n_issues, batteries, languages, models, pass1_only=False,
     spin, spout = PRICING["openai/gpt-oss-120b"]
     stance_usd = stance * (si * spin + so * spout)
 
+    # Reliability panel: every extra judge repeats the SAME pass mix as the
+    # anchor, so its cost is the per-pass token model priced at that judge's
+    # rate. Reported per judge, because the panel is the one part of the budget
+    # a reader is likely to want to trim.
+    panel_usd = {}
+    for j in (judge_panel or []):
+        if j == "google/gemini-2.5-flash-lite":
+            continue  # anchor, already counted in judge_usd
+        rin, rout = PRICING.get(j, (jpin, jpout))
+        p1i, p1o = TOK_PASS["pass1"]; p2i, p2o = TOK_PASS["pass2"]
+        p3i, p3o = TOK_PASS["pass3"]
+        panel_usd[j] = (n_pass1 * (p1i * rin + p1o * rout)
+                        + n_deep * ((p2i * rin + p2o * rout)
+                                    + (p3i * rin + p3o * rout)))
+
     # provider split of generation calls
     gens_or = prompts_per_lang * n_langs * sum(1 for m in models if m[3] == "openrouter")
     gens_ep = prompts_per_lang * n_langs * sum(1 for m in models if m[3] == "hf-endpoint")
@@ -235,7 +286,9 @@ def _config_budget(n_issues, batteries, languages, models, pass1_only=False,
         "gens": gens, "gens_openrouter": gens_or, "gens_endpoint": gens_ep,
         "judge": judge, "stance": stance, "total_calls": gens + judge + stance,
         "gen_usd": gen_usd, "judge_usd": judge_usd, "stance_usd": stance_usd,
-        "total_usd": gen_usd + judge_usd + stance_usd,
+        "panel_usd": panel_usd, "panel_total_usd": sum(panel_usd.values()),
+        "panel_calls": (n_pass1 + 2 * n_deep) * len(panel_usd),
+        "total_usd": gen_usd + judge_usd + stance_usd + sum(panel_usd.values()),
     }
 
 
@@ -302,9 +355,37 @@ def stage_generate(args, run_dir):
     return resp_dir
 
 
+def _judge_slug(model_id):
+    """Filesystem-safe short name for a judge, e.g. google/gemma-4-31b-it ->
+    google__gemma-4-31b-it. Used as the panel sub-directory."""
+    return model_id.replace("/", "__").replace(":", "_")
+
+
 def stage_annotate(args, run_dir):
+    """Annotate with the anchor judge, and optionally with a panel of judges.
+
+    The ANCHOR judge keeps writing to ann/ and therefore to annotations_all.jsonl,
+    so 01_data_loading.R and every downstream script are untouched. Panel judges
+    write to panel/<slug>/ and are consumed only by the measurement layer. The
+    panel is strictly additive -- removing it must leave the pipeline exactly as
+    it was.
+    """
     resp_dir = os.path.join(run_dir, "responses")
-    ann_dir = os.path.join(run_dir, "ann")
+    panel = list(getattr(args, "judge_panel", None) or [])
+    jobs = [(args.judge, os.path.join(run_dir, "ann"))]
+    for j in panel:
+        if j == args.judge:
+            continue  # anchor already queued; do not annotate it twice
+        jobs.append((j, os.path.join(run_dir, "panel", _judge_slug(j))))
+    if panel:
+        print(f"  judge panel: anchor={args.judge}; "
+              f"+{len(jobs) - 1} additional judge(s)")
+    for judge, ann_dir in jobs:
+        _annotate_one_judge(args, run_dir, resp_dir, ann_dir, judge)
+    return os.path.join(run_dir, "ann")
+
+
+def _annotate_one_judge(args, run_dir, resp_dir, ann_dir, judge):
     os.makedirs(ann_dir, exist_ok=True)
     for battery in args.batteries:
         for lang in args.languages:
@@ -312,15 +393,38 @@ def stage_annotate(args, run_dir):
             out = os.path.join(ann_dir, f"{battery}_{lang}.jsonl")
             cmd = [sys.executable, "annotation_pipeline.py",
                    "--responses", resp, "--output", out,
-                   "--judge-model", args.judge,
+                   "--judge-model", judge,
+                   "--annotation-run-id", os.path.basename(run_dir.rstrip("/")),
                    "--workers", str(args.workers)]
             # Pass the mode through EXPLICITLY in both directions. Appending
             # nothing when pass1_only is False let annotation_pipeline fall back
             # to its own default -- which is pass1-only -- so `run_pilot
             # --all-passes` silently produced Pass-1 output.
             cmd.append("--pass1-only" if args.pass1_only else "--all-passes")
+            # Pilot scoping. Caps responses per (battery, language) file, so a
+            # panel can be validated on a slice of the matrix before committing
+            # to the full run. Applies to every judge equally, which is what
+            # keeps the pilot's agreement statistics meaningful.
+            if getattr(args, "limit", None):
+                cmd += ["--limit", str(args.limit)]
+            if getattr(args, "limit_issues", None):
+                cmd += ["--limit-issues", str(args.limit_issues),
+                        "--subsample-seed", str(args.pass23_seed)]
+            # Deep-pass (2/3) subsampling. The manifest lives at the RUN level,
+            # not per language: it is written on the first language and re-read
+            # by every later one, so all languages annotate the SAME issues.
+            # Re-drawing per language would inflate the union of sampled issues
+            # toward the full battery as languages accumulate.
+            if not args.pass1_only and args.pass23_subsample < 1.0:
+                cmd += ["--subsample-frac", str(args.pass23_subsample),
+                        "--subsample-seed", str(args.pass23_seed),
+                        "--subsample-manifest",
+                        # ONE manifest for the whole run, shared by every judge.
+                        # A per-judge manifest would have each judge annotating a
+                        # different 25% of issues, leaving no overlapping cells to
+                        # compute agreement on -- silently destroying the panel.
+                        os.path.join(run_dir, "pass23_subsample.json")]
             _run(cmd)
-    return ann_dir
 
 
 def stage_stance(args, run_dir):
@@ -430,6 +534,23 @@ def stage_assemble(args, run_dir):
                     rec["dataset_type"] = "base"
                     all_rows.append(rec)
 
+    # Assemble opens every surface in "w" mode, so a run that matched no input
+    # would silently truncate good output to zero rows. That is exactly what a
+    # --batteries mismatch produces: the per-battery paths simply don't exist,
+    # the loop above skips them all, and the write below overwrites a complete
+    # annotations_all.jsonl with nothing. Fail loudly instead -- the caller
+    # almost certainly named the wrong battery.
+    if not all_rows:
+        avail = sorted({fn.rsplit("_", 1)[0]
+                        for fn in os.listdir(ann_dir)
+                        if fn.endswith(".jsonl")}) if os.path.isdir(ann_dir) else []
+        raise SystemExit(
+            f"ERROR: assemble matched 0 annotation rows for batteries="
+            f"{args.batteries} languages={args.languages}.\n"
+            f"       Refusing to overwrite existing output with an empty file.\n"
+            f"       Batteries present in {ann_dir}: {avail or '(none)'}\n"
+            f"       Re-run with --batteries {' '.join(avail) if avail else '<battery>'}")
+
     all_path = os.path.join(out_dir, "annotations_all.jsonl")
     with open(all_path, "w", encoding="utf-8") as f:
         for r in all_rows:
@@ -442,6 +563,48 @@ def stage_assemble(args, run_dir):
             for r in rows:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
         print(f"  annotations_{lang}_boundary.jsonl: {len(rows)} boundary rows")
+
+    # Panel surface: LONG format, one row per (response x judge). This is the
+    # only new file the R layer reads; annotations_all.jsonl above keeps its
+    # exact previous contract so 01_data_loading.R and scripts 02-30 are
+    # unaffected whether or not a panel exists.
+    panel_root = os.path.join(run_dir, "panel")
+    if os.path.isdir(panel_root):
+        panel_rows = []
+        # The anchor is part of the panel for reliability purposes: without it
+        # the statistics would describe agreement among the OTHER judges only,
+        # not agreement with the labels the paper actually uses.
+        judge_dirs = [(args.judge, ann_dir)] + [
+            (d.replace("__", "/"), os.path.join(panel_root, d))
+            for d in sorted(os.listdir(panel_root))
+            if os.path.isdir(os.path.join(panel_root, d))]
+        for judge, jdir in judge_dirs:
+            for battery in args.batteries:
+                for lang in args.languages:
+                    path = os.path.join(jdir, f"{battery}_{lang}.jsonl")
+                    if not os.path.exists(path):
+                        continue
+                    latest = {}
+                    for line in open(path, encoding="utf-8"):
+                        line = line.strip()
+                        if not line:
+                            continue
+                        r = json.loads(line)
+                        latest[(r.get("prompt_id"), r.get("prompt_language"),
+                                r.get("model"))] = r
+                    for r in latest.values():
+                        if r.get("error"):
+                            continue
+                        r.setdefault("judge_model", judge)
+                        panel_rows.append(r)
+        if panel_rows:
+            ppath = os.path.join(out_dir, "annotations_panel.jsonl")
+            with open(ppath, "w", encoding="utf-8") as f:
+                for r in panel_rows:
+                    f.write(json.dumps(r, ensure_ascii=False) + "\n")
+            njudge = len({r.get("judge_model") for r in panel_rows})
+            print(f"  annotations_panel.jsonl: {len(panel_rows)} rows "
+                  f"across {njudge} judges")
 
     # R-shape prompt metadata (id, category, controversy_tier) per language,
     # combining both sampled batteries; topic_domain -> category.
@@ -496,11 +659,17 @@ def cost_estimate(args):
     p1 = args.pass1_only
     configs = [
         ("baseline (%d OpenRouter models x %d langs)" % (len(or_models), len(baseline_langs)),
-         _config_budget(args.n_issues, batts, baseline_langs, or_models, pass1_only=p1, strategy=args.strategy)),
+         _config_budget(args.n_issues, batts, baseline_langs, or_models, pass1_only=p1, strategy=args.strategy,
+                        judge_panel=args.judge_panel,
+                        pass23_subsample=args.pass23_subsample)),
         ("+Russian  (%d OpenRouter models x %d langs)" % (len(or_models), len(full_langs)),
-         _config_budget(args.n_issues, batts, full_langs, or_models, pass1_only=p1, strategy=args.strategy)),
+         _config_budget(args.n_issues, batts, full_langs, or_models, pass1_only=p1, strategy=args.strategy,
+                        judge_panel=args.judge_panel,
+                        pass23_subsample=args.pass23_subsample)),
         ("+MENA/India (%d models x %d langs)" % (len(TEST_MODELS), len(full_langs)),
-         _config_budget(args.n_issues, batts, full_langs, TEST_MODELS, pass1_only=p1, strategy=args.strategy)),
+         _config_budget(args.n_issues, batts, full_langs, TEST_MODELS, pass1_only=p1, strategy=args.strategy,
+                        judge_panel=args.judge_panel,
+                        pass23_subsample=args.pass23_subsample)),
     ]
 
     print("=" * 78)
@@ -567,6 +736,21 @@ def cost_estimate(args):
     bud_path = os.path.join(ROOT, "docs", "budget_estimate.json")
     os.makedirs(os.path.dirname(bud_path), exist_ok=True)
     json.dump(out, open(bud_path, "w"), indent=2)
+    # Price the panel on the FULL matrix, matching the "full expanded matrix
+    # TOTAL" line above. Reporting the baseline config here instead understated
+    # it roughly two-fold and sat directly under a full-matrix total, which is
+    # exactly the sort of mismatch a launch decision should not rest on.
+    if mena.get("panel_usd"):
+        print()
+        print("  RELIABILITY PANEL -- full matrix (docs/MULTI_JUDGE_PLAN.md)")
+        for j, v in sorted(mena["panel_usd"].items(), key=lambda kv: -kv[1]):
+            print(f"    {j:<44} ${v:>8.2f}")
+        print(f"    {'panel subtotal':<44} ${mena['panel_total_usd']:>8.2f}"
+              f"   ({mena['panel_calls']:,} extra judge calls)")
+        en_only = {k: v / mena['n_langs'] for k, v in mena["panel_usd"].items()}
+        print(f"    {'English-only tier (1 of 5 languages)':<44} "
+              f"${sum(en_only.values()):>8.2f}")
+
     print(f"  wrote {bud_path}")
 
 
@@ -608,8 +792,42 @@ def main():
                          "(moral foundations) on engaged responses. Off by default "
                          "-- the study's target is refusal + nature of refusal, "
                          "which is Pass 1 alone. Use for a pilot that needs slant. "
-                         "The consuming analysis scripts live in "
-                         "archive/pipeline_slant/.")
+                         "Consumed by pipeline/22_estimates_slant.R; see "
+                         "docs/SLANT_SUBSAMPLE.md.")
+    ap.add_argument("--limit", type=int, default=None, metavar="N",
+                    help="Annotate at most N responses per (battery, language). "
+                         "Use for a panel PILOT: validates parse rates, cost per "
+                         "call and preliminary agreement on a slice before "
+                         "committing to the full matrix.")
+    ap.add_argument("--limit-issues", type=int, default=None, metavar="N",
+                    help="Pilot scoping by ISSUE: annotate all responses for a "
+                         "random sample of N issues. Preferred over --limit for "
+                         "a panel pilot, because agreement statistics are "
+                         "bootstrapped over issue clusters.")
+    ap.add_argument("--judge-panel", nargs="*", default=None, metavar="MODEL",
+                    help="Additional judges for inter-rater reliability. Bare "
+                         "--judge-panel uses the recommended default panel "
+                         f"({', '.join(JUDGE_PANEL_DEFAULT)}). Each judge "
+                         "annotates the SAME responses and the SAME pass-2/3 "
+                         "subsample as the anchor, writing to "
+                         "<run_dir>/panel/<judge>/. The anchor's output and "
+                         "annotations_all.jsonl are untouched, so the existing "
+                         "analysis pipeline is unaffected. "
+                         "See docs/MULTI_JUDGE_PLAN.md.")
+    ap.add_argument("--pass23-subsample", type=float, default=1.0,
+                    metavar="FRAC",
+                    help="With --all-passes: run Passes 2/3 on a random FRAC of "
+                         "ISSUES rather than all of them (default 1.0 = all). "
+                         "Sampling is at the ISSUE level so every model x "
+                         "language x tier cell stays complete and the "
+                         "within-issue clustering the analysis relies on is "
+                         "preserved. Pass 1 is unaffected and always covers "
+                         "everything. The draw is written to "
+                         "<run_dir>/pass23_subsample.json and REUSED by every "
+                         "later language and every resume.")
+    ap.add_argument("--pass23-seed", type=int, default=20260803,
+                    help="Seed for --pass23-subsample (default 20260803). "
+                         "Ignored if the run's manifest already exists.")
     ap.add_argument("--pass1-only", dest="pass1_only", action="store_true",
                     help="Deprecated no-op: Pass-1-only is now the default. "
                          "Accepted so existing commands and docs keep working.")
@@ -631,6 +849,10 @@ def main():
                          "start, to protect against accidentally writing into the wrong run. "
                          "Mutually exclusive with --fresh.")
     args = ap.parse_args()
+    # Bare `--judge-panel` (nargs="*" with no values) means "use the recommended
+    # panel"; omitting the flag entirely means no panel at all.
+    if args.judge_panel is not None and len(args.judge_panel) == 0:
+        args.judge_panel = list(JUDGE_PANEL_DEFAULT)
 
     if args.resume and args.fresh:
         ap.error("--resume and --fresh are mutually exclusive: --resume continues an "

@@ -139,6 +139,35 @@ if (!is.null(m_dom)) {
         digits = 3, row.names = FALSE)
 }
 
+# Sensitivity: model as a FIXED effect. The 11 subject models are purposively
+# chosen, not a random sample from a population of models, so a random intercept
+# is a shrinkage convenience rather than a sampling claim. The domain x tier
+# contrast is the estimand and `model` is a nuisance control, so what matters is
+# whether the choice moves the domain shifts. Both are exported; the random-
+# intercept version stays primary because it converged cleanly and the fixed
+# version is a strictly larger parameterisation of the same nuisance.
+cat("\n   sensitivity: model as fixed effect\n")
+m_dom_fx <- tryCatch(
+  glmer(y ~ tier * domain + model + (1|issue_id), d, binomial,
+        control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))),
+  error = function(e) { cat("   FAILED:", sub("\n.*", "", conditionMessage(e)), "\n"); NULL })
+if (!is.null(m_dom_fx) && exists("dom_tier")) {
+  Xb2 <- model.matrix(terms(m_dom_fx), transform(d, tier = factor("boundary", levels = levels(d$tier))))
+  Xr2 <- model.matrix(terms(m_dom_fx), transform(d, tier = factor("regular",  levels = levels(d$tier))))
+  re2 <- ranef(m_dom_fx)$issue_id[as.character(d$issue_id), 1]
+  b2  <- fixef(m_dom_fx)
+  pb2 <- plogis(as.vector(Xb2 %*% b2) + re2); pr2 <- plogis(as.vector(Xr2 %*% b2) + re2)
+  fx <- tibble(domain = levels(d$domain),
+               shift_fixed_model = vapply(levels(d$domain),
+                 function(g) mean(pb2[d$domain == g] - pr2[d$domain == g]), numeric(1)))
+  sens_dom <- dom_tier %>% select(domain, shift_random_model = shift) %>%
+    left_join(fx, by = "domain") %>%
+    mutate(abs_diff_pp = 100 * abs(shift_random_model - shift_fixed_model))
+  write_csv(sens_dom, file.path(EST, "e12b_domain_tier_model_fixed.csv"))
+  cat(sprintf("   max |random - fixed| across domains: %.2f pp\n",
+              max(sens_dom$abs_diff_pp)))
+}
+
 # -----------------------------------------------------------------------------
 # C. Refusal-justification composition
 # -----------------------------------------------------------------------------
@@ -149,13 +178,42 @@ if (!is.null(m_dom)) {
 # -- both facts belong in the caption, and the denominators are carried here so
 # the figure can show them.
 cat("\nC. refusal-justification composition\n")
-J4 <- c(A = "neutrality", C = "harm", B = "epistemic", D = "epistemic",
-        E = "epistemic", F = "unstated", G = "unstated")
-LEV4 <- c("neutrality", "harm", "unstated", "epistemic")
+# FIVE groups, not four. Auditing the raw codes showed the old collapse was not
+# defensible:
+#   * G ("other") is 15.7% of English refusals -- almost as large as harm -- and
+#     reading all 222 free-text entries shows it is heterogeneous: degenerate
+#     output ("nonsensical and rambling"), explicit task refusals, and epistemic
+#     statements ("lacks reliable information") all land in G. Folding it into F
+#     ("no reason given") created a category meaning two incompatible things and
+#     hid a measurement failure mode -- worst for allam-7b, where G is 31.7% of
+#     426 refusals.
+#   * B and E have TWO responses each in the whole English refusal set, so
+#     "epistemic" is effectively D (expertise limitation) alone. Kept as one
+#     group because the three are conceptually one family, but the caption must
+#     say the category is thin.
+# The raw 7-code table is exported alongside so the collapse is auditable.
+J5 <- c(A = "neutrality", C = "harm", B = "epistemic", D = "epistemic",
+        E = "epistemic", F = "none given", G = "other")
+LEV5 <- names(PAL_REASON)   # neutrality, harm, epistemic, other, none given
+
+raw_codes <- d %>%
+  filter(refused, !is.na(refusal_justification)) %>%
+  count(model, refusal_justification) %>%
+  group_by(model) %>% mutate(n_refusals = sum(n), share = n / n_refusals) %>%
+  ungroup() %>%
+  mutate(group = unname(J5[refusal_justification]),
+         code_label = c(A = "A neutrality", B = "B complexity", C = "C harm avoidance",
+                        D = "D expertise limitation", E = "E user autonomy",
+                        F = "F none given", G = "G other")[refusal_justification])
+write_csv(raw_codes, file.path(EST, "e13b_refusal_codes_raw.csv"))
+cat(sprintf("  raw codes: %d model x code rows; G share overall %.1f%%\n",
+            nrow(raw_codes),
+            100 * sum(raw_codes$n[raw_codes$refusal_justification == "G"]) /
+              sum(raw_codes$n)))
 
 reasons <- d %>%
   filter(refused, !is.na(refusal_justification)) %>%
-  mutate(reason = factor(unname(J4[refusal_justification]), levels = LEV4)) %>%
+  mutate(reason = factor(unname(J5[refusal_justification]), levels = LEV5)) %>%
   filter(!is.na(reason)) %>%
   # .drop = FALSE must span model x reason ONLY. Including juris in the count
   # expands every model against every jurisdiction level, producing phantom rows

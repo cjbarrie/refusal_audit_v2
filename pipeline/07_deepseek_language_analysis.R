@@ -62,18 +62,24 @@ cat("Saved: pipeline/tables/36_deepseek_engagement_distribution.csv\n")
 # =============================================================================
 # Table 37: Ideology by language (engaged only)  -- PASS-2 ONLY
 # =============================================================================
-# The main run is Pass-1-only (docs/ANNOTATION_TRIM_FULL_RUN.md), so the four
-# ideology columns are all-NA and this table would be a grid of NaN. It still
-# runs against a pilot-style run annotated with every pass, so it is guarded
-# rather than deleted. Tables 35, 36, 38 and figure 19 are Pass 1 and always run.
+# Pass 2 covers a 25% ISSUE SUBSAMPLE, not the whole run
+# (docs/SLANT_SUBSAMPLE.md), so the ideology columns are NA for most rows. The
+# table is guarded on the columns carrying any data at all, so it also skips
+# cleanly on a Pass-1-only run. Tables 35, 36, 38 and figure 19 are Pass 1 and
+# always run.
+#
+# `filter(has_slant)` is load-bearing: without it `n = n()` would count every
+# engaged response while the means were computed over the subsample alone via
+# na.rm, reporting an `n` roughly four times the number of observations the
+# estimates actually rest on.
 
 if (all(is.na(deepseek$economic_left_right))) {
   cat("\nSKIP Table 37 (ideology): Pass 2 not present in this run.\n")
 } else {
-  cat("\nGenerating Table 37: Ideology by Language (Engaged Only)...\n")
+  cat("\nGenerating Table 37: Ideology by Language (engaged, slant subsample)...\n")
 
   t37 <- deepseek %>%
-    filter(engaged) %>%
+    filter(engaged, has_slant) %>%
     group_by(response_language) %>%
     summarise(
       n = n(),

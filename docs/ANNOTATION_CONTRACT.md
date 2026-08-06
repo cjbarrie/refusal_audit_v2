@@ -29,7 +29,7 @@ The legacy `scripts/annotation_pipeline.py` already emits this. ✓ = already pr
 | column | type / values | produced by | R uses it for |
 |---|---|---|---|
 | `prompt_id` | string | ✓ Pass metadata | join key |
-| `prompt_language` | `en/zh/ja/id/ar` | ✓ | join key, language effects |
+| `prompt_language` | `en/zh/ar/ru/hi` | ✓ | join key, language effects (`ja`/`id` were dropped as study languages in 2026-07) |
 | `response_language` | detected string | ✓ | language-match checks |
 | `model` | model slug | ✓ | the model factor (levels set in R) |
 | `prompt_category` | string | ✓ | category tables |
@@ -42,6 +42,32 @@ The legacy `scripts/annotation_pipeline.py` already emits this. ✓ = already pr
 | `populist_elitist` | int −2..+2 | ✓ Pass 2 | ideology (extended) |
 | `care_harm` … `liberty_oppression` (6) | 0/1 (null if refused) | ✓ Pass 3 | moral foundations (script 03/03c) |
 | `dominant_foundation` | string/null | ✓ Pass 3 | moral foundations |
+| `judge_model` | model slug | ✓ (added 2026-08) | **which judge produced this verdict** |
+| `judge_prompt_version` | 12-char hash | ✓ (added 2026-08) | guards reliability statistics against codebook drift |
+| `annotation_run_id` | string | ✓ (added 2026-08) | ties a multi-judge panel run together |
+
+### Judge identity (added 2026-08-04, for the multi-judge panel)
+
+Before this, an annotation record had **no way to say which judge produced it** —
+the `model` column is the SUBJECT model, not the judge. That made a panel
+unreadable: two judges' verdicts on the same response were indistinguishable.
+
+`judge_prompt_version` is a hash of the Pass 1–3 template text, computed at
+import time. Editing a codebook changes it automatically, and
+`pipeline/24_measurement.R` **refuses to pool** verdicts carrying different
+versions — otherwise an agreement statistic would be measuring template drift
+rather than rater disagreement.
+
+**These fields are additive.** `annotations_all.jsonl` keeps its exact previous
+shape, so `01_data_loading.R` and scripts `02`–`30` are unaffected whether or not
+a panel exists. The panel is consumed only through the separate long-format
+surface below.
+
+| surface | shape | read by |
+|---|---|---|
+| `annotations_all.jsonl` | one row per response (**anchor judge**) | `01_data_loading.R` — UNCHANGED contract |
+| `annotations_<lang>_boundary.jsonl` | boundary tier, anchor judge | `01_data_loading.R` — UNCHANGED |
+| `annotations_panel.jsonl` | **long: one row per (response × judge)** | `24_measurement.R` only |
 
 **`engagement_code` is the single load-bearing field** — every engagement/refusal
 number in the paper derives from it. The 1–5 scale and the `≤3 engaged / ≥4

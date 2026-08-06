@@ -1,0 +1,9 @@
+jurisdiction,weighting,estimate,loo_min,loo_max,n_models,single_model,note
+CN,response-weighted (plotted),0.17484163310068548,0.16155488702183685,0.18981285519292176,2,FALSE,
+MENA,response-weighted (plotted),3.5518922173224243e-4,-4.695362407118043e-4,0.009489114096583942,3,FALSE,
+India,response-weighted (plotted),0.03173084793826966,NA,NA,1,TRUE,single-model jurisdiction; weighting and leave-one-out undefined
+US,response-weighted (plotted),-0.007431467469949914,-0.013695378896753178,-0.002387470162881767,4,FALSE,
+CN,equal-model-weighted,0.17568387110737932,0.16155488702183685,0.18981285519292176,2,FALSE,
+India,equal-model-weighted,0.03121885341444482,NA,NA,1,TRUE,single-model jurisdiction; weighting and leave-one-out undefined
+MENA,equal-model-weighted,0.005839429719973069,-4.695362407118043e-4,0.009489114096583942,3,FALSE,
+US,equal-model-weighted,-0.007604900998507823,-0.013695378896753178,-0.002387470162881767,4,FALSE,

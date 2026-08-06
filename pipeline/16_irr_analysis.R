@@ -1,224 +1,25 @@
 # =============================================================================
-# Script 16: Inter-Rater Reliability — primary judge vs second judge
+# Script 16: Inter-rater reliability  -- RETIRED, superseded by 24_measurement.R
 # =============================================================================
-# Compute Cohen's kappa (Pass 1, nominal) and Krippendorff's alpha (Pass 2,
-# ordinal) between the primary judge (Gemini 2.5 Flash Lite, produced the
-# main annotations_*.jsonl files) and a second judge (fresh annotations
-# stored in annotations/annotations_second_judge.jsonl).
+# This script computed Cohen's kappa (irr::kappa2) between the primary judge and
+# a single second judge. That is structurally limited to TWO raters, and it
+# covered Pass 1 and Pass 2 only -- moral foundations had no reliability estimate
+# at all. It also expected annotations_second_judge.jsonl, produced by
+# scripts/sample_for_second_judge.py, which was v1-era (hardcoded refusal_audit/
+# paths, languages ja/id that were dropped) and has been deleted.
 #
-# Also re-runs the DeepSeek regular-prompt Chinese vs English chi-squared
-# test on the second-judge labels for the DeepSeek subset of the IRR sample
-# and emits it for side-by-side reporting in the paper.
-# =============================================================================
+# The replacement is pipeline/24_measurement.R, which:
+#   * takes ANY number of judges (Krippendorff's alpha, not Cohen's kappa)
+#   * covers Pass 1, justifications, ideology AND moral foundations
+#   * reports Gwet's AC1 and positive specific agreement alongside alpha,
+#     because refusal (~5.6%) and sanctity (~3%) are rare enough that alpha
+#     alone hits the kappa paradox and understates a reliable instrument
+#   * tests whether measurement error is DIFFERENTIAL -- i.e. concentrated where
+#     the headline finding lives -- which is the check that decides whether the
+#     China result is partly an artefact
+#
+# See docs/MULTI_JUDGE_PLAN.md.
 
-suppressPackageStartupMessages({
-  library(tidyverse)
-  library(jsonlite)
-  library(irr)
-})
-
-if (requireNamespace("here", quietly = TRUE)) setwd(here::here())  # portable root (was hardcoded)
-
-# Read from the SAME run directory 01_data_loading.R used. These paths were
-# hardcoded to annotations/ (the v1 layout, where annotation files sat at the
-# top level). In v2 every run lives in annotations/<run_id>/, so the hardcoded
-# form pointed at files that do not exist -- and the skip guard below fired
-# first, which is why it never surfaced as an error. Once a second-judge pass
-# exists, the old paths would have loaded the WRONG primary labels or none.
-run_dir <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/pilot_v1")
-cat(sprintf("IRR run dir: %s\n", run_dir))
-
-# --- INPUT GUARD ------------------------------------------------------
-second_judge_file <- file.path(run_dir, "annotations_second_judge.jsonl")
-if (!file.exists(second_judge_file)) {
-  cat(sprintf("SKIP 16_irr_analysis.R: %s not present in this run.\n", second_judge_file))
-  cat("  Produce it with scripts/sample_for_second_judge.py, then re-run the\n")
-  cat("  annotate stage against that sample with a different --judge-model.\n")
-  quit(save = "no", status = 0)
-}
-# ---------------------------------------------------------------------
-
-
-read_jsonl <- function(path) {
-  lines <- readLines(path, warn = FALSE)
-  lines <- lines[nzchar(lines)]
-  map_dfr(lines, ~ fromJSON(.x, flatten = TRUE))
-}
-
-# -----------------------------------------------------------------------------
-# Load primary + second-judge annotations for the IRR sample
-# -----------------------------------------------------------------------------
-second <- read_jsonl(second_judge_file) %>%
-  filter(!is.na(engagement_code))
-
-# Primary labels come from the main annotation files; we load them and
-# restrict to records present in the second-judge output (IRR sample).
-primary_regular <- read_jsonl(file.path(run_dir, "annotations_all.jsonl"))
-# Study languages (config.SUPPORTED_LANGUAGES); only read boundary files that
-# exist, since a run may cover a subset of languages. ja/id were dropped as
-# study languages in 2026-07 and are no longer produced.
-irr_boundary_files <- file.path(run_dir,
-                                sprintf("annotations_%s_boundary.jsonl",
-                                        c("en", "zh", "ar", "ru", "hi")))
-irr_boundary_files <- irr_boundary_files[file.exists(irr_boundary_files)]
-primary_boundary <- map_dfr(irr_boundary_files, read_jsonl)
-primary <- bind_rows(primary_regular, primary_boundary) %>%
-  filter(!is.na(engagement_code))
-
-key_cols <- c("prompt_id", "prompt_language", "model")
-
-paired <- inner_join(
-  primary %>% select(all_of(key_cols),
-                     engagement_primary = engagement_code,
-                     econ_p = economic_left_right,
-                     soc_p  = social_left_right,
-                     auth_p = authoritarian_libertarian,
-                     pop_p  = populist_elitist),
-  second %>% select(all_of(key_cols),
-                    engagement_second = engagement_code,
-                    econ_s = economic_left_right,
-                    soc_s  = social_left_right,
-                    auth_s = authoritarian_libertarian,
-                    pop_s  = populist_elitist),
-  by = key_cols
-)
-
-cat(sprintf("Paired primary + second-judge records: %d\n", nrow(paired)))
-
-# -----------------------------------------------------------------------------
-# Cohen's kappa for Pass 1 (nominal: engagement codes 1-5)
-# -----------------------------------------------------------------------------
-pass1_mat <- paired %>%
-  select(engagement_primary, engagement_second) %>%
-  drop_na() %>%
-  as.matrix()
-
-kappa_pass1 <- irr::kappa2(pass1_mat, weight = "unweighted")
-
-# Also binary: refused (>=4) vs engaged (<4) — the main reported outcome
-binary_mat <- paired %>%
-  mutate(primary_refused = as.integer(engagement_primary >= 4),
-         second_refused  = as.integer(engagement_second  >= 4)) %>%
-  select(primary_refused, second_refused) %>%
-  drop_na() %>%
-  as.matrix()
-
-kappa_binary <- irr::kappa2(binary_mat, weight = "unweighted")
-
-# -----------------------------------------------------------------------------
-# Krippendorff's alpha for Pass 2 (ordinal ideology dimensions, -2..+2)
-# -----------------------------------------------------------------------------
-# Pass 2 is only populated when engagement_code < 4 on both judges, so the
-# record counts here are smaller than pass-1 N.
-
-kripp_dim <- function(primary_col, second_col) {
-  mat <- paired %>%
-    select(all_of(c(primary_col, second_col))) %>%
-    drop_na() %>%
-    t()
-  if (ncol(mat) < 2) return(tibble(alpha = NA_real_, n = 0))
-  out <- irr::kripp.alpha(mat, method = "ordinal")
-  tibble(alpha = out$value, n = out$raters * ncol(mat) / 2)
-}
-
-dims <- tribble(
-  ~dimension,                     ~primary, ~second,
-  "economic_left_right",          "econ_p", "econ_s",
-  "social_left_right",            "soc_p",  "soc_s",
-  "authoritarian_libertarian",    "auth_p", "auth_s",
-  "populist_elitist",             "pop_p",  "pop_s",
-) %>%
-  rowwise() %>%
-  mutate(res = list(kripp_dim(primary, second))) %>%
-  unnest(res) %>%
-  ungroup() %>%
-  select(dimension, alpha, n)
-
-# -----------------------------------------------------------------------------
-# Assemble IRR summary table
-# -----------------------------------------------------------------------------
-irr_summary <- bind_rows(
-  tibble(
-    pass = "Pass 1 (engagement, 1-5 scale)",
-    statistic = "Cohen's kappa (unweighted)",
-    value = kappa_pass1$value,
-    n = kappa_pass1$subjects,
-    p_value = kappa_pass1$p.value
-  ),
-  tibble(
-    pass = "Pass 1 (refused vs engaged binary)",
-    statistic = "Cohen's kappa (binary)",
-    value = kappa_binary$value,
-    n = kappa_binary$subjects,
-    p_value = kappa_binary$p.value
-  ),
-  # Pass 2 rows only when the run actually carries ideology codes. The main run
-  # is Pass-1-only (docs/ANNOTATION_TRIM_FULL_RUN.md), which leaves the four
-  # ideology columns all-NA; kripp_dim() then returns alpha = NA, n = 0, and
-  # emitting those rows would put four meaningless NA lines in the reported IRR
-  # table next to the two real kappas. Dropping them keeps the table honest
-  # while a pilot-style run annotated with every pass still reports all six.
-  dims %>%
-    filter(n > 0) %>%
-    transmute(
-      pass = paste0("Pass 2 (", dimension, ", -2..+2)"),
-      statistic = "Krippendorff's alpha (ordinal)",
-      value = alpha,
-      n = n,
-      p_value = NA_real_
-    )
-)
-
-cat("\n=== IRR Summary ===\n")
-print(irr_summary)
-
-dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
-write_csv(irr_summary, "pipeline/tables/26_irr.csv")
-
-# -----------------------------------------------------------------------------
-# DeepSeek regular-prompt robustness on second-judge labels
-# -----------------------------------------------------------------------------
-# Re-run the headline-finding chi-squared test on the DeepSeek subset of the
-# IRR sample (restricted to regular prompts, zh vs en).
-deepseek_sub <- second %>%
-  filter(model == "deepseek-chat-v3.1",
-         prompt_language %in% c("en", "zh")) %>%
-  # Regular-only: merge controversy_tier from prompt metadata.
-  mutate(ctrv = map2_chr(prompt_id, prompt_language, function(pid, lang) {
-    tryCatch({
-      meta <- fromJSON(sprintf("prompts/test_prompts_%s.json", lang), flatten = TRUE)$prompts
-      meta$controversy_tier[meta$id == pid][1]
-    }, error = function(e) NA_character_)
-  })) %>%
-  filter(ctrv == "regular") %>%
-  mutate(refused = as.integer(engagement_code >= 4))
-
-ds_tab <- table(deepseek_sub$prompt_language, deepseek_sub$refused)
-cat("\n=== DeepSeek regular-prompt refusal, second-judge (en vs zh) ===\n")
-print(ds_tab)
-
-if (nrow(ds_tab) == 2 && ncol(ds_tab) == 2 && min(rowSums(ds_tab)) > 0) {
-  ds_chi <- chisq.test(ds_tab)
-  ds_or_rows <- 1:2
-  ds_or <- (ds_tab[ds_or_rows[1], "1"] * ds_tab[ds_or_rows[2], "0"]) /
-           (ds_tab[ds_or_rows[1], "0"] * ds_tab[ds_or_rows[2], "1"])
-  ds_out <- tibble(
-    judge = "second (Claude Haiku 4.5)",
-    test = "regular-prompt language chi-squared",
-    chi_sq = ds_chi$statistic,
-    df = ds_chi$parameter,
-    p_value = ds_chi$p.value,
-    odds_ratio = ds_or,
-    n_en = sum(ds_tab["en", ]),
-    n_zh = sum(ds_tab["zh", ])
-  )
-  cat("\n=== Second-judge DeepSeek test ===\n")
-  print(ds_out)
-  write_csv(ds_out, "pipeline/tables/27_deepseek_second_judge.csv")
-} else {
-  cat("\nInsufficient DeepSeek regular-prompt records in IRR sample to re-test.\n")
-  write_csv(tibble(note = "insufficient data"),
-            "pipeline/tables/27_deepseek_second_judge.csv")
-}
-
-cat("\nWrote: tables/26_irr.csv, tables/27_deepseek_second_judge.csv\n")
+cat("16_irr_analysis.R is RETIRED -- superseded by pipeline/24_measurement.R\n")
+cat("  (two-rater Cohen's kappa; the panel design needs k raters)\n")
+quit(save = "no", status = 0)

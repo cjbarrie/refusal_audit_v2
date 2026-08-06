@@ -59,10 +59,18 @@ PLAN <- list(
        what = "primary within-issue home premium + sensitivity (e01-e10)"),
   list(id = "21", file = "21_estimates_support.R",           stage = "estimates",
        what = "model/domain tier contrasts, refusal reasons (e11-e14)"),
+  list(id = "22", file = "22_estimates_slant.R",              stage = "estimates",
+       what = "ideology + moral foundations on the slant subsample (e15-e19)"),
+  list(id = "23", file = "23_diagnostics.R",                  stage = "estimates",
+       what = "measurement + coverage diagnostics (d01-d08)"),
+  list(id = "24", file = "24_measurement.R",                  stage = "estimates",
+       what = "judge-panel reliability + measurement robustness (e23-e28)"),
+  list(id = "25", file = "25_estimates_language.R",            stage = "estimates",
+       what = "prompt-language effects, all models x languages (e29-e31)"),
   list(id = "30", file = "30_figures.R",                     stage = "figures",
-       what = "FIG1-3 + panels + journal previews, from saved estimates"),
+       what = "FIG1-5 + panels, from saved estimates"),
   list(id = "16", file = "16_irr_analysis.R",               stage = "irr",
-       what = "inter-rater reliability (skips without a second-judge pass)")
+       what = "RETIRED stub; superseded by 24_measurement.R")
 )
 
 only <- get_flag("--only")

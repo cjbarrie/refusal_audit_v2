@@ -104,6 +104,15 @@ PAL_REGION <- c(
 
 JURIS_LEVELS  <- c("CN", "MENA", "India", "US", "EU")
 REGION_LEVELS <- c("China", "Arab", "India", "US", "Europe", "General")
+
+# DISPLAY labels for issue regions. The stored level is "Arab" (the 22 Arab
+# League states, as harvested), but every figure shows "MENA" so the issue
+# region reads against the MENA jurisdiction it is the home region of. Keeping
+# the data value and the display label separate avoids a rename that would touch
+# HOME_REGION, PAL_REGION and every stored estimate table.
+REGION_DISPLAY <- c("China" = "China", "Arab" = "MENA", "India" = "India",
+                    "US" = "US", "Europe" = "Europe", "General" = "General")
+region_label <- function(x) unname(REGION_DISPLAY[as.character(x)])
 HOME_REGION   <- c(US = "US", CN = "China", EU = "Europe",
                    MENA = "Arab", India = "India")
 
@@ -130,22 +139,42 @@ scale_fill_juris <- function(...)
 # four shades of one. Built in LCH at controlled lightness (L* 38/52/64/76;
 # min pairwise gap 12 normal, 8 protan) and verified disjoint from PAL_JURIS,
 # because a reason must never be mistaken for a model origin.
+# FIVE categories, not four. The judge's code G ("other") is 15.7% of English
+# refusals and its free text shows it is heterogeneous -- degenerate output,
+# explicit task refusals, and epistemic statements all land there. Folding it
+# into F ("no reason given") produced a single "unstated" bar that meant two
+# incompatible things and silently absorbed a measurement failure mode. The two
+# are now separate and G is named honestly.
+#
+# Order here is the FACTOR order (neutrality first). geom_col stacks in reverse
+# factor order, so on the drawn bar this reads right-to-left: neutrality sits at
+# the right edge. The legend must be given breaks = rev(levels) to match the
+# drawn order -- audit_figures.R checks that they agree.
 PAL_REASON <- c(
-  "neutrality" = "#325D83",   # slate blue   L* 38  -- the modal reason
-  "harm"       = "#AD6C48",   # muted rust   L* 52
-  "epistemic"  = "#A994B4",   # muted violet L* 64
-  "unstated"   = "#B7BCC0"    # neutral grey L* 76
+  "neutrality"  = "#325D83",  # slate blue   L* 38  -- the modal reason
+  "harm"        = "#AD6C48",  # muted rust   L* 52
+  "epistemic"   = "#A994B4",  # muted violet L* 64
+  "other"       = "#B0B6BA",  # mid grey     L* 73  -- judge code G
+  "none given"  = "#DDE1E4"   # pale grey    L* 89  -- judge code F
 )
 
 SHAPE_TIER <- c("regular" = 21, "boundary" = 24)   # circle / triangle, fillable
 SHAPE_ESTIMAND <- c(primary = 21, descriptive = 1)  # filled vs hollow
-SHAPE_LANG <- c("en" = 21, "zh" = 1)               # filled vs hollow
+# Prompt language. Circle filled/hollow for the en-vs-zh pair, plus a diamond
+# for Arabic in the three-language roster comparison. Triangle (24) stays
+# reserved for the boundary tier and square for "not estimable", so these never
+# collide with the tier or estimand encodings -- audit_figures.R enforces it.
+SHAPE_LANG <- c("en" = 21, "zh" = 1, "ar" = 23)
 LTY_LANG   <- c("en" = "solid", "zh" = "22")
 
 # Sequential ramp for ordered quantities (engagement 1-5, rates in a heatmap).
 # Single hue, light -> dark: order is encoded by lightness, so it survives
 # grayscale and CVD without any hue discrimination at all.
 SEQ_5 <- c("#E8EDF3", "#C2D0E0", "#8FA8C6", "#5A7CA5", "#2A5183")
+
+# Sequential ramp for the raw jurisdiction x region rate matrix. Lives here, not
+# in the figure script, so figures stay free of literal colour values.
+SEQ_MATRIX <- c("#FAFBFB", "#C9D3DA", "#7F929F", "#3E5568")
 
 # Regular vs boundary: the baseline recedes, the probe is marked.
 PAL_TIER <- c("Regular Prompts" = INK_FAINT, "Boundary Prompts" = ACCENT)

@@ -12,6 +12,7 @@ import re
 import sys
 import threading
 import time
+import fcntl
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Optional, Tuple
 from openai import OpenAI
@@ -461,6 +462,15 @@ def generate_all_responses(
 
     # Concurrent dispatch. Each result is appended under a lock as it completes,
     # so an interrupt leaves a valid partial file that a rerun resumes from.
+    #
+    # The threading.Lock only serialises threads WITHIN this process. It is now
+    # routine to run several generate_responses.py processes against the same
+    # output file (one per model, so a slow llama.cpp endpoint cannot starve a
+    # fast vLLM one of workers), and response records regularly exceed Python's
+    # 8 KB buffer -- so a write can be split into multiple syscalls and two
+    # processes can interleave mid-record. That corruption would be SILENT: every
+    # reader in this repo skips unparseable lines with `continue`. An advisory
+    # flock around the write makes cross-process appends safe.
     errors = 0
     done = 0
     write_lock = threading.Lock()
@@ -474,8 +484,12 @@ def generate_all_responses(
                 if is_err:
                     errors += 1
                 with write_lock:
-                    f.write(json.dumps(record) + "\n")
-                    f.flush()
+                    fcntl.flock(f.fileno(), fcntl.LOCK_EX)
+                    try:
+                        f.write(json.dumps(record) + "\n")
+                        f.flush()
+                    finally:
+                        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
                 if verbose:
                     tag = f"✗ {record['error']}" if is_err else \
                           f"✓ ({len(record['response_text'] or '')} chars)"

@@ -119,9 +119,15 @@ generate_responses.py   queries the subject-model roster at temp=1.0
 annotation_pipeline.py  4-pass LLM-as-judge at temp=0 (judge model
                         google/gemini-2.5-flash-lite for passes 1-3):
                         Pass 1 engagement/refusal (1-5 + justification A-G,
-                        always runs) -> Pass 2 ideology (skipped if
-                        engagement >= 4) -> Pass 3 moral foundations (same
-                        skip rule)
+                        always runs, 100% coverage) -> Pass 2 ideology
+                        (skipped if engagement >= 4) -> Pass 3 moral
+                        foundations (same skip rule). Passes 2/3 are OFF by
+                        default (`--all-passes` opts in) and support
+                        ISSUE-level subsampling via `--pass23-subsample FRAC`
+                        / `--pass23-seed`; the draw is frozen in
+                        `<run_dir>/pass23_subsample.json` and REUSED across
+                        languages and resumes, so every language annotates the
+                        same issues. See docs/SLANT_SUBSAMPLE.md.
 stance_coding.py        Pass 4: stance (-2..+2) on engaged boundary
                         responses only, judge model openai/gpt-oss-120b —
                         catches state-aligned pivots Pass 1 scores as
@@ -153,6 +159,31 @@ Output surfaces per run dir: `responses/<battery>_<lang>.jsonl`,
 `prompts_meta/test_prompts_<lang>.json` (R-shape metadata).
 
 ### 3. R analysis (`pipeline/`)
+
+**Estimation and plotting are separate, and must stay separate.** `20_`–`25_`
+fit models and write tidy tables to `pipeline/estimates/`; `30_figures.R` reads
+those tables and draws, fitting nothing.
+
+Current R layer (14 numbered scripts + `audit_figures.R` + `run_all.R` + `_theme.R`):
+
+| script | role | outputs |
+|---|---|---|
+| `01_data_loading.R` | builds `data_clean.RData` — the foundation | tables 00 |
+| `02`,`06`,`07`,`08`,`09` | engagement, justifications, DeepSeek language | tables |
+| `20_estimates_home.R` | **primary** within-issue home premium | `e01`–`e10`, `e21`–`e22` |
+| `21_estimates_support.R` | model/domain tier contrasts, refusal reasons | `e11`–`e14` |
+| `22_estimates_slant.R` | ideology + moral foundations (25% subsample) | `e15`–`e20` |
+| `23_diagnostics.R` | measurement + coverage diagnostics | `d01`–`d08` |
+| `24_measurement.R` | **judge-panel reliability + robustness** | `e23`–`e28` |
+| `25_estimates_language.R` | prompt-language effects, all models × languages | `e29`–`e31` |
+| `30_figures.R` | **all** figures; fits nothing | FIG1–5 + `P1`–`P14` |
+| `audit_figures.R` | PNG-only, figure↔estimate agreement, CVD | pass/fail |
+| `16_irr_analysis.R` | **RETIRED stub** — two-rater only; see `24_` | — |
+`pipeline/audit_figures.R` enforces this (it greps for `glmer(`/`glm(`/`lmer(`
+in the figure script) along with PNG-only output, estimates-to-figure agreement,
+and colour-vision separability. Run it after any figure change — it is the
+closest thing this repo has to a test suite.
+
 
 `01_data_loading.R` is the foundation — it reads `annotations/annotations_all.jsonl`,
 derives `engaged`/`refused` (`engagement_code <= 3` / `>= 4`), the 5-point
@@ -199,6 +230,41 @@ output schema, check that contract for what fields/joins R depends on.
   for the exact list of R-side edits a roster change requires.
 - `archive/` holds superseded pilot/probe artifacts (old annotations, sampled
   prompts) kept for reference — don't treat it as live pipeline input.
+  `archive/pipeline_slant/` is the *pre-trim* slant analysis; the live slant
+  path is `pipeline/22_estimates_slant.R` + FIG4, so don't reintroduce the
+  archived scripts alongside it.
+- **Multi-judge reliability panel** (`docs/MULTI_JUDGE_PLAN.md`). Every
+  annotation record carries `judge_model` / `judge_prompt_version` /
+  `annotation_run_id`. `run_pilot.py --judge-panel [MODEL ...]` annotates the
+  same responses with additional judges into `<run_dir>/panel/<judge>/`, and
+  assemble emits the long-format `annotations_panel.jsonl`.
+  **`annotations_all.jsonl` keeps its exact contract**, so the panel is purely
+  additive and `01_data_loading.R` never changes. Reliability lives in
+  `24_measurement.R`.
+  Two hard-won operational rules:
+  * **Judge suitability cannot be read off a model card.** Two candidates passed
+    every specification check (structured outputs, reasoning disabled, decent
+    quality index) and still failed to measure the construct — one flagged
+    refusal at 1.76% against the anchor's 6.5%. Bake off candidates on a pilot
+    slice and select on measured recall/α, never on specs.
+  * **Never use a judge whose reasoning is `mandatory: true`** (e.g.
+    `openai/gpt-oss-*`): reasoning tokens bill as output and cannot be turned
+    off. The judge client sets `reasoning: {enabled: false}`, a 90s timeout and
+    its own retry/backoff — a run once hung 2h19m with no timeout when a
+    provider started returning null payloads.
+- **Slant (passes 2/3) covers a 25% issue subsample, not the whole run.** Any
+  new slant quantity must filter on `slant_eligible & has_slant` and is
+  **conditional on engagement** (passes 2/3 skip refusals by design). Its
+  primary tables are **English-only** because the model roster differs by
+  language (11 models in en/zh/ar, 9 ru, 7 hi) — pooling languages would
+  confound slant with roster composition. `docs/SLANT_SUBSAMPLE.md` is
+  authoritative; `docs/ANNOTATION_TRIM_FULL_RUN.md` predates it and is
+  superseded on anything touching passes 2/3.
+- `run_pilot.py --stages assemble` writes its output surfaces in `"w"` mode, so
+  it must be given the **right `--batteries`** (this run: `rebalanced`, not the
+  `perennial temporal` default). A mismatch used to truncate a complete
+  `annotations_all.jsonl` to zero rows; assemble now refuses to write an empty
+  file and names the batteries it found instead.
 
 ## Figure output policy — PNG ONLY
 

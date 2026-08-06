@@ -1,5 +1,51 @@
 # The R analysis pipeline — what each script does, and why
 
+> **⚠ CURRENT STRUCTURE — 2026-08-04. Read this block first; the 2026-07-30
+> reorganisation note and the per-script rows below describe an earlier layout
+> and are kept for provenance.**
+>
+> `pipeline/` now holds **14 numbered scripts plus `audit_figures.R`,
+> `run_all.R` and `_theme.R`**, and the guiding
+> split is **estimation vs. plotting**:
+>
+> | script | role |
+> |---|---|
+> | `01_data_loading.R` | builds `data_clean.RData` — still the foundation everything reads |
+> | `02_engagement_analysis.R` | engagement marginals |
+> | `06_refusal_justifications.R` | A–G justification composition |
+> | `07_deepseek_language_analysis.R` | DeepSeek en/zh tables (37 is slant-guarded) |
+> | `08_deepseek_chinese_analysis.R` | per-domain χ²/Fisher + mixed model |
+> | `09_deepseek_stats.R` | bootstrap ORs, Cramér's V, BH correction |
+> | **`20_estimates_home.R`** | **primary** within-issue home premium → `e01`–`e10` |
+> | **`21_estimates_support.R`** | model/domain tier contrasts, reasons → `e11`–`e14` |
+> | **`22_estimates_slant.R`** | ideology + moral foundations → `e15`–`e20` |
+> | **`30_figures.R`** | **all** figures; reads the estimate tables, **fits nothing** |
+> | **`23_diagnostics.R`** | measurement + coverage diagnostics → `d01`–`d08` |
+> | **`24_measurement.R`** | **judge-panel reliability + robustness** → `e23`–`e28` |
+> | **`25_estimates_language.R`** | prompt-language effects, all models × languages → `e29`–`e31` |
+> | `16_irr_analysis.R` | **RETIRED stub** — two-rater Cohen's kappa; superseded by `24_` |
+> | `audit_figures.R` | enforces PNG-only, figure↔estimate agreement, CVD |
+> | `run_all.R` | driver |
+>
+> **The `20_/21_/22_` → `30_` split is the important architectural fact.**
+> Estimation writes tidy tables to `pipeline/estimates/` carrying
+> specification, sample, contrast, n and interval; the figure script only draws
+> them. `audit_figures.R` fails if any model-fitting call appears in
+> `30_figures.R`, so a figure cannot silently drift from its estimate.
+>
+> **Slant is back, on a subsample.** The line below saying the canonical run
+> does not produce Passes 2–3 is **no longer true**: they were run over a **25%
+> issue subsample** (`docs/SLANT_SUBSAMPLE.md`). Consumption is consolidated in
+> `22_estimates_slant.R` + `FIG4`; the four archived slant scripts in
+> `archive/pipeline_slant/` were **not** restored, and should not be — they
+> duplicate what `22` does and predate the estimates/figures split. Any script
+> touching slant columns must filter on `slant_eligible & has_slant`, or it will
+> report an `n` several times the rows its estimates rest on (this bug was live
+> in `07`'s Table 37 and is fixed).
+>
+> Figures live **only** in `pipeline/figures/`, 600 dpi PNG, no `plots/` dir,
+> no `_1col` variants, no vector formats.
+
 > **Reorganised 2026-07-30.** The directory was 23 scripts of which 7 could
 > never run (Study A/B side experiments whose runners have not been executed in
 > v2) and the numbering had a collision — two scripts were numbered `08`. The
@@ -49,9 +95,10 @@ figures for the papers. None of them call any model or touch the sourcing
 pipeline. They are pure read-analyze-plot.
 
 Everything hangs off **one script**: `01_data_loading.R`. It builds the clean
-analysis table (`data_clean.RData`); all 22 others load that table and slice it.
-So the port is really: **re-implement `01` faithfully in pandas, then decide
-which of the 22 downstream analyses we still want.**
+analysis table (`data_clean.RData`); every other script loads that table and
+slices it. So a port is really: **re-implement `01` faithfully, then decide
+which downstream analyses to keep.** (Counts in the older text below refer to
+the pre-2026-08-04 layout of 23 scripts; there are now 13 plus `_theme.R`.)
 
 ---
 

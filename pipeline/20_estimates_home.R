@@ -53,9 +53,24 @@
 # received would be imposed by shared structure. It is reported as a structural
 # zero in a dedicated column of the estimate table.
 #
-# UNCERTAINTY. Probability-scale contrasts by g-computation over the observed
-# sample (predictions include fitted random effects), with a parametric
-# bootstrap over the fixed-effect covariance (B draws from MVN(fixef, vcov)).
+# UNCERTAINTY -- and what the interval is conditional on. Probability-scale
+# contrasts by g-computation over the observed sample. Predictions ADD THE
+# FITTED RANDOM EFFECTS (the issue BLUPs), so the estimand is
+#
+#     SAMPLE-CONDITIONAL: the contrast averaged over the observed issues, at
+#     their estimated issue effects.
+#
+# It is NOT the "typical issue" (u = 0) quantity and NOT marginal over a
+# hypothetical population of issues. Do not mix those readings.
+#
+# The interval draws B times from MVN(fixef, vcov) with the BLUPs HELD FIXED, so
+# it propagates FIXED-EFFECT UNCERTAINTY ONLY. That is coherent with a
+# sample-conditional estimand -- the issue effects are being treated as known
+# features of the realised sample, not as draws to be re-simulated. A full
+# bootstrap over theta would widen the interval but would also change the
+# estimand to a population-marginal one, which is not what is reported. Every
+# estimate table carries this in an `uncertainty` column.
+#
 # Responses are clustered within issue; that clustering is handled by the model,
 # not by treating rows as independent.
 
@@ -193,7 +208,10 @@ print(diag_tbl, width = 200)
 prim <- home_premium(m_pri, dat) %>%
   mutate(spec = "primary", scale = "probability",
          contrast = "within-issue home premium (DiD): P(refuse|home) - P(refuse|away), issue held fixed",
-         sample = "English, non-General, EU excluded", estimable = TRUE)
+         sample = "English, non-General, EU excluded", estimable = TRUE,
+         estimand_type = "sample-conditional (averaged over observed issues at fitted BLUPs)",
+         uncertainty = "parametric bootstrap over fixed-effect covariance; BLUPs held fixed",
+         weighting = "response-weighted within jurisdiction")
 
 # EU appended as a structural zero, never as an estimate.
 if (length(zero_juris)) {
@@ -425,6 +443,96 @@ cn_int <- map_dfr(unique(cn$model), function(mm) {
 write_csv(cn_int, file.path(EST, "e10_cn_home_by_language.csv"))
 print(as.data.frame(cn_int %>% select(model, lang, estimate, conf_low, conf_high,
                                       interaction_log_odds, interaction_p)),
+      digits = 3, row.names = FALSE)
+
+# -----------------------------------------------------------------------------
+# F. PER-MODEL home premium, and the weighting question
+# -----------------------------------------------------------------------------
+# The primary specification interacts home with JURISDICTION, so every model in
+# a jurisdiction receives the identical fitted contrast -- DeepSeek and Qwen both
+# return exactly the pooled CN value. That means the usual reassurance
+# "response-weighting and equal-model-weighting agree" is VACUOUS there: it is a
+# property of the specification, not evidence about the data.
+#
+# Interacting home with MODEL makes the within-jurisdiction spread visible and
+# lets the jurisdiction summary be recomputed under equal-model weighting. It
+# answers three things the pooled model cannot:
+#   * is China's result carried by both Chinese models, or only one?
+#   * is any jurisdiction's null hiding offsetting model-level effects?
+#   * do single-model jurisdictions (India, EU) deserve a different reading?
+cat("\nF. per-model home premium: y ~ home*model + tier + (1|issue_id)\n")
+dat_m <- dat %>% mutate(mdl = droplevels(factor(model)))
+dat_m <- dat_m[order(as.character(dat_m$issue_id), as.character(dat_m$model)), ]
+
+fit_by_model <- function(d) {
+  f <- y ~ home * mdl + tier + (1 | issue_id)
+  for (opt in c("bobyqa", "Nelder_Mead")) {
+    m <- tryCatch(glmer(f, d, binomial,
+                        control = glmerControl(optimizer = opt,
+                                               optCtrl = list(maxfun = 2e5))),
+                  error = function(e) NULL)
+    if (!is.null(m)) return(m)
+  }
+  glmer(f, d, binomial, nAGQ = 0,
+        control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5)))
+}
+m_mod <- fit_by_model(dat_m)
+cat(sprintf("  singular=%s  issue SD=%.3f\n", isSingular(m_mod),
+            sqrt(unlist(VarCorr(m_mod)))))
+
+X1 <- model.matrix(terms(m_mod), transform(dat_m, home = 1L))
+X0 <- model.matrix(terms(m_mod), transform(dat_m, home = 0L))
+re <- ranef(m_mod)$issue_id[as.character(dat_m$issue_id), 1]
+b  <- fixef(m_mod); V <- as.matrix(vcov(m_mod))
+dr <- MASS::mvrnorm(B_BOOT, b, V)
+pt <- function(bb) {
+  p1 <- plogis(as.vector(X1 %*% bb) + re); p0 <- plogis(as.vector(X0 %*% bb) + re)
+  vapply(levels(dat_m$mdl), function(k) mean(p1[dat_m$mdl == k] - p0[dat_m$mdl == k]),
+         numeric(1))
+}
+est <- pt(b); bs <- t(apply(dr, 1, pt))
+mj  <- dat_m %>% distinct(mdl, juris) %>% mutate(mdl = as.character(mdl))
+per_model <- tibble(
+  model = levels(dat_m$mdl), estimate = est,
+  conf_low = apply(bs, 2, quantile, .025), conf_high = apply(bs, 2, quantile, .975),
+  n = as.integer(table(dat_m$mdl)[levels(dat_m$mdl)]),
+  events = as.integer(tapply(dat_m$y, dat_m$mdl, sum)[levels(dat_m$mdl)])) %>%
+  left_join(mj, by = c("model" = "mdl")) %>%
+  rename(jurisdiction = juris) %>%
+  mutate(jurisdiction = as.character(jurisdiction), estimable = TRUE,
+         spec = "y ~ home*model + tier + (1|issue_id)", scale = "probability",
+         contrast = "within-issue home premium, per subject model",
+         sample = "English, non-General, EU excluded",
+         estimand_type = "sample-conditional",
+         uncertainty = "parametric bootstrap over fixed-effect covariance; BLUPs held fixed") %>%
+  arrange(match(jurisdiction, JURIS_LEVELS), desc(estimate))
+write_csv(per_model, file.path(EST, "e21_home_by_model.csv"))
+print(as.data.frame(per_model %>% select(jurisdiction, model, estimate,
+                                         conf_low, conf_high, events)),
+      digits = 3, row.names = FALSE)
+
+# Three weightings of the same jurisdiction quantity, so the caption can state
+# which one is plotted and show it does not drive the conclusion.
+resp_wt <- prim %>% filter(estimable) %>%
+  transmute(jurisdiction, weighting = "response-weighted (plotted)", estimate)
+eqm_wt <- per_model %>% group_by(jurisdiction) %>%
+  summarise(estimate = mean(estimate), n_models = n(), .groups = "drop") %>%
+  mutate(weighting = "equal-model-weighted")
+# Leave-one-model-out: the spread of jurisdiction means when each of its models
+# is dropped in turn. Undefined for single-model jurisdictions, and said so.
+loo <- per_model %>% group_by(jurisdiction) %>%
+  summarise(loo_min = if (n() > 1) min(sapply(seq_len(n()), function(i) mean(estimate[-i]))) else NA_real_,
+            loo_max = if (n() > 1) max(sapply(seq_len(n()), function(i) mean(estimate[-i]))) else NA_real_,
+            n_models = n(), .groups = "drop")
+wt <- bind_rows(resp_wt, eqm_wt %>% select(jurisdiction, weighting, estimate)) %>%
+  left_join(loo, by = "jurisdiction") %>%
+  mutate(single_model = n_models == 1,
+         note = ifelse(n_models == 1,
+                       "single-model jurisdiction; weighting and leave-one-out undefined", ""))
+write_csv(wt, file.path(EST, "e22_weighting_sensitivity.csv"))
+cat("\n  weighting sensitivity (pp)\n")
+print(as.data.frame(wt %>% mutate(pp = 100 * estimate) %>%
+                      select(jurisdiction, weighting, pp, n_models)),
       digits = 3, row.names = FALSE)
 
 cat("\n", strrep("=", 78), "\nWROTE ", length(list.files(EST)), " estimate tables to ", EST, "\n",

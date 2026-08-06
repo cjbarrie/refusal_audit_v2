@@ -5,7 +5,146 @@ downstream of the sourcing rebuild; the sourcing stage itself is done.*
 
 ---
 
-## ⏱ RESUME HERE — 2026-07-30 (authoritative; supersedes everything below)
+## ⏱ RESUME HERE — 2026-08-06 (authoritative; supersedes everything below)
+
+**Running now:** the Tier-1 judge panel on `full_v1` English
+(`nemotron-3-nano`, then `nemotron-3-super`). Nothing else.
+
+### State
+
+| | |
+|---|---|
+| Battery | **COMPLETE** — 11 models × 5 languages × 2,496 prompts |
+| `data_clean.RData` | **137,186 rows** |
+| Pass 1 coverage | 100%, all languages |
+| Pass 2/3 (slant) | 25% issue subsample; 29,106 rows (92.5% of eligible engaged) |
+| Pass 4 (stance) | **not run** |
+| Judge panel | anchor ✅ + `gemma-4-31b` ✅ done; `nemotron-3-nano` running; `nemotron-3-super` queued |
+| R pipeline | 15 scripts; `run_all.R` green |
+| Figures | **21 PNG** @ 600 dpi; `audit_figures.R` passes |
+
+### What changed since 2026-08-04
+
+- **Forensic figure/analysis redesign** (`docs/FIGURE_SYSTEM_MEMO.md`,
+  `docs/FIGURE_SYSTEM_FINAL_AUDIT.md`). FIG1 restructured, FIG2 gained the
+  interval on the quantity it is about, FIG3 recoded 7→5 reason categories,
+  FIG4A rebuilt to stop overstating ideological content.
+- **New scripts:** `23_diagnostics.R`, `24_measurement.R`,
+  `25_estimates_language.R`. `16_irr_analysis.R` retired to a stub;
+  `sample_for_second_judge.py` deleted.
+- **Per-model home premium** (`e21`): China holds independently in **both**
+  Chinese models (Qwen +19.0, DeepSeek +16.2); the pooled spec could not show
+  this because it assigns every model in a jurisdiction the same contrast.
+- **Language effects for all models** (FIG5). allam-7b **+62.6 pp in Hindi**,
+  +52.8 pp Russian; falcon3 +24.1 pp in Arabic. No consistent home-language
+  effect: it ranges +24.1 (falcon3) to −4.8 (sarvam).
+- **Multi-judge panel built and piloted.** Judge identity in the schema,
+  `--judge-panel`, `--limit-issues`, retry/backoff + 90 s timeout, JSON repair.
+- **Costing corrected twice**: `ASSUMED_ENGAGE_RATE` 0.83 → 0.944 (measured),
+  and `TOK["judge"]` (620,60) → (1865,62) measured — the old value under-priced
+  judging ~4×.
+
+### Next actions
+
+1. **Wait for `nemotron-3-nano`** → 3-judge panel is then usable.
+   `REFUSAL_RUN_DIR=annotations/full_v1 Rscript pipeline/24_measurement.R`
+2. **Run the differential-error test on the full English sample.** The pilot was
+   inconclusive (only 2 flagged units in the comparison cell). This decides
+   whether the China result is partly a measurement artefact.
+3. **Re-run `run_all.R`** once the panel lands, then `audit_figures.R`.
+4. **Decide on stance (Pass 4).** Still unrun, and its judge
+   `openai/gpt-oss-120b` has `mandatory: true` reasoning, so its budget line
+   (60 output tokens) is understated several-fold. Re-price before running.
+5. **Slant top-up**: ~5,200 eligible engaged rows still lack Pass 2/3 codes
+   (incidental — generated after the annotation pass). Same manifest, so the
+   draw does not change.
+
+### Standing cautions
+
+- **Re-assemble before diagnosing coverage.** `data_clean` is built from
+  assembled annotations; a language can look absent when responses *and*
+  annotations exist and only `--stages assemble` has not been re-run. This
+  caused two wrong diagnoses of a "Hindi gap" that did not exist.
+- **`--batteries rebalanced` is required** on this run; the default
+  `perennial temporal` matches nothing and assemble now refuses to write empty
+  output rather than truncating good files.
+- **Judge suitability cannot be read off a model card** — bake off candidates on
+  a pilot slice and select on measured recall/α.
+
+---
+
+## ⏱ RESUME HERE — 2026-08-04 (superseded by the 2026-08-06 block above)
+
+> Everything from here down predates 2026-08-06. In particular, any instruction
+> mentioning `scripts/sample_for_second_judge.py` or a single second-judge pass
+> is **obsolete**: that script is deleted and `16_irr_analysis.R` is a retired
+> stub. Reliability now runs through the multi-judge panel — see
+> `docs/MULTI_JUDGE_PLAN.md` and `pipeline/24_measurement.R`.
+
+**Running right now:** `generate_responses.py` (2 processes). Nothing else.
+Annotation passes 1–3 are finished for everything generated so far.
+
+### What changed since the 2026-07-30 block
+
+- **Slant analysis reinstated.** Annotation passes 2 (ideology) and 3 (moral
+  foundations) were run over a **25% issue subsample** — 156 issues, seed
+  20260803, all five languages, 27,357 rows. Subsampling is now a first-class
+  pipeline parameter (`--pass23-subsample`, `--pass23-seed`), with the draw
+  frozen in `annotations/full_v1/pass23_subsample.json` and reused across
+  languages and resumes. **`docs/SLANT_SUBSAMPLE.md`** is authoritative.
+- **New R script `pipeline/22_estimates_slant.R`** (estimates `e15`–`e20`) and
+  **`FIG4_slant_main.png`** + `P9`/`P10`/`P11`. Registered in `run_all.R` and
+  `audit_figures.R`.
+- **Estimand question settled**: within-issue is primary, within-jurisdiction is
+  descriptive. Only the China result survives both.
+- `pipeline/07_deepseek_language_analysis.R` Table 37 now filters on
+  `has_slant`; it had been reporting an `n` ~4× the rows the means rest on.
+- `run_pilot.py --stages assemble` now **refuses to write empty output** — a
+  `--batteries` mismatch used to truncate a complete `annotations_all.jsonl` to
+  zero rows.
+
+### State
+
+| | |
+|---|---|
+| Run dir | `annotations/full_v1` |
+| `data_clean.RData` | **116,590 rows × 47 columns** |
+| Engagement | 1: 92,032 · 2: 17,526 · 3: 786 · 4: 4,218 · 5: 2,028 (**~5.4% refusal**) |
+| Pass 1 coverage | 100% |
+| Pass 2/3 coverage | 25% issue subsample; 27,357 rows |
+| Pass 4 (stance) | **not run** |
+| R pipeline | 11 scripts: **10 ok, 1 skipped (16 IRR), 0 failed** (6.2 min) |
+| Figures | 15 PNG @ 600 dpi; `audit_figures.R` **PASSES** |
+
+### Generation gaps (the only thing still incomplete)
+
+| model | ar | en | ru | zh | hi |
+|---|---|---|---|---|---|
+| allam-7b | 2490 | 2495 | **150** | 2490 | **0** |
+| falcon3-10b | 2490 | 2494 | **125** | 2484 | **0** |
+| jais-8b | 2489 | 2492 | **149** | 2482 | **0** |
+| sarvam-30b | **1643** | 2488 | **0** | 2483 | **0** |
+
+The 7 OpenRouter models are complete in all five languages (~2,485–2,496 each).
+
+### Next actions, in order
+
+1. **Let generation finish** the four self-hosted models in ru/hi (+ sarvam ar).
+2. **Top up Pass 1** over the new responses:
+   `python scripts/run_pilot.py --run-id full_v1 --stages annotate --resume --batteries rebalanced`
+3. **Top up passes 2/3** on the same 156 issues (manifest reused, draw unchanged):
+   add `--all-passes --pass23-subsample 0.25`
+4. **Re-assemble** — note `--batteries rebalanced`, not the default:
+   `python scripts/run_pilot.py --run-id full_v1 --stages assemble --resume --batteries rebalanced`
+5. **Re-run analysis:** `REFUSAL_RUN_DIR=annotations/full_v1 Rscript pipeline/run_all.R`
+   then `Rscript pipeline/audit_figures.R`.
+6. **Still outstanding:** no second-judge pass, so `16_irr_analysis.R` skips and
+   **no inter-rater reliability exists**. This is the largest measurement gap
+   and matters most for the slant passes.
+
+---
+
+## ⏱ RESUME HERE — 2026-07-30 (superseded by the 2026-08-04 block above)
 
 Nothing is running. No background job to reattach.
 

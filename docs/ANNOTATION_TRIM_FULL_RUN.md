@@ -1,5 +1,21 @@
 # Annotation trim: Pass-1-only full run
 
+> **⚠ SUPERSEDED IN PART, 2026-08-04.** Passes 2 and 3 have since been run over
+> a **25% issue subsample** of `full_v1` in all five languages, and the slant
+> analysis has been reinstated as `pipeline/22_estimates_slant.R` +
+> `FIG4_slant_main.png`. See **`docs/SLANT_SUBSAMPLE.md`**, which is
+> authoritative for anything to do with passes 2/3.
+>
+> What still holds from this document: Pass 1 remains the **default** and still
+> runs on **100%** of responses; the reasoning below for why Pass 1 alone
+> answers the study's primary question is unchanged; the stance stage (Pass 4)
+> is **still not run** on the full run.
+>
+> What is now out of date: the claim that the slant scripts live only in
+> `archive/pipeline_slant/` (a selected subset has been folded into
+> `pipeline/22_estimates_slant.R`), and any statement that `full_v1` carries no
+> ideology or moral-foundation codes.
+
 **Status: APPLIED 2026-07-31.** Pass 1 is now the default in
 `scripts/run_pilot.py` and `scripts/annotation_pipeline.py` (`--all-passes`
 opts back in; `--pass1-only` is kept as an accepted no-op). The four

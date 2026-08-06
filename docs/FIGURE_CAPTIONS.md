@@ -2,23 +2,33 @@
 
 Publication-ready captions for `pipeline/figures/`. Figures carry no titles,
 subtitles or interpretive prose; everything needed to read them is here. All
-output is PNG at 600 dpi, rendered directly at **two-column width**. There are
-no one-column variants and no duplicate size files.
+output is **PNG at 600 dpi, two-column width (7.20 in), white background,
+rendered directly at final size**. There are no one-column variants, no `_2col`
+duplicates and no resized derivatives.
 
 **Conventions.** Unit of observation is one model response to one prompt.
 Refusal is `engagement_code >= 4` on the judge's 1–5 engagement scale.
 
 | visual variable | meaning |
 |---|---|
-| colour | **model jurisdiction only** (CN deep red, India slate, MENA ochre, US grey-blue, EU light slate); issue regions inherit their jurisdiction's colour |
-| circle / triangle | prompt tier: regular / boundary (legend on every panel that uses it) |
-| filled / hollow | estimand: primary / descriptive; in P5, home region / elsewhere |
+| colour | **model jurisdiction only** (CN deep red, India slate, MENA ochre, US grey-blue, EU pale slate); issue regions inherit their jurisdiction's colour |
+| circle / triangle | prompt tier: regular / boundary |
+| filled / hollow circle | estimand: primary / descriptive; in P5, home region / elsewhere |
 | hollow square | contrast not estimable (0 observed refusals) |
-| four-hue palette | refusal reason (distinct from jurisdiction colours) |
+| five-hue palette | refusal reason (disjoint from jurisdiction colours) |
+| circle / hollow circle / diamond | prompt language en / zh / ar (P11 only, where tier is not encoded) |
 | thin light interval | uncertainty |
 
-Analyses are **English-only**, the sole language complete for all eleven models.
-Results are **descriptive, not causal**.
+**Sample.** The battery is **complete**: 11 models × 5 languages × 2,496
+prompts = 137,186 annotated responses over 624 issues. Primary estimates
+(Figures 1–4) are **English-only for comparability**; Figure 5 uses all five
+languages. Analyses are **descriptive, not causal**.
+
+**Weighting.** Jurisdictions contain different numbers of models (US 4, MENA 3,
+CN 2, India 1, EU 1). Every jurisdiction summary is response-weighted; because
+each model answers the same 2,496 English prompts this coincides with equal-model
+weighting, and `pipeline/estimates/e22_weighting_sensitivity.csv` reports both
+plus leave-one-model-out.
 
 ---
 
@@ -26,57 +36,59 @@ Results are **descriptive, not causal**.
 
 `FIG1_home_region_main.png`
 
-**Chinese-developed models are far more likely than models from other
-jurisdictions to refuse China-focused issues; no other jurisdiction shows a
-comparable effect on the same comparison, and simpler home-versus-away contrasts
-overstate MENA.**
+**Chinese-developed models refuse China-focused issues far more than other
+jurisdictions refuse the same issues; no other jurisdiction shows a comparable
+effect, and the simpler within-jurisdiction contrast overstates MENA.**
 
 **(A) Regional key.** Locator identifying the five issue regions in the colours
-used throughout the figure. It carries no estimates and is subordinate to the
-statistical panels. "Arab" is operationalised as the 22 Arab League member
-states; "Europe" as countries with continent = *Europe* excluding Russia; China,
-India and the US as those single countries. A sixth issue stratum, **General**
-(17% of issues; no regional focus), has no geographic location and is not shown.
-Shading marks **issue-region classification**, not the location of model
-developers — distinct objects that happen to use aligned category names.
+used throughout. It carries no estimates and is deliberately the shortest panel.
+**MENA** is operationalised as the 22 Arab League member states (the underlying
+region variable is named `Arab`, which is how it appears on the panel C axis);
+"Europe" as countries with continent = *Europe* excluding Russia; China, India
+and the US as those single countries. A sixth issue stratum, **General** (17% of
+issues; no regional focus), has no location and is not shown. Shading marks
+**issue-region classification**, not the location of model developers.
 
-**(B) Primary estimand — model-based.** Adjusted **home premium**: the
-difference in predicted probability of refusal between a jurisdiction's
-own-region issues and other issues, **holding the issue fixed**. From
-`refused ~ home × jurisdiction + prompt tier + (1 | issue)`, binomial, on
-English non-General responses (*n* = 20,796; 520 issues; 1,239 refusals). Points
-are g-computation averages over the observed sample; bars are 95% intervals from
-a parametric bootstrap (2,000 draws) over the fixed-effect covariance. Because
-issue region and topic domain are constant within issue, the issue random
-intercept absorbs both and the contrast compares jurisdictions **answering the
-same issues** — the clustering unit is the issue throughout. CN is drawn
-slightly heavier because it carries the result. Mistral Large 2512 records **0
-refusals in 2,080 responses**, so the EU contrast is not estimable; it is marked
-with a hollow square and stated in words, never plotted as an estimate of zero.
-India's +3.0 pp rests on a **single model** (Sarvam) and **reverses sign**
-between the two estimands in panel C; it should not be read as a finding.
+**(B) Why the estimand matters — model-based.** One row per jurisdiction with
+both contrasts: the **primary** within-issue home premium (filled circle, with
+its 95% interval) and the **descriptive** within-jurisdiction home-versus-away
+difference (hollow circle). The connector carries an arrowhead pointing at the
+primary estimate; values are labelled `○ descriptive` and `● primary`.
 
-**(C) Why the estimand matters — model-based.** One row per jurisdiction showing
-both contrasts: the within-issue premium from panel B (filled point, with its
-95% interval) and an adjusted **within-jurisdiction** home-versus-away
-difference (hollow point) that does **not** condition on the issue. The
-descriptive contrast has no interval drawn, to keep the row readable; its values
-are in `pipeline/estimates/e03_home_within_jurisdiction.csv`. Labels give the
-descriptive-to-primary transition where the two materially differ. MENA moves
-from +2.7 to +0.1 pp and India from −1.4 to +3.0; CN is stable. The
-within-jurisdiction contrast cannot distinguish "this jurisdiction is sensitive
-about its own region" from "this region is sensitive to everyone", which is why
-it is descriptive only.
+The primary estimand comes from `refused ~ home × jurisdiction + tier +
+(1 | issue)`, binomial, on English non-General responses (*n* = 20,796;
+520 issues; 1,252 refusals). Because issue region and topic domain are constant
+within issue, the issue random intercept absorbs both and the contrast compares
+jurisdictions **answering the same issues** — a difference-in-differences. Points
+are g-computation averages **over the observed sample, at the fitted issue random
+effects**; the estimand is therefore **sample-conditional**, not marginal over a
+population of issues. Bars are 95% intervals from a parametric bootstrap (2,000
+draws) over the **fixed-effect** covariance with the random effects held fixed —
+consistent with a sample-conditional estimand, and not a population interval.
 
-**(D) Raw regional structure — descriptive.** Observed refusal rate (%) for each
+The descriptive contrast is a per-jurisdiction `glm(refused ~ home + domain)`
+with issue-resampled bootstrap intervals (the model is refitted in each
+resample). It is **not** a second estimate of the same parameter, and it cannot
+distinguish "this jurisdiction is sensitive about its own region" from "this
+region is sensitive to everyone".
+
+MENA moves from +2.9 to +0.2 pp and India from −1.4 to +3.0; CN is stable
+(+18.8 → +17.6). **India's +3.0 rests on a single model (Sarvam) and reverses
+sign between estimands; it should not be read as a finding.** Mistral Large 2512
+records **0 refusals in 2,496 English responses**, so the EU contrast is not
+estimable; it is shown as a hollow square with the reason stated, never as an
+estimate of zero.
+
+**(C) Raw regional structure — descriptive.** Observed refusal rate (%) for each
 model-jurisdiction × issue-region cell. Fill encodes the same quantity that is
-printed, on one sequential scale. Thin grey outlines mark home cells; the single
-red outline marks CN × China. **General** issues (no regional focus, 17% of the
-battery) are excluded here for consistency with the estimand in panels B and C,
-which is undefined for them. The Arab row is elevated across every jurisdiction
-— India's models refuse Arab issues at 12.5% against MENA's 13.4%, from a much
-lower baseline — which is why MENA's home effect does not survive the
-within-issue comparison. The EU column is zero throughout.
+printed, on one sequential scale. A small dot in the jurisdiction's colour marks
+home cells; a single red outline marks CN × China. The EU column is rendered as
+structurally empty because Mistral never refuses. **General** issues are excluded
+here, for consistency with the estimand in panel B. The Arab row is elevated
+across every jurisdiction — India's models refuse Arab issues at 12.5% against
+MENA's 13.6%, from a much lower baseline — which is why MENA's home effect does
+not survive the within-issue comparison. Cell denominators and event counts are
+in `pipeline/estimates/d07_cell_denominators.csv`.
 
 ---
 
@@ -85,28 +97,31 @@ within-issue comparison. The EU column is zero throughout.
 `FIG2_model_domain_main.png`
 
 **Boundary framing has no universal effect: it lowers refusal for some models
-and domains and raises it for others.**
+and domains and raises it for others — and for several the shift is
+indistinguishable from zero.**
 
-**(A) By model — model-based.** Refusal rate on regular (circle) and boundary
-(triangle) prompts, joined by a segment coloured by developer jurisdiction, with
-the signed shift printed at the right. Estimates come from per-model mixed
-models `refused ~ tier + (1 | issue)`, so each contrast is a **within-issue
-paired** comparison: regular and boundary prompts derive from the same issue by
-design, and independent-binomial intervals would be wrong both for the pairing
-and for the recurrence of issues across models. Rows are ordered by signed
-shift, largest increase at the top. Mistral Large 2512 is marked `n/e` — no
-refusals, so no contrast. 95% intervals for every shift are in
-`pipeline/estimates/e11_model_tier.csv`. Boundary prompts ask the model to argue
-for a stated position; regular prompts ask an open question about the same
-issue.
+Each row pairs the **levels** (left) with the **shift and its 95% interval**
+(right). The shift is the estimand; the levels are shown because absolute refusal
+rate is substantive (allam-7b refuses at ~15% under either framing). Both panels
+of a row use an identical, explicitly stated category order.
 
-**(B) By topic domain — model-based.** The same decomposition pooled across
-models from `refused ~ tier × domain + (1 | issue) + (1 | model)`. The model
-random intercept prevents a few high-refusal models from driving apparent domain
-differences. Ordered by signed shift: security-and-conflict and
-governance-and-democracy **fall** under boundary framing, while religion,
-social-and-moral and civil-rights **rise**. Intervals in
-`pipeline/estimates/e12_domain_tier.csv`.
+**(A) By model.** Per-model mixed models `refused ~ tier + (1 | issue)`, so each
+contrast is a **within-issue paired** comparison: regular and boundary prompts
+derive from the same issue by design, and independent-binomial intervals would be
+wrong both for the pairing and for the recurrence of issues across models. Rows
+are ordered by signed shift, largest increase at the top; Mistral Large 2512 is
+last and marked not estimable (0 refusals). Note that grok-4.3
+(+0.5 [−0.3, +1.6]), qwen3-max (+0.4 [−1.0, +2.0]) and allam-7b
+(−0.9 [−3.7, +1.8]) all include zero. Values in `e11_model_tier.csv`.
+
+**(B) By topic domain.** Pooled across models from `refused ~ tier × domain +
+(1 | issue) + (1 | model)`. The model random intercept prevents a few
+high-refusal models from driving apparent domain differences. Treating model as a
+**fixed** effect instead moves every domain shift by at most **0.15 pp**
+(`e12b_domain_tier_model_fixed.csv`), so the choice is immaterial.
+Security-and-conflict and governance-and-democracy **fall** under boundary
+framing, while religion, social-and-moral and civil-rights **rise**. Values in
+`e12_domain_tier.csv`.
 
 ---
 
@@ -114,66 +129,226 @@ social-and-moral and civil-rights **rise**. Intervals in
 
 `FIG3_refusal_reasons_main.png`
 
-**Neutrality dominates overall, Jais is a harm-avoidance outlier, and Claude is
-uniquely epistemic.**
+**Neutrality dominates most stated rationales; Jais is a harm-avoidance outlier;
+Claude has an unusually large epistemic component.**
 
 Composition of refusal justifications by model, as a share of that model's own
-refusals; **conditional on having refused**, so this describes rationale, not
-propensity. The judge's seven codes are collapsed to four: **neutrality**
-(declining to take a political position), **harm** (harm avoidance),
-**epistemic** (complexity, expertise limits, user autonomy) and **unstated** (no
-reason given, or other). Reason categories carry their own four-hue palette;
-model jurisdiction appears only as the small bullet beside each model name, so
-jurisdiction colour never doubles as a reason colour. Denominators are printed
-in the row label (`model · n=…`). Segments are labelled with their percentage
-only where they exceed 12% of the bar. Models with fewer than 30 refusals are
-omitted; denominators range from 50 to 418, so shares for the smaller models are
-imprecise. Ordered by neutrality share, from neutrality-dominant at the top to
-harm-dominant at the bottom.
+refusals — **conditional on having refused**, so this describes rationale, not
+propensity. A high share of one reason says nothing about how often that model
+refuses. Denominators are printed in the row label (`model · n=…`); models with
+fewer than 30 refusals are omitted (only Mistral, which has none). Denominators
+range from 51 to 426, so shares for the smaller models are imprecise. Ordered by
+neutrality share, highest at the top, Jais last. Legend order is identical to the
+drawn stack order; segments carry their percentage only where they exceed 15%.
+
+**The judge's seven codes are collapsed to five, not four.** `neutrality` (A),
+`harm` (C), `epistemic` (B + D + E), `none given` (F), `other` (G). Two cautions
+follow from the raw distribution (`d02_justification_codes.csv`):
+
+- **`other` (code G) is 15.7% of English refusals and is internally
+  heterogeneous.** Its free text mixes degenerate output ("the response is a
+  nonsensical and rambling collection…"), explicit task refusals, and epistemic
+  statements. It is **not** the same as "no reason given", and an earlier version
+  of this figure merged the two. It matters most for **allam-7b**, where `other`
+  is 31.7% of 426 refusals — so a substantial share of that model's "refusals"
+  may be degenerate output rather than refusal behaviour.
+- **`epistemic` is thin.** Codes B and E fire on **two responses each** in the
+  entire English refusal set; the category is effectively D (expertise
+  limitation) alone, and Claude's 18% rests on ~18 responses.
+
+Uncertainty is not drawn on the segments (it would destroy readability); Wilson
+intervals for every share are in `e13_refusal_reasons.csv`, and the raw seven-code
+composition per model is in `e13b_refusal_codes_raw.csv`.
+
+---
+
+## Figure 4 — Engaged answers are ideologically neutral; moral content is ordered
+
+`FIG4_slant_main.png`
+
+**On every ideology dimension the judge codes the large majority of engaged
+responses as exactly neutral; the moral vocabulary models reach for shows a
+stable hierarchy with comparatively modest jurisdictional differences.**
+
+This figure is deliberately the least emphasised of the four. It rests on
+annotation **Passes 2 and 3**, run on a **25% subsample of issues** (156 issues,
+seed 20260803) rather than the full battery — see `docs/SLANT_SUBSAMPLE.md`.
+Sampling is at the **issue** level, so within a sampled issue every model × tier
+cell is complete and issue-level clustering is preserved. Both panels are
+**conditional on engagement**: passes 2/3 are skipped for refusals by design, so
+these describe how models lean *when they answer*, never how often they answer,
+and they are **not comparable across jurisdictions with different refusal rates**.
+Estimates are **English-only** because the model roster is not constant across
+languages (11 models in en/zh/ar, 9 in ru, 7 in hi) and pooling would confound
+slant with roster composition. Intervals are **issue-clustered bootstrap** (800
+resamples, percentile method). Of 28,311 slant-eligible engaged responses, 27,357
+carry codes; the 954 without (3.4%) are **incidental** — generated after the
+annotation pass ran — not structural.
+
+**(A) Ideology — descriptive.** Mean of the judge's −2..+2 code on each of four
+dimensions, by developer jurisdiction, with the **neutral share printed in the
+adjacent `% at 0` column**. The two must be read together: 74–93% of engaged
+responses are coded exactly 0, so the means are small by construction. Both poles
+are named under every facet because the direction of each dimension is not
+recoverable from its name: −2 is left / progressive / authoritarian / populist,
++2 is right / traditional / libertarian / elitist, following the judge codebook
+in `scripts/annotation_pipeline.py` (Pass 2). Note the axis is ±0.225, not ±2.
+The largest signals are US economic +0.032 [0.016, 0.048] and EU social
+−0.119 [−0.163, −0.074] — statistically distinguishable from zero, substantively
+tiny. Between-model variation within a jurisdiction reaches 0.070
+(`e16c_ideology_by_model.csv`), comparable to the jurisdiction differences
+themselves. Full five-category distributions: `P9_ideology_distribution.png`.
+
+**(B) Moral foundations — descriptive.** Share of engaged responses invoking each
+of Haidt's six foundations, by jurisdiction, with a **grey rule marking the
+pooled estimate** — because the dominant pattern is *between foundations*
+(fairness 61% vs sanctity 3%), not between jurisdictions. The foundations are
+**not mutually exclusive**: engaged responses invoke 1.83 on average and 13.9%
+invoke none (`d05_moral_cooccurrence.csv`), so shares within a jurisdiction do not
+sum to 1 and no stacked or composition form is valid. Jurisdiction is **defined
+by** model membership, so a model-adjusted jurisdiction contrast is not
+identified; these are descriptive averages. Equal-model weighting reproduces them
+to within 0.001 (`e17c_moral_equal_model.csv`).
+
+---
+
+## Figure 5 — Prompt language moves refusal far more than model origin does
+
+`FIG5_language_main.png`
+
+**Refusal is highly sensitive to the language a prompt is asked in, and the
+largest effects in the study are language effects, not jurisdiction effects.**
+
+Estimated for **every model in every language**, nulls included. An earlier
+version of this analysis covered only the two Chinese models, which left the
+biggest effects in the dataset unreported.
+
+**(A) Language effect per model.** Difference in refusal probability between
+prompts in language L and English prompts **on the same issue**, from per-model
+`refused ~ language + tier + (1 | issue)`, probability-scale g-computation with
+parametric-bootstrap intervals. Prompts are translations of one issue, so the
+issue is the natural blocking factor and the contrast is within-issue.
+
+The pattern is coherent and large: the three MENA models over-refuse
+dramatically in languages outside their training focus, while handling Arabic
+normally. **allam-7b refuses 78.4% of Hindi prompts (+62.6 pp over English)** and
+68.8% of Russian (+52.8 pp); falcon3-10b +25.4 pp in Hindi and +24.1 pp in
+Arabic; jais-8b +16.8 pp in Hindi. DeepSeek's much-discussed Chinese effect
+(+11.2 pp) is only the **seventh** largest. Cells never generated are marked
+*not generated* and left blank rather than drawn as zero; mistral-large-2512 is
+shown as a row marked *0 refusals* rather than omitted. Values in
+`e29_language_by_model.csv`.
+
+**(B) Home-region premium by prompt language.** The generalisation of `P5`,
+which covered CN only. `refused ~ home × language + tier + (1 | issue)` fitted
+**per jurisdiction**.
+
+⚠ **This is a within-*jurisdiction* contrast, not the primary
+difference-in-differences of Figure 1.** Within one jurisdiction `home` is a
+property of the issue's region and therefore constant within issue, so it is
+identified from *between*-issue variation and the issue random intercept shrinks
+it. It must not be read as the primary estimand. China's premium persists in
+every language (+9.6 to +20.3 pp); MENA is small and positive except in Russian;
+India and US are near zero; EU is a structural zero. Values in
+`e31_home_premium_by_language.csv`.
+
+**The home-language story is not uniform.** `e30_home_language.csv` isolates each
+model's own-sphere language (CN→zh, MENA→ar, India→hi; US/EU are English-native
+so no contrast exists): falcon3 **+24.1**, deepseek **+11.2**, jais +1.1, allam
+−0.4, qwen −0.7, **sarvam −4.8** — Sarvam refuses *less* in Hindi. There is no
+consistent "home language → more refusal" effect.
+
+**Caveat that travels with this figure.** The judge panel found MENA labels the
+least reliable in the study (positive specific agreement 0.05–0.09), and the
+largest effects here are all MENA models. The effects are far too large to be
+noise, but their magnitudes should be read with that attached. Some of these
+refusals may also be **degenerate output** rather than refusal behaviour — judge
+code G ("other") is 31.7% of allam's refusals and its free text includes
+"nonsensical and rambling".
 
 ---
 
 ## Standalone panels
 
-`P1`–`P8` are two-column PNGs for individual use. `P5` and `P4` carry analyses
-that are **not** in the main three-figure sequence:
+All two-column, 600 dpi, rendered directly.
 
-- **`P1_locator.png`** — the same locator as Figure 1A, sized for standalone or
-  presentation use.
-- **`P5_china_language.png`** — refusal rate for the two Chinese-developed
-  models on **home-region (China) issues** versus **issues elsewhere**, shown
-  separately for English and Chinese prompts. Hollow points are elsewhere,
-  filled points are the home region; the joining segment is the home premium and
-  is labelled with its value. Points carry 95% Wilson intervals. Premiums are
-  estimated from `refused ~ home × language + tier + (1 | issue)` with
-  parametric-bootstrap intervals in
-  `pipeline/estimates/e10_cn_home_by_language.csv`. Shape distinguishes home
-  from elsewhere, not language — language is the y-axis — so it cannot be
-  confused with the prompt-tier encoding in Figure 2. The premium is of similar magnitude in both languages for both models, while
-  the **baseline** rises sharply in Chinese for DeepSeek (2.6% → 14.5%) and not
-  for Qwen (4.6% → 3.6%). The home × language interaction is not significant for
-  Qwen (*p* = 0.48); for DeepSeek it is significant on the log-odds scale
-  (*p* = 2.6e-05) while its probability-scale premium is slightly *larger* in
-  Chinese — a scale effect of the higher baseline, not a contradiction. These
-  results are **consistent with similar home gaps across languages**; they do
-  not establish additivity.
-- **`P4_region_structure.png`** — the same cells as Figure 1C but showing
-  **excess refusal (pp)** over an additive jurisdiction + region baseline, on a
-  diverging scale centred at zero, with the excess printed rather than the raw
-  rate. Analytically sharper than the raw matrix and kept out of the main figure
-  because raw rates read faster there. CN × China is strongly positive;
+- **`P1_locator.png`** — the Figure 1A locator with a wider crop.
+- **`P2_home_interaction.png`** — the primary within-issue home premium on its
+  own, with 95% intervals and the EU structural zero. This is the single
+  strongest quantity in the study.
+- **`P3_estimand_comparison.png`** — Figure 1B standalone.
+- **`P4_region_structure_raw.png`** — Figure 1C at full width, with the colourbar.
+- **`P4_region_structure_excess.png`** — the same cells showing **excess refusal
+  (pp) over a fitted additive jurisdiction + region baseline**, on a diverging
+  scale centred at zero. The baseline is `glm(cbind(events, n−events) ~
+  jurisdiction + region, binomial)` on cell counts — a **fitted additive-in-logit
+  model**, weighted by cell size; it is *not* arithmetic row/column means and
+  *not* a residual from the primary mixed model. CN × China is strongly positive;
   MENA × Arab is near zero.
+- **`P5_china_language.png`** — refusal rate for the two Chinese-developed models
+  on **home-region (China) issues** versus **elsewhere**, separately for English
+  and Chinese prompts. Hollow = elsewhere, filled = home; the connector is the
+  home premium and is labelled. Wilson intervals on each rate. Premiums from
+  `refused ~ home × language + tier + (1 | issue)` per model, averaged over the
+  observed tier mix, with parametric-bootstrap intervals in
+  `e10_cn_home_by_language.csv`. Shape distinguishes home from elsewhere, not
+  language — language is the y-axis — so it cannot collide with the tier encoding
+  in Figure 2. The premium is of similar magnitude in both languages for both
+  models, while the **baseline** rises sharply in Chinese for DeepSeek
+  (2.6% → 14.5%) and not for Qwen (4.6% → 3.6%). The home × language interaction
+  is not significant for Qwen (*p* = 0.48); for DeepSeek it is significant on the
+  log-odds scale (*p* = 2.6e-05) while its probability-scale premium is slightly
+  *larger* in Chinese — a scale effect of the higher baseline, not a
+  contradiction. These results are **consistent with similar home gaps across
+  languages**; they do **not** establish additivity.
+- **`P6_model_tier.png`** / **`P7_domain_tier.png`** — Figure 2 levels panels.
+- **`P8_refusal_reasons.png`** — Figure 3 standalone.
+- **`P9_ideology_mean_neutral.png`** — Figure 4A standalone.
+- **`P9_ideology_distribution.png`** — the **full five-category** ideology
+  distribution including the neutral category, by jurisdiction and dimension.
+  Statistically the most complete view; supplementary because the neutral category
+  dominates and compresses the directional tails.
+- **`P10_moral_foundations.png`** — Figure 4B standalone.
+- **`P11_moral_by_language.png`** — moral-foundation prevalence by **prompt
+  language**, restricted to English, Chinese and Arabic — the three languages in
+  which **all eleven models** answer. That restriction is the point: a difference
+  across these three cannot be a roster-composition artefact. The result is a
+  **null**: intervals overlap for every foundation. Values in
+  `e20_moral_by_language.csv`.
+- **`P13_language_by_model.png`** / **`P14_home_premium_by_language.png`** —
+  Figure 5A and 5B standalone.
+- **`P12_home_by_model.png`** — the within-issue home premium **per subject
+  model**, from `refused ~ home × model + tier + (1 | issue)`. This is the panel
+  that shows the China result is carried by **both** Chinese models
+  (Qwen +19.0 [14.7, 23.9]; DeepSeek +16.2 [12.4, 20.5]), that MENA is null for
+  all three of its models, and that the US null conceals real heterogeneity
+  (GPT-5.1 −2.3 [−3.9, −0.4]). The pooled `home × jurisdiction` specification
+  cannot show any of this: it assigns every model in a jurisdiction the identical
+  fitted contrast.
 
 ---
 
 ## Measurement limitations
 
-Refusal codes come from a **single LLM judge** (`google/gemini-2.5-flash-lite`,
+All codes come from a **single LLM judge** (`google/gemini-2.5-flash-lite`,
 temperature 0). **No second-judge pass exists and no inter-rater reliability has
 been estimated**; this is the study's principal measurement limitation and every
-refusal quantity inherits it. Refusal is rare (~5% overall), one model records
-none at all, and generation is incomplete, so counts will change.
+quantity inherits it.
 
-Estimates live in `pipeline/estimates/`; the specification, sample restriction,
-contrast definition, *n* and event count for every plotted quantity are carried
-in those tables.
+It bites hardest where the judgement is hardest:
+
+- **Ideological direction.** A near-total concentration at 0 is consistent with
+  genuinely neutral answers *and* with a judge reluctant to assign a side. This
+  design cannot separate the two.
+- **Refusal justification.** One code ("other") absorbs 15.7% of refusals and is
+  internally heterogeneous; two others fire on two responses each.
+- **Moral foundations.** Six binary judgements per response, none validated.
+
+Refusal is rare (~5.4% overall), one model records none at all, and generation is
+incomplete for Russian and Hindi on the four self-hosted models, so counts will
+change. English is complete and the primary estimates will not move.
+
+Diagnostic tables backing all of the above are in `pipeline/estimates/d01`–`d08`.
+Every plotted quantity's specification, sample restriction, contrast definition,
+*n*, event count, estimand type and uncertainty method are carried in the `e*`
+tables.

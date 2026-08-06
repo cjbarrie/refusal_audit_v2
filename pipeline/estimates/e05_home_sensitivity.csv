@@ -1,26 +1,26 @@
 jurisdiction,estimate,conf_low,conf_high,n,events,n_issues,spec,note,scale,sample,estimable
-CN,0.17936085595836437,0.14771808361432387,0.21422990419518215,4160,282,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
-MENA,-0.011400043062179052,-0.028447038927868755,0.006689579070127332,6240,547,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
-India,0.028558868571960626,-0.0010086053242719254,0.06272791140502132,2076,139,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
-US,-0.004072843037074213,-0.01356229919310339,0.006315187339411394,8320,271,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
-CN,0.2106792674764829,0.16281210305331545,0.2683002639127972,2080,162,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-MENA,0.011858708065551149,-0.011324432072042845,0.03928425076217731,3120,288,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-India,-0.008231358539562857,-0.023503132209167044,0.02014845351655576,1036,23,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-US,-0.002809860730494133,-0.014127513455544964,0.010703943024368211,4160,143,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-CN,0.13097097009692993,0.09279973935582293,0.17484593319166486,2080,120,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-MENA,0.006254259255572624,-0.015690914941978024,0.032586448731672345,3120,259,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-India,0.054116049031055345,0.004325220885765903,0.11830951037731696,1040,116,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-US,-0.016783377787001404,-0.026940598587013805,-0.00480237946809879,4160,128,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
-CN,0.20085680553244334,0.1500707027484346,0.25946929069540786,3608,175,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-MENA,-1.0820467382268917e-4,-0.019081549512549936,0.020688762753246846,5412,476,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-India,0.03041527637790957,7.640101504571872e-4,0.06822777589356621,1801,130,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-US,-0.006732949262104642,-0.015182196178115332,0.0036882767426229435,7216,232,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
-CN,0.16219812996412217,0.12227569828741801,0.20474401957608265,2080,115,520,drop_qwen3-max,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
-CN,0.19208127600825414,0.14973513206241215,0.23864880484802975,2080,167,520,drop_deepseek-chat-v3.1,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
-MENA,0.001758511593724873,-0.019750995773621695,0.025822584606959072,4160,415,520,drop_falcon3-10b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
-MENA,0.0053321339496620775,-0.01994114559300088,0.03491110061217536,4160,498,520,drop_jais-8b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
-MENA,-0.002302881383432396,-0.014562542785313584,0.011739216386417778,4160,181,520,drop_allam-7b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
-US,-0.014175943565656891,-0.02431202450054995,-0.0026823156601773726,6240,223,520,drop_gpt-4o,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
-US,-0.010543355560729736,-0.021048348163752683,0.0014001049392820214,6240,229,520,drop_grok-4.3,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
-US,-0.004254923364516741,-0.013750420446743516,0.007653414497539442,6240,182,520,drop_claude-opus-4.5,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
-US,-0.0030203114915099342,-0.012590659883154363,0.008949046715511668,6240,179,520,drop_gpt-5.1,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
+CN,0.17767615665606704,0.14831588957274086,0.21239334225335077,4160,282,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
+MENA,-0.010697765647531901,-0.027497037020483936,0.007593875311866376,6240,557,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
+India,0.028389362043028013,3.020565415413794e-4,0.06210703825946025,2076,139,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
+US,-0.0034604021214930587,-0.012890381155633998,0.007503312752232291,8320,274,520,plus_topic_domain,issue RE already absorbs domain; included as a check,probability,"English, non-General, EU excluded",TRUE
+CN,0.2085417179586965,0.1608183122427233,0.26233074745964113,2080,162,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+MENA,0.013160100732472323,-0.011454704235821792,0.04245252991395939,3120,295,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+India,-0.00828944114946076,-0.024186584180302294,0.01927026138814494,1036,23,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+US,-0.001596338603686233,-0.013158856916178447,0.012605564625730653,4160,145,520,regular_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+CN,0.12991517692985158,0.09191797997152014,0.17356217195058452,2080,120,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+MENA,0.006795227668194217,-0.01537738861792471,0.0332138110490828,3120,262,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+India,0.053842895310557554,0.003930558132119141,0.11824963647711227,1040,116,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+US,-0.01694980346098268,-0.02721531082314841,-0.004896287865325621,4160,129,520,boundary_prompts_only,,probability,"English, non-General, EU excluded",TRUE
+CN,0.20065936327334408,0.14800826394005773,0.2575713908307287,3608,175,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+MENA,9.070209433713936e-4,-0.01662336343403713,0.022838805013654824,5412,483,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+India,0.030051947140218322,-6.595286896810167e-4,0.06654177359783596,1801,130,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+US,-0.006128880835639634,-0.014901614416802558,0.004553856961237442,7216,234,466,exclude_backtranslated,drops the 300 back-translated prompts,probability,"English, non-General, EU excluded",TRUE
+CN,0.1605874291768456,0.12134380586299495,0.20431623278991073,2080,115,520,drop_qwen3-max,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
+CN,0.19015316434536084,0.14839195378943548,0.23683197708459314,2080,167,520,drop_deepseek-chat-v3.1,leave-one-out within CN,probability,"English, non-General, EU excluded",TRUE
+MENA,0.0037194127421129384,-0.017239147909144034,0.0295381338799279,4160,422,520,drop_falcon3-10b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
+MENA,0.0065202991105813846,-0.018930931735534867,0.036748749834263884,4160,508,520,drop_jais-8b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
+MENA,-0.0030889875422871363,-0.015513594651229482,0.011424972478482745,4160,184,520,drop_allam-7b,leave-one-out within MENA,probability,"English, non-General, EU excluded",TRUE
+US,-0.013546315115687406,-0.02405177612845643,-0.0015490112767582538,6240,226,520,drop_gpt-4o,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
+US,-0.009697778259447062,-0.020237705664283585,0.0026400404396163635,6240,231,520,drop_grok-4.3,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
+US,-0.004209681566096973,-0.013342471576430703,0.006459561012769995,6240,183,520,drop_claude-opus-4.5,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE
+US,-0.0023938538152948703,-0.012063418870935944,0.009905256474279943,6240,182,520,drop_gpt-5.1,leave-one-out within US,probability,"English, non-General, EU excluded",TRUE

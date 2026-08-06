@@ -1,0 +1,3 @@
+construct,scale,n_units,n_judges,raw_agreement,krippendorff_alpha,alpha_low,alpha_high,gwet_ac1,ac1_low,ac1_high,positive_specific_agreement,prevalence
+engagement code (1-5),ordinal,2639,7,0.7529367184539598,0.4160047803009057,NA,NA,0.883,NA,NA,NA,NA
+refused (>=4),binary,2639,7,0.9079196665403562,0.4854590823784407,0.4236009678085977,0.5384422098584501,0.95635,0.948783,0.96185675,0.07954545454545454,0.03921461685301336

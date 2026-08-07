@@ -8,11 +8,17 @@ asks the prior question: do refusals written for different stated reasons
 actually *look* different? If the A-G regions overlap completely in refusal-text
 space, the taxonomy is not recovering distinctions that exist in the text.
 
-NO API SPEND. Text is vectorised locally with TF-IDF -> truncated SVD -> UMAP.
-Nothing here calls an embedding endpoint. The cost of that choice is that the
-representation is lexical, not semantic: it sees shared wording, not shared
-meaning, and near-duplicate boilerplate refusals ("I can't help with that")
-will collapse together whatever their stated reason.
+SEMANTIC BY DEFAULT, STILL NO API SPEND. Text is embedded with a local
+sentence-transformers model, so the space is semantic: two refusals giving the
+same reason in different words land near each other, which is the question this
+figure asks. `--encoder tfidf` falls back to the lexical TF-IDF -> SVD
+representation, kept as a contrast -- a grouping that survives under both is not
+an artefact of shared boilerplate. Model weights download once and cache; no API
+is called.
+
+ONLY THE OPENING OF EACH REFUSAL IS EMBEDDED (--max-chars, default 800). The
+stated reason comes first; the rest is usually hedging, and letting a
+1,400-character response dominate its own embedding buries the justification.
 
 LANGUAGE. English only by default. TF-IDF across scripts separates Arabic from
 English on tokenisation alone, which would produce a figure about writing
@@ -138,6 +144,12 @@ def main() -> int:
     ap.add_argument("--n-neighbors", type=int, default=25)
     ap.add_argument("--min-dist", type=float, default=0.08)
     ap.add_argument("--svd-dim", type=int, default=100)
+    ap.add_argument("--encoder", default="semantic",
+                    choices=["semantic", "tfidf"])
+    ap.add_argument("--st-model",
+                    default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+                    help="one encoder for every language, so panels are comparable")
+    ap.add_argument("--max-chars", type=int, default=800)
     ap.add_argument("--min-chars", type=int, default=15,
                     help="drop refusals too short to carry lexical signal")
     args = ap.parse_args()
@@ -165,34 +177,42 @@ def main() -> int:
           ", ".join(f"{k}={v}" for k, v in
                     sorted(Counter(df["code"]).items(), key=lambda x: -x[1])))
 
-    from sklearn.decomposition import TruncatedSVD
-    from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.preprocessing import normalize
-    import umap
 
-    # sublinear_tf damps the long boilerplate refusals; min_df=5 drops hapax
-    # terms that would otherwise let a single response define its own direction.
-    # Word tokens for a single language. For a multilingual run, character
-    # n-grams instead: the default token pattern needs whitespace, so Chinese
-    # sentences come through as one token each and the zh half of the space
-    # would be degenerate.
     multilingual = len(languages) > 1
-    if multilingual:
-        vec = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5),
-                              min_df=5, max_df=0.6, sublinear_tf=True,
-                              lowercase=True)
-    else:
-        vec = TfidfVectorizer(strip_accents="unicode", lowercase=True,
-                              ngram_range=(1, 2), min_df=5, max_df=0.6,
-                              sublinear_tf=True, stop_words=None)
-    print(f"vectoriser: {'char_wb(3,5)' if multilingual else 'word(1,2)'}")
-    X = vec.fit_transform(df["response_text"])
-    print(f"tf-idf: {X.shape[0]:,} x {X.shape[1]:,}")
+    texts = df["response_text"].str.slice(0, args.max_chars).tolist()
 
-    dim = min(args.svd_dim, X.shape[1] - 1)
-    svd = TruncatedSVD(n_components=dim, random_state=args.seed)
-    Z = normalize(svd.fit_transform(X))
-    print(f"svd -> {dim} dims, {svd.explained_variance_ratio_.sum():.1%} variance")
+    if args.encoder == "semantic":
+        from sentence_transformers import SentenceTransformer
+        print(f"encoder: {args.st_model} (local)")
+        Z = SentenceTransformer(args.st_model).encode(
+            texts, batch_size=64, show_progress_bar=False,
+            convert_to_numpy=True, normalize_embeddings=True)
+        rep = f"sbert:{args.st_model.split('/')[-1]}@{args.max_chars}chars"
+        print(f"embeddings: {Z.shape[0]:,} x {Z.shape[1]}")
+    else:
+        from sklearn.decomposition import TruncatedSVD
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        # Word tokens for one language; character n-grams when several scripts
+        # share the space, because the default token pattern needs whitespace
+        # and would pass a whole Chinese sentence through as a single token.
+        if multilingual:
+            vec = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5),
+                                  min_df=5, max_df=0.6, sublinear_tf=True,
+                                  lowercase=True)
+        else:
+            vec = TfidfVectorizer(strip_accents="unicode", lowercase=True,
+                                  ngram_range=(1, 2), min_df=5, max_df=0.6,
+                                  sublinear_tf=True, stop_words=None)
+        X = vec.fit_transform(texts)
+        print(f"tf-idf: {X.shape[0]:,} x {X.shape[1]:,}")
+        dim = min(args.svd_dim, X.shape[1] - 1)
+        Z = normalize(TruncatedSVD(n_components=dim,
+                                   random_state=args.seed).fit_transform(X))
+        rep = ("tfidf-char_wb(3,5)" if multilingual
+               else "tfidf-word(1,2)") + f"->svd{dim}"
+
+    import umap
 
     # Cosine metric: refusal texts vary a lot in length, and cosine is what the
     # TF-IDF/SVD representation is built for.
@@ -242,7 +262,8 @@ def main() -> int:
             "umap_x", "umap_y"]
     df[keep].assign(
         seed=args.seed, n_neighbors=args.n_neighbors, min_dist=args.min_dist,
-        metric="cosine", representation=("tfidf-char_wb(3,5)" if multilingual else "tfidf-word(1,2)") + f"->svd{dim}",
+        metric="cosine", representation=rep, encoder=args.encoder,
+        max_chars=args.max_chars,
         purity_k=k, purity_observed=round(float(same.mean()), 4),
         purity_baseline=round(baseline, 4),
         purity_group_observed=round(float(same_g.mean()), 4),

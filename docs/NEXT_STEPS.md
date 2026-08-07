@@ -5,7 +5,102 @@ downstream of the sourcing rebuild; the sourcing stage itself is done.*
 
 ---
 
-## ⏱ RESUME HERE — 2026-08-06c (authoritative; supersedes everything below)
+## ⏱ RESUME HERE — 2026-08-07 (authoritative; supersedes everything below)
+
+**Running now:** `CANONICAL_RUN_ID=canon_003 CANON_B_JUDGE=600 Rscript
+pipeline/run_canonical.R`. Nothing else.
+
+### The pipeline is now numbered like the paper
+
+| range | role | scripts |
+|---|---|---|
+| `01`–`02` | inputs | data build; judge-panel reliability |
+| `10`–`14` | estimation | canonical layer, one script per estimand family |
+| `20`–`21` | figures | `20` main manuscript (FIG1–3), `21` appendix (S1–S4) |
+| `30` | tests | 38 acceptance criteria |
+| `40`–`44` | appendix analyses | engagement, justifications, DeepSeek case study |
+
+`run_all.R` runs inputs + appendix analyses; `run_canonical.R` runs estimation →
+figures → tests. **The old numbers do not mean what they used to** — `10`–`14`
+were Study A/B scripts in the legacy repo and are now the estimation layer.
+The three DeepSeek scripts were renumbered but deliberately **not merged**: they
+write disjoint tables and each is a working analysis.
+
+### What changed in the figures
+
+- **FIG1 carries the standardized contrast only**, in the v1 jurisdiction-coloured
+  style (bar from zero, hairline interval, EU flagged as not estimable). The
+  descriptive home/away rates moved to appendix **S1** — printing both in one
+  figure invited the reading that they are two estimates of one parameter.
+- **FIG1c is new**: every English refusal in **semantic** space (local
+  sentence-transformer, then UMAP), coloured by the judge's stated reason.
+- **FIG2c is ordered by its own estimate**; the pooled row is pinned last.
+- **FIG3's in-figure caption is gone** — the caveats live in the manuscript
+  caption and `docs/CANONICAL_ANALYSES.md` §4.
+- **23 stale PNGs deleted** (v1 `FIG1`–`FIG5`/`P1`–`P14`, v2 `FIGA`–`FIGC`, `P15`).
+  `audit_figures.R` was rewritten and now fails on a missing expected figure *or*
+  a stale extra one.
+
+### Multiple judges now produce an uncertainty bound
+
+`14_canonical_judge_uncertainty.R` refits the **same** standardized contrast
+under every judge (shared `gcomp()` in `10_canonical_common.R`, so a judge
+difference can never be a specification difference) and writes `c17b`:
+
+- per-judge estimate + issue-cluster bootstrap interval (instrument held fixed);
+- an **envelope** = union of those intervals, widened to contain the canonical
+  `c04` interval. It is a **sensitivity bound, not a confidence interval**, and
+  every row says so. No coverage guarantee — four judges chosen for cost and
+  speed are not a sample from a population of judges.
+- two separate columns, because conflating them would overstate the result:
+  `point_sign_stable` (every judge agrees on direction) and
+  `envelope_excludes_zero` (strictly stronger).
+
+Headline: **CN's envelope clears zero. India's direction is agreed by all four
+judges but its envelope touches zero. MENA and US are judge-dependent.**
+Drawn as a grey rule behind the interval in FIG1b, and in full in **S2**.
+
+### Two bugs found and fixed while doing this
+
+- **`flush_diag()` was destroying diagnostics.** It dropped every row of the
+  current run before appending, so each part wiped the previous part's rows and
+  `c18` ended up holding only the LAST part's. It now replaces only the
+  `(run, label)` pairs it recomputed, and acceptance test **C3c** fails the build
+  if `c18` is missing any bootstrapping part.
+- **The refusal-projection semantic result is the opposite way round from the
+  lexical one.** Neighbourhood purity is 0.53 semantic vs 0.58 lexical (0.44 at
+  random): **the A–G codes track wording more closely than meaning.** That is a
+  finding about the taxonomy, and one more reason no estimand rests on it.
+
+### Next actions
+
+1. **Check `canon_003` finished green** — `c01b` should be 38/38 and
+   `audit_figures.R` should pass at 7 figures.
+2. **Re-assemble `annotations_panel.jsonl`** — still stale; `c17`/`c17b` use
+   what is on disk.
+3. **Slant top-up**: ~5,200 eligible engaged rows still lack Pass 2/3 codes.
+4. **Stance (Pass 4)** still unrun.
+5. **A judge envelope for the language estimand** is not computable yet — panel
+   coverage is English-only.
+
+### Standing cautions
+
+- **Re-assemble before diagnosing coverage.** A language can look absent when
+  responses *and* annotations exist. This caused two wrong diagnoses of a
+  "Hindi gap".
+- **A weighting or balance check on a balanced design passes trivially.** The
+  English home arm is exactly 104 issues per model, so weighted equals unweighted
+  exactly. Test against a constructed imbalance or the check proves nothing.
+- **A test whose condition returns `logical(0)` must fail, not vanish.**
+- **`responses/*.jsonl` carries retry rows** whose failed copy is empty text
+  (hi has 29,831). Keep the longest text per `prompt_id × language × model`.
+- **Discrete-scale ordering**: pin `limits=` explicitly.
+- **Palettes need an L\* gap.** English and Chinese sat at identical lightness in
+  `PAL_LANGUAGE`; invisible in grayscale once all five languages shared a panel.
+
+---
+
+## ⏱ RESUME HERE — 2026-08-06c (superseded by the 2026-08-07 block above)
 
 **Running now:** the full canonical run (`CANONICAL_RUN_ID=canon_002
 Rscript pipeline/run_canonical.R`). Nothing else.

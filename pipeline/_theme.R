@@ -191,9 +191,14 @@ CELL_EMPTY <- "#FBFBFC"
 
 # Languages: ink by default; scripts that must distinguish all five use this
 # ordered ramp, which is again lightness-ordered rather than hue-coded.
-PAL_LANGUAGE <- c("English" = "#2A5183", "Chinese" = ACCENT,
-                  "Arabic"  = "#5A7CA5", "Russian" = "#8FA8C6",
-                  "Hindi"   = INK_FAINT)
+# Ordered by LIGHTNESS, not hue: with all five languages in one panel, English
+# and Chinese previously sat at the same L* (34) and were indistinguishable in
+# grayscale or for a colour-vision-deficient reader. Chinese keeps the accent
+# hue but is darkened; Russian is lightened. audit_figures.R enforces a minimum
+# L* gap of 5 across this palette.
+PAL_LANGUAGE <- c("Chinese" = "#6E0C18", "English" = "#2A5183",
+                  "Arabic"  = "#5A7CA5", "Hindi"   = "#9B9B9E",
+                  "Russian" = "#C6D3E0")
 
 # --- figure geometry -------------------------------------------------------
 # Journal column widths in inches. Design to these; never scale afterwards.

@@ -30,7 +30,7 @@
 #    loadedness. They were produced by a generation template, not randomised, so
 #    that is an assumption, not a design guarantee.
 
-source("pipeline/50_canonical_common.R")
+source("pipeline/10_canonical_common.R")
 cat(strrep("=", 78), "\nCANONICAL PART 2: PROMPT DELIVERY\n", strrep("=", 78), "\n", sep = "")
 
 B_HEAD <- as.integer(Sys.getenv("CANON_B_HEAD", "2000"))

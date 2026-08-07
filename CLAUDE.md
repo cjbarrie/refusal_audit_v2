@@ -160,63 +160,68 @@ Output surfaces per run dir: `responses/<battery>_<lang>.jsonl`,
 
 ### 3. R analysis (`pipeline/`)
 
-**Estimation and plotting are separate, and must stay separate.** `51_`–`54_`
+**Estimation and plotting are separate, and must stay separate.** `11_`–`14_`
 fit models and write tidy tables to `pipeline/estimates/canonical/`;
-`55_canonical_figures.R` reads those tables and draws, fitting nothing.
+`20_figures_main.R` and `21_figures_appendix.R` read those tables and draw,
+fitting nothing.
 
 **The canonical layer is what the paper reports.** Read
 `docs/CANONICAL_ANALYSES.md` before touching any of it — it is the spec, not a
-summary. The earlier v1 (`20`–`30`) and v2 (`40`–`47`) estimand layers are
-**superseded and archived** under `pipeline/archive/`; `pipeline/archive/README.md`
-maps every archived file to its replacement and lists what was deliberately not
-carried forward. Don't run archived scripts to produce new results — they
-overwrite the historical `e`-series CSVs in place.
+summary. The earlier v1 and v2 estimand layers are **superseded and archived**
+under `pipeline/archive/`; `pipeline/archive/README.md` maps every archived file
+to its replacement and lists what was deliberately not carried forward. Don't
+run archived scripts to produce new results — they overwrite the historical
+`e`-series CSVs in place.
 
-| script | role | outputs |
+The numbering encodes the manuscript structure:
+
+| range | role | scripts |
 |---|---|---|
-| `01_data_loading.R` | builds `data_clean.RData` — the foundation | tables 00 |
-| `02`,`06`,`07`,`08`,`09` | engagement, justifications, DeepSeek language | tables |
-| `24_measurement.R` | **judge-panel reliability + robustness**; feeds `c17` | `e23`–`e28` |
-| `50_canonical_common.R` | shared sample, nested weights, multiplicity-preserving bootstrap, judge accessors | — |
-| `51_canonical_home.R` | descriptive + standardized home contrast | `c02`–`c07` |
-| `52_canonical_language_framing.R` | paired language + framing effects | `c08`–`c11` |
-| `53_canonical_content.R` | ideology, moral foundations, joint outcomes | `c12`–`c16` |
-| `54_canonical_measurement.R` | per-judge sensitivity; no majority vote | `c17` |
-| `55_canonical_figures.R` | **all** canonical figures; fits nothing | `FIG1`–`FIG3` |
-| `56_canonical_acceptance.R` | 37 adversarial tests; non-zero exit on failure | `c01b` |
-| `run_canonical.R` | driver + reconciliation + manifest | `c00`, `c01`, `c18` |
-| `audit_figures.R` | PNG-only, figure↔estimate agreement, CVD | pass/fail |
-| `16_irr_analysis.R` | **RETIRED stub** — two-rater only; see `24_` | — |
+| `01`–`02` | **inputs** | `01_data_loading.R` (builds `data_clean.RData`), `02_judge_reliability.R` (panel reliability `e23`–`e28`, feeds `c17`) |
+| `10`–`14` | **estimation** | `10_canonical_common.R` (sample, nested weights, multiplicity-preserving bootstrap, shared `gcomp`), `11_canonical_home.R` → `c02`–`c07`, `12_canonical_language_framing.R` → `c08`–`c11`, `13_canonical_content.R` → `c12`–`c16`, `14_canonical_judge_uncertainty.R` → `c17`, `c17b` |
+| `20`–`21` | **figures** | `20_figures_main.R` → `FIG1`–`FIG3` (manuscript), `21_figures_appendix.R` → `S1`–`S4` (appendix) |
+| `30` | **tests** | `30_acceptance.R` → `c01b`, non-zero exit on failure |
+| `40`–`44` | **appendix analyses** | engagement, justifications, and the three DeepSeek case-study scripts |
 
-Two rules the canonical layer depends on and that are checked mechanically:
-the **issue-cluster bootstrap must label each draw** (`bootstrap_issue_instance`),
-so a resample that draws one issue twice keeps the copies distinct; and the
-**canonical outcome is one named judge**, with the rest of the panel reported as
-an instrument-sensitivity *range* that is never pooled with a bootstrap interval.
-`56_canonical_acceptance.R` fails the build on either.
-`pipeline/audit_figures.R` enforces this (it greps for `glmer(`/`glm(`/`lmer(`
-in the figure script) along with PNG-only output, estimates-to-figure agreement,
-and colour-vision separability. Run it after any figure change — it is the
-closest thing this repo has to a test suite.
+Two drivers: `pipeline/run_all.R` runs the inputs and the appendix analyses;
+`CANONICAL_RUN_ID=<id> Rscript pipeline/run_canonical.R` runs estimation →
+figures → acceptance → reconciliation (~1 h). `pipeline/audit_figures.R` is the
+figure gate.
 
+Four rules the canonical layer depends on, all checked mechanically:
+* the **issue-cluster bootstrap must label each draw** (`bootstrap_issue_instance`),
+  so a resample that draws one issue twice keeps the copies distinct;
+* the **canonical outcome is one named judge**, with the rest of the panel
+  reported as an instrument-sensitivity *envelope* (`c17b`) that is never pooled
+  with a bootstrap interval and never called a confidence interval;
+* **`gcomp()` lives in `10_canonical_common.R`** and is shared by `11` and `14`,
+  so a judge-sensitivity result can never be a specification difference;
+* `flush_diag()` replaces only the **(run, label)** pairs it recomputed — dropping
+  the whole run made each part wipe the previous part's diagnostics.
 
 `01_data_loading.R` is the foundation — it reads `annotations/annotations_all.jsonl`,
 derives `engaged`/`refused` (`engagement_code <= 3` / `>= 4`), the 5-point
 `engagement_category`, and factor columns with fixed level orders (so
 model/language always plot in the same order), and writes `data_clean.RData`,
-which every one of `02..16_*.R` reads. It has been **patched for v2**
+which the estimation layer and the `40`–`44` appendix scripts read. It has been **patched for v2**
 (`setwd()` → `here::here()`, run-dir input via `REFUSAL_RUN_DIR` env var
 (default `annotations/pilot_v1`), 7-model factor levels, a join-collision fix
 for `controversy_tier` — see `docs/ANNOTATION_RUNBOOK.md` for exact detail).
-Scripts `02–16` have since had the same `here::here()` fix applied (verified:
-0 of 23 carry the legacy hardcoded path). The Study A/B scripts
-(`10`,`11`,`12`,`13`,`14`,`16`) additionally guard their inputs and
-`quit(status=0)` with a SKIP message when those inputs are absent, so a
-main-path run passes over them cleanly rather than erroring.
+The appendix scripts have since had the same `here::here()` fix applied, and
+they guard their inputs and `quit(status=0)` with a SKIP message when those
+inputs are absent, so a run passes over them cleanly rather than erroring.
+(A note that used to sit here referred to "Study A/B scripts `10`–`16`". Those
+scripts are not in this repo, and `10`–`14` now mean the canonical estimation
+layer — do not read the old numbering into the new one.)
 
-Run with: `REFUSAL_RUN_DIR=annotations/<run_id> Rscript pipeline/01_data_loading.R`,
-then the numbered scripts in order (most read `data_clean.RData`, write to
-`pipeline/figures/` and `pipeline/tables/`). `docs/R_PIPELINE_WALKTHROUGH.md` maps
+Run with:
+
+```bash
+REFUSAL_RUN_DIR=annotations/<run_id> Rscript pipeline/01_data_loading.R
+Rscript pipeline/run_all.R                                   # inputs + appendix analyses
+CANONICAL_RUN_ID=<id> Rscript pipeline/run_canonical.R       # estimation -> figures -> tests
+Rscript pipeline/audit_figures.R                             # the figure gate
+``` `docs/R_PIPELINE_WALKTHROUGH.md` maps
 what each of the 23 scripts does and which are core vs. optional/consolidatable
 (several — `06`/`07`/`07b`/`06b` — investigate the same DeepSeek finding at
 different rigor levels).
@@ -246,7 +251,7 @@ output schema, check that contract for what fields/joins R depends on.
 - `archive/` holds superseded pilot/probe artifacts (old annotations, sampled
   prompts) kept for reference — don't treat it as live pipeline input.
   `archive/pipeline_slant/` is the *pre-trim* slant analysis; the live slant
-  path is `pipeline/53_canonical_content.R` + FIG3, so don't reintroduce the
+  path is `pipeline/13_canonical_content.R` + FIG3, so don't reintroduce the
   archived scripts alongside it.
 - **The canonical estimand layer** (`docs/CANONICAL_ANALYSES.md`) reports three
   separated families and is what the paper quotes: **Part 1 home** (descriptive
@@ -256,7 +261,7 @@ output schema, check that contract for what fields/joins R depends on.
   * **The standardized contrast must never be described as causal, a
     difference-in-differences, or a within-issue effect.** `home` is a fixed
     property of an issue's region; nothing randomises it. Those strings are
-    banned — `56_canonical_acceptance.R` (test E1) fails the build on an
+    banned — `30_acceptance.R` (test E1) fails the build on an
     unnegated use anywhere in the canonical tables.
   * `General` is a THIRD region position, never folded into `away`.
   * Every bootstrap resamples **whole issues**, labels each draw, and refits
@@ -271,7 +276,8 @@ output schema, check that contract for what fields/joins R depends on.
   assemble emits the long-format `annotations_panel.jsonl`.
   **`annotations_all.jsonl` keeps its exact contract**, so the panel is purely
   additive and `01_data_loading.R` never changes. Reliability lives in
-  `24_measurement.R`.
+  `02_judge_reliability.R`; the per-judge estimate envelope lives in
+  `14_canonical_judge_uncertainty.R` (`c17b`).
   Two hard-won operational rules:
   * **Judge suitability cannot be read off a model card.** Two candidates passed
     every specification check (structured outputs, reasoning disabled, decent
@@ -311,3 +317,10 @@ PDF, no SVG, no EPS. Enforced in three places, all of which must stay true:
 Multi-format export was tried and removed twice: the formats drifted apart
 (different fonts, different metrics) and stale files from superseded designs
 accumulated in the directory. One writer, one format.
+
+**The figures directory holds exactly what the manuscript ships**, in two
+subdirectories: `figures/canonical/` (`FIG1`–`FIG3`, main text) and
+`figures/appendix/` (`S1`–`S4`). `audit_figures.R` fails on anything else in
+there, in either direction — a missing expected figure *or* a stale extra one.
+That check exists because 23 PNGs from superseded scripts sat in the directory
+looking current for weeks.

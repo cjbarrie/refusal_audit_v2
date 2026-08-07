@@ -1,11 +1,16 @@
 # The slant subsample — annotation passes 2 and 3 on 25% of issues
 
-> **⚠ SCRIPT PATHS BELOW ARE OUT OF DATE — 2026-08-06c.** The v1 estimand layer
-> (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer (`40`–`47`) have been
-> archived to `pipeline/archive/precanonical_v1|v2/`; `pipeline/archive/README.md`
-> maps each to its replacement. The analyses the paper reports are specified in
-> **`docs/CANONICAL_ANALYSES.md`**. This document is kept as a dated record of
-> what was true when it was written.
+> **⚠ SCRIPT PATHS BELOW ARE OUT OF DATE — 2026-08-07.** The v1 estimand layer
+> and the v2 layer were archived to `pipeline/archive/precanonical_v1|v2/`
+> (`pipeline/archive/README.md` maps each file to its replacement), and the
+> whole pipeline was then **renumbered**.
+>
+> **The old numbers have been reused and no longer mean what they say here.**
+> `10`–`14` are now the canonical estimation layer, `20`–`21` the figure scripts,
+> `40`–`44` the appendix analyses. Resolve any script reference below against
+> `pipeline/archive/README.md`, never by number alone. The analyses the paper
+> reports are specified in **`docs/CANONICAL_ANALYSES.md`**. This document is
+> kept as a dated record of what was true when it was written.
 
 **Status: APPLIED 2026-08-04; complete for the primary (English) sample, with a
 top-up pending in Russian and Hindi** — see the generation-status section below.

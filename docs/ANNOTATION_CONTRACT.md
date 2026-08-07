@@ -54,7 +54,7 @@ unreadable: two judges' verdicts on the same response were indistinguishable.
 
 `judge_prompt_version` is a hash of the Pass 1–3 template text, computed at
 import time. Editing a codebook changes it automatically, and
-`pipeline/24_measurement.R` **refuses to pool** verdicts carrying different
+`pipeline/02_judge_reliability.R` **refuses to pool** verdicts carrying different
 versions — otherwise an agreement statistic would be measuring template drift
 rather than rater disagreement.
 
@@ -67,7 +67,7 @@ surface below.
 |---|---|---|
 | `annotations_all.jsonl` | one row per response (**anchor judge**) | `01_data_loading.R` — UNCHANGED contract |
 | `annotations_<lang>_boundary.jsonl` | boundary tier, anchor judge | `01_data_loading.R` — UNCHANGED |
-| `annotations_panel.jsonl` | **long: one row per (response × judge)** | `24_measurement.R` only |
+| `annotations_panel.jsonl` | **long: one row per (response × judge)** | `02_judge_reliability.R` + `14_canonical_judge_uncertainty.R` |
 
 **`engagement_code` is the single load-bearing field** — every engagement/refusal
 number in the paper derives from it. The 1–5 scale and the `≤3 engaged / ≥4

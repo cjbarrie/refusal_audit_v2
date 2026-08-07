@@ -43,39 +43,36 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 # The plan. `needs_load` marks scripts that read data_clean.RData.
 # -----------------------------------------------------------------------------
 PLAN <- list(
-  list(id = "01", file = "01_data_loading.R",              stage = "load",
+  list(id = "01", file = "01_data_loading.R",            stage = "load",
        what = "read run dir, derive engaged/refused + factors, write data_clean.RData"),
-  list(id = "02", file = "02_engagement_analysis.R",        stage = "tables",
-       what = "engagement by model x language; logistic interaction model"),
-  list(id = "06", file = "06_refusal_justifications.R",     stage = "tables",
-       what = "refusal justification A-G composition"),
-  list(id = "07", file = "07_deepseek_language_analysis.R", stage = "tables",
-       what = "DeepSeek language tables 35, 36, 38"),
-  list(id = "08", file = "08_deepseek_chinese_analysis.R",  stage = "tables",
-       what = "DeepSeek zh-vs-en chi-squared, mixed model, figs 22-23"),
-  list(id = "09", file = "09_deepseek_stats.R",             stage = "tables",
-       what = "bootstrap ORs, Cramer's V, BH-corrected p-values"),
-  list(id = "24", file = "24_measurement.R",                  stage = "estimates",
-       what = "judge-panel reliability + measurement robustness (e23-e28); feeds c17"),
-  list(id = "16", file = "16_irr_analysis.R",               stage = "irr",
-       what = "RETIRED stub; superseded by 24_measurement.R"),
-  # Self-skips unless scripts/refusal_umap.py has written its coordinates: the
-  # projection is computed in Python and this script only draws it.
-  list(id = "57", file = "57_refusal_umap_figure.R",        stage = "figures",
-       what = "UMAP of refusal text (P15); needs scripts/refusal_umap.py first")
+  list(id = "02", file = "02_judge_reliability.R",       stage = "estimates",
+       what = "judge-panel reliability (e23-e28); feeds c17/c17b"),
+  list(id = "40", file = "40_appendix_engagement.R",     stage = "tables",
+       what = "APPENDIX: engagement by model x language; logistic interaction"),
+  list(id = "41", file = "41_appendix_justifications.R", stage = "tables",
+       what = "APPENDIX: refusal justification A-G composition"),
+  list(id = "42", file = "42_appendix_deepseek_language.R", stage = "tables",
+       what = "APPENDIX: DeepSeek language tables 35-38"),
+  list(id = "43", file = "43_appendix_deepseek_chinese.R",  stage = "tables",
+       what = "APPENDIX: DeepSeek zh-vs-en chi-squared, mixed model"),
+  list(id = "44", file = "44_appendix_deepseek_stats.R",    stage = "tables",
+       what = "APPENDIX: bootstrap ORs, Cramer's V, BH-corrected p-values")
 )
 
-# NOT IN THIS PLAN. The estimand and figure layers -- v1's 20/21/22/23/25/30 and
-# v2's 40-47 -- have been superseded by the canonical layer and moved to
-# pipeline/archive/ (see pipeline/archive/README.md for the file-by-file
-# mapping). Headline estimates and figures now come from:
+# HOW THIS REPOSITORY IS ORGANISED, and why the numbering looks like it does.
 #
-#     Rscript pipeline/run_canonical.R
+#   01, 02      inputs        data_clean.RData and the judge-reliability tables
+#   10 - 14     estimation    the canonical layer: one script per estimand family
+#   20, 21      figures       20 = main manuscript, 21 = appendix
+#   30          tests         acceptance criteria, non-zero exit on failure
+#   40 - 44     appendix      descriptive and case-study analyses
 #
-# This driver still runs what the canonical layer depends on or does not cover:
-# the data build (01), the descriptive/case-study tabulations (02, 06-09), and
-# the judge-panel reliability tables (24) that 54_canonical_measurement.R reads.
-
+# THIS driver runs the inputs and the appendix analyses. The estimation layer,
+# the figures and the tests are driven separately, because they take ~1 h and
+# share a run id that has to be constant across them:
+#
+#     CANONICAL_RUN_ID=canon_003 Rscript pipeline/run_canonical.R
+#
 only <- get_flag("--only")
 if (!is.null(only)) {
   keep <- trimws(strsplit(only, ",")[[1]])

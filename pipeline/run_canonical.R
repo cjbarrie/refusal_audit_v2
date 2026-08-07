@@ -9,7 +9,7 @@
 # API and mutates no input.
 #
 #   Rscript pipeline/run_canonical.R              # everything
-#   CANON_ONLY=53,54 Rscript pipeline/run_canonical.R   # a subset, then c01
+#   CANON_ONLY=13,14 Rscript pipeline/run_canonical.R   # a subset, then c01
 
 t0 <- Sys.time()
 suppressPackageStartupMessages({ library(tidyverse) })
@@ -20,12 +20,13 @@ dir.create(CAN_EST, showWarnings = FALSE, recursive = TRUE)
 
 STEPS <- tribble(
   ~id, ~script, ~what,
-  "51", "pipeline/51_canonical_home.R",              "home-jurisdiction (c02-c07)",
-  "52", "pipeline/52_canonical_language_framing.R",  "language + framing (c08-c11)",
-  "53", "pipeline/53_canonical_content.R",           "content (c12-c16)",
-  "54", "pipeline/54_canonical_measurement.R",       "measurement (c17)",
-  "55", "pipeline/55_canonical_figures.R",           "figures (FIG1-3)",
-  "56", "pipeline/56_canonical_acceptance.R",        "acceptance tests")
+  "11", "pipeline/11_canonical_home.R",              "home-jurisdiction (c02-c07)",
+  "12", "pipeline/12_canonical_language_framing.R",  "language + framing (c08-c11)",
+  "13", "pipeline/13_canonical_content.R",           "content (c12-c16)",
+  "14", "pipeline/14_canonical_judge_uncertainty.R", "judge sensitivity + envelope (c17, c17b)",
+  "20", "pipeline/20_figures_main.R",                "main figures (FIG1-3)",
+  "21", "pipeline/21_figures_appendix.R",            "appendix figures (S1-S4)",
+  "30", "pipeline/30_acceptance.R",                  "acceptance tests")
 
 only <- Sys.getenv("CANON_ONLY", "")
 if (nzchar(only)) STEPS <- STEPS %>% filter(id %in% trimws(strsplit(only, ",")[[1]]))
@@ -140,8 +141,14 @@ tb <- tb %>% mutate(
     x <- read_csv(p, show_col_types = FALSE)
     if ("canonical_run_id" %in% names(x)) paste(unique(x$canonical_run_id), collapse = ",")
     else NA_character_ }))
-fg <- tibble(file = list.files(CAN_FIG), path = file.path(CAN_FIG, list.files(CAN_FIG))) %>%
-  mutate(rows = NA_integer_, bytes = file.size(path), run_id = NA_character_)
+# Both figure directories: the manifest is the record of what a release shipped,
+# and appendix figures ship too.
+APP_FIG <- "pipeline/figures/appendix"
+fg <- map_dfr(c(CAN_FIG, APP_FIG), function(d) {
+  f <- list.files(d)
+  if (!length(f)) return(NULL)
+  tibble(file = file.path(basename(d), f), path = file.path(d, f))
+}) %>% mutate(rows = NA_integer_, bytes = file.size(path), run_id = NA_character_)
 
 man <- bind_rows(tb, fg) %>%
   mutate(canonical_run_id = Sys.getenv("CANONICAL_RUN_ID", "unset"),

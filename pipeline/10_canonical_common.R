@@ -24,7 +24,7 @@
 # The repair: every drawn copy gets a distinct `bootstrap_issue_instance`, and
 # every weight downstream keys on that, never on `issue_id`. An issue drawn k
 # times then contributes exactly k times the weight, which is what a cluster
-# bootstrap means. 56_canonical_acceptance.R proves this with a synthetic case.
+# bootstrap means. 30_acceptance.R proves this with a synthetic case.
 #
 # NO INTERVAL FROM THE PRE-CANONICAL LAYER IS REUSED. Everything is recomputed.
 
@@ -190,7 +190,12 @@ flush_diag <- function(file = "c18_bootstrap_diagnostics.csv") {
   p <- file.path(CAN_EST, file)
   if (file.exists(p)) {
     old <- suppressMessages(read_csv(p, show_col_types = FALSE))
-    old <- old %>% filter(canonical_run_id != CANONICAL_RUN_ID)
+    # Replace only the (run, label) pairs this session actually recomputed.
+    # Dropping every row of the run instead would mean that re-running ONE part
+    # under an existing run id silently deleted the other parts' diagnostics --
+    # and a partial re-run is the normal way to iterate on one part.
+    key_new <- paste(out$canonical_run_id, out$label)
+    old <- old %>% filter(!paste(canonical_run_id, label) %in% key_new)
     out <- bind_rows(old, out)
   }
   write_csv(out, p)
@@ -299,3 +304,47 @@ CANON_META <- list(
 cat(sprintf("[canonical] run %s | rows %s | English %s | issues %d\n",
             CANONICAL_RUN_ID, format(nrow(canon), big.mark = ","),
             format(nrow(CANON_ENGLISH), big.mark = ","), n_distinct(canon$issue_id)))
+
+# =============================================================================
+# Standardized home contrast: specification, estimability, g-computation
+# =============================================================================
+# Shared by 51 (the canonical estimate) and 54 (the same estimate refit under
+# each panel judge). One definition, so a judge-sensitivity result can never
+# be a specification difference wearing a judge's name.
+
+# home * model where a jurisdiction has >1 model, so model-specific contrasts
+# come straight out of the fit. No region term: region DETERMINES home within a
+# jurisdiction, so it is collinear with the contrast of interest.
+build_f <- function(d, outcome = "refused_strict") {
+  rhs <- if (nlevels(droplevels(factor(d$model))) > 1) "home * model_f" else "home"
+  for (v in c("tier", "domain", "route_f"))
+    if (nlevels(droplevels(factor(d[[v]]))) > 1) rhs <- c(rhs, v)
+  as.formula(paste(outcome, "~", paste(rhs, collapse = " + ")))
+}
+
+estimable_chk <- function(d) {
+  if (!nrow(d)) return("no rows")
+  if (sum(d$refused_strict) == 0) return("0 observed refusals (complete separation)")
+  if (length(unique(d$home)) < 2) return("home does not vary")
+  eh <- sum(d$refused_strict[d$home == 1]); ea <- sum(d$refused_strict[d$home == 0])
+  if (eh == 0 || ea == 0)
+    return(sprintf("separation: %d home / %d away events", eh, ea))
+  ""
+}
+
+# g-computation returning the overall standardized contrast AND the
+# model-specific ones, all on the probability scale.
+gcomp <- function(d, wfun = w_nested, outcome = "refused_strict", per_model = FALSE) {
+  ic <- if ("bootstrap_issue_instance" %in% names(d)) "bootstrap_issue_instance" else "issue_id"
+  fit <- suppressWarnings(glm(build_f(d, outcome), data = d, family = binomial))
+  if (!fit$converged) return(if (per_model) NULL else NA_real_)
+  p1 <- predict(fit, newdata = transform(d, home = 1L), type = "response")
+  p0 <- predict(fit, newdata = transform(d, home = 0L), type = "response")
+  w  <- wfun(d, issue_col = ic)
+  if (!per_model) return(sum(w * (p1 - p0)))
+  ms <- sort(unique(as.character(d$model)))
+  vapply(ms, function(m) {
+    s <- as.character(d$model) == m
+    sum(w[s] * (p1[s] - p0[s])) / sum(w[s])   # renormalise within model
+  }, numeric(1))
+}

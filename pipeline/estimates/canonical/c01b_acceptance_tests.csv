@@ -1,38 +1,39 @@
 test,description,result,detail,canonical_run_id
-A1,"canonical sample is 137,186 rows",PASS,"137,186",canon_002
-A2,one row per model x prompt_id x language,PASS,,canon_002
-A3,624 issues / 11 models / 5 languages / 2 tiers,PASS,,canon_002
-A4,General issues never enter the home or away arms,PASS,"22,868 General rows, all held at home_status='general'",canon_002
-A5,refused_strict is exactly engagement_code >= 4,PASS,,canon_002
-B1,nested weights sum to 1,PASS,sum = 1.000000000000,canon_002
-B2,nested weights give every model equal total mass,PASS,range 0.00e+00 across 11 models,canon_002
-B3,weights equalise an artificially imbalanced roster (raw shares do not),PASS,weighted range 1.57e-15; raw share range 0.0833,canon_002
-B4,weighting changes the answer when the roster is imbalanced,PASS,imbalanced frame: weighted 0.0889 vs unweighted 0.1038,canon_002
-B5,"on the real (balanced) design, weighted equals unweighted",PASS,"0.088942 both ways; balance is why, and it is not a free pass",canon_002
-C1,replicate frames carry a per-draw instance label,PASS,,canon_002
-C2,replicates that draw an issue twice keep the copies distinct,PASS,duplicate draws seen: TRUE; instance- and issue-keyed answers diverge: TRUE,canon_002
-C3,every bootstrapped quantity records its seed and replicate counts,PASS,52 entries,canon_002
-C3b,no bootstrap lost more than 5% of its replicates,PASS,max failure rate 0.000,canon_002
-C4,c18 labels are unique within the run,PASS,,canon_002
-D1,every estimate table carries exactly one canonical_run_id,PASS,20 tables,canon_002
-D1b,all estimate tables come from the same run,PASS,canon_002,canon_002
-D2,every canonical table names its estimand,PASS,,canon_002
-E1,no un-negated causal claim in any canonical table,PASS,,canon_002
-E2,standardized contrast is labelled non-causal,PASS,,canon_002
-E3,content tables declare conditioning on engagement,PASS,,canon_002
-E4,ideology tables carry the weak-reliability warning,PASS,,canon_002
-E5,moral foundations are declared non-exclusive,PASS,,canon_002
-F1,"non-estimable jurisdictions are flagged, not silently dropped",PASS,not estimable: EU,canon_002
-F2,"English slant coverage is complete, and partial languages are excluded",PASS,"en 6528/6528; excluded: ar, ru, zh",canon_002
-F3,"all four non-English languages are estimated, nulls included",PASS,"ar, hi, ru, zh",canon_002
-F4,paired tables report incomplete blocks rather than dropping silently,PASS,,canon_002
-F5,finite-battery intervals are narrower than superpopulation intervals,PASS,,canon_002
-G1,no majority-vote label is used as ground truth,PASS,,canon_002
-G2,"judge spread is labelled as instrument sensitivity, not an interval",PASS,,canon_002
-G3,the latent-error simulation layer refuses to run without validation data,PASS,"draw_latent_labels() requires human-estimated sensitivity, s",canon_002
-G4,the canonical outcome is a single named judge,PASS,google/gemini-2.5-flash-lite (canonical),canon_002
-H1,three canonical figures exist,PASS,"FIG1_canonical_home.png, FIG2_canonical_language_framing.png, FIG3_canonical_content.png",canon_002
-H2,figures directory is PNG only,PASS,,canon_002
-H3,FIG1c has one row per jurisdiction in c04,PASS,,canon_002
-H4,FIG2c pooled point exists in c10,PASS,,canon_002
-H5,FIG3a shares sum to 1 within each ideology dimension,PASS,,canon_002
+A1,"canonical sample is 137,186 rows",PASS,"137,186",canon_003
+A2,one row per model x prompt_id x language,PASS,,canon_003
+A3,624 issues / 11 models / 5 languages / 2 tiers,PASS,,canon_003
+A4,General issues never enter the home or away arms,PASS,"22,868 General rows, all held at home_status='general'",canon_003
+A5,refused_strict is exactly engagement_code >= 4,PASS,,canon_003
+B1,nested weights sum to 1,PASS,sum = 1.000000000000,canon_003
+B2,nested weights give every model equal total mass,PASS,range 0.00e+00 across 11 models,canon_003
+B3,weights equalise an artificially imbalanced roster (raw shares do not),PASS,weighted range 1.57e-15; raw share range 0.0833,canon_003
+B4,weighting changes the answer when the roster is imbalanced,PASS,imbalanced frame: weighted 0.0889 vs unweighted 0.1038,canon_003
+B5,"on the real (balanced) design, weighted equals unweighted",PASS,"0.088942 both ways; balance is why, and it is not a free pass",canon_003
+C1,replicate frames carry a per-draw instance label,PASS,,canon_003
+C2,replicates that draw an issue twice keep the copies distinct,PASS,duplicate draws seen: TRUE; instance- and issue-keyed answers diverge: TRUE,canon_003
+C3,every bootstrapped quantity records its seed and replicate counts,PASS,317 entries,canon_003
+C3b,no bootstrap lost more than 5% of its replicates,PASS,max failure rate 0.049,canon_003
+C3c,"c18 holds diagnostics from every bootstrapping part, not just the last",PASS,missing: ,canon_003
+C4,c18 labels are unique within the run,PASS,,canon_003
+D1,every estimate table carries exactly one canonical_run_id,PASS,18 tables,canon_003
+D1b,all estimate tables come from the same run,PASS,canon_003,canon_003
+D2,every canonical table names its estimand,PASS,,canon_003
+E1,no un-negated causal claim in any canonical table,PASS,,canon_003
+E2,standardized contrast is labelled non-causal,PASS,,canon_003
+E3,content tables declare conditioning on engagement,PASS,,canon_003
+E4,ideology tables carry the weak-reliability warning,PASS,,canon_003
+E5,moral foundations are declared non-exclusive,PASS,,canon_003
+F1,"non-estimable jurisdictions are flagged, not silently dropped",PASS,not estimable: EU,canon_003
+F2,"English slant coverage is complete, and partial languages are excluded",PASS,"en 6528/6528; excluded: ar, ru, zh",canon_003
+F3,"all four non-English languages are estimated, nulls included",PASS,"ar, hi, ru, zh",canon_003
+F4,paired tables report incomplete blocks rather than dropping silently,PASS,,canon_003
+F5,finite-battery intervals are narrower than superpopulation intervals,PASS,,canon_003
+G1,no majority-vote label is used as ground truth,PASS,,canon_003
+G2,"judge spread is labelled as instrument sensitivity, not an interval",PASS,,canon_003
+G3,the latent-error simulation layer refuses to run without validation data,PASS,"draw_latent_labels() requires human-estimated sensitivity, s",canon_003
+G4,the canonical outcome is a single named judge,PASS,google/gemini-2.5-flash-lite (canonical),canon_003
+H1,three canonical figures exist,PASS,"FIG1_canonical_home.png, FIG2_canonical_language_framing.png, FIG3_canonical_content.png",canon_003
+H2,figures directory is PNG only,PASS,,canon_003
+H3,FIG1c has one row per jurisdiction in c04,PASS,,canon_003
+H4,FIG2c pooled point exists in c10,PASS,,canon_003
+H5,FIG3a shares sum to 1 within each ideology dimension,PASS,,canon_003

@@ -15,7 +15,7 @@
 # English headline quantities and nowhere else. Where a judge cannot cover a
 # quantity, the row says so rather than silently omitting it.
 
-source("pipeline/50_canonical_common.R")
+source("pipeline/10_canonical_common.R")
 cat(strrep("=", 78), "\nCANONICAL PART 4: MEASUREMENT\n", strrep("=", 78), "\n", sep = "")
 
 CANON_JUDGE <- "google/gemini-2.5-flash-lite (canonical)"
@@ -89,6 +89,119 @@ spread <- c17 %>% filter(!is.na(estimate)) %>%
          estimate = canonical, estimate_pp = pp(canonical),
          note = paste("range across judges is INSTRUMENT SENSITIVITY, not sampling",
                       "uncertainty; do not pool it with a bootstrap interval"))
+
+# =============================================================================
+# c17b -- the standardized contrast refit under every judge, and the envelope
+# =============================================================================
+# WHAT UNCERTAINTY THE PANEL CAN AND CANNOT BUY.
+#
+# A bootstrap interval under one judge answers: if we drew another sample of
+# issues, and kept this instrument, how much would the estimate move? It holds
+# the instrument FIXED, so it says nothing about the labels being wrong.
+#
+# Refitting under each judge adds the second question: if we kept this sample of
+# issues and swapped the instrument, how much would the estimate move? The
+# reported envelope is the UNION of the per-judge intervals,
+#     [ min_j conf_low_j , max_j conf_high_j ],
+# which is a SENSITIVITY BOUND, not a confidence interval. It has no coverage
+# guarantee, because four judges chosen for cost and speed are not a sample from
+# a population of judges and none of them is known to be correct. It would be
+# conservative only under an assumption we do NOT make -- that the true labelling
+# is one of the four. Quoted as a bound it is honest; quoted as a 95% interval it
+# would be a fabrication, so `interval_type` says which it is on every row.
+#
+# The specification is the shared gcomp() from 10_canonical_common.R -- the same
+# one 51 uses -- so a difference between judges here cannot be a difference in
+# model.
+B_JUDGE <- as.integer(Sys.getenv("CANON_B_JUDGE", "600"))
+cat("\nc17b: standardized home contrast under each judge (B =", B_JUDGE, ")\n")
+
+std_under <- function(d, j, tag) {
+  why <- estimable_chk(d)
+  base <- tibble(judge_model = j, jurisdiction = tag,
+                 n = nrow(d), n_issues = n_distinct(d$issue_id),
+                 events_home = sum(d$refused_strict[d$home == 1]),
+                 events_away = sum(d$refused_strict[d$home == 0]))
+  if (nzchar(why))
+    return(bind_cols(base, tibble(estimate = NA_real_, conf_low = NA_real_,
+                                  conf_high = NA_real_, estimable = FALSE,
+                                  note = why)))
+  bt <- boot_canon(d, function(x) gcomp(x, w_nested), B = B_JUDGE,
+                   label = sprintf("c17b|%s|%s", tag, j))
+  record_diag(bt$diag)
+  bind_cols(base, tibble(estimate = bt$estimate, conf_low = bt$conf_low,
+                         conf_high = bt$conf_high, estimable = TRUE, note = ""))
+}
+
+c17b <- map_dfr(names(judge_frames), function(j) {
+  dj <- judge_frames[[j]] %>% filter(home_status %in% c("home", "away"))
+  map_dfr(JURIS_C, function(jj) {
+    d <- dj %>% filter(juris == jj) %>% droplevels()
+    cat(sprintf("    %-34s %-6s n=%d\n", substr(j, 1, 34), jj, nrow(d)))
+    std_under(d, j, jj)
+  })
+})
+
+# The canonical judge's own interval enters the union from c04, not from the
+# pass above: c04 is fit with the full B (2,000) while these judge refits use a
+# smaller B for runtime, and an envelope that failed to contain the interval the
+# paper actually quotes would be incoherent -- the union must nest it.
+c04_ref <- if (file.exists(file.path(CAN_EST, "c04_home_standardized.csv")))
+  read_csv(file.path(CAN_EST, "c04_home_standardized.csv"), show_col_types = FALSE) %>%
+    filter(weighting == "nested", estimable) %>%
+    select(jurisdiction, c04_est = estimate, c04_low = conf_low,
+           c04_high = conf_high) else NULL
+
+env <- c17b %>% filter(estimable) %>%
+  group_by(jurisdiction) %>%
+  summarise(n_judges = n(),
+            canonical = estimate[judge_model == CANON_JUDGE][1],
+            canonical_low = conf_low[judge_model == CANON_JUDGE][1],
+            canonical_high = conf_high[judge_model == CANON_JUDGE][1],
+            point_min = min(estimate), point_max = max(estimate),
+            envelope_low = min(conf_low), envelope_high = max(conf_high),
+            .groups = "drop") %>%
+  { if (is.null(c04_ref)) . else
+      left_join(., c04_ref, by = "jurisdiction") %>%
+      mutate(canonical = coalesce(c04_est, canonical),
+             canonical_low = coalesce(c04_low, canonical_low),
+             canonical_high = coalesce(c04_high, canonical_high),
+             envelope_low = pmin(envelope_low, coalesce(c04_low, envelope_low)),
+             envelope_high = pmax(envelope_high, coalesce(c04_high, envelope_high))) %>%
+      select(-any_of(c("c04_est", "c04_low", "c04_high"))) } %>%
+  mutate(judge_model = "ENVELOPE (union across judges)",
+         estimate = canonical, conf_low = envelope_low, conf_high = envelope_high,
+         estimable = TRUE,
+         # Two different claims, and conflating them would overstate the
+         # result: every judge agreeing on the direction is weaker than the
+         # union of their intervals clearing zero.
+         point_sign_stable = (point_min > 0 & point_max > 0) |
+                             (point_min < 0 & point_max < 0),
+         envelope_excludes_zero = (envelope_low > 0) | (envelope_high < 0),
+         note = paste("union of per-judge bootstrap intervals: sampling AND",
+                      "instrument variation; NOT a 95% confidence interval"))
+
+c17b <- bind_rows(
+  c17b %>% mutate(interval_type = "95% issue-cluster bootstrap, instrument held fixed"),
+  env %>% mutate(interval_type = "SENSITIVITY ENVELOPE, no coverage guarantee")) %>%
+  mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
+         conf_high_pp = pp(conf_high),
+         quantity = "standardized home - away refusal contrast",
+         spec = "refused_strict ~ home * model + tier + domain + route; nested weights; g-computation",
+         canonical_run_id = CANONICAL_RUN_ID)
+stopifnot(all(env$envelope_low <= env$canonical_low + 1e-12),
+          all(env$envelope_high >= env$canonical_high - 1e-12))
+write_csv(c17b, file.path(CAN_EST, "c17b_judge_envelope.csv"))
+
+cat("\nstandardized contrast (pp) by judge:\n")
+print(as.data.frame(c17b %>% filter(estimable) %>%
+        transmute(jurisdiction, judge = substr(judge_model, 1, 34),
+                  est = round(estimate_pp, 2), lo = round(conf_low_pp, 2),
+                  hi = round(conf_high_pp, 2))), row.names = FALSE)
+cat("\nevery judge agrees on direction:",
+    paste(env$jurisdiction[env$point_sign_stable], collapse = ", "), "\n")
+cat("envelope clears zero          :",
+    paste(env$jurisdiction[env$envelope_excludes_zero], collapse = ", "), "\n")
 
 # --- reliability, carried through from the panel layer ------------------------
 rel_files <- c("e23_reliability_pass1.csv", "e25_reliability_slant.csv")

@@ -1,24 +1,27 @@
 # The R analysis pipeline — what each script does, and why
 
-> **⚠ CANONICAL LAYER — 2026-08-06c. This block supersedes everything below.**
+> **⚠ CURRENT STRUCTURE — 2026-08-07. This block supersedes everything below.**
 >
-> `pipeline/50_canonical_common.R` … `56_canonical_acceptance.R`, driven by
-> `pipeline/run_canonical.R`, produce **the analyses the paper reports**:
-> `c00`–`c18` in `pipeline/estimates/canonical/` and `FIG1`–`FIG3` in
-> `pipeline/figures/canonical/`. Specification, statistical models and
-> inferential limits: **`docs/CANONICAL_ANALYSES.md`**.
+> `pipeline/` is numbered to match the manuscript:
 >
-> **The scripts described in the rest of this document are archived.** The v1
-> estimand layer (`20`, `21`, `22`, `23`, `25`, `30`) and the v2 layer
-> (`40`–`47`) moved to `pipeline/archive/precanonical_v1|v2/`; see
-> `pipeline/archive/README.md` for the file-by-file mapping to their canonical
-> replacements and the list of outputs deliberately not carried forward.
-> `docs/ESTIMANDS.md` is a historical catalogue — do not quote from it.
+> | range | role | scripts |
+> |---|---|---|
+> | `01`–`02` | inputs | `01_data_loading.R`, `02_judge_reliability.R` |
+> | `10`–`14` | estimation (canonical) | `10_canonical_common.R`, `11_canonical_home.R`, `12_canonical_language_framing.R`, `13_canonical_content.R`, `14_canonical_judge_uncertainty.R` |
+> | `20`–`21` | figures | `20_figures_main.R` (FIG1–3), `21_figures_appendix.R` (S1–S4) |
+> | `30` | tests | `30_acceptance.R` |
+> | `40`–`44` | appendix analyses | engagement, justifications, three DeepSeek scripts |
 >
-> Still live and described accurately below: `01_data_loading.R` (the
-> foundation), the descriptive/case-study scripts `02`, `06`–`09`, and
-> `24_measurement.R`, whose reliability tables feed `c17`.
-> Not registered in `run_all.R` (~2 h) — run `pipeline/run_canonical.R`.
+> Specification, statistical models and inferential limits:
+> **`docs/CANONICAL_ANALYSES.md`**. Two drivers: `run_all.R` (inputs + appendix)
+> and `run_canonical.R` (estimation → figures → tests, ~1 h).
+>
+> **The scripts described in the rest of this document have been renumbered or
+> archived.** The v1 estimand layer (`20`–`30`) and the v2 layer (`40`–`47`) are
+> in `pipeline/archive/precanonical_v1|v2/`; `pipeline/archive/README.md` maps
+> every file to its replacement. `docs/ESTIMANDS.md` is a historical catalogue —
+> do not quote from it. **The old numbers do not mean what they used to**: `10`–`14`
+> are now the estimation layer, not Study A/B scripts.
 
 > **⚠ CURRENT STRUCTURE — 2026-08-04. Read this block first; the 2026-07-30
 > reorganisation note and the per-script rows below describe an earlier layout

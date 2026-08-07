@@ -9,7 +9,7 @@
 #
 # Run AFTER 51-55. Exits non-zero if any test fails.
 
-source("pipeline/50_canonical_common.R")
+source("pipeline/10_canonical_common.R")
 cat(strrep("=", 78), "\nCANONICAL ACCEPTANCE TESTS\n", strrep("=", 78), "\n", sep = "")
 
 CAN_FIG <- "pipeline/figures/canonical"
@@ -131,6 +131,16 @@ chk("C3", "every bootstrapped quantity records its seed and replicate counts",
 chk("C3b", "no bootstrap lost more than 5% of its replicates",
     !is.null(c18) && all(c18$failure_rate <= 0.05),
     if (is.null(c18)) "" else sprintf("max failure rate %.3f", max(c18$failure_rate)))
+# This is here because it failed silently for an entire release: flush_diag()
+# dropped every row of the current run before appending, so each part wiped the
+# previous part's diagnostics and c18 ended up holding only the LAST part's.
+PARTS <- c("c04", "c07", "c08", "c10", "c12", "c14")
+have_parts <- if (is.null(c18)) character(0) else
+  unique(sub("\\|.*$", "", c18$label[c18$canonical_run_id == CANONICAL_RUN_ID]))
+chk("C3c", "c18 holds diagnostics from every bootstrapping part, not just the last",
+    all(PARTS %in% have_parts),
+    if (is.null(c18)) "c18 missing" else
+      paste("missing:", paste(setdiff(PARTS, have_parts), collapse = ", ")))
 chk("C4", "c18 labels are unique within the run",
     !is.null(c18) && !anyDuplicated(c18[c("canonical_run_id", "label")]))
 

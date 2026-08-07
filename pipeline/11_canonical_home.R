@@ -16,7 +16,10 @@
 # alike on the measured covariates, how much higher is refusal on home issues",
 # and nothing stronger.
 
-source("pipeline/50_canonical_common.R")
+source("pipeline/10_canonical_common.R")
+# build_f / estimable_chk / gcomp now live in 10_canonical_common.R:
+# 14_canonical_judge_uncertainty.R refits the SAME specification under each
+# judge, and a second copy here would let the two drift apart silently.
 suppressPackageStartupMessages({ library(lme4); library(statmod) })
 cat(strrep("=", 78), "\nCANONICAL PART 1: HOME REGION\n", strrep("=", 78), "\n", sep = "")
 
@@ -132,42 +135,8 @@ cat(sprintf("  c03: %d rows\n", nrow(c03)))
 # =============================================================================
 cat("\nB. standardized contrast\n")
 
-# home * model where a jurisdiction has >1 model, so model-specific contrasts
-# come straight out of the fit. No region term: region DETERMINES home within a
-# jurisdiction, so it is collinear with the contrast of interest.
-build_f <- function(d, outcome = "refused_strict") {
-  rhs <- if (nlevels(droplevels(factor(d$model))) > 1) "home * model_f" else "home"
-  for (v in c("tier", "domain", "route_f"))
-    if (nlevels(droplevels(factor(d[[v]]))) > 1) rhs <- c(rhs, v)
-  as.formula(paste(outcome, "~", paste(rhs, collapse = " + ")))
-}
 
-estimable_chk <- function(d) {
-  if (!nrow(d)) return("no rows")
-  if (sum(d$refused_strict) == 0) return("0 observed refusals (complete separation)")
-  if (length(unique(d$home)) < 2) return("home does not vary")
-  eh <- sum(d$refused_strict[d$home == 1]); ea <- sum(d$refused_strict[d$home == 0])
-  if (eh == 0 || ea == 0)
-    return(sprintf("separation: %d home / %d away events", eh, ea))
-  ""
-}
 
-# g-computation returning the overall standardized contrast AND the
-# model-specific ones, all on the probability scale.
-gcomp <- function(d, wfun = w_nested, outcome = "refused_strict", per_model = FALSE) {
-  ic <- if ("bootstrap_issue_instance" %in% names(d)) "bootstrap_issue_instance" else "issue_id"
-  fit <- suppressWarnings(glm(build_f(d, outcome), data = d, family = binomial))
-  if (!fit$converged) return(if (per_model) NULL else NA_real_)
-  p1 <- predict(fit, newdata = transform(d, home = 1L), type = "response")
-  p0 <- predict(fit, newdata = transform(d, home = 0L), type = "response")
-  w  <- wfun(d, issue_col = ic)
-  if (!per_model) return(sum(w * (p1 - p0)))
-  ms <- sort(unique(as.character(d$model)))
-  vapply(ms, function(m) {
-    s <- as.character(d$model) == m
-    sum(w[s] * (p1[s] - p0[s])) / sum(w[s])   # renormalise within model
-  }, numeric(1))
-}
 
 std_row <- function(d, key, wname, B, tag, outcome = "refused_strict") {
   wfun <- switch(wname, nested = w_nested, response = w_response,

@@ -5,7 +5,7 @@
 # bootstrap 95% odds-ratio CIs, Cramer's V effect sizes, and Benjamini-Hochberg-
 # corrected p-values across the per-model and per-category test families.
 #
-# Does NOT modify 08_deepseek_chinese_analysis.R or the tables it produces.
+# Does NOT modify 43_appendix_deepseek_chinese.R or the tables it produces.
 # Emits tables 43/44 that the paper pulls from directly.
 # =============================================================================
 

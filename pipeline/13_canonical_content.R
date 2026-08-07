@@ -15,7 +15,7 @@
 # reported in c16 as its own category. Treating "did not invoke care/harm"
 # and "refused to answer" as the same zero would be a category error.
 
-source("pipeline/50_canonical_common.R")
+source("pipeline/10_canonical_common.R")
 cat(strrep("=", 78), "\nCANONICAL PART 3: CONTENT | ENGAGED\n", strrep("=", 78), "\n", sep = "")
 
 B_HEAD <- as.integer(Sys.getenv("CANON_B_HEAD", "2000"))

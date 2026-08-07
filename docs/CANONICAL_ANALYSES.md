@@ -10,7 +10,7 @@ file-by-file mapping in [`pipeline/archive/README.md`](../pipeline/archive/READM
 Run it:
 
 ```bash
-CANONICAL_RUN_ID=canon_002 Rscript pipeline/run_canonical.R
+CANONICAL_RUN_ID=canon_003 Rscript pipeline/run_canonical.R
 ```
 
 Nothing in this layer calls an API, and nothing it does mutates prompts,
@@ -58,8 +58,12 @@ rather than in a footnote.
 
 **Question.** Do models refuse more on issues concerning their own jurisdiction?
 
-Two estimands, reported side by side, because they answer different questions
-and neither dominates.
+Two estimands. They answer different questions and neither is a check on the
+other, so they are reported separately: the standardized contrast is the primary
+quantity and carries the main figure, and the descriptive rates are reported in
+`c02` and plotted in appendix S1. They were shown side by side in one figure
+until it became clear that the layout itself invited the wrong reading — that
+these are two attempts at one number, with the "adjusted" one to be preferred.
 
 ### 2a. Descriptive (`c02`, `c03`)
 
@@ -71,7 +75,7 @@ asking "what does this corpus look like?"
 
 Reported at `weighting = "response"` (every response counts once) and
 `weighting = "equal_model"` (every model counts once). `c03` repeats it in all
-five languages as a supplement.
+five languages as a supplement. Plotted in **S1**, not in the main figure.
 
 ### 2b. Covariate-standardized (`c04`–`c07`) — the primary estimand
 
@@ -241,29 +245,55 @@ The panel is therefore used to answer one question — **how much does the
 conclusion depend on the instrument?** — and `c17` recomputes the headline
 quantities under each judge separately.
 
-### 5b. Range, not interval
+### 5b. Two kinds of uncertainty, kept apart
 
-The spread across judges is reported as **min/max range** and labelled
-`INSTRUMENT SENSITIVITY, not sampling uncertainty`. It must never be pooled with
-a bootstrap interval or added in quadrature: the judges are not draws from a
-population of judges, and four models chosen for cost and speed are not a random
-sample of anything.
+A bootstrap interval under one judge answers: *if we drew another sample of
+issues and kept this instrument, how much would the estimate move?* It holds the
+instrument fixed, so it says nothing about the labels being wrong.
 
-Under the current panel, this matters. Overall English refusal is 5.14% under
-the canonical judge, and 2.97%–4.43% under the others. The CN home–away
-descriptive difference ranges 7.4 pp across judges against a canonical estimate
-of ~16 pp. **The sign and ordering of the headline findings are stable across
-judges; the magnitudes are not.** Claims should be written to survive that:
-"Chinese models refuse substantially more on home issues" is supported;
-"Chinese models refuse 16 percentage points more" is a statement about the
-Gemini labels specifically.
+Refitting the **same specification** under each judge adds the second question:
+*if we kept this sample of issues and swapped the instrument, how much would the
+estimate move?* `c17b` does exactly that for the primary quantity — the
+covariate-standardized home−away contrast — using the shared `gcomp()` from
+`10_canonical_common.R`, so a difference between judges cannot be a difference
+in model.
+
+The reported **envelope** is the union of the per-judge intervals,
+[min_j low_j, max_j high_j], widened to contain the canonical `c04` interval.
+It is a **sensitivity bound, not a confidence interval**, and `interval_type`
+says so on every row. It has no coverage guarantee: four judges chosen for cost
+and speed are not a sample from a population of judges, and none of them is
+known to be correct. It would be conservative only under an assumption this
+project does **not** make — that the true labelling is one of the four. Quoted
+as a bound it is honest; quoted as a 95% interval it would be a fabrication.
+It is never pooled with a bootstrap interval and never added in quadrature.
+
+`c17b` reports two distinct claims, and conflating them would overstate the
+result:
+
+| column | claim |
+|---|---|
+| `point_sign_stable` | every judge agrees on the direction |
+| `envelope_excludes_zero` | the union of their intervals clears zero — strictly stronger |
+
+Under the current panel the headline reads: **CN's envelope clears zero; India's
+direction is agreed by every judge but its envelope touches zero; MENA and US
+are judge-dependent.** Overall English refusal is 5.14% under the canonical
+judge and 2.97–4.43% under the others, so **the sign and ordering of the
+findings are stable across judges while the magnitudes are not**. Claims should
+be written to survive that: "Chinese models refuse substantially more on home
+issues" is supported; "Chinese models refuse 16 percentage points more" is a
+statement about the Gemini labels specifically.
 
 Judge coverage is English-only, so judge-specific versions of the *language*
 estimands do not exist. `c17` says so rather than omitting the rows.
 
+`S2_judge_multiverse.png` plots this: each judge's estimate and interval per
+jurisdiction, with the envelope as a shaded band.
+
 ### 5c. The disabled annotation-error layer
 
-`draw_latent_labels()` in `50_canonical_common.R` implements the standard
+`draw_latent_labels()` in `10_canonical_common.R` implements the standard
 misclassification correction — given sensitivity, specificity and stratum
 prevalence, redraw latent labels and propagate. **It is disabled by a `stop()`
 and will not run.** An earlier draft of it also had the prevalence term wrong,
@@ -307,52 +337,93 @@ a stated instrument-sensitivity range, and no correction.
 
 ## 6. Figures
 
-Three, in `pipeline/figures/canonical/`, 600 dpi PNG, two-column width, white
-background — the repo-wide PNG-only rule (`pipeline/audit_figures.R`) applies
-here too.
+Main-manuscript figures in `pipeline/figures/canonical/`, appendix figures in
+`pipeline/figures/appendix/`. All 600 dpi PNG, two-column width, white
+background — the repo-wide PNG-only rule applies, and `audit_figures.R` fails on
+a missing expected figure *or* a stale extra one.
 
 | Figure | Panels | Source tables |
 |---|---|---|
-| `FIG1_canonical_home.png` | a locator map; b descriptive home vs away; c standardized contrast | `c02`, `c04` |
-| `FIG2_canonical_language_framing.png` | a paired language effects, all four languages × three weightings; b by model; c framing by model | `c08`, `c09`, `c10`, `c11` |
+| `FIG1_canonical_home.png` | a locator map; b standardized contrast with judge envelope; c refusal text in semantic space by stated reason | `c04`, `c17b`, `u01` |
+| `FIG2_canonical_language_framing.png` | a paired language effects, four languages × three weightings; b by model; c framing by model, ordered by effect | `c08`–`c11` |
 | `FIG3_canonical_content.png` | a ideology distribution; b moral-foundation prevalence | `c12`, `c14` |
+| `S1_home_descriptive.png` | descriptive home/away rates | `c02` |
+| `S2_judge_multiverse.png` | the contrast under each judge, with the envelope | `c17b` |
+| `S3_specification_curve.png` | every sensitivity family, one row each | `c07`, `c04` |
+| `S4_projection_supplement.png` | all five languages; the same refusals lexically | `u02`, `u03` |
+
+**FIG1 carries the standardized contrast only.** The descriptive rates are still
+estimated and reported (`c02`) but are now an appendix figure: printing both in
+the main figure invited the reading that they are two estimates of one
+parameter, when they are two different estimands answering different questions.
 
 The figure scripts **read the canonical CSVs and never recompute an estimate**,
 so every plotted value is traceable to a table row — which is what lets
-acceptance tests H3–H5 check figure/table agreement mechanically.
-
-Each caption states the estimand and its limits, including the conditioning on
-engagement in FIG3 and the non-causal reading of FIG1c.
-
----
+`audit_figures.R` check figure/table agreement mechanically, including the
+requirement that the judge envelope in FIG1b contains the interval drawn inside
+it.
 
 ## 6b. Refusal-text projection (diagnostic, not an estimand)
 
-`scripts/refusal_umap.py` → `u01_refusal_umap.csv` / `u02_refusal_umap_all_languages.csv`,
-drawn by `pipeline/57_refusal_umap_figure.R` → `pipeline/figures/P15_refusal_text_umap.png`.
+`scripts/refusal_umap.py` → `u01` (English, semantic), `u02` (all five
+languages, semantic), `u03` (English, lexical), drawn in FIG1c and S4.
 
-It projects the text of every refusal into 2D (TF-IDF → truncated SVD → UMAP,
-cosine metric, no API call) and colours it by the judge's justification code.
-The question it answers is prior to any estimand: **do refusals given for
-different stated reasons actually look different?** The A–G codes have the
-weakest inter-judge agreement of any construct here, which is why no canonical
-estimand rests on them (§9).
+Every refusal's text is embedded with a **local sentence-transformer**
+(`paraphrase-multilingual-MiniLM-L12-v2`, no API call, one encoder for every
+language so the panels are comparable), then projected with UMAP and coloured by
+the judge's justification code. Only the opening 800 characters are embedded:
+the stated reason comes first, and letting a 1,400-character response dominate
+its own embedding buries the justification.
 
-What it shows, under the current labels: reason groups occupy distinguishable
-regions but overlap heavily — among each point's 15 nearest neighbours, the
-share sharing its reason group is 0.60 against 0.44 expected at random (0.57
-against 0.35 across all five languages). That is real structure, and it is well
-short of a clean partition.
+The question is prior to any estimand: **do refusals given for different stated
+reasons actually differ?** The A–G codes have the weakest inter-judge agreement
+of any construct here, which is why no canonical estimand rests on them (§9).
 
-Two limits stated on the figure itself. The representation is **lexical, not
-semantic**: it sees shared wording, so boilerplate refusals collapse together
-whatever their stated reason. And a UMAP layout has **no units** — cluster sizes
-and between-cluster gaps carry no meaning, which is why the axes are unlabelled
-and the neighbourhood-purity statistic is quoted instead of a visual impression.
+What it shows: reason groups occupy distinguishable regions but overlap heavily.
+Among each point's 15 nearest neighbours, the share sharing its reason group is
+
+| representation | purity | at random |
+|---|---|---|
+| semantic, English | 0.53 | 0.44 |
+| lexical (TF-IDF), English | 0.58 | 0.44 |
+| semantic, all five languages | 0.44 | 0.35 |
+
+**The codes track wording more closely than meaning** — the lexical
+representation separates them better than the semantic one. That is a finding
+about the taxonomy, not a defect in the projection, and it is one more reason
+the A–G codes carry no estimand.
+
+A UMAP layout has **no units**: cluster sizes and between-cluster gaps carry no
+meaning, only local distances are faithful. That is why the axes are unlabelled
+and a neighbourhood-purity statistic is quoted instead of a visual impression.
 
 This is a measurement diagnostic. **No estimate in the paper derives from it.**
 
----
+## 6c. How this maps onto the manuscript
+
+The script numbering follows the shape of the paper, so it is obvious where a
+result belongs:
+
+| range | role | what it produces |
+|---|---|---|
+| `01`–`02` | inputs | `data_clean.RData`; judge-panel reliability |
+| `10`–`14` | estimation | `c00`–`c18` — one script per estimand family |
+| `20` | **main manuscript** | `FIG1`–`FIG3` and the tables they read |
+| `21` | **appendix** | `S1`–`S4` |
+| `30` | tests | `c01b`, 38 acceptance criteria |
+| `40`–`44` | appendix analyses | descriptive tabulations, DeepSeek case study |
+
+**Main text** carries one estimate per question: the standardized home contrast
+(FIG1b), the paired language and framing effects (FIG2), and the content of
+engaged responses (FIG3). **Appendix** carries what a referee will ask for: the
+descriptive rates the main figure no longer shows (S1), the instrument
+sensitivity (S2), the full specification curve (S3), and the projection
+supplement (S4), plus the `40`–`44` tabulations.
+
+The three DeepSeek scripts (`42`–`44`) were left as separate files rather than
+merged. They write disjoint tables and each is a working analysis; concatenating
+them would have risked live results for a cosmetic gain. The grouping is
+expressed in the numbering and in `run_all.R`, which is what a reader needs.
 
 ## 7. Table index
 
@@ -373,13 +444,14 @@ This is a measurement diagnostic. **No estimate in the paper derives from it.**
 | `c14`, `c15` | moral-foundation prevalence (equal-model; by model) |
 | `c16` | joint outcomes with refusal as its own category |
 | `c17` | measurement sensitivity across judges |
+| `c17b` | the standardized contrast refit under each judge, plus the envelope |
 | `c18` | bootstrap diagnostics — seed, replicates requested/successful/failed per quantity |
 
 ---
 
 ## 8. Acceptance criteria
 
-`56_canonical_acceptance.R` runs 37 tests and exits non-zero on any failure. They
+`30_acceptance.R` runs 38 tests and exits non-zero on any failure. They
 are adversarial where it matters:
 
 - **Weighting** is checked against a *constructed imbalance* (B3, B4), because on
@@ -397,6 +469,10 @@ are adversarial where it matters:
 - **Provenance** (D1, D1b) requires every estimate table to carry exactly one
   `canonical_run_id`, and all of them to agree — a canonical release is one run.
   `c18` is exempt because it deliberately accumulates history.
+- **Diagnostic completeness** (C3c) requires `c18` to hold rows from every part
+  that bootstraps. This exists because `flush_diag()` used to drop the whole
+  current run before appending, so each part silently wiped the previous part's
+  diagnostics and `c18` ended up holding only the last part's.
 
 ---
 

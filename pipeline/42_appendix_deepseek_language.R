@@ -120,7 +120,7 @@ cat("Saved: pipeline/tables/38_deepseek_justifications_by_language.csv\n")
 # It plotted exactly the data in fig22 (DeepSeek, topic domain, zh vs en, split
 # by tier) but as bars on a 0-100% axis for a 43% maximum, categories in
 # alphabetical rather than substantive order, a detached legend, and no
-# uncertainty. fig22 in 08_deepseek_chinese_analysis.R shows the same comparison
+# uncertainty. fig22 in 43_appendix_deepseek_chinese.R shows the same comparison
 # as estimates with Wilson intervals, ordered by the size of the gap.
 # This script keeps tables 35, 36 and 38.
 

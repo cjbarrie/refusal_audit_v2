@@ -11,7 +11,7 @@ estimate CSV stays where it was.
 |---|---|---|
 | `c12_ideology_distribution` (share_negative / share_neutral / share_positive / signed_mean) | `c12_ideology_distribution` (share_neg2 … share_pos2, `role = PRIMARY`; signed_mean `role = SECONDARY`) | **Recomputed.** Five bins with an interval on each; dimension-specific endpoints added; the three-way collapse is gone from the primary estimand. |
 | `c12` `conf_*_finite_battery` | `c12` `conf_low_battery` / `conf_high_battery` | **Recomputed.** Delete-one-issue jackknife with FPC replaces √(1−f) shrinkage of a percentile interval. |
-| `c04_home_standardized` (one estimand) | `c04_home_standardized` (`support` = full target / common support; `estimator` = ML / Firth) | **Recomputed.** Two estimands, plus GLM warnings, separation diagnosis, `degenerate_prediction_weight`, `interval_reliable`, `replicate_failure_rate`. |
+| `c04_home_standardized` (one estimand) | `c04_home_standardized` (`support` = full target / common support; `estimator` = ML / Firth) | **Recomputed.** Two estimands, plus GLM warnings, separation diagnosis, `observed_fit_extreme_weight`, `counterfactual_extreme_weight`, `interval_reliable`, `replicate_failure_rate`. |
 | — | `c06b_common_support_diagnostics` | **New.** Cells, rows, issues and retained target weight for the support restriction. |
 | `c05_home_by_model` (EQUAL-MODEL AVERAGE row without interval) | `c05_home_by_model` (jointly bootstrapped average with interval) | **Recomputed.** |
 | `c08_language_paired` (with judge-perturbation rows) | `c08_language_paired` (no judge rows; `primary_weighting` declared; `judge_sensitivity` explains the absence) | **Recomputed.** The one-armed perturbation compared two instruments rather than perturbing one. |
@@ -28,15 +28,15 @@ estimate CSV stays where it was.
 | old | new | what changed |
 |---|---|---|
 | `FIG1_canonical_home` (map + standardized + UMAP) | `Fig1_home_jurisdiction` (design + unadjusted + both standardized estimands) | Home family only; UMAP and judge sensitivity moved out. |
-| `FIG2_canonical_language_framing` (3 weightings + 4-colour forest) | `Fig2_language_framing` (primary weighting + model×language heatmap with printed values + complete-block framing) | Weighting comparison → ED4; colour no longer the only channel. |
+| `FIG2_canonical_language_framing` (3 weightings + 4-colour forest) | `Fig2_language_framing` (primary weighting + model×language heatmap with printed values + complete-block framing) | Weighting comparison → `c08b` table; colour no longer the only channel. |
 | `FIG3_canonical_content` (3-way ideology, "acceptable agreement") | `Fig3_content` (five bins, dimension endpoints, numeric PSA) | Recomputed and relabelled. |
 | `S1_home_descriptive` | folded into `Fig1` panel b | The unadjusted rates belong beside the standardized ones. |
 | `S2_judge_multiverse` | `ED1_judge_sensitivity` | Common-support samples only; envelope renamed. |
 | `S3_specification_curve` | `ED2_sensitivity_panels` | Grouped by what varies; hierarchical separated as a different estimand; response-length labelled post-outcome. |
-| `S4_projection_supplement` | `ED3_refusal_text_projection` | Overlapping tags/titles/legends fixed; purity from the embedding space. |
-| — | `ED4_language_detail` | **New.** Weighting comparison and the per-model intervals behind the heatmap. |
+| `S4_projection_supplement` | **retired** | Moved to `pipeline/archive/exploratory_umap/`: lexical purity matched semantic purity, so the figure did not support its own premise, and it was never rebuilt by the release driver. |
+| — | `ED3_language_detail` | **New.** Per-model intervals behind the heatmap; the weighting comparison is the `c08b` table. |
 | `P15_refusal_text_umap` | retired | Content lives in ED3. |
-| all `.png`-only outputs | `.pdf` + `.svg` + `.png` | PNG-only rule retired. |
+| `.pdf` + `.svg` + `.png` | `.png` only | Multi-format export removed for the second and final time; see `docs/CANONICAL_ANALYSES.md` §6a. |
 
 ## Scripts
 

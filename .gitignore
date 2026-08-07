@@ -42,3 +42,9 @@ logs/
 logs_*.txt
 pipeline/data_clean.RData
 Rplots.pdf
+
+# Release BUILD directories. Each is a full copy of one run's estimates and
+# figures; the promoted trees (pipeline/estimates/canonical, pipeline/figures/)
+# plus the SHA-256 manifest inside them are the committed record, so keeping the
+# builds as well would duplicate every artefact for no added evidence.
+pipeline/releases/

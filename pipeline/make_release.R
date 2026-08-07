@@ -50,6 +50,25 @@ if (!grepl("^[A-Za-z0-9._-]+$", RUN_ID)) {
 RUN_DIR <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/full_v1")
 Sys.setenv(REFUSAL_RUN_DIR = RUN_DIR)
 
+# --- provenance: git ---------------------------------------------------------
+# This gate runs BEFORE any directory is created. When it ran after, a build
+# refused for a dirty tree had already made pipeline/releases/<id>/, and the
+# immutability check then blocked the retry with a directory the failed run left
+# behind.
+git <- function(...) tryCatch(system2("git", c(...), stdout = TRUE, stderr = FALSE),
+                              error = function(e) NA_character_)
+GIT_SHA   <- git("rev-parse", "HEAD")[1]
+GIT_SHORT <- git("rev-parse", "--short", "HEAD")[1]
+GIT_BRANCH <- git("rev-parse", "--abbrev-ref", "HEAD")[1]
+DIRTY_FILES <- git("status", "--porcelain")
+DIRTY <- length(DIRTY_FILES) > 0 && any(nzchar(DIRTY_FILES))
+if (DIRTY && !has("--allow-dirty")) {
+  cat("ERROR: working tree is dirty (", length(DIRTY_FILES), " files).\n", sep = "")
+  cat("       A release must be reproducible from a commit. Commit, or pass --allow-dirty.\n")
+  quit(save = "no", status = 3)
+}
+cat(sprintf("git: %s @ %s%s\n", GIT_BRANCH, GIT_SHORT, if (DIRTY) "  [DIRTY]" else ""))
+
 REL   <- file.path("pipeline/releases", RUN_ID)
 B_EST <- file.path(REL, "estimates")
 B_FIG <- file.path(REL, "figures", "main")
@@ -77,21 +96,6 @@ rule <- function(ch = "=") cat(strrep(ch, 78), "\n", sep = "")
 rule(); cat("RELEASE BUILD: ", RUN_ID, "\n", sep = ""); rule()
 cat("run dir   : ", RUN_DIR, "\n", sep = "")
 cat("build dir : ", REL, "\n\n", sep = "")
-
-# --- provenance: git ---------------------------------------------------------
-git <- function(...) tryCatch(system2("git", c(...), stdout = TRUE, stderr = FALSE),
-                              error = function(e) NA_character_)
-GIT_SHA   <- git("rev-parse", "HEAD")[1]
-GIT_SHORT <- git("rev-parse", "--short", "HEAD")[1]
-GIT_BRANCH <- git("rev-parse", "--abbrev-ref", "HEAD")[1]
-DIRTY_FILES <- git("status", "--porcelain")
-DIRTY <- length(DIRTY_FILES) > 0 && any(nzchar(DIRTY_FILES))
-if (DIRTY && !has("--allow-dirty")) {
-  cat("ERROR: working tree is dirty (", length(DIRTY_FILES), " files).\n", sep = "")
-  cat("       A release must be reproducible from a commit. Commit, or pass --allow-dirty.\n")
-  quit(save = "no", status = 3)
-}
-cat(sprintf("git: %s @ %s%s\n", GIT_BRANCH, GIT_SHORT, if (DIRTY) "  [DIRTY]" else ""))
 
 sha256 <- function(p) if (file.exists(p)) digest(p, algo = "sha256", file = TRUE) else NA_character_
 

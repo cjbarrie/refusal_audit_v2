@@ -52,8 +52,8 @@ panel_file <- file.path(run_dir, "annotations_panel.jsonl")
 cat(strrep("=", 78), "\nMEASUREMENT: RELIABILITY + ROBUSTNESS\n", strrep("=", 78), "\n", sep = "")
 cat("run dir:", run_dir, "\n")
 
-if (!file.exists(panel_file)) {
-  cat(sprintf("SKIP: %s not present.\n", panel_file))
+if (!file.exists(panel_file) && !dir.exists(file.path(run_dir, "panel"))) {
+  cat(sprintf("SKIP: neither %s nor %s/panel/ is present.\n", panel_file, run_dir))
   cat("  Produce it with:\n")
   cat("    python scripts/run_pilot.py --run-id <id> --stages annotate assemble \\\n")
   cat("        --resume --batteries rebalanced --all-passes --judge-panel\n")
@@ -71,19 +71,32 @@ if (!has_cac)
 # re-estimate could be computed on different rows with nothing failing.
 source("pipeline/10_canonical_common.R")
 
-panel_raw <- stream_in(file(panel_file), verbose = FALSE) %>% as_tibble()
-n_raw <- nrow(panel_raw)
-# Explicit resume key, matching the annotator's own predicate: a repeated
-# (prompt_id, language, model) within a judge means the response was re-judged
-# on a resume, and the LAST record wins. Asserted afterwards rather than
-# absorbed with values_fn = first, which would hide a genuinely inconsistent
-# duplicate instead of resolving it.
-panel <- panel_raw %>%
-  group_by(across(all_of(PANEL_KEY))) %>% slice_tail(n = 1) %>% ungroup()
-n_dup <- n_raw - nrow(panel)
-stopifnot(!anyDuplicated(panel[PANEL_KEY]))
-cat(sprintf("panel rows: %d raw -> %d after resume-key collapse (%d duplicates)\n",
-            n_raw, nrow(panel), n_dup))
+# THE SHARED LOADER, not a second reading of a different file.
+#
+# This used to stream annotations_panel.jsonl directly while
+# 14_canonical_judge_uncertainty.R read <run_dir>/panel/<judge>/. Those two
+# sources disagree: the assembled panel file is STALE, holding 16,576 English
+# rows for nemotron-3-super against 27,551 in the per-judge directory. So
+# reliability was computed on a smaller, older sample than the judge
+# re-estimation, and nothing failed. load_judge_panel() prefers the per-judge
+# directories and applies one resume-key rule, so both scripts now see the same
+# rows by construction.
+REL_FIELDS <- c("engagement_code", "refusal_justification", "issue_id",
+                "economic_left_right", "social_left_right",
+                "authoritarian_libertarian", "populist_elitist",
+                "care_harm", "fairness_cheating", "liberty_oppression",
+                "loyalty_betrayal", "authority_subversion", "sanctity_degradation",
+                "judge_prompt_version")
+panel <- load_judge_panel(run_dir = run_dir, language = "en", fields = REL_FIELDS)
+if (is.null(panel) || !nrow(panel)) {
+  cat("SKIP: the shared loader found no panel records.\n"); quit(save = "no", status = 0)
+}
+n_dup <- attr(panel, "duplicates_collapsed")
+if (is.null(n_dup)) n_dup <- 0L
+cat(sprintf("panel rows: %d after resume-key collapse (%d duplicates removed)\n",
+            nrow(panel), n_dup))
+cat(sprintf("source: %s\n", if (dir.exists(file.path(run_dir, "panel")))
+  file.path(run_dir, "panel/<judge>/") else panel_file))
 cat(sprintf("judges: %d   responses: %d\n",
             n_distinct(panel$judge_model),
             n_distinct(paste(panel$prompt_id, panel$prompt_language, panel$model))))
@@ -92,8 +105,7 @@ cat(sprintf("judges: %d   responses: %d\n",
 # versions: the file also holds a later Russian re-annotation made under a
 # different codebook, and a whole-file check refuses to run because of rows this
 # analysis never uses.
-REL_LANG <- "en"
-panel <- panel %>% filter(prompt_language == REL_LANG)
+REL_LANG <- "en"   # the loader was already asked for English
 
 # Verdicts made under different codebooks are not comparable: alpha would be
 # measuring template drift rather than rater disagreement. Refuse to pool two

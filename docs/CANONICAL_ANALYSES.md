@@ -10,12 +10,17 @@ file-by-file mapping in [`pipeline/archive/README.md`](../pipeline/archive/READM
 Run it:
 
 ```bash
-CANONICAL_RUN_ID=canon_003 Rscript pipeline/run_canonical.R
+CANONICAL_RUN_ID=canon_004 Rscript pipeline/make_release.R
 ```
 
+That is the whole command. It runs inputs → reliability → estimation → appendix
+descriptives → figures → manifest → acceptance → figure audit, builds into
+`pipeline/releases/<run_id>/`, and promotes to the live directories **only if
+every check passes**. `CANONICAL_RUN_ID` is mandatory; the default run directory
+is `annotations/full_v1`.
+
 Nothing in this layer calls an API, and nothing it does mutates prompts,
-responses, annotations, sampling files, or `data_clean.RData`. It writes only to
-`pipeline/estimates/canonical/` and `pipeline/figures/canonical/`.
+responses, annotations, sampling files, or `data_clean.RData`.
 
 ---
 
@@ -79,53 +84,61 @@ five languages as a supplement. Plotted in **S1**, not in the main figure.
 
 ### 2b. Covariate-standardized (`c04`–`c07`) — the primary estimand
 
-A logistic regression per jurisdiction:
+A logistic regression per jurisdiction,
 
 ```
 refused_strict ~ home * model + tier + topic_domain + route
 ```
 
 then **g-computation on the probability scale**: predict every observation as if
-home, predict every observation as if away, take the weighted difference of the
-two averages. The `home * model` interaction is used when a jurisdiction has more
-than one model, so the contrast is not forced to be common across models; with a
-single model it reduces to `home + ...`.
+home, again as if away, take the weighted difference. Weights are **nested** —
+equal mass per model, then per issue within model, then per prompt within
+model×issue. Region fixed effects are excluded: within a jurisdiction region
+determines home status, so the two are not separately identified.
 
-The weights are **nested**: equal mass per model, then equal per issue within
-model, then equal per prompt within model×issue. Without this, a model that
-returned more responses, or an issue that generated more prompts, would pull the
-average. The acceptance tests verify the weights are doing work by constructing
-an imbalanced roster and confirming the weighted answer moves while the
-unweighted one does not (test B4); on the *real* English home arm the design is
-exactly balanced at 104 issues per model, so weighted and unweighted coincide
-exactly, and test B5 asserts that too, so the coincidence is documented rather
-than mistaken for a bug.
+**Two standardized estimands are reported, not one.**
 
-**Region fixed effects are deliberately excluded.** Region determines home status
-within a jurisdiction — for the CN models, "issue is Chinese" and "issue is home"
-are the same event. Including region FE, as the v1 analysis did, absorbs the
-contrast being estimated.
+| | what it standardizes over | cost |
+|---|---|---|
+| **full target** | the whole jurisdiction arm | **extrapolates** into covariate cells present in only one arm; the outcome model supplies those predictions |
+| **common support** | cells present in BOTH arms, defined jointly over model × topic domain × route × tier | no extrapolation, but the target population is now those cells |
 
-**What you may infer.** A covariate-standardized contrast: the home–away
-difference that would remain if home and away issue sets had the same tier,
-domain and route composition. **It is not a causal effect**, not a
-difference-in-differences, and not a within-issue effect. Standardization
-adjusts for the composition that was measured; it cannot adjust for the ways
-home issues differ from away issues that nobody recorded. Every row of `c04`
-carries this sentence in `causal_interpretation`.
+`c06b` reports what the restriction costs: cells, rows, issues and **retained
+nested target weight**. `c04` reports, per jurisdiction,
+`degenerate_prediction_weight` — the share of target weight sitting in cells
+where the fitted probability is numerically 0 or 1. **The full-target result
+extrapolates heavily for CN and India** and that is a number in the table, not
+an adjective.
 
-**Structural zeros.** The EU jurisdiction (Mistral) produced zero refusals in
-both arms, so the contrast does not exist. It is reported with
-`estimable = FALSE` and a reason, never as `0.000` and never dropped — a dropped
-row would read as "no data", which is the opposite of what happened.
+**Estimator diagnostics are recorded, not swallowed.** `fit_logit()` captures
+GLM warnings; `sep_diagnose()` reports separation symptoms — non-finite
+parameters, |coef| > 15, SE > 25, fitted probabilities at 0 or 1, failure to
+converge. A *blocking* failure (non-finite parameters or non-convergence) makes
+the replicate fail; quasi-separation confined to a nuisance cell does not,
+because discarding it would throw away the estimate whose extrapolation the
+diagnostics exist to quantify. A **Firth penalized-logit sensitivity** is
+declared for every jurisdiction, because Firth has a defined estimator where
+maximum likelihood does not.
 
-**Sensitivities (`c07`).** Leave-one-model-out, tier-restricted, per-language,
-`engagement_code >= 3` instead of `>= 4`, minimum-response-length filters,
-overlap-restricted (only strata with both arms present, per `c06`), and a
-hierarchical GLMM whose marginal predictions are integrated over the random-effect
-distribution by 40-point Gauss–Hermite quadrature rather than plug-in at zero.
+**The bootstrap draws a fixed number of replicates.** Failures are counted and
+reported (`replicates_failed`, `failure_rate`, `interval_reliable`), never
+replaced. Resampling until B successes — which is what an earlier version did —
+conditions the interval on the replicates where the estimator happened to be
+defined, i.e. the ones with more events, and biases it inward.
 
----
+**Structural zeros.** EU produced zero refusals in both arms, so the contrast
+does not exist. Reported with `estimable = FALSE` and a reason.
+
+**Model-specific contrasts (`c05`)** carry intervals, and the equal-model average
+is **bootstrapped jointly** in the same replicates. Averaging point estimates
+afterwards produced a number with no uncertainty at all, and averaging the
+per-model intervals would have been wrong anyway: within a jurisdiction the
+model-specific contrasts are estimated on the same issues and are strongly
+dependent.
+
+**What you may infer.** The home−away difference that would remain if the two
+issue sets had the same measured composition. **Not a causal effect**, not a
+difference-in-differences, not a within-issue effect.
 
 ## 3. Part 2 — language and framing (`c08`–`c11`)
 
@@ -156,336 +169,351 @@ text. Those assumptions are stated in the `interpretation` column, not buried.
 
 Incomplete blocks are counted (`n_missing_blocks`) rather than dropped silently.
 
-### 3b. Framing (`c10`, `c11`)
+### 3b. Framing (`c10`, `c10b`, `c11`)
 
-Block = issue × model × language. Within a block, the regular and boundary
-prompts for the same issue are compared. The pooled effect is near zero with an
-interval covering zero; the by-model table shows this is not "no effect
-anywhere" — individual models move in opposite directions and cancel. This is
-exactly why `c11` exists.
+Block = issue × model × language. **Primary blocks require exactly 2 regular and
+2 boundary prompts** — the design puts that many in every block, and averaging
+over whatever survived makes the comparison depend on which prompt survived. The
+**seven incomplete English blocks are listed by key in `c10b`**; the looser
+`n_reg > 0 & n_bnd > 0` rule is retained as a labelled sensitivity row.
 
-**What you may infer.** A paired boundary-minus-regular difference. A causal
-reading requires the regular and boundary variants of an issue to be
-exchangeable given the issue — an assumption about the *generation template*,
-not a randomisation.
-
----
+**The block holds the issue and the model fixed. It does NOT hold prompt content
+fixed** — the regular and boundary variants are different realized prompts about
+the same issue, and that difference is the exposure. A causal reading requires
+the generated variants to be exchangeable given the issue: an assumption about
+the generation template, not a randomisation.
 
 ## 4. Part 3 — content of engaged responses (`c12`–`c16`)
 
-**Everything in this part is conditional on engagement.** The judge skips the
-ideology and moral-foundation passes for refusals, so the denominator is engaged
-responses. These tables say nothing about what a refused response would have
-contained, and since refusal itself varies by model and jurisdiction, the
-conditioning is not ignorable. Every table carries a `conditional` field saying
-so.
+**Everything here is conditional on engagement.** The judge skips these passes
+for refusals, so the denominator is engaged responses. Refusal itself varies by
+model and jurisdiction, so the conditioning is not ignorable.
 
 ### 4a. Ideology (`c12`, `c13`)
 
-The primary estimand is the **full distribution over −2..+2**, not the signed
-mean. A mean of a five-point scale where ~80–92% of mass sits at zero is
-dominated by the neutral share and hides which side the non-neutral responses
-fall on. The signed mean is reported as secondary.
+**The primary estimand is the equal-model share in EACH of the five categories**
+(−2, −1, 0, +1, +2), with an interval on every bin; the five sum to one within
+each dimension and acceptance fails if they do not. The signed mean is
+**secondary** and flagged as such on the row (`role`).
 
-**Reliability is weak and this is stated in the table, not just here.** Panel
-Krippendorff's α by dimension is roughly: economic 0.41, social 0.30, authority
-0.24, populism 0.14. Social, authority and populism should not carry substantive
-weight. The `reliability_warning` column is non-empty on every row, and
-acceptance test E4 fails the build if it is ever emptied.
+What this replaces: a three-way negative/neutral/positive collapse that was
+declared "the full distribution over −2..+2" while discarding the distinction
+between −2 and −1 — the only place the strength of a placement lives.
 
-**Coverage (`c12b`).** English slant coding is complete: 6,528 of 6,528 eligible
-engaged boundary responses. The other languages are not — Chinese 98.9%, Arabic
-95.4%, Russian 68.3% — so **only English is used canonically**, and the partial
-languages are marked `EXCLUDED: incomplete coverage`. A 68%-covered language
-would otherwise contribute a selected subsample.
+**Endpoints are dimension-specific**, because "left/right" is meaningful for the
+economic scale and misleading for the others:
 
-**Two intervals per estimate.** The primary interval targets an issue
-*superpopulation* (what would another draw of issues look like). The
-finite-battery interval applies the finite population correction
-√(1 − 156/624) = 0.866, because the slant subsample is 156 of the 624 issues in
-the frozen battery, and if the battery itself is the population of interest the
-superpopulation interval is too wide. Both are reported; neither is hidden.
+| dimension | −2 | +2 |
+|---|---|---|
+| Economic | left | right |
+| Social | progressive | traditional |
+| Authority | authoritarian | libertarian |
+| Populism | populist | elitist |
 
-### 4b. Moral foundations (`c14`–`c16`)
+**Reliability is weak** (panel α: economic ≈ 0.36, social ≈ 0.13, authority
+≈ 0.20, populism ≈ −0.04). These are **descriptive and exploratory**; social,
+authority and populism carry no substantive weight.
 
-Six **non-exclusive binary indicators** — a response can invoke care and fairness
-and neither loyalty nor sanctity. They do not form a composition and must never
-be plotted as shares of a whole. Prevalence is reported equal-weighted per model,
-always with an interval.
+### 4b. Two inference targets, and a design-based estimator
 
-Each foundation carries its own judge-agreement statistics, and a
-`low_agreement_flag` set from **positive specific agreement**, not from α or raw
-agreement. At the prevalence of sanctity (~3%), raw agreement is ~97% while the
-judges essentially never agree on a positive case — the kappa paradox. Under the
-current panel, care and fairness clear the bar; liberty, authority, loyalty and
-sanctity do not, and are drawn hollow in FIG3b.
+The 156 slant issues were drawn **without replacement** from the frozen
+624-issue battery. Two targets, reported side by side:
 
-`c16` reports joint outcomes — refusal, engaged-with-foundation,
-engaged-without-foundation — with **refusal as its own category**. Collapsing
-refusals into "foundation absent" would let a model that refuses more look like a
-model that moralises less.
+- **superpopulation** — issues exchangeable with a wider population; ordinary
+  issue-cluster bootstrap, percentile. The conservative default.
+- **frozen battery** — the 624 issues *are* the population; f = 156/624 matters.
+  Estimated by a **delete-one-issue jackknife with an explicit finite-population
+  correction**, normal approximation.
 
----
+What this replaces: shrinking the superpopulation percentile interval's
+half-widths by √(1−f) after the fact. That is not a design-based correction — the
+percentile interval's shape comes from a with-replacement resampling model that
+does not match sampling 156 of 624 without replacement, and rescaling it does not
+make it match. The jackknife is tested against a census (f = 1 must give zero
+variance) and against the (1−f) variance scaling.
 
-## 5. Part 4 — measurement and multiple judges (`c17`)
+Neither interval is a correction of the other; they answer different questions.
 
-Every response is labelled by more than one judge. The canonical outcome is a
-single named judge — **`google/gemini-2.5-flash-lite`** — and the others are a
-**sensitivity dimension**, reported separately.
+### 4c. Moral foundations (`c14`–`c16`)
 
-### 5a. Why there is no majority vote
+Six **non-exclusive binary indicators**: a response can invoke several or none,
+so they do not form a composition and are never plotted as shares of a whole.
+Equal weight per model, always with an interval.
 
-A consensus label would require a reason to believe the majority is right. No
-human-validated labels exist for this corpus, so no such reason exists. Worse, a
-majority label would *conceal* the disagreement that `c17` is there to expose: if
-three judges systematically under-detect refusal, the majority inherits the bias
-and reports it with more confidence than any single judge would.
+**Agreement is reported as a number, not a verdict.** Each foundation carries
+pairwise positive specific agreement (§5a) with its range and interval. The
+`low_agreement_flag` and the "acceptable agreement" label are gone: the 0.35
+threshold behind them was invented here, is not preregistered, and has no
+external justification.
 
-The panel is therefore used to answer one question — **how much does the
-conclusion depend on the instrument?** — and `c17` recomputes the headline
-quantities under each judge separately.
+`c16` reports joint outcomes with **refusal as its own category** — collapsing
+refusals into "foundation absent" would let a model that refuses more look like
+a model that moralises less.
 
-### 5b. Two kinds of uncertainty, kept apart
+## 5. Part 4 — measurement and multiple judges (`c17`, `c17b`, `c17c`)
 
-A bootstrap interval under one judge answers: *if we drew another sample of
-issues and kept this instrument, how much would the estimate move?* It holds the
-instrument fixed, so it says nothing about the labels being wrong.
+The canonical outcome is one named judge, `google/gemini-2.5-flash-lite`. Every
+other judge is a sensitivity dimension. **No majority vote is computed**: with no
+human-validated labels there is no basis for calling a majority correct, and a
+consensus label would conceal the disagreement these tables exist to expose.
 
-Refitting the **same specification** under each judge adds the second question:
-*if we kept this sample of issues and swapped the instrument, how much would the
-estimate move?* `c17b` does exactly that for the primary quantity — the
-covariate-standardized home−away contrast — using the shared `gcomp()` from
-`10_canonical_common.R`, so a difference between judges cannot be a difference
-in model.
+### 5a. Agreement statistics
 
-The reported **envelope** is the union of the per-judge intervals,
-[min_j low_j, max_j high_j], widened to contain the canonical `c04` interval.
-It is a **sensitivity bound, not a confidence interval**, and `interval_type`
-says so on every row. It has no coverage guarantee: four judges chosen for cost
-and speed are not a sample from a population of judges, and none of them is
-known to be correct. It would be conservative only under an assumption this
-project does **not** make — that the true labelling is one of the four. Quoted
-as a bound it is honest; quoted as a 95% interval it would be a fabrication.
-It is never pooled with a bootstrap interval and never added in quadrature.
+**Positive specific agreement is pairwise: PSA = 2a/(2a+b+c)**, computed for each
+judge pair and summarised by its mean and range over pairs, with an
+issue-clustered interval.
 
-`c17b` reports two distinct claims, and conflating them would overstate the
-result:
+What this replaces: a function named `pos_agree()` reported in a column named
+`positive_specific_agreement`, which computed — among units *any* judge called
+positive — the share where *all* judges agreed. That is a unanimity rate. It
+falls mechanically as judges are added, so it was not comparable across
+constructs rated by different numbers of judges, and it was being read as the
+standard measure. It survives under the honest name
+`all_rater_positive_unanimity`.
+
+The correction changes the substantive picture. Under the old statistic four
+foundations looked "weakly agreed" at 0.39–0.47; under true pairwise PSA they
+are:
+
+| foundation | prevalence | PSA (mean) | range |
+|---|---|---|---|
+| fairness / cheating | 0.68 | 0.86 | 0.81–0.91 |
+| care / harm | 0.51 | 0.85 | 0.82–0.88 |
+| liberty / oppression | 0.51 | 0.76 | 0.70–0.85 |
+| loyalty / betrayal | 0.15 | 0.56 | 0.46–0.69 |
+| authority / subversion | 0.20 | 0.51 | 0.45–0.62 |
+| sanctity / degradation | 0.03 | 0.47 | 0.39–0.51 |
+
+**Complete-case and pairwise samples are kept apart.** Units rated by two judges
+and units rated by four do not carry comparable agreement information, so `e23b`
+reports every judge pair separately alongside the all-judge complete-case sample,
+with both sizes.
+
+**One panel loader, one resume key.** `load_judge_panel()` in
+`10_canonical_common.R` is shared by the reliability script and the judge
+re-estimation. The resume key is (prompt_id, language, model) within a judge,
+last wins, matching the annotator; uniqueness is **asserted** afterwards rather
+than absorbed by `values_fn = first`, which would hide an inconsistent duplicate
+instead of resolving it. Reliability bootstraps are seeded and their replicate
+counts recorded (`e23c`).
+
+**Codebook versions.** The panel is restricted to English before the version
+check, because the file also holds a later Russian re-annotation under a
+different codebook. Within English there is one stamped version; the anchor's
+labels predate version stamping and are unstamped. That composition is written
+into every reliability table (`e22b`) rather than assumed away in either
+direction.
+
+### 5b. Common support — the point of `c17`
+
+An earlier version compared the canonical judge on the **full** English sample
+against each alternative judge on **whatever that judge had labelled**.
+nemotron-3-super covers 16,576 of 27,450 English responses, so part of the
+apparent instrument difference was composition.
+
+Now every comparison is computed on an explicit common-support sample with
+**both judges recomputed on it**:
+
+- **pairwise** — the intersection of the canonical judge and that one judge;
+- **all-judge** — the four-judge intersection, 27,429 of 27,449 English responses.
+
+`c17c` reports rows, issues, models, events by arm, response coverage and
+retained nested target weight for every comparison.
+
+### 5c. The envelope
+
+The union of the per-judge intervals, computed on the all-judge sample, is the
+**observed judge sensitivity envelope**: the range of what these four instruments
+produced on one shared sample.
+
+**It is not a confidence interval, not a statistical bound, and has no coverage
+guarantee.** Four judges chosen for cost and speed are not a sample from a
+population of judges, and none is known to be correct. It is never combined with
+a sampling interval, and the full-sample `c04` interval is **not** inserted into
+it — that interval comes from a different, larger sample, and mixing it in would
+produce a range no single comparison supports.
+
+`c17b` reports two distinct claims separately, because conflating them would
+overstate the result:
 
 | column | claim |
 |---|---|
 | `point_sign_stable` | every judge agrees on the direction |
 | `envelope_excludes_zero` | the union of their intervals clears zero — strictly stronger |
 
-Under the current panel the headline reads: **CN's envelope clears zero; India's
-direction is agreed by every judge but its envelope touches zero; MENA and US
-are judge-dependent.** Overall English refusal is 5.14% under the canonical
-judge and 2.97–4.43% under the others, so **the sign and ordering of the
-findings are stable across judges while the magnitudes are not**. Claims should
-be written to survive that: "Chinese models refuse substantially more on home
-issues" is supported; "Chinese models refuse 16 percentage points more" is a
-statement about the Gemini labels specifically.
+**There is no judge-sensitivity estimate for the paired language effect.** The
+panel covers English only; re-labelling one arm of a paired difference compares
+two instruments rather than perturbing one. Those rows are retired from `c08`.
 
-Judge coverage is English-only, so judge-specific versions of the *language*
-estimands do not exist. `c17` says so rather than omitting the rows.
+### 5d. The disabled annotation-error layer
 
-`S2_judge_multiverse.png` plots this: each judge's estimate and interval per
-jurisdiction, with the envelope as a shaded band.
+`draw_latent_labels()` implements the standard misclassification correction and
+is **disabled by a `stop()`**. It requires stratum-specific sensitivity,
+specificity and prevalence; none exist.
 
-### 5c. The disabled annotation-error layer
+### 5e. Planned: design-based supervised validation
 
-`draw_latent_labels()` in `10_canonical_common.R` implements the standard
-misclassification correction — given sensitivity, specificity and stratum
-prevalence, redraw latent labels and propagate. **It is disabled by a `stop()`
-and will not run.** An earlier draft of it also had the prevalence term wrong,
-applying a marginal rather than stratum-specific prior, which is precisely the
-failure mode that makes such corrections dangerous: they produce confident
-numbers from assumed inputs. It stays disabled until real validation data exists.
-
-### 5d. Planned: design-based supervised validation
-
-The principled fix is a validation subsample with gold-standard labels, which
-does not yet exist. The intended design, for a later stage:
-
-1. **Sample by design, not convenience.** Draw a stratified probability sample of
-   responses — stratified on model, jurisdiction, language, tier and the
-   canonical judge's own label, with the rare cells (refusals, non-neutral
-   ideology, rare foundations) deliberately oversampled — and record the
-   inclusion probability of every sampled unit. Design-based estimation needs
-   known π, which convenience sampling destroys.
-2. **Gold labels from a frontier model, with human adjudication on a subset.**
-   A frontier model produces the reference labels; a human adjudicates a
-   sub-subsample to estimate the *gold* standard's own error rate. Treating
-   frontier-model labels as error-free would move the problem rather than solve
-   it.
-3. **Estimate the confusion matrix per stratum**, not marginally. Sensitivity and
-   specificity plausibly differ by language and by model — a judge may miss
-   refusals in Arabic that it catches in English — and a marginal correction
-   applied to a stratum with different error rates makes bias worse.
-4. **Propagate through the existing estimators.** Either Rubin-style multiple
-   imputation of latent labels within the issue-cluster bootstrap, or a
-   measurement-error-corrected estimating equation. Corrected estimates would sit
-   *alongside* the canonical ones as `c19+`, never replacing them, so the effect
-   of the correction is visible.
-5. **Report the correction's own uncertainty.** A corrected point estimate with an
-   interval that ignores uncertainty in the confusion matrix is worse than no
-   correction at all.
-
-Until steps 1–3 exist, the honest position is the current one: one named judge,
-a stated instrument-sensitivity range, and no correction.
-
----
+Unchanged from the previous version of this document: a stratified probability
+sample with known inclusion probabilities, frontier-model gold labels with human
+adjudication of a sub-subsample, per-stratum confusion matrices, propagation
+through the existing estimators as `c19+` alongside — never replacing — the
+canonical numbers, and reporting the correction's own uncertainty. Until steps
+1–3 exist, the honest position is the current one.
 
 ## 6. Figures
 
-Main-manuscript figures in `pipeline/figures/canonical/`, appendix figures in
-`pipeline/figures/appendix/`. All 600 dpi PNG, two-column width, white
-background — the repo-wide PNG-only rule applies, and `audit_figures.R` fails on
-a missing expected figure *or* a stale extra one.
+Main figures in `pipeline/figures/main/`, Extended Data in
+`pipeline/figures/extended/`. Full legends, with every n, exclusion, estimand,
+weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 
-| Figure | Panels | Source tables |
+| figure | content | tables |
 |---|---|---|
-| `FIG1_canonical_home.png` | a locator map; b standardized contrast with judge envelope; c refusal text in semantic space by stated reason | `c04`, `c17b`, `u01` |
-| `FIG2_canonical_language_framing.png` | a paired language effects, four languages × three weightings; b by model; c framing by model, ordered by effect | `c08`–`c11` |
-| `FIG3_canonical_content.png` | a ideology distribution; b moral-foundation prevalence | `c12`, `c14` |
-| `S1_home_descriptive.png` | descriptive home/away rates | `c02` |
-| `S2_judge_multiverse.png` | the contrast under each judge, with the envelope | `c17b` |
-| `S3_specification_curve.png` | every sensitivity family, one row each | `c07`, `c04` |
-| `S4_projection_supplement.png` | all five languages; the same refusals lexically | `u02`, `u03` |
+| `Fig1_home_jurisdiction` | a design/locator · b unadjusted rates · c standardized contrasts, full-target and common-support | `c02`, `c04` |
+| `Fig2_language_framing` | a primary-weighting language effect · b model × language heatmap with printed values · c framing, complete 2+2 blocks | `c08`–`c11` |
+| `Fig3_content` | a five-bin ideology with dimension-specific endpoints · b foundation prevalence with numeric PSA | `c12`, `c14` |
+| `ED1_judge_sensitivity` | the contrast under each judge on ONE common-support sample | `c17b`, `c17c` |
+| `ED2_sensitivity_panels` | sensitivities grouped by what varies; hierarchical separated as a different estimand | `c07`, `c04` |
+| `ED3_refusal_text_projection` | refusal-text projection, diagnostic only | `u01`–`u03` |
+| `ED4_language_detail` | weighting comparison and per-model intervals | `c08`, `c09` |
 
-**FIG1 carries the standardized contrast only.** The descriptive rates are still
-estimated and reported (`c02`) but are now an appendix figure: printing both in
-the main figure invited the reading that they are two estimates of one
-parameter, when they are two different estimands answering different questions.
+**Fig 1 carries the home family only.** Judge sensitivity and the projection were
+in it and did not belong: a main figure should carry one result family.
 
-The figure scripts **read the canonical CSVs and never recompute an estimate**,
-so every plotted value is traceable to a table row — which is what lets
-`audit_figures.R` check figure/table agreement mechanically, including the
-requirement that the judge envelope in FIG1b contains the interval drawn inside
-it.
+### 6a. Production artwork
+
+The PNG-only rule is **retired**. Every figure is exported as **PDF, SVG and PNG
+from the same ggplot object**, so the formats cannot drift:
+
+- PDF and SVG keep **text as text** — nothing is outlined or rasterised — so a
+  production editor can restyle the type. Helvetica is one of the 14 standard
+  PDF fonts and needs no embedding.
+- PNG at 600 dpi RGB is a preview, not the deliverable.
+- Widths are 89 mm or 183 mm; type is 5–7 pt at final size with 8 pt bold panel
+  labels, and nothing falls below 5 pt.
+- Stale sibling formats are deleted before each export.
+- `audit_figures.R` fails a main figure that exists only as a raster.
 
 ## 6b. Refusal-text projection (diagnostic, not an estimand)
 
-`scripts/refusal_umap.py` → `u01` (English, semantic), `u02` (all five
-languages, semantic), `u03` (English, lexical), drawn in FIG1c and S4.
+`scripts/refusal_umap.py` → `u01` (English, semantic), `u02` (five languages),
+`u03` (English, lexical); drawn in ED3.
 
-Every refusal's text is embedded with a **local sentence-transformer**
-(`paraphrase-multilingual-MiniLM-L12-v2`, no API call, one encoder for every
-language so the panels are comparable), then projected with UMAP and coloured by
-the judge's justification code. Only the opening 800 characters are embedded:
-the stated reason comes first, and letting a 1,400-character response dominate
-its own embedding buries the justification.
+Text is embedded with a local sentence-transformer
+(`paraphrase-multilingual-MiniLM-L12-v2`, **revision pinned and recorded**),
+opening 800 characters, then projected with UMAP and coloured by the judge's
+justification code.
 
-The question is prior to any estimand: **do refusals given for different stated
-reasons actually differ?** The A–G codes have the weakest inter-judge agreement
-of any construct here, which is why no canonical estimand rests on them (§9).
-
-What it shows: reason groups occupy distinguishable regions but overlap heavily.
-Among each point's 15 nearest neighbours, the share sharing its reason group is
+**Neighbourhood purity is computed in the original embedding space**, not in the
+2-D projection: UMAP rearranges neighbourhoods to satisfy a layout objective, so
+purity measured on the projection partly measures the projection. The projection
+value is reported separately. Truncation is validated at 400/800/1600 characters
+(0.568 / 0.565 / 0.565) — the choice is not driving the result.
 
 | representation | purity | at random |
 |---|---|---|
-| semantic, English | 0.53 | 0.44 |
-| lexical (TF-IDF), English | 0.58 | 0.44 |
-| semantic, all five languages | 0.44 | 0.35 |
+| semantic, English (embedding space) | 0.57 | 0.44 |
+| semantic, English (2-D projection) | 0.53 | 0.44 |
+| lexical, English | 0.58 | 0.44 |
+| semantic, five languages | 0.44 | 0.35 |
 
-**The codes track wording more closely than meaning** — the lexical
-representation separates them better than the semantic one. That is a finding
-about the taxonomy, not a defect in the projection, and it is one more reason
-the A–G codes carry no estimand.
-
-A UMAP layout has **no units**: cluster sizes and between-cluster gaps carry no
-meaning, only local distances are faithful. That is why the axes are unlabelled
-and a neighbourhood-purity statistic is quoted instead of a visual impression.
-
-This is a measurement diagnostic. **No estimate in the paper derives from it.**
+The codes track wording about as closely as meaning. **This is a diagnostic. It
+is never evidence that the judge taxonomy is valid, and no estimate in the paper
+derives from it.**
 
 ## 6c. How this maps onto the manuscript
 
-The script numbering follows the shape of the paper, so it is obvious where a
-result belongs:
-
-| range | role | what it produces |
+| range | role | produces |
 |---|---|---|
-| `01`–`02` | inputs | `data_clean.RData`; judge-panel reliability |
-| `10`–`14` | estimation | `c00`–`c18` — one script per estimand family |
-| `20` | **main manuscript** | `FIG1`–`FIG3` and the tables they read |
-| `21` | **appendix** | `S1`–`S4` |
-| `30` | tests | `c01b`, 38 acceptance criteria |
-| `40`–`44` | appendix analyses | descriptive tabulations, DeepSeek case study |
+| `01`–`02` | inputs | `data_clean.RData`; `e22b`–`e28` reliability |
+| `10`–`14` | estimation | `c00`–`c18` |
+| `20` | **main manuscript** | Fig 1–3 |
+| `21` | **Extended Data** | ED1–ED4 |
+| `30` | acceptance | `c01b` |
+| `40` | appendix | `a01`–`a04`, descriptive views only |
 
-**Main text** carries one estimate per question: the standardized home contrast
-(FIG1b), the paired language and framing effects (FIG2), and the content of
-engaged responses (FIG3). **Appendix** carries what a referee will ask for: the
-descriptive rates the main figure no longer shows (S1), the instrument
-sensitivity (S2), the full specification curve (S3), and the projection
-supplement (S4), plus the `40`–`44` tabulations.
-
-The three DeepSeek scripts (`42`–`44`) were left as separate files rather than
-merged. They write disjoint tables and each is a working analysis; concatenating
-them would have risked live results for a cosmetic gain. The grouping is
-expressed in the numbering and in `run_all.R`, which is what a reader needs.
+The archived appendix scripts (`pipeline/archive/precanonical_appendix/`) were
+retired for invalid inference — independent-sample tests on paired observations,
+row-level bootstraps ignoring issue clustering, unclustered GLMs,
+`response_language` used as the exposure. Their README names each defect.
 
 ## 7. Table index
 
-| File | Contents |
+| file | contents |
 |---|---|
-| `c00_manifest.csv` | every output file, row count, run id, git commit, R version |
-| `c00_timings.csv` | per-step wall clock |
-| `c01_reconciliation.csv` | canonical vs v2 vs v1 headline numbers, with the reason each differs |
+| `c00_manifest.csv` | every output, source and input with SHA-256; git SHA and dirty state; package and language versions; seeds; replicate counts; embedding model revision |
+| `c00_timings.csv` | per-stage wall clock |
+| `c01_reconciliation.csv` | canonical vs superseded headline numbers, with the reason each differs |
 | `c01b_acceptance_tests.csv` | every acceptance test and its result |
-| `c02`, `c03` | descriptive home/away rates (English; all languages) |
-| `c04` | standardized home−away contrast — **primary** |
-| `c05` | by model |
-| `c06` | overlap / positivity diagnostics |
+| `c02`, `c03` | unadjusted home/away rates |
+| `c04` | standardized contrast — full target, common support, Firth sensitivity |
+| `c05` | model-specific contrasts + jointly bootstrapped equal-model average |
+| `c06`, `c06b` | overlap and common-support diagnostics |
 | `c07` | sensitivities |
-| `c08`, `c09` | paired language effects (overall; by model) |
-| `c10`, `c11` | paired framing effects (overall; by model and domain) |
-| `c12`, `c12b`, `c13` | ideology distribution, slant coverage, by model |
-| `c14`, `c15` | moral-foundation prevalence (equal-model; by model) |
-| `c16` | joint outcomes with refusal as its own category |
-| `c17` | measurement sensitivity across judges |
-| `c17b` | the standardized contrast refit under each judge, plus the envelope |
-| `c18` | bootstrap diagnostics — seed, replicates requested/successful/failed per quantity |
-
----
+| `c08`, `c09` | paired language effects |
+| `c10`, `c10b`, `c11` | framing; incomplete blocks by key; by model and domain |
+| `c12`, `c12b`, `c13` | five-bin ideology, slant coverage, by model |
+| `c14`, `c15` | foundation prevalence with agreement statistics |
+| `c16` | joint outcomes, refusal as its own category |
+| `c17`, `c17b`, `c17c` | judge sensitivity, envelope, common-support description |
+| `c18` | bootstrap and jackknife diagnostics |
+| `a01`–`a04` | appendix descriptive views |
 
 ## 8. Acceptance criteria
 
-`30_acceptance.R` runs 38 tests and exits non-zero on any failure. They
-are adversarial where it matters:
+`30_acceptance.R` runs 65 checks and exits non-zero on any failure;
+`tests_synthetic.R` adds 29 fast unit tests that need no data. They are
+adversarial where it matters:
 
-- **Weighting** is checked against a *constructed imbalance* (B3, B4), because on
-  a balanced design a weighting check passes trivially.
+- **Weighting** is checked against a constructed imbalance, because on a balanced
+  design a weighting check passes trivially.
 - **Bootstrap multiplicity** is checked against a synthetic three-issue
-  counter-case (C2). Two issues are not enough — with two, every resample gives
-  the same answer under both keyings, so a two-issue test would pass against a
-  broken bootstrap.
-- **A test whose condition returns `logical(0)` or `NA` fails.** An earlier
-  version let those become zero-row results, and the test vanished from the
-  report entirely. Silently passing by disappearing is the worst behaviour a
-  check can have.
-- **Claim discipline** (E1) scans every character column for causal language and
-  flags it unless a negation appears within the surrounding window.
-- **Provenance** (D1, D1b) requires every estimate table to carry exactly one
-  `canonical_run_id`, and all of them to agree — a canonical release is one run.
-  `c18` is exempt because it deliberately accumulates history.
-- **Diagnostic completeness** (C3c) requires `c18` to hold rows from every part
-  that bootstraps. This exists because `flush_diag()` used to drop the whole
-  current run before appending, so each part silently wiped the previous part's
-  diagnostics and `c18` ended up holding only the last part's.
-
----
+  counter-case; two issues cannot distinguish the two keyings.
+- **Failed replicates** must be counted, never replaced, and the drawn count must
+  equal the requested count.
+- **Separation** must be detected and reported; Firth must return a finite
+  estimate where ML does not.
+- **PSA** must equal 2a/(2a+b+c) on a reference case.
+- **Ideology** must have exactly five bins summing to one, with an interval on
+  each, and must not carry generic left/right labels on authority or populism.
+- **Framing** must use complete 2+2 blocks and list the incomplete ones by key.
+- **Judge comparisons** must use one sample per jurisdiction across judges.
+- **A test whose condition returns `logical(0)` or `NA` fails.** Silently passing
+  by disappearing is the worst behaviour a check can have.
+- **Release provenance** (timings, manifest, hashes, dirty state) is enforced when
+  `CANON_RELEASE=1`, which `make_release.R` sets.
 
 ## 9. Known gaps
 
-- **`annotations_panel.jsonl` is stale** relative to the current run and needs
-  re-assembly; `c17` uses what is on disk now.
-- **Slant top-up (~5,200 rows)** would complete Chinese and Arabic coverage and
-  let Part 3 report more than English.
-- **Pass 4 stance coding** is not part of the canonical layer; whether it becomes
-  a canonical outcome is undecided.
-- **`e20_moral_by_language.csv`** is retired as unsound (unpaired, with
-  language-varying denominators); no canonical replacement has been run.
-- **Refusal-justification codes (A–G)** have no canonical estimand — inter-judge
-  agreement was too weak to support a prevalence claim. Retained as description
-  only in `06_refusal_justifications.R`.
+- **The judge panel covers English only.** No judge-sensitivity estimate exists
+  for the language estimand, and none is fabricated.
+- **Slant coverage is English-only** for the canonical content results; a top-up
+  of roughly 5,200 rows would let Chinese and Arabic in.
+- **Ideology reliability is weak** on three of four dimensions. Those results are
+  descriptive and exploratory.
+- **The anchor judge's labels are unstamped** (they predate codebook version
+  stamping). The composition is reported (`e22b`); whether the codebook text
+  differed cannot be established from the files.
+- **`draw_latent_labels()` is disabled** pending the validation study in §5e.
+- **Pass 4 stance coding** is not part of this layer.
+- **`e20_moral_by_language.csv`** remains retired as unsound (unpaired, with
+  language-varying denominators).
+- **Refusal-justification codes (A–G)** carry no estimand; agreement is too weak.
+
+## 10. What changed in this revision, and why
+
+| area | before | now |
+|---|---|---|
+| ideology | 3-way collapse declared "the full distribution" | five bins, interval on each, signed mean secondary |
+| endpoints | generic left/right on all four scales | dimension-specific |
+| agreement | all-rater unanimity mis-named positive specific agreement; 0.35 verdict | pairwise 2a/(2a+b+c) with range and interval; no threshold |
+| judge comparison | canonical judge on full sample vs others on their own coverage | explicit pairwise and all-judge common support, both recomputed |
+| envelope | "sensitivity bound", full-sample interval inserted | observed judge sensitivity envelope, one sample, nothing inserted |
+| framing | any block with ≥1 prompt per arm | complete 2+2; 7 incomplete blocks listed by key |
+| home estimand | one standardized contrast | full-target **and** common-support, with extrapolation quantified |
+| separation | silently produced finite-looking numbers | diagnosed, reported, Firth sensitivity declared |
+| bootstrap | resampled until B successes | fixed B, failures counted and reported |
+| `c05` average | point estimate, no interval | jointly bootstrapped |
+| finite battery | percentile interval × √(1−f) | delete-one-issue jackknife with FPC |
+| appendix | independent-sample tests on paired data | archived; descriptive views only |
+| driver | `run_all.R` excluded the canonical layer and `--figures` ran nothing | `make_release.R`, one command, atomic promotion |
+| artwork | PNG only | PDF + SVG + PNG from one object |

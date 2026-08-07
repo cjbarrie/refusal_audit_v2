@@ -1,13 +1,13 @@
 judge_a,judge_b,n_pair,psa,sample,construct,n_units_all_available,n_units_complete_case,n_judges,statistic,seed
-google/gemini-2.5-flash-lite,google/gemma-4-31b-it,27449,0.7361229718189581,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemini-2.5-flash-lite,nvidia/nemotron-3-nano-30b-a3b,27449,0.6549865229110512,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemini-2.5-flash-lite,nvidia/nemotron-3-super-120b-a12b,16576,0.7883817427385892,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemma-4-31b-it,nvidia/nemotron-3-nano-30b-a3b,27450,0.7124856815578465,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemma-4-31b-it,nvidia/nemotron-3-super-120b-a12b,16576,0.7896060352053647,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-nvidia/nemotron-3-nano-30b-a3b,nvidia/nemotron-3-super-120b-a12b,16576,0.7459165154264973,all available (pairwise complete),refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemini-2.5-flash-lite,google/gemma-4-31b-it,16576,0.7414708112206216,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemini-2.5-flash-lite,nvidia/nemotron-3-nano-30b-a3b,16576,0.6465798045602605,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemini-2.5-flash-lite,nvidia/nemotron-3-super-120b-a12b,16576,0.7883817427385892,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemma-4-31b-it,nvidia/nemotron-3-nano-30b-a3b,16576,0.717948717948718,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-google/gemma-4-31b-it,nvidia/nemotron-3-super-120b-a12b,16576,0.7896060352053647,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
-nvidia/nemotron-3-nano-30b-a3b,nvidia/nemotron-3-super-120b-a12b,16576,0.7459165154264973,units rated by ALL judges,refused (>=4),27450,16576,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,google/gemma-4-31b-it,27449,0.7361229718189581,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,nvidia/nemotron-3-nano-30b-a3b,27449,0.6549865229110512,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,nvidia/nemotron-3-super-120b-a12b,27429,0.7966488956587966,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemma-4-31b-it,nvidia/nemotron-3-nano-30b-a3b,27450,0.7124856815578465,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemma-4-31b-it,nvidia/nemotron-3-super-120b-a12b,27430,0.772960372960373,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+nvidia/nemotron-3-nano-30b-a3b,nvidia/nemotron-3-super-120b-a12b,27430,0.7458128078817734,all available (pairwise complete),refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,google/gemma-4-31b-it,27429,0.7362120564343737,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,nvidia/nemotron-3-nano-30b-a3b,27429,0.6546762589928058,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemini-2.5-flash-lite,nvidia/nemotron-3-super-120b-a12b,27429,0.7966488956587966,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemma-4-31b-it,nvidia/nemotron-3-nano-30b-a3b,27429,0.7125645438898451,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+google/gemma-4-31b-it,nvidia/nemotron-3-super-120b-a12b,27429,0.772960372960373,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807
+nvidia/nemotron-3-nano-30b-a3b,nvidia/nemotron-3-super-120b-a12b,27429,0.7458128078817734,units rated by ALL judges,refused (>=4),27450,27429,4,positive specific agreement 2a/(2a+b+c),20260807

@@ -548,8 +548,16 @@ restrict_support <- function(d, cols = c("model", "domain", "route_f")) {
 # with values_fn = first, which would hide a genuinely inconsistent record.
 PANEL_KEY <- c("prompt_id", "prompt_language", "model", "judge_model")
 
+# ANCHOR_JUDGE's labels are not in the panel: they ARE the analysis sample,
+# produced in the main annotation pass. A loader that returns only the panel
+# directories therefore returns three judges, and any reliability computed from
+# it silently excludes the judge the paper actually reports.
+ANCHOR_JUDGE <- "google/gemini-2.5-flash-lite"
+
 load_judge_panel <- function(run_dir = RUN_DIR, language = "en",
-                             fields = c("engagement_code")) {
+                             fields = c("engagement_code"),
+                             include_anchor = TRUE,
+                             anchor_name = ANCHOR_JUDGE) {
   root <- file.path(run_dir, "panel")
   long <- file.path(run_dir, "annotations_panel.jsonl")
   out <- NULL
@@ -578,6 +586,20 @@ load_judge_panel <- function(run_dir = RUN_DIR, language = "en",
     if (!is.null(language)) out <- out %>% filter(prompt_language == language)
   }
   if (is.null(out) || !nrow(out)) return(NULL)
+
+  # Append the anchor from the analysis sample when it is not already present,
+  # so both callers see the same judge set.
+  if (include_anchor && !anchor_name %in% out$judge_model && exists("canon")) {
+    keep <- intersect(c(fields, "issue_id"), names(canon))
+    anc <- canon %>%
+      { if (is.null(language)) . else filter(., prompt_language == language) } %>%
+      select(prompt_id, prompt_language, model, all_of(keep)) %>%
+      mutate(judge_model = anchor_name)
+    out <- bind_rows(out, anc)
+  }
+  # Carry issue_id so downstream clustering does not need a second join.
+  if (!"issue_id" %in% names(out) && exists("canon"))
+    out <- out %>% left_join(canon %>% distinct(prompt_id, issue_id), by = "prompt_id")
 
   n_before <- nrow(out)
   out <- out %>% group_by(across(all_of(PANEL_KEY))) %>%

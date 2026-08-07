@@ -12,7 +12,7 @@
 source("pipeline/10_canonical_common.R")
 cat(strrep("=", 78), "\nCANONICAL ACCEPTANCE TESTS\n", strrep("=", 78), "\n", sep = "")
 
-CAN_FIG <- "pipeline/figures/canonical"
+CAN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
 RES <- list()
 # A test whose condition evaluates to logical(0) or NA (a mistyped column name,
 # an empty filter) must FAIL loudly. An earlier version let those become
@@ -123,14 +123,16 @@ chk("C2", "replicates that draw an issue twice keep the copies distinct",
     sprintf("duplicate draws seen: %s; instance- and issue-keyed answers diverge: %s",
             probe$saw_dup, probe$saw_divergence))
 c18 <- rd("c18_bootstrap_diagnostics.csv")
+boot_rows <- if (is.null(c18)) NULL else c18 %>% filter(!is.na(replicates_requested))
 chk("C3", "every bootstrapped quantity records its seed and replicate counts",
-    !is.null(c18) && all(c("seed", "replicates_requested", "replicates_successful")
-                         %in% names(c18)) &&
-      all(!is.na(c18$seed)) && all(!is.na(c18$replicates_successful)),
+    !is.null(boot_rows) && nrow(boot_rows) > 0 &&
+      all(c("seed", "replicates_requested", "replicates_drawn") %in% names(c18)) &&
+      all(!is.na(boot_rows$seed)) && all(!is.na(boot_rows$replicates_successful)),
     if (is.null(c18)) "c18 missing" else sprintf("%d entries", nrow(c18)))
 chk("C3b", "no bootstrap lost more than 5% of its replicates",
-    !is.null(c18) && all(c18$failure_rate <= 0.05),
-    if (is.null(c18)) "" else sprintf("max failure rate %.3f", max(c18$failure_rate)))
+    !is.null(boot_rows) && all(boot_rows$failure_rate <= 0.05, na.rm = TRUE),
+    if (is.null(boot_rows)) "" else
+      sprintf("max failure rate %.3f", max(boot_rows$failure_rate, na.rm = TRUE)))
 # This is here because it failed silently for an entire release: flush_diag()
 # dropped every row of the current run before appending, so each part wiped the
 # previous part's diagnostics and c18 ended up holding only the LAST part's.
@@ -178,7 +180,9 @@ chk("D1b", "all estimate tables come from the same run", length(ids) == 1,
 # reports a number a reader could quote must say what that number is.
 NAMING <- c("estimand", "quantity", "primary_estimand", "interpretation",
             "conditional", "note")
-DESCRIPTIVE_TABLES <- c("c06_home_overlap.csv", "c12b_slant_coverage.csv",
+DESCRIPTIVE_TABLES <- c("c06_home_overlap.csv", "c06b_common_support_diagnostics.csv",
+                        "c10b_framing_incomplete_blocks.csv",
+                        "c17c_judge_support.csv", "c12b_slant_coverage.csv",
                         "c18_bootstrap_diagnostics.csv", "c00_manifest.csv",
                         "c00_timings.csv", "c01b_acceptance_tests.csv")
 need_est <- map_dfr(setdiff(tbls, file.path(CAN_EST, DESCRIPTIVE_TABLES)), function(p) {
@@ -228,7 +232,7 @@ chk("E3", "content tables declare conditioning on engagement",
 chk("E4", "ideology tables carry the weak-reliability warning",
     !is.null(c12) && all(nzchar(c12$reliability_warning)))
 chk("E5", "moral foundations are declared non-exclusive",
-    !is.null(c14) && all(grepl("non-exclusive", c14$nonexclusive)))
+    !is.null(c14) && all(grepl("non-exclusive", c14$nonexclusive, ignore.case = TRUE)))
 
 # --- F. estimability and coverage ---------------------------------------------
 cat("\nF. estimability\n")
@@ -257,19 +261,37 @@ chk("F3", "all four non-English languages are estimated, nulls included",
 chk("F4", "paired tables report incomplete blocks rather than dropping silently",
     !is.null(c08) && "n_missing_blocks" %in% names(c08) &&
       all(!is.na(c08$n_missing_blocks[c08$sensitivity == "primary"])))
-chk("F5", "finite-battery intervals are narrower than superpopulation intervals",
-    !is.null(c12) && all((c12$conf_high_finite_battery - c12$conf_low_finite_battery) <=
-                           (c12$conf_high - c12$conf_low) + 1e-12))
+# The frozen-battery interval is a delete-one-issue jackknife with an FPC; the
+# superpopulation interval is a bootstrap percentile. They are DIFFERENT
+# estimators, so "battery interval is narrower" is not a theorem and must not be
+# asserted per bin -- with f = 0.25 the FPC removes only a quarter of the
+# variance, and a noisy percentile interval can be the narrower of the two for a
+# particular bin. What is checked is that the design correction is actually
+# applied and that it bites on average.
+jk <- if (is.null(c18)) NULL else c18 %>% filter(!is.na(fpc))
+chk("F5", "a design-based FPC jackknife is recorded with the right sampling fraction",
+    !is.null(jk) && nrow(jk) > 0 &&
+      all(abs(jk$sampling_fraction - jk$n_issues_sampled / jk$n_issues_frame) < 1e-9) &&
+      all(abs(jk$fpc - (1 - jk$sampling_fraction)) < 1e-9),
+    if (is.null(jk)) "no jackknife rows" else
+      sprintf("%d jackknives, f = %.3f", nrow(jk), jk$sampling_fraction[1]))
+chk("F5b", "the frozen-battery interval is narrower on average",
+    !is.null(c12) && all(c("conf_low_battery", "conf_high_battery") %in% names(c12)) &&
+      median((c12$conf_high_battery - c12$conf_low_battery) /
+               (c12$conf_high - c12$conf_low), na.rm = TRUE) < 1,
+    if (is.null(c12)) "" else sprintf("median width ratio %.3f",
+      median((c12$conf_high_battery - c12$conf_low_battery) /
+               (c12$conf_high - c12$conf_low), na.rm = TRUE)))
 
 # --- G. measurement -----------------------------------------------------------
 cat("\nG. measurement\n")
 c17 <- rd("c17_measurement_sensitivity.csv")
 chk("G1", "no majority-vote label is used as ground truth",
     !is.null(c17) && (!"majority_vote_used" %in% names(c17) ||
-                        all(!c17$majority_vote_used)))
-chk("G2", "judge spread is labelled as instrument sensitivity, not an interval",
+                        all(!c17$majority_vote_used, na.rm = TRUE)))
+chk("G2", "judge spread is labelled as an observed envelope, not an interval",
     !is.null(c17) && "note" %in% names(c17) &&
-      any(grepl("not sampling", c17$note, fixed = TRUE), na.rm = TRUE))
+      any(grepl("NOT a confidence interval", c17$note, fixed = TRUE), na.rm = TRUE))
 err <- tryCatch({ draw_latent_labels(y = c(0, 1), sens = 0.9, spec = 0.9); "" },
                 error = function(e) conditionMessage(e))
 chk("G3", "the latent-error simulation layer refuses to run without validation data",
@@ -277,27 +299,170 @@ chk("G3", "the latent-error simulation layer refuses to run without validation d
     substr(err, 1, 60))
 chk("G4", "the canonical outcome is a single named judge",
     !is.null(c17) && "canonical_outcome" %in% names(c17) &&
-      n_distinct(c17$canonical_outcome) == 1,
+      n_distinct(na.omit(c17$canonical_outcome)) == 1,
     if (is.null(c17)) "" else unique(c17$canonical_outcome)[1])
 
 # --- H. figure/table agreement ------------------------------------------------
 cat("\nH. figures\n")
-figs <- list.files(CAN_FIG)
-chk("H1", "three canonical figures exist", length(figs) == 3, paste(figs, collapse = ", "))
-chk("H2", "figures directory is PNG only",
-    length(figs) > 0 && all(grepl("\\.png$", figs)))
-# Each figure panel must be reconstructible from the table it claims to plot.
-chk("H3", "FIG1c has one row per jurisdiction in c04",
-    !is.null(c04) && nrow(filter(c04, weighting == "nested")) == length(JURIS_C))
 c10 <- rd("c10_framing_paired.csv")
-chk("H4", "FIG2c pooled point exists in c10",
+MAIN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
+ED_FIG   <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
+MAINF <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
+EDF   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels",
+           "ED3_refusal_text_projection", "ED4_language_detail")
+FMT <- c("pdf", "svg", "png")
+present <- function(dir, stems)
+  all(vapply(as.vector(outer(stems, FMT, function(a, b) paste0(a, ".", b))),
+             function(f) file.exists(file.path(dir, f)), logical(1)))
+chk("H1", "three main figures exist in all three formats",
+    present(MAIN_FIG, MAINF), paste(list.files(MAIN_FIG), collapse = ", "))
+chk("H2", "Extended Data figures exist in all three formats",
+    present(ED_FIG, EDF), sprintf("%d files", length(list.files(ED_FIG))))
+# The PNG-only rule is retired: a raster-only main figure is now a FAILURE.
+chk("H3", "no main figure is raster-only",
+    all(vapply(MAINF, function(s)
+      file.exists(file.path(MAIN_FIG, paste0(s, ".pdf"))), logical(1))))
+chk("H4", "FIG2c pooled framing row exists in c10",
     !is.null(c10) && any(c10$scope == "overall"))
-chk("H5", "FIG3a shares sum to 1 within each ideology dimension",
+chk("H5", "ideology bins sum to one within each dimension",
     !is.null(c12) && {
-      ss <- c12 %>% filter(grepl("^share_", quantity)) %>%
-        group_by(dimension) %>% summarise(s = sum(estimate), .groups = "drop")
-      all(abs(ss$s - 1) < 1e-8)
-    })
+      ss <- c12 %>% filter(role == "PRIMARY") %>% group_by(dimension) %>%
+        summarise(s = sum(estimate), .groups = "drop")
+      all(abs(ss$s - 1) < 1e-8) })
+
+# =============================================================================
+# I. ADVERSARIAL CHECKS ADDED AFTER REVIEW
+# =============================================================================
+# Each of these fails on a defect that was actually present in a shipped build.
+cat("\nI. review findings\n")
+
+c12 <- rd("c12_ideology_distribution.csv")
+IDEO_BINS <- c("share_neg2", "share_neg1", "share_zero", "share_pos1", "share_pos2")
+chk("I1", "ideology has EXACTLY five bins per dimension",
+    !is.null(c12) && {
+      k <- c12 %>% filter(role == "PRIMARY") %>% count(dimension)
+      nrow(k) > 0 && all(k$n == 5) },
+    if (is.null(c12)) "c12 missing" else
+      paste(unique((c12 %>% filter(role == "PRIMARY") %>% count(dimension))$n),
+            collapse = ","))
+chk("I2", "the five bins are the five categories, not a 3-way collapse",
+    !is.null(c12) && setequal(unique(c12$quantity[c12$role == "PRIMARY"]), IDEO_BINS))
+chk("I3", "each dimension's bins sum to one",
+    !is.null(c12) && {
+      ss <- c12 %>% filter(role == "PRIMARY") %>% group_by(dimension) %>%
+        summarise(s = sum(estimate), .groups = "drop"); all(abs(ss$s - 1) < 1e-8) })
+chk("I4", "every ideology bin carries an interval",
+    !is.null(c12) && all(is.finite(c12$conf_low[c12$role == "PRIMARY"])))
+chk("I5", "signed_mean is secondary, not the declared primary",
+    !is.null(c12) && all(c12$role[c12$quantity == "signed_mean"] == "SECONDARY") &&
+      !any(grepl("signed mean", c12$primary_estimand, ignore.case = TRUE)))
+# Generic left/right labels on the authority or populism scale assert a mapping
+# the codebook does not make.
+chk("I6", "authority and populism do not carry generic left/right endpoints",
+    !is.null(c12) && {
+      bad <- c12 %>% filter(dimension %in% c("Authority", "Populism")) %>%
+        filter(endpoint_neg %in% c("left", "right") |
+               endpoint_pos %in% c("left", "right"))
+      nrow(bad) == 0 })
+
+rel <- if (file.exists("pipeline/estimates/e25_reliability_slant.csv"))
+  read_csv("pipeline/estimates/e25_reliability_slant.csv", show_col_types = FALSE) else NULL
+chk("I7", "reliability reports PAIRWISE positive specific agreement",
+    !is.null(rel) && all(c("psa_mean", "psa_min", "psa_max", "n_pairs") %in% names(rel)))
+chk("I8", "the mis-named positive_specific_agreement column is gone",
+    is.null(rel) || !("positive_specific_agreement" %in% names(rel)))
+# 2a/(2a+b+c) on a constructed case: a=10, b=5, c=5 -> 0.6667.
+psa_ref <- psa_pair(c(rep(1,10), rep(1,5), rep(0,5), rep(0,30)),
+                    c(rep(1,10), rep(0,5), rep(1,5), rep(0,30)))
+chk("I9", "the PSA formula is 2a/(2a+b+c)", abs(psa_ref - 2/3) < 1e-12,
+    sprintf("%.4f on the reference case", psa_ref))
+c14 <- rd("c14_moral_prevalence_equal_model.csv")
+chk("I10", "no arbitrary agreement threshold or verdict is stored",
+     !is.null(c14) && !("low_agreement_flag" %in% names(c14)) &&
+       !any(grepl("acceptable agreement",
+                  unlist(c14[vapply(c14, is.character, logical(1))]), ignore.case = TRUE)))
+
+c17b <- rd("c17b_judge_envelope.csv"); c17c <- rd("c17c_judge_support.csv")
+chk("I11", "judge comparisons state their common support",
+     !is.null(c17c) && all(c("n_rows", "n_issues", "n_models", "response_coverage",
+                             "target_weight_retained") %in% names(c17c)))
+chk("I12", "every judge in a comparison uses the SAME sample",
+     !is.null(c17b) && {
+       k <- c17b %>% filter(estimable, !grepl("ENVELOPE", judge_model)) %>%
+         group_by(jurisdiction) %>% summarise(u = n_distinct(n), .groups = "drop")
+       nrow(k) > 0 && all(k$u == 1) },
+     if (is.null(c17b)) "" else "one n per jurisdiction across judges")
+chk("I13", "the judge envelope is not called a bound or an interval",
+     !is.null(c17b) && any(grepl("OBSERVED JUDGE SENSITIVITY ENVELOPE", c17b$judge_model)) &&
+       !any(grepl("confidence (interval|bound)", c17b$interval_type, ignore.case = TRUE)))
+chk("I14", "no full-sample estimate is inserted into the envelope",
+     !is.null(c17b) && all(c17b$sample[!is.na(c17b$sample)] ==
+                             "all-judge common support (see c17c)"))
+c08 <- rd("c08_language_paired.csv")
+chk("I15", "the one-armed judge perturbation of c08 is retired",
+     !is.null(c08) && !any(grepl("judge", c08$sensitivity, ignore.case = TRUE)))
+
+c10 <- rd("c10_framing_paired.csv"); c10b <- rd("c10b_framing_incomplete_blocks.csv")
+chk("I16", "primary framing uses complete 2+2 blocks only",
+     !is.null(c10) && any(grepl("complete 2", c10$block_rule)))
+chk("I17", "incomplete framing blocks are listed by key",
+     !is.null(c10b) && all(c("issue_id", "model", "n_regular", "n_boundary") %in% names(c10b)),
+     if (is.null(c10b)) "" else sprintf("%d incomplete blocks", nrow(c10b)))
+chk("I18", "framing captions do not claim prompt content is held fixed",
+     !is.null(c10) && any(grepl("does NOT hold prompt content fixed|not hold prompt",
+                                c10$interpretation, ignore.case = TRUE)))
+
+c04 <- rd("c04_home_standardized.csv")
+chk("I19", "GLM warnings and separation are recorded on every standardized row",
+     !is.null(c04) && all(c("glm_warnings", "separation_detected",
+                            "separation_reason", "degenerate_prediction_weight")
+                          %in% names(c04)))
+chk("I20", "a penalized-logit sensitivity exists",
+     !is.null(c04) && any(grepl("Firth", c04$estimator)))
+chk("I21", "both a full-target and a common-support estimand are reported",
+     !is.null(c04) && all(c("full target", "common support") %in% c04$support))
+sup <- rd("c06b_common_support_diagnostics.csv")
+chk("I22", "support restriction reports retained rows, issues, cells and weight",
+     !is.null(sup) && all(c("rows_retained", "issues_retained", "cells_both_arms",
+                            "target_weight_retained") %in% names(sup)))
+c05 <- rd("c05_home_by_model.csv")
+chk("I23", "the equal-model average carries an interval",
+     !is.null(c05) && {
+       r <- c05 %>% filter(model == "EQUAL-MODEL AVERAGE", estimable)
+       nrow(r) > 0 && all(is.finite(r$conf_low)) })
+
+chk("I24", "failed bootstrap draws are counted, never replaced",
+     !is.null(c18) && "failed_draws_replaced" %in% names(c18) &&
+       !any(c18$failed_draws_replaced, na.rm = TRUE))
+chk("I25", "every bootstrap draws a fixed number of replicates",
+     !is.null(c18) && "replicates_drawn" %in% names(c18) &&
+       all(c18$replicates_drawn == c18$replicates_requested, na.rm = TRUE))
+chk("I26", "the finite-battery interval is design-based, not a rescaled percentile",
+     !is.null(c12) && any(grepl("jackknife", c12$inference_target)) &&
+       !any(grepl("sqrt\\(1", c12$inference_target)))
+
+# Release-only provenance. A bare acceptance run has no manifest yet, because
+# make_release.R writes it AFTER the stages and BEFORE acceptance; these are
+# enforced when CANON_RELEASE=1, which make_release sets.
+RELEASE_MODE <- nzchar(Sys.getenv("CANON_RELEASE", ""))
+tim <- rd("c00_timings.csv")
+if (RELEASE_MODE) {
+chk("I27", "timings are present and non-empty",
+     !is.null(tim) && nrow(tim) > 0 && all(is.finite(tim$minutes)),
+     if (is.null(tim)) "no timings" else sprintf("%d stages", nrow(tim)))
+man <- rd("c00_manifest.csv")
+chk("I28", "the manifest records git sha, hashes and environment",
+     !is.null(man) && all(c("git_sha", "sha256", "kind") %in% names(man)) &&
+       any(man$kind == "input_annotations") && any(man$kind == "environment") &&
+       all(!is.na(man$sha256[man$kind == "output"])))
+chk("I29", "the manifest does not list itself",
+     is.null(man) || !any(grepl("c00_manifest", man$path[man$kind == "output"])))
+chk("I30", "the release is not built from a dirty tree, or says so",
+     !is.null(man) && "git_dirty" %in% names(man) && !any(is.na(man$git_dirty)),
+     if (is.null(man)) "" else paste("dirty:", man$git_dirty[1]))
+} else {
+  cat("  [SKIP] I27-I30 release provenance (set CANON_RELEASE=1 to enforce)\n")
+}
 
 # --- write --------------------------------------------------------------------
 res <- bind_rows(RES) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)

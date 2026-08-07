@@ -60,49 +60,61 @@ cat(sprintf("  canonical content sample: %d responses, %d issues, %d models\n",
             nrow(SLANT_EN), n_distinct(SLANT_EN$issue_id), n_distinct(SLANT_EN$model)))
 
 # -----------------------------------------------------------------------------
-# Bootstrap over the SAMPLED issues, with an explicit statement of target.
+# Two inference targets, and a design-based estimator for the second
 # -----------------------------------------------------------------------------
-# The 156 slant issues are a random draw from the 624-issue battery. Two targets
-# are possible and they are NOT the same:
-#   superpopulation -- treat issues as drawn from a wider population of possible
-#                      issues; the ordinary cluster bootstrap estimates this;
-#   finite battery  -- treat the 624-issue battery as the population of interest;
-#                      then sampling 156 of 624 removes 1 - 156/624 = 75% of the
-#                      sampling variance, and the interval should shrink by
-#                      sqrt(1 - f).
-# Both are reported. The superpopulation interval is the conservative default.
+# The 156 slant issues were drawn WITHOUT REPLACEMENT from the frozen 624-issue
+# battery. Two targets are possible and they are not the same:
+#
+#   superpopulation -- issues are exchangeable draws from a wider population of
+#                      possible issues. The ordinary issue-cluster bootstrap
+#                      estimates this. It is the conservative default.
+#   frozen battery  -- the 624 issues ARE the population of interest. Then the
+#                      sampling fraction f = 156/624 matters and the variance
+#                      carries a finite-population correction.
+#
+# WHAT THIS REPLACES. The previous version took the superpopulation percentile
+# interval and shrank its half-widths by sqrt(1-f) after the fact. That is not a
+# design-based correction: the percentile interval's shape comes from a
+# with-replacement resampling model that does not match sampling 156 of 624
+# without replacement, and rescaling it does not make it match. The
+# finite-battery interval is now a delete-one-issue JACKKNIFE with an explicit
+# FPC (jack_fpc in 10_canonical_common.R), which is a standard estimator for
+# exactly this design and is tested against a census (f = 1 must give zero
+# variance) and against the (1-f) variance scaling.
 SLANT_N_SAMPLED <- n_distinct(SLANT_EN$issue_id)
 SLANT_N_TOTAL   <- n_distinct(canon$issue_id)
-FPC <- sqrt(1 - SLANT_N_SAMPLED / SLANT_N_TOTAL)
+cat(sprintf("  slant subsample: %d of %d issues (f = %.3f)\n",
+            SLANT_N_SAMPLED, SLANT_N_TOTAL, SLANT_N_SAMPLED / SLANT_N_TOTAL))
 
+TARGET_NOTE <- paste0(
+  "conf_low/conf_high target an issue SUPERPOPULATION (issue-cluster bootstrap, ",
+  "percentile). conf_low_battery/conf_high_battery target the frozen ",
+  SLANT_N_TOTAL, "-issue battery (delete-one-issue jackknife with finite-",
+  "population correction, normal approximation). They answer different ",
+  "questions; neither is a correction of the other.")
+
+# Superpopulation interval: the shared, multiplicity-preserving, fixed-B
+# bootstrap. Failures are counted, never resampled past.
 boot_slant <- function(d, stat, B, label) {
-  iss <- split(seq_len(nrow(d)), d$issue_id); keys <- names(iss)
-  d0 <- d; d0$bootstrap_issue_instance <- as.character(d0$issue_id)
-  point <- stat(d0)
-  set.seed(CAN_SEED)
-  vals <- numeric(0); att <- 0L; fail <- 0L
-  while (length(vals) < B && att < B * 1.5 + 50) {
-    att <- att + 1L
-    drawn <- sample(keys, length(keys), replace = TRUE)
-    rows <- unlist(iss[drawn], use.names = FALSE)
-    dd <- d[rows, , drop = FALSE]
-    dd$bootstrap_issue_instance <- rep(paste0(drawn, "#", seq_along(drawn)),
-                                       times = lengths(iss[drawn]))
-    v <- stat(dd)
-    if (!is.finite(v)) { fail <- fail + 1L; next }
-    vals <- c(vals, v)
-  }
-  record_diag(tibble(canonical_run_id = CANONICAL_RUN_ID, label = label,
-                     bootstrap_unit = "issue_id", multiplicity_preserved = TRUE,
-                     copy_id_column = "bootstrap_issue_instance", seed = CAN_SEED,
-                     replicates_requested = B, replicates_attempted = att,
-                     replicates_successful = length(vals), replicates_failed = fail,
-                     failure_rate = fail / max(att, 1), interval_method = "percentile",
-                     n_rows = nrow(d), n_issues = length(keys)))
-  lo <- unname(quantile(vals, .025)); hi <- unname(quantile(vals, .975))
-  list(estimate = point, conf_low = lo, conf_high = hi,
-       # finite-battery interval: shrink the half-widths by the fpc
-       fpc_low = point - (point - lo) * FPC, fpc_high = point + (hi - point) * FPC)
+  bt <- boot_canon(d, stat, B = B, label = label)
+  record_diag(bt$diag)
+  bt
+}
+
+# Frozen-battery interval: design-based.
+jack_slant <- function(d, stat, label) {
+  jk <- jack_fpc(d, stat, n_total = SLANT_N_TOTAL, label = paste0(label, "|jack"))
+  record_diag(jk$diag)
+  jk
+}
+
+# Both, in one row.
+both_intervals <- function(d, stat, B, label) {
+  bt <- boot_slant(d, stat, B, label)
+  jk <- jack_slant(d, stat, label)
+  list(estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
+       battery_low = jk$conf_low, battery_high = jk$conf_high,
+       battery_se = jk$se, interval_reliable = bt$interval_reliable)
 }
 
 # equal-model weighting: model means first, then unweighted mean of models
@@ -133,43 +145,75 @@ c13 <- map_dfr(names(IDEO), function(f) {
 }) %>% mutate(conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c13, file.path(CAN_EST, "c13_ideology_by_model.csv"))
 
+# PRIMARY ESTIMAND: the equal-model share in EACH of the five categories, with
+# an interval on every bin. The collapsed negative/neutral/positive split is
+# gone from the primary table: it threw away the distinction between -2 and -1
+# (and between +1 and +2), which is the only place the strength of a placement
+# lives, and it was declared "the full distribution" while being a three-way
+# summary of it.
+IDEO_BINS <- c(share_neg2 = -2L, share_neg1 = -1L, share_zero = 0L,
+               share_pos1 = 1L, share_pos2 = 2L)
+
+# Dimension-specific endpoints. "left/right" is meaningful for the economic
+# scale and misleading for the other three: the authority scale runs
+# authoritarian-libertarian and the populism scale populist-elitist, and
+# labelling either "left" or "right" asserts a mapping the codebook does not
+# make.
+IDEO_ENDPOINTS <- tribble(
+  ~field,                      ~endpoint_neg,     ~endpoint_pos,
+  "economic_left_right",       "left",            "right",
+  "social_left_right",         "progressive",     "traditional",
+  "authoritarian_libertarian", "authoritarian",   "libertarian",
+  "populist_elitist",          "populist",        "elitist")
+
 c12 <- map_dfr(names(IDEO), function(f) {
   d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
-  # equal-model aggregates of each share, each with its own interval
-  map_dfr(c("share_neutral", "share_negative", "share_positive", "signed_mean"),
-          function(q) {
-    st <- function(x) {
-      v <- switch(q,
-        share_neutral  = tapply(x[[f]] == 0, as.character(x$model), mean),
-        share_negative = tapply(x[[f]] <  0, as.character(x$model), mean),
-        share_positive = tapply(x[[f]] >  0, as.character(x$model), mean),
-        signed_mean    = tapply(x[[f]],      as.character(x$model), mean))
-      mean(v)
-    }
-    bt <- boot_slant(d, st, if (q == "share_neutral") B_HEAD else B_SENS,
-                     sprintf("c12|%s|%s", f, q))
-    tibble(dimension = unname(IDEO[f]), field = f, quantity = q,
-           weighting = "equal-model", estimate = bt$estimate,
-           conf_low = bt$conf_low, conf_high = bt$conf_high,
-           conf_low_finite_battery = bt$fpc_low,
-           conf_high_finite_battery = bt$fpc_high,
-           n = nrow(d), n_models = n_distinct(d$model),
-           n_issues_sampled = SLANT_N_SAMPLED, n_issues_battery = SLANT_N_TOTAL)
+  bins <- map_dfr(names(IDEO_BINS), function(q) {
+    v <- IDEO_BINS[[q]]
+    st <- function(x) mean(tapply(x[[f]] == v, as.character(x$model), mean))
+    r <- both_intervals(d, st, B_HEAD, sprintf("c12|%s|%s", f, q))
+    tibble(quantity = q, category = v, estimate = r$estimate,
+           conf_low = r$conf_low, conf_high = r$conf_high,
+           conf_low_battery = r$battery_low, conf_high_battery = r$battery_high,
+           battery_se = r$battery_se, interval_reliable = r$interval_reliable)
   })
+  # Secondary only, and labelled as such on the row.
+  st_mean <- function(x) mean(tapply(x[[f]], as.character(x$model), mean))
+  r <- both_intervals(d, st_mean, B_SENS, sprintf("c12|%s|signed_mean", f))
+  sec <- tibble(quantity = "signed_mean", category = NA_integer_,
+                estimate = r$estimate, conf_low = r$conf_low,
+                conf_high = r$conf_high, conf_low_battery = r$battery_low,
+                conf_high_battery = r$battery_high, battery_se = r$battery_se,
+                interval_reliable = r$interval_reliable)
+  bind_rows(bins, sec) %>%
+    mutate(dimension = unname(IDEO[f]), field = f,
+           role = ifelse(quantity == "signed_mean", "SECONDARY", "PRIMARY"),
+           weighting = "equal-model", n = nrow(d),
+           n_models = n_distinct(d$model),
+           n_issues_sampled = SLANT_N_SAMPLED, n_issues_battery = SLANT_N_TOTAL)
 }) %>%
-  mutate(primary_estimand = "full distribution over -2..+2; signed mean is SECONDARY",
-         inference_target = paste("primary interval targets an issue SUPERPOPULATION;",
-           "the finite-battery interval applies fpc sqrt(1 - 156/624) =",
-           sprintf("%.3f", FPC)),
+  left_join(IDEO_ENDPOINTS, by = "field") %>%
+  mutate(scale_label = paste0(endpoint_neg, " (-2) <-> ", endpoint_pos, " (+2)"),
+         primary_estimand = "equal-model share in each of the five categories -2..+2",
+         inference_target = TARGET_NOTE,
          reliability_warning = paste("IDEOLOGY RELIABILITY IS WEAK. Panel alpha by",
            "dimension: economic ~0.41, social ~0.30, authority ~0.24,",
-           "populism ~0.14. Social, authority and populism in particular should",
-           "not carry substantive weight."),
+           "populism ~0.14. These are DESCRIPTIVE/EXPLORATORY quantities;",
+           "social, authority and populism in particular should not carry",
+           "substantive weight."),
          conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c12, file.path(CAN_EST, "c12_ideology_distribution.csv"))
-cat("  neutral share by dimension (equal-model):\n")
-print(as.data.frame(c12 %>% filter(quantity == "share_neutral") %>%
-        select(dimension, estimate, conf_low, conf_high)), digits = 3, row.names = FALSE)
+
+# The five bins must sum to one within each dimension -- asserted here as well
+# as in acceptance, because a silent renormalisation would be invisible.
+chk <- c12 %>% filter(role == "PRIMARY") %>% group_by(dimension) %>%
+  summarise(s = sum(estimate), k = n(), .groups = "drop")
+stopifnot(all(chk$k == 5), all(abs(chk$s - 1) < 1e-9))
+cat("  five-bin distribution by dimension (equal-model):\n")
+print(as.data.frame(c12 %>% filter(role == "PRIMARY") %>%
+        select(dimension, quantity, estimate) %>%
+        pivot_wider(names_from = quantity, values_from = estimate)),
+      digits = 3, row.names = FALSE)
 
 # =============================================================================
 # C. MORAL FOUNDATIONS  (c14, c15)
@@ -190,24 +234,24 @@ write_csv(c15, file.path(CAN_EST, "c15_moral_by_model.csv"))
 # Equal-model points ALWAYS carry an interval computed on the same weighting.
 c14 <- map_dfr(names(MFT), function(f) {
   d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
-  overall <- boot_slant(d, function(x) eqm(x, f), B_HEAD, sprintf("c14|%s|all", f))
+  overall <- both_intervals(d, function(x) eqm(x, f), B_HEAD, sprintf("c14|%s|all", f))
   rows <- tibble(foundation = unname(MFT[f]), field = f, scope = "overall",
                  level = "all models", weighting = "equal-model",
                  estimate = overall$estimate, conf_low = overall$conf_low,
                  conf_high = overall$conf_high,
-                 conf_low_finite_battery = overall$fpc_low,
-                 conf_high_finite_battery = overall$fpc_high,
+                 conf_low_battery = overall$battery_low,
+                 conf_high_battery = overall$battery_high,
                  n = nrow(d), n_models = n_distinct(d$model))
   # Jurisdiction breakdown -- DESCRIPTIVE, because jurisdiction is defined by
   # model membership, so no model-adjusted jurisdiction contrast is identified.
   juris_rows <- map_dfr(JURIS_C, function(j) {
     dd <- d %>% filter(juris == j)
     if (nrow(dd) < 50) return(NULL)
-    b <- boot_slant(dd, function(x) eqm(x, f), B_SENS, sprintf("c14|%s|%s", f, j))
+    b <- both_intervals(dd, function(x) eqm(x, f), B_SENS, sprintf("c14|%s|%s", f, j))
     tibble(foundation = unname(MFT[f]), field = f, scope = "jurisdiction",
            level = j, weighting = "equal-model", estimate = b$estimate,
            conf_low = b$conf_low, conf_high = b$conf_high,
-           conf_low_finite_battery = b$fpc_low, conf_high_finite_battery = b$fpc_high,
+           conf_low_battery = b$battery_low, conf_high_battery = b$battery_high,
            n = nrow(dd), n_models = n_distinct(dd$model))
   })
   bind_rows(rows, juris_rows)
@@ -215,28 +259,38 @@ c14 <- map_dfr(names(MFT), function(f) {
   mutate(jurisdiction_caveat = paste("jurisdiction rows are DESCRIPTIVE:",
            "jurisdiction is defined by model membership, so a model-adjusted",
            "jurisdiction contrast is not identified"),
-         nonexclusive = "foundations are separate non-exclusive binaries; they do not form a composition",
+         nonexclusive = "foundations are separate NON-EXCLUSIVE binaries; a response can invoke several or none, so they do not form a composition and must never be plotted as shares of a whole",
+         inference_target = TARGET_NOTE,
          conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
 
-# Reliability flag for rare foundations, read from the panel if available.
+# Reliability for each foundation, carried as NUMBERS.
+#
+# There used to be a low_agreement_flag set at positive specific agreement <
+# 0.35. That threshold was invented here: it is not a preregistered criterion,
+# it has no external justification, and dichotomising at it turned a continuous
+# measurement-quality statistic into a verdict ("acceptable agreement") that the
+# figure then repeated. The value and its interval are reported instead, and any
+# tiering is left to the reader.
 rel <- tryCatch(read_csv("pipeline/estimates/e25_reliability_slant.csv",
                          show_col_types = FALSE), error = function(e) NULL)
 if (!is.null(rel)) {
+  keep <- intersect(c("construct", "krippendorff_alpha", "gwet_ac1", "prevalence",
+                      "psa_mean", "psa_min", "psa_max", "psa_conf_low",
+                      "psa_conf_high", "n_pairs", "n_units_complete"),
+                    names(rel))
   c14 <- c14 %>% left_join(
-    rel %>% select(field = construct, panel_alpha = krippendorff_alpha,
-                   panel_ac1 = gwet_ac1, panel_prevalence = prevalence,
-                   panel_pos_specific = positive_specific_agreement),
+    rel %>% select(all_of(keep)) %>% rename(field = construct),
     by = "field") %>%
-    mutate(low_agreement_flag = !is.na(panel_pos_specific) & panel_pos_specific < 0.35,
-           reliability_note = ifelse(low_agreement_flag,
-             "LOW positive specific agreement: judges rarely agree when this foundation is flagged",
-             ""))
+    mutate(reliability_statistic = "pairwise positive specific agreement, 2a/(2a+b+c), mean over judge pairs",
+           reliability_note = paste("reported as a number with its interval;",
+             "no acceptance threshold is applied because none is preregistered"),
+           evidence_status = "DESCRIPTIVE/EXPLORATORY for rare foundations")
 }
 write_csv(c14, file.path(CAN_EST, "c14_moral_prevalence_equal_model.csv"))
 cat("  equal-model prevalence (overall):\n")
 print(as.data.frame(c14 %>% filter(scope == "overall") %>%
         select(foundation, estimate, conf_low, conf_high,
-               any_of("panel_pos_specific"), any_of("low_agreement_flag"))),
+               any_of("psa_mean"), any_of("prevalence"))),
       digits = 3, row.names = FALSE)
 
 # =============================================================================

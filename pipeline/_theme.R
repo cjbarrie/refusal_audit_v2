@@ -198,7 +198,7 @@ CELL_EMPTY <- "#FBFBFC"
 # L* gap of 5 across this palette.
 PAL_LANGUAGE <- c("Chinese" = "#6E0C18", "English" = "#2A5183",
                   "Arabic"  = "#5A7CA5", "Hindi"   = "#9B9B9E",
-                  "Russian" = "#C6D3E0")
+                  "Russian" = "#A9BBD0")
 
 # --- figure geometry -------------------------------------------------------
 # Journal column widths in inches. Design to these; never scale afterwards.
@@ -298,27 +298,79 @@ key_sentence <- function(prefix, named_colours, suffix = "") {
 theme_set(theme_nature())
 
 # =============================================================================
-# Export -- the single sanctioned writer
+# Export -- one writer, three formats
 # =============================================================================
-# PNG at 600 dpi through ragg. `height` is in inches; pick it from the number of
-# rows so row spacing stays constant across figures rather than stretching.
-save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
+# PRODUCTION ARTWORK. Every figure is written as:
+#   .pdf  editable vector, text kept as TEXT with fonts embedded (cairo_pdf)
+#   .svg  editable vector, text kept as TEXT (svglite)
+#   .png  600 dpi RGB preview
+#
+# All three come from the SAME ggplot object, so they cannot drift. The
+# PNG-only rule that used to live here was right about drift and wrong about
+# the remedy: a journal needs editable vector art, and rasterising it at
+# submission is not recoverable. Drift is prevented by exporting once, from one
+# object, and by deleting stale siblings first.
+#
+# TEXT IS NEVER OUTLINED OR RASTERISED in the vector outputs. cairo_pdf embeds
+# subsetted fonts and svglite writes <text> elements; neither converts glyphs to
+# paths, so a production editor can restyle or re-set the type.
+#
+# Widths are the journal's: 89 mm single column, 183 mm double. Height is in
+# inches and chosen per figure.
+FIG_FORMATS <- c("pdf", "svg", "png")
+
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600,
+                     formats = FIG_FORMATS) {
   dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
-  stem <- sub("\\.[a-z]+$", "", file)
-  # PNG ONLY -- see the export rule at the top of this file. Do not reinstate a
-  # vector branch here.
-  dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
-  if (is.null(dev)) {
-    ggsave(paste0(stem, ".png"), plot, width = width, height = height,
-           units = "in", dpi = dpi, bg = "white")
-  } else {
-    ggsave(paste0(stem, ".png"), plot, width = width, height = height,
-           units = "in", dpi = dpi, device = dev, bg = "white")
+  stem <- sub("[.][a-z]+$", "", file)
+
+  # Stale siblings are removed BEFORE writing: a format dropped from `formats`
+  # would otherwise sit next to the new ones looking current.
+  for (ext in c("pdf", "svg", "png", "eps", "tif", "tiff"))
+    if (!(ext %in% formats)) unlink(paste0(stem, ".", ext))
+
+  written <- character(0)
+  if ("pdf" %in% formats) {
+    # grDevices::pdf, not cairo_pdf: this R build has no cairo device, and the
+    # base device is the better choice here anyway. Helvetica is one of the 14
+    # standard PDF fonts, so it needs no embedding and renders identically in
+    # every reader -- which is exactly what "Arial/Helvetica-compatible" asks
+    # for. Text is written as text operators; nothing is outlined.
+    ggsave(paste0(stem, ".pdf"), plot, width = width, height = height,
+           units = "in", device = grDevices::pdf, bg = "white",
+           family = FONT_SANS, useDingbats = FALSE)
+    written <- c(written, "pdf")
   }
-  cat(sprintf("  saved %-42s %.2f x %.2f in @ %d dpi\n",
-              basename(stem), width, height, dpi))
+  if ("svg" %in% formats && requireNamespace("svglite", quietly = TRUE)) {
+    ggsave(paste0(stem, ".svg"), plot, width = width, height = height,
+           units = "in", device = svglite::svglite, bg = "white")
+    written <- c(written, "svg")
+  }
+  if ("png" %in% formats) {
+    dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
+    if (is.null(dev))
+      ggsave(paste0(stem, ".png"), plot, width = width, height = height,
+             units = "in", dpi = dpi, bg = "white")
+    else
+      ggsave(paste0(stem, ".png"), plot, width = width, height = height,
+             units = "in", dpi = dpi, device = dev, bg = "white")
+    written <- c(written, "png")
+  }
+  cat(sprintf("  saved %-40s %5.1f x %5.1f mm  [%s]\n",
+              basename(stem), width * 25.4, height * 25.4,
+              paste(written, collapse = " ")))
   invisible(stem)
 }
+
+# Type sizes, in points at FINAL size. Nothing may fall below 5 pt: below that
+# a journal will reject the artwork and a reader cannot read it.
+PT_MIN     <- 5.0
+PT_BODY    <- 6.0
+PT_AXIS    <- 6.0
+PT_TITLE   <- 7.0
+PT_TAG     <- 8.0    # panel labels, bold
+# ggplot's `size` for geom_text is in millimetres, not points.
+pt_to_mm <- function(pt) pt / .pt
 
 # Height that keeps row pitch constant in a dot plot: n rows at ~0.16 in each
 # plus fixed chrome for title/axis.

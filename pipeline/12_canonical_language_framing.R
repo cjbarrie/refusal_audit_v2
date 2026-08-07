@@ -44,10 +44,13 @@ LANG_INTERP <- paste(
   "language-specific run-time, provider or annotation drift;",
   "NOT the causal effect of user language")
 FRAME_INTERP <- paste(
-  "paired boundary-minus-regular difference within issue x model x language;",
-  "a causal reading requires the generated regular and boundary prompt variants",
-  "to be exchangeable given the issue, which is an assumption about the",
-  "generation template, not a randomisation")
+  "paired boundary-minus-regular difference within issue x model x language.",
+  "The block holds the ISSUE and the MODEL fixed; it does NOT hold prompt",
+  "content fixed -- the regular and boundary variants are different realized",
+  "prompts about the same issue, which is the exposure being varied.",
+  "A causal reading requires the generated regular and boundary variants to be",
+  "exchangeable given the issue, which is an assumption about the generation",
+  "template, not a randomisation.")
 
 # -----------------------------------------------------------------------------
 # Generic paired bootstrap: resample ISSUES, carrying every block for a drawn
@@ -100,7 +103,10 @@ wmean_blocks <- function(df, how) {
 # =============================================================================
 # A. LANGUAGE  (c08, c09)
 # =============================================================================
-cat("\nA. paired language effects\n")
+# THE PREDECLARED PRIMARY WEIGHTING. Equal weight per model matches the target
+# population used everywhere else in the paper; the other two are robustness.
+PRIMARY_W <- "equal_model"
+cat("\nA. paired language effects (primary weighting:", PRIMARY_W, ")\n")
 
 paired_blocks <- function(L, outcome = "refused_strict", d = canon) {
   en <- d %>% filter(lang == "en") %>%
@@ -172,45 +178,38 @@ if (!is.null(CANON_LEN)) {
   }))
 }
 
-# Judge sensitivity: recompute the pooled paired effect under each judge.
-cat("  judge sensitivity\n")
-JUDGES <- judge_labels(language = "en")
-lang_judge <- tibble()
-if (!is.null(JUDGES) && nrow(JUDGES)) {
-  lang_judge <- map_dfr(sort(unique(JUDGES$judge_model)), function(j) {
-    lab <- JUDGES %>% filter(judge_model == j) %>%
-      transmute(block_id = paste(model, prompt_id, sep = "||"),
-                y_en_j = as.integer(engagement_code >= 4))
-    map_dfr(NONEN, function(L) {
-      P <- paired_blocks(L)
-      # Only the ENGLISH side has panel coverage, so this varies the English
-      # reference label while holding the language-side label at the canonical
-      # judge. Reported as a bound on judge influence, not a full recomputation.
-      b <- P$blocks %>% inner_join(lab, by = "block_id") %>%
-        mutate(d = y_l - y_en_j)
-      if (nrow(b) < 100) return(NULL)
-      tibble(language = L, sensitivity = "judge (English side only)", level = j,
-             estimate = mean(b$d), conf_low = NA_real_, conf_high = NA_real_,
-             n_blocks = nrow(b))
-    })
-  })
-}
+# JUDGE SENSITIVITY IS NOT REPORTED FOR THE PAIRED LANGUAGE EFFECT, and the
+# rows that used to appear here have been retired.
+#
+# The panel judges labelled ENGLISH responses only. Re-labelling one arm of a
+# paired difference and leaving the other arm on the anchor judge's labels does
+# not perturb the instrument -- it changes the estimand into a comparison
+# between two different measuring devices, one per arm. Any movement it produced
+# was a between-judge level difference, not judge sensitivity of the language
+# effect. A real version needs the panel run on the non-English arm; until then
+# the honest statement is that this quantity has no judge-sensitivity estimate.
+LANG_JUDGE_NOTE <- paste(
+  "no judge-sensitivity estimate exists for the paired language effect:",
+  "the panel covers English only, and re-labelling a single arm compares two",
+  "instruments rather than perturbing one")
 
+# Assemble: primary rows (one per weighting) plus the labelled sensitivities.
+# The judge-perturbation rows that used to be bound in here are retired -- see
+# LANG_JUDGE_NOTE above.
 c08 <- bind_rows(
   c08 %>% mutate(sensitivity = "primary", level = weighting),
-  lang_sens %>% mutate(weighting = "pooled",
-                       estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
-                       conf_high_pp = pp(conf_high),
-                       language_label = unname(LANG_LAB[language])),
-  lang_judge %>% mutate(weighting = "pooled", estimate_pp = pp(estimate),
-                        language_label = unname(LANG_LAB[language]))) %>%
-  mutate(estimand = "paired within-block difference, language minus English",
+  lang_sens %>% mutate(weighting = "pooled")) %>%
+  mutate(primary_weighting = PRIMARY_W,
+         judge_sensitivity = LANG_JUDGE_NOTE,
+         estimand = "paired within-block difference, language minus English",
          block_definition = "block_id = model x prompt_id",
-         interpretation = LANG_INTERP, outcome = "refused_strict (codes 4-5)",
-         bootstrap_unit = "issue_id", canonical_run_id = CANONICAL_RUN_ID)
+         interpretation = LANG_INTERP,
+         outcome = "refused_strict (codes 4-5) unless stated",
+         bootstrap_unit = "issue_id",
+         canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c08, file.path(CAN_EST, "c08_language_paired.csv"))
 cat("\n  primary (pooled):\n")
-print(as.data.frame(c08 %>% filter(sensitivity == "primary", weighting == "pooled") %>%
+print(as.data.frame(c08 %>% filter(sensitivity == "primary", weighting == PRIMARY_W) %>%
         select(language_label, estimate_pp, conf_low_pp, conf_high_pp,
                n_complete_blocks, n_missing_blocks)), digits = 3, row.names = FALSE)
 
@@ -246,16 +245,39 @@ cat(sprintf("  c09: %d rows\n", nrow(c09)))
 # =============================================================================
 cat("\nB. paired framing effects (English primary)\n")
 
-frame_blocks <- function(d, outcome = "refused_strict") {
-  d %>% group_by(issue_id, model, lang, juris, domain) %>%
+# The design puts TWO regular and TWO boundary prompts in every issue x model x
+# language block. A block with fewer is an incomplete cell, and averaging over
+# whatever happens to be present makes the comparison depend on which prompt
+# survived -- the arms are then not matched on prompt position within the issue.
+# PRIMARY requires the complete 2+2 block. The looser n_reg>0 & n_bnd>0 rule is
+# retained as a labelled sensitivity so the cost of the restriction is visible.
+frame_blocks <- function(d, outcome = "refused_strict", complete_only = TRUE) {
+  b <- d %>% group_by(issue_id, model, lang, juris, domain) %>%
     summarise(n_reg = sum(tier == "regular"), n_bnd = sum(tier == "boundary"),
               mean_reg = mean(.data[[outcome]][tier == "regular"]),
               mean_bnd = mean(.data[[outcome]][tier == "boundary"]),
               .groups = "drop") %>%
     filter(n_reg > 0, n_bnd > 0) %>% mutate(d = mean_bnd - mean_reg)
+  if (complete_only) b <- b %>% filter(n_reg == 2, n_bnd == 2)
+  b
 }
 
-FB_EN <- frame_blocks(CANON_ENGLISH)
+FB_ALL <- frame_blocks(CANON_ENGLISH, complete_only = FALSE)
+FB_EN  <- FB_ALL %>% filter(n_reg == 2, n_bnd == 2)
+
+# Report the incomplete blocks BY KEY, so they can be chased in the raw data
+# rather than merely counted.
+FB_INCOMPLETE <- FB_ALL %>% filter(n_reg != 2 | n_bnd != 2) %>%
+  transmute(issue_id, model, language = lang, n_regular = n_reg,
+            n_boundary = n_bnd,
+            reason = "expected 2 regular + 2 boundary prompts",
+            canonical_run_id = CANONICAL_RUN_ID)
+write_csv(FB_INCOMPLETE, file.path(CAN_EST, "c10b_framing_incomplete_blocks.csv"))
+cat(sprintf("  framing blocks: %d complete (2+2), %d incomplete -> c10b\n",
+            nrow(FB_EN), nrow(FB_INCOMPLETE)))
+if (nrow(FB_INCOMPLETE))
+  print(as.data.frame(FB_INCOMPLETE %>% select(issue_id, model, n_regular, n_boundary)),
+        row.names = FALSE)
 bt <- boot_paired(FB_EN, function(x) wmean_blocks(x, "equal_model"), B_HEAD, "c10|overall")
 c10 <- tibble(scope = "overall", level = "all models", n_blocks = nrow(FB_EN),
               n_issues = n_distinct(FB_EN$issue_id),
@@ -269,6 +291,15 @@ for (how in c("pooled", "equal_model_issue")) {
     n_blocks = nrow(FB_EN), n_issues = n_distinct(FB_EN$issue_id),
     estimate = b2$estimate, conf_low = b2$conf_low, conf_high = b2$conf_high))
 }
+# Block-completeness sensitivity: the looser rule, labelled.
+b_loose <- boot_paired(FB_ALL, function(x) wmean_blocks(x, "equal_model"), B_SENS,
+                       "c10|blocks|loose")
+c10 <- bind_rows(c10, tibble(scope = "block completeness sensitivity",
+  level = "n_reg>0 & n_bnd>0 (incomplete blocks included)",
+  n_blocks = nrow(FB_ALL), n_issues = n_distinct(FB_ALL$issue_id),
+  estimate = b_loose$estimate, conf_low = b_loose$conf_low,
+  conf_high = b_loose$conf_high))
+
 # any-refusal outcome
 FB_ANY <- frame_blocks(CANON_ENGLISH, "refused_any")
 b3 <- boot_paired(FB_ANY, function(x) wmean_blocks(x, "equal_model"), B_SENS, "c10|any")
@@ -281,6 +312,7 @@ c10 <- c10 %>% mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
                       estimand = "paired boundary-minus-regular framing difference",
                       block_definition = "issue_id x model x language",
                       sample = "English", weighting = "equal-model unless stated",
+                      block_rule = "PRIMARY: complete 2 regular + 2 boundary blocks only",
                       interpretation = FRAME_INTERP, bootstrap_unit = "issue_id",
                       canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c10, file.path(CAN_EST, "c10_framing_paired.csv"))

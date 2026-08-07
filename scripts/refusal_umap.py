@@ -150,6 +150,10 @@ def main() -> int:
                     default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
                     help="one encoder for every language, so panels are comparable")
     ap.add_argument("--max-chars", type=int, default=800)
+    ap.add_argument("--st-revision", default="main",
+                    help="pinned model revision; recorded in the output")
+    ap.add_argument("--truncation-sensitivity", default="400,800,1600",
+                    help="comma-separated max_chars values to re-score purity at")
     ap.add_argument("--min-chars", type=int, default=15,
                     help="drop refusals too short to carry lexical signal")
     args = ap.parse_args()
@@ -185,10 +189,11 @@ def main() -> int:
     if args.encoder == "semantic":
         from sentence_transformers import SentenceTransformer
         print(f"encoder: {args.st_model} (local)")
-        Z = SentenceTransformer(args.st_model).encode(
-            texts, batch_size=64, show_progress_bar=False,
-            convert_to_numpy=True, normalize_embeddings=True)
-        rep = f"sbert:{args.st_model.split('/')[-1]}@{args.max_chars}chars"
+        _model = SentenceTransformer(args.st_model, revision=args.st_revision)
+        Z = _model.encode(texts, batch_size=64, show_progress_bar=False,
+                          convert_to_numpy=True, normalize_embeddings=True)
+        rep = (f"sbert:{args.st_model.split('/')[-1]}"
+               f"@rev={args.st_revision}@{args.max_chars}chars")
         print(f"embeddings: {Z.shape[0]:,} x {Z.shape[1]}")
     else:
         from sklearn.decomposition import TruncatedSVD
@@ -233,25 +238,60 @@ def main() -> int:
     # codes were scattered at random (the prevalence-weighted baseline).
     from sklearn.neighbors import NearestNeighbors
     k = 15
-    nn = NearestNeighbors(n_neighbors=k + 1).fit(emb)
-    _, idx = nn.kneighbors(emb)
+
+    def purity(space, labels, metric="cosine"):
+        """Share of each point's k nearest neighbours sharing its label.
+
+        Computed in the ORIGINAL representation, not the 2-D projection. UMAP
+        rearranges neighbourhoods to satisfy a 2-D layout objective, so purity
+        measured on the projection partly measures the projection. The
+        projection value is still reported, separately, because it is what a
+        reader's eye estimates from the figure.
+        """
+        nn = NearestNeighbors(n_neighbors=k + 1, metric=metric).fit(space)
+        _, idx = nn.kneighbors(space)
+        lab = np.asarray(labels)
+        return np.array([(lab[row[1:]] == lab[row[0]]).mean() for row in idx])
+
     codes = df["code"].to_numpy()
-    same = np.array([(codes[row[1:]] == codes[row[0]]).mean() for row in idx])
+    grp = df["reason_group"].to_numpy()
+
+    emb_code = purity(Z, codes)
+    emb_grp = purity(Z, grp)
+    proj_grp = purity(emb, grp, metric="euclidean")
+
     p = df["code"].value_counts(normalize=True)
     baseline = float((p ** 2).sum())
-    # Same statistic on the five plotted groups, since that is what the figure
-    # actually shows -- reporting purity on 7 codes next to a 5-group figure
-    # would be quoting a number the reader cannot see.
-    grp = df["reason_group"].to_numpy()
-    same_g = np.array([(grp[row[1:]] == grp[row[0]]).mean() for row in idx])
     pg = df["reason_group"].value_counts(normalize=True)
     baseline_g = float((pg ** 2).sum())
-    print(f"\nneighbourhood purity (k={k}), 7 codes : {same.mean():.3f} "
-          f"vs {baseline:.3f} at random")
-    print(f"neighbourhood purity (k={k}), 5 groups: {same_g.mean():.3f} "
-          f"vs {baseline_g:.3f} at random")
-    df["neighbour_purity"] = same
-    df["neighbour_purity_group"] = same_g
+
+    print(f"\nneighbourhood purity (k={k}), EMBEDDING space:")
+    print(f"    7 codes : {emb_code.mean():.3f} vs {baseline:.3f} at random")
+    print(f"    5 groups: {emb_grp.mean():.3f} vs {baseline_g:.3f} at random")
+    print(f"  same statistic on the 2-D projection (reported separately):")
+    print(f"    5 groups: {proj_grp.mean():.3f}")
+
+    df["neighbour_purity"] = emb_code
+    df["neighbour_purity_group"] = emb_grp
+    df["neighbour_purity_group_projection"] = proj_grp
+
+    # Truncation sensitivity: does the conclusion depend on embedding only the
+    # opening 800 characters? Re-embed at other lengths and re-score purity in
+    # the embedding space. Cheap relative to the main run and it either supports
+    # the choice or exposes it.
+    trunc_rows = []
+    if args.encoder == "semantic" and args.truncation_sensitivity:
+        for mc in [int(x) for x in args.truncation_sensitivity.split(",") if x.strip()]:
+            if mc == args.max_chars:
+                trunc_rows.append((mc, float(emb_grp.mean())))
+                continue
+            Zt = _model.encode(df["response_text"].str.slice(0, mc).tolist(),
+                               batch_size=64, show_progress_bar=False,
+                               convert_to_numpy=True, normalize_embeddings=True)
+            trunc_rows.append((mc, float(purity(Zt, grp).mean())))
+        print("  truncation sensitivity (5-group purity in embedding space):")
+        for mc, v in trunc_rows:
+            print(f"    {mc:5d} chars -> {v:.3f}")
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -259,15 +299,21 @@ def main() -> int:
             "jurisdiction", "topic_domain", "tier", "battery", "engagement_code",
             "code", "code_label", "reason_group", "n_chars", "neighbour_purity",
             "neighbour_purity_group",
+            "neighbour_purity_group_projection",
             "umap_x", "umap_y"]
     df[keep].assign(
         seed=args.seed, n_neighbors=args.n_neighbors, min_dist=args.min_dist,
         metric="cosine", representation=rep, encoder=args.encoder,
         max_chars=args.max_chars,
-        purity_k=k, purity_observed=round(float(same.mean()), 4),
+        purity_k=k,
+        purity_space="original embedding space (not the 2-D projection)",
+        purity_observed=round(float(emb_code.mean()), 4),
         purity_baseline=round(baseline, 4),
-        purity_group_observed=round(float(same_g.mean()), 4),
+        purity_group_observed=round(float(emb_grp.mean()), 4),
         purity_group_baseline=round(baseline_g, 4),
+        purity_group_projection=round(float(proj_grp.mean()), 4),
+        st_revision=args.st_revision,
+        truncation_sensitivity=";".join(f"{mc}:{v:.4f}" for mc, v in trunc_rows),
     ).to_csv(out, index=False)
     print(f"wrote {out} ({len(df):,} rows)")
     return 0

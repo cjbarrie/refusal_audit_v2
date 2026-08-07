@@ -24,6 +24,7 @@ suppressPackageStartupMessages({ library(lme4); library(statmod) })
 cat(strrep("=", 78), "\nCANONICAL PART 1: HOME REGION\n", strrep("=", 78), "\n", sep = "")
 
 B_HEAD <- as.integer(Sys.getenv("CANON_B_HEAD", "2000"))
+B_FIRTH <- as.integer(Sys.getenv("CANON_B_FIRTH", "200"))
 B_SENS <- as.integer(Sys.getenv("CANON_B_SENS", "500"))
 
 NOT_CAUSAL <- paste(
@@ -138,61 +139,141 @@ cat("\nB. standardized contrast\n")
 
 
 
-std_row <- function(d, key, wname, B, tag, outcome = "refused_strict") {
+std_row <- function(d, key, wname, B, tag, outcome = "refused_strict",
+                    firth = FALSE) {
   wfun <- switch(wname, nested = w_nested, response = w_response,
                  equal_model = w_equal_model)
-  why <- estimable_chk(d)
-  base <- tibble(!!!key, weighting = wname, n = nrow(d),
-                 n_issues = n_distinct(d$issue_id), n_models = n_distinct(d$model),
-                 events_home = sum(d$refused_strict[d$home == 1]),
-                 events_away = sum(d$refused_strict[d$home == 0]))
-  if (nzchar(why))
-    return(bind_cols(base, tibble(estimate = NA_real_, conf_low = NA_real_,
-                                  conf_high = NA_real_, estimate_pp = NA_real_,
-                                  conf_low_pp = NA_real_, conf_high_pp = NA_real_,
-                                  estimable = FALSE, note = why)))
-  bt <- boot_canon(d, function(x) gcomp(x, wfun, outcome), B = B, label = tag)
+  # estimable_chk is asked about the OUTCOME actually being fitted.
+  why <- estimable_chk(d, outcome)
+  base <- tibble(!!!key, weighting = wname, outcome = outcome,
+                 estimator = if (firth) "Firth penalized logit" else "maximum likelihood",
+                 n = nrow(d), n_issues = n_distinct(d$issue_id),
+                 n_models = n_distinct(d$model),
+                 events_home = sum(d[[outcome]][d$home == 1]),
+                 events_away = sum(d[[outcome]][d$home == 0]))
+  # Fit once on the full data to record what the estimator actually did:
+  # warnings, separation, and whether every parameter is finite.
+  probe <- fit_logit(build_f(d, outcome), d, firth = firth)
+  sep <- sep_diagnose(probe$fit, w = wfun(d))
+  base <- bind_cols(base, tibble(
+    glm_warnings = paste(unique(probe$warnings), collapse = " | "),
+    separation_detected = sep$separated,
+    separation_blocking = sep$blocking,
+    separation_reason = sep$why,
+    # How much of the target weight sits in cells the model can only reach by
+    # extrapolation. This is the number behind "extrapolates heavily".
+    degenerate_prediction_weight = sep$degenerate_weight))
+
+  if (nzchar(why) || sep$blocking)
+    return(bind_cols(base, tibble(
+      estimate = NA_real_, conf_low = NA_real_, conf_high = NA_real_,
+      estimate_pp = NA_real_, conf_low_pp = NA_real_, conf_high_pp = NA_real_,
+      estimable = FALSE, interval_reliable = FALSE, replicate_failure_rate = NA_real_,
+      note = if (nzchar(why)) why else paste("separation:", sep$why))))
+
+  bt <- boot_canon(d, function(x) gcomp(x, wfun, outcome, firth = firth),
+                   B = B, label = tag)
   record_diag(bt$diag)
-  bind_cols(base, tibble(estimate = bt$estimate, conf_low = bt$conf_low,
-                         conf_high = bt$conf_high, estimate_pp = pp(bt$estimate),
-                         conf_low_pp = pp(bt$conf_low), conf_high_pp = pp(bt$conf_high),
-                         estimable = TRUE, note = ""))
+  bind_cols(base, tibble(
+    estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
+    estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+    conf_high_pp = pp(bt$conf_high), estimable = TRUE,
+    interval_reliable = bt$interval_reliable,
+    replicate_failure_rate = bt$failure_rate,
+    note = if (bt$interval_reliable) "" else
+      sprintf("UNRELIABLE INTERVAL: %.1f%% of bootstrap draws had no defined estimate",
+              100 * bt$failure_rate)))
 }
 
 cat("  primary (nested weights) + response-weighted sensitivity, B =", B_HEAD, "\n")
+
+# Two standardized estimands, reported side by side, because they answer
+# different questions:
+#
+#   FULL TARGET     -- standardize over every issue in the jurisdiction's arm.
+#                      Where a covariate cell appears in only one arm, the
+#                      outcome model EXTRAPOLATES into it. That is a modelling
+#                      assumption, not data.
+#   COMMON SUPPORT  -- restrict to cells present in BOTH arms first, then
+#                      standardize. No extrapolation, but the target population
+#                      is now those cells, and the retained target weight says
+#                      how much of the original target that is.
+SUPPORT_COLS <- c("model", "domain", "route_f", "tier")
+
+sup_diag <- map_dfr(JURIS_C, function(j) {
+  d <- ENG_HA %>% filter(juris == j) %>% droplevels()
+  restrict_support(d, SUPPORT_COLS)$diag %>% mutate(jurisdiction = j, .before = 1)
+}) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)
+write_csv(sup_diag, file.path(CAN_EST, "c06b_common_support_diagnostics.csv"))
+cat("  common support (jurisdiction x model x domain x route x tier):\n")
+print(as.data.frame(sup_diag %>% select(jurisdiction, cells_total, cells_both_arms,
+                                        rows_retained, rows_total,
+                                        target_weight_retained)),
+      digits = 3, row.names = FALSE)
+
 c04 <- map_dfr(JURIS_C, function(j) {
   d <- ENG_HA %>% filter(juris == j) %>% droplevels()
-  map_dfr(c("nested", "response"), function(w) {
-    cat(sprintf("    %-6s %-12s n=%d\n", j, w, nrow(d)))
-    std_row(d, list(jurisdiction = j), w, B_HEAD, sprintf("c04|%s|%s", j, w))
-  })
+  sup <- restrict_support(d, SUPPORT_COLS)
+  ds <- sup$data %>% droplevels()
+  bind_rows(
+    map_dfr(c("nested", "response"), function(w) {
+      cat(sprintf("    %-6s %-9s full-target   n=%d\n", j, w, nrow(d)))
+      std_row(d, list(jurisdiction = j, support = "full target"), w, B_HEAD,
+              sprintf("c04|%s|%s|full", j, w))
+    }),
+    {
+      cat(sprintf("    %-6s %-9s common-supp   n=%d\n", j, "nested", nrow(ds)))
+      std_row(ds, list(jurisdiction = j, support = "common support"), "nested",
+              B_HEAD, sprintf("c04|%s|nested|cs", j)) %>%
+        mutate(target_weight_retained = sup$diag$target_weight_retained,
+               cells_both_arms = sup$diag$cells_both_arms,
+               cells_total = sup$diag$cells_total)
+    },
+    # Declared penalized-logit sensitivity: where ML is undefined (separation),
+    # Firth still has a defined estimator in every replicate, so an interval
+    # exists at all. Reported as a sensitivity, never as the primary.
+    {
+      cat(sprintf("    %-6s %-9s Firth         n=%d\n", j, "nested", nrow(d)))
+      # Firth is ~37x slower per fit than ML, so the declared penalized-logit
+      # sensitivity uses its own, smaller replicate count. Recorded in c18.
+      std_row(d, list(jurisdiction = j, support = "full target"), "nested",
+              B_FIRTH, sprintf("c04|%s|firth", j), firth = TRUE)
+    })
 }) %>%
   mutate(spec = "refused_strict ~ home * model + tier + domain + route (per jurisdiction; home + ... when single-model)",
          region_fixed_effects = "EXCLUDED: region determines home within jurisdiction",
          sample = "English, home vs away, General excluded",
+         support_definition = paste(SUPPORT_COLS, collapse = " x "),
          target_population = ifelse(weighting == "nested",
            "equal weight per model; within model equal per issue; within model-issue equal per prompt (PRIMARY)",
            "empirical response composition (SENSITIVITY)"),
-         estimand = "covariate-standardized home-region refusal contrast",
+         estimand = ifelse(support == "common support",
+           "covariate-standardized home contrast on cells present in BOTH arms",
+           "covariate-standardized home contrast over the full jurisdiction arm"),
+         extrapolation = ifelse(support == "common support",
+           "none: restricted to jointly supported cells",
+           "EXTRAPOLATES into covariate cells observed in only one arm; the outcome model supplies those predictions"),
          causal_interpretation = NOT_CAUSAL,
-         outcome = "refused_strict (codes 4-5)",
-         uncertainty = "issue-cluster bootstrap; multiplicity preserved; refit + re-standardized per replicate; percentile",
+         uncertainty = "issue-cluster bootstrap; multiplicity preserved; fixed B draws; failures counted, never replaced; percentile",
          canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c04, file.path(CAN_EST, "c04_home_standardized.csv"))
-cat("\n  PRIMARY:\n")
-print(as.data.frame(c04 %>% filter(weighting == "nested") %>%
-        select(jurisdiction, n, events_home, events_away, estimate_pp,
-               conf_low_pp, conf_high_pp, estimable)), digits = 3, row.names = FALSE)
+cat("\n  PRIMARY (nested, full target) and common support:\n")
+print(as.data.frame(c04 %>% filter(weighting == "nested",
+                                   estimator == "maximum likelihood") %>%
+        select(jurisdiction, support, n, events_home, events_away, estimate_pp,
+               conf_low_pp, conf_high_pp, estimable, interval_reliable)),
+      digits = 3, row.names = FALSE)
 
 cat("\n  model-specific standardized contrasts\n")
 c05 <- map_dfr(JURIS_C, function(j) {
   d <- ENG_HA %>% filter(juris == j) %>% droplevels()
-  if (nzchar(estimable_chk(d)))
-    return(tibble(jurisdiction = j, model = sort(unique(as.character(d$model))),
-                  estimate = NA_real_, conf_low = NA_real_, conf_high = NA_real_,
-                  estimable = FALSE, note = estimable_chk(d)))
+  why <- estimable_chk(d, "refused_strict")
   ms <- sort(unique(as.character(d$model)))
-  map_dfr(ms, function(m) {
+  if (nzchar(why))
+    return(tibble(jurisdiction = j, model = ms, estimate = NA_real_,
+                  conf_low = NA_real_, conf_high = NA_real_,
+                  estimable = FALSE, note = why))
+  per_model <- map_dfr(ms, function(m) {
     st <- function(x) {
       v <- gcomp(x, w_nested, per_model = TRUE)
       if (is.null(v) || !m %in% names(v)) return(NA_real_)
@@ -201,20 +282,33 @@ c05 <- map_dfr(JURIS_C, function(j) {
     bt <- boot_canon(d, st, B = B_SENS, label = sprintf("c05|%s|%s", j, m))
     record_diag(bt$diag)
     tibble(jurisdiction = j, model = m, estimate = bt$estimate,
-           conf_low = bt$conf_low, conf_high = bt$conf_high, estimable = TRUE, note = "")
+           conf_low = bt$conf_low, conf_high = bt$conf_high, estimable = TRUE,
+           interval_reliable = bt$interval_reliable, note = "")
   })
+  # The equal-model average is bootstrapped JOINTLY, in the same replicates that
+  # produced the model-specific numbers, so it carries an interval. Averaging
+  # the point estimates afterwards produced a number with no uncertainty at all,
+  # and averaging the per-model intervals would have been wrong anyway: the
+  # model-specific contrasts within a jurisdiction are estimated on the SAME
+  # issues and are strongly dependent.
+  st_avg <- function(x) {
+    v <- gcomp(x, w_nested, per_model = TRUE)
+    if (is.null(v)) return(NA_real_)
+    mean(v)
+  }
+  bavg <- boot_canon(d, st_avg, B = B_SENS, label = sprintf("c05|%s|EQUALMODEL", j))
+  record_diag(bavg$diag)
+  bind_rows(per_model,
+            tibble(jurisdiction = j, model = "EQUAL-MODEL AVERAGE",
+                   estimate = bavg$estimate, conf_low = bavg$conf_low,
+                   conf_high = bavg$conf_high, estimable = TRUE,
+                   interval_reliable = bavg$interval_reliable,
+                   note = "jointly bootstrapped mean of this jurisdiction's model-specific contrasts"))
 }) %>% mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
               conf_high_pp = pp(conf_high),
               estimand = "model-specific covariate-standardized home contrast",
               causal_interpretation = NOT_CAUSAL,
               canonical_run_id = CANONICAL_RUN_ID)
-# equal-model average of the model-specific contrasts
-c05 <- bind_rows(c05, c05 %>% filter(estimable) %>% group_by(jurisdiction) %>%
-  summarise(model = "EQUAL-MODEL AVERAGE", estimate = mean(estimate),
-            estimate_pp = pp(mean(estimate)), n_models = n(), .groups = "drop") %>%
-  mutate(estimable = TRUE, note = "unweighted mean of this jurisdiction's model-specific contrasts",
-         estimand = "equal-model average of model-specific standardized contrasts",
-         causal_interpretation = NOT_CAUSAL, canonical_run_id = CANONICAL_RUN_ID))
 write_csv(c05, file.path(CAN_EST, "c05_home_by_model.csv"))
 cat(sprintf("  c05: %d rows\n", nrow(c05)))
 

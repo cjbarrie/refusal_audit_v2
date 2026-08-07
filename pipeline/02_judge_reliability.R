@@ -66,19 +66,63 @@ if (!has_cac)
   cat("NOTE: package 'irrCAC' not installed -- Gwet's AC1 will be NA.\n",
       "      install.packages('irrCAC') to enable the prevalence-robust statistic.\n")
 
-panel <- stream_in(file(panel_file), verbose = FALSE) %>% as_tibble()
-cat(sprintf("panel rows: %d   judges: %d   responses: %d\n",
-            nrow(panel), n_distinct(panel$judge_model),
+# ONE loader, shared with 14_canonical_judge_uncertainty.R. Two loaders with
+# different de-duplication meant the reliability number and the judge
+# re-estimate could be computed on different rows with nothing failing.
+source("pipeline/10_canonical_common.R")
+
+panel_raw <- stream_in(file(panel_file), verbose = FALSE) %>% as_tibble()
+n_raw <- nrow(panel_raw)
+# Explicit resume key, matching the annotator's own predicate: a repeated
+# (prompt_id, language, model) within a judge means the response was re-judged
+# on a resume, and the LAST record wins. Asserted afterwards rather than
+# absorbed with values_fn = first, which would hide a genuinely inconsistent
+# duplicate instead of resolving it.
+panel <- panel_raw %>%
+  group_by(across(all_of(PANEL_KEY))) %>% slice_tail(n = 1) %>% ungroup()
+n_dup <- n_raw - nrow(panel)
+stopifnot(!anyDuplicated(panel[PANEL_KEY]))
+cat(sprintf("panel rows: %d raw -> %d after resume-key collapse (%d duplicates)\n",
+            n_raw, nrow(panel), n_dup))
+cat(sprintf("judges: %d   responses: %d\n",
+            n_distinct(panel$judge_model),
             n_distinct(paste(panel$prompt_id, panel$prompt_language, panel$model))))
 
+# The judge panel exists for ENGLISH. Restrict before checking codebook
+# versions: the file also holds a later Russian re-annotation made under a
+# different codebook, and a whole-file check refuses to run because of rows this
+# analysis never uses.
+REL_LANG <- "en"
+panel <- panel %>% filter(prompt_language == REL_LANG)
+
 # Verdicts made under different codebooks are not comparable: alpha would be
-# measuring template drift rather than rater disagreement. Refuse to pool.
+# measuring template drift rather than rater disagreement. Refuse to pool two
+# DIFFERENT STAMPED versions.
+#
+# Unstamped rows are a separate matter and are reported, not silently pooled
+# away. The anchor judge's labels predate version stamping, so they carry NA
+# while the panel judges carry a hash. Whether the codebook text actually
+# differed cannot be established from the file, so the composition is written
+# into every reliability table and the limitation is stated rather than assumed
+# away in either direction.
+VER <- tibble(judge_model = character(), version = character(), n = integer())
 if ("judge_prompt_version" %in% names(panel)) {
+  VER <- panel %>% count(judge_model, version = judge_prompt_version, name = "n")
   vs <- unique(na.omit(panel$judge_prompt_version))
   if (length(vs) > 1)
-    stop("panel spans multiple judge_prompt_version values (",
+    stop("English panel spans multiple stamped judge_prompt_version values (",
          paste(vs, collapse = ", "), "). Re-annotate under one codebook.")
+  n_unstamped <- sum(is.na(panel$judge_prompt_version))
+  cat(sprintf("codebook: %s stamped version(s) [%s]; %d unstamped rows (%.0f%%)\n",
+              length(vs), paste(vs, collapse = ", "), n_unstamped,
+              100 * n_unstamped / nrow(panel)))
+  VERSION_NOTE <- sprintf(
+    "stamped version(s): %s; %d of %d rows unstamped (anchor labels predate version stamping)",
+    paste(vs, collapse = ", "), n_unstamped, nrow(panel))
+} else {
+  VERSION_NOTE <- "judge_prompt_version absent from the panel file"
 }
+write_csv(VER, file.path(EST, "e22b_panel_version_composition.csv"))
 
 panel <- panel %>%
   mutate(unit = paste(prompt_id, prompt_language, model, sep = "|"),
@@ -91,8 +135,11 @@ cat("judges:", paste(JUDGES, collapse = ", "), "\n\n")
 rater_matrix <- function(d, var) {
   w <- d %>% select(unit, judge_model, value = all_of(var)) %>%
     filter(!is.na(value)) %>%
-    pivot_wider(names_from = judge_model, values_from = value,
-                values_fn = first)
+    pivot_wider(names_from = judge_model, values_from = value)
+  # No values_fn: duplicates were resolved once, by the resume key, above. If
+  # any survive, pivot_wider produces list columns and this fails loudly, which
+  # is the point -- values_fn = first would silently choose one.
+  stopifnot(!any(vapply(w, is.list, logical(1))))
   m <- as.matrix(w[, setdiff(names(w), "unit"), drop = FALSE])
   rownames(m) <- w$unit
   # A unit rated by only one judge carries no agreement information.
@@ -121,16 +168,18 @@ raw_agree <- function(m) {
   mean(apply(m, 1, function(r) { r <- r[!is.na(r)]; length(unique(r)) == 1 }))
 }
 
-# Positive specific agreement: among units at least one judge coded positive,
-# the share on which all judges agree it is positive. For a rare outcome this is
-# the informative quantity; overall agreement is dominated by the common zero.
-pos_agree <- function(m) {
-  if (is.null(m) || !nrow(m)) return(NA_real_)
-  flagged <- apply(m, 1, function(r) any(r == 1, na.rm = TRUE))
-  if (!any(flagged)) return(NA_real_)
-  mean(apply(m[flagged, , drop = FALSE], 1,
-             function(r) { r <- r[!is.na(r)]; all(r == 1) }))
-}
+# psa_pair / psa_summary / all_rater_positive_unanimity come from
+# 10_canonical_common.R.
+#
+# WHAT CHANGED AND WHY. A function called pos_agree() used to be reported in the
+# column positive_specific_agreement. It computed, among units ANY judge coded
+# positive, the share where ALL judges agreed positive. That is not positive
+# specific agreement: PSA is a pairwise quantity, 2a/(2a+b+c). The old statistic
+# falls mechanically as judges are added -- with four judges it is closer to a
+# unanimity rate -- so it was not comparable across constructs rated by
+# different numbers of judges, and it was being read as if it were the standard
+# measure. It is retained under the name all_rater_positive_unanimity, and the
+# reported quantity is now the mean and range of true pairwise PSA.
 
 gwet_ac1 <- function(m) {
   if (!has_cac || is.null(m) || nrow(m) < 2) return(NA_real_)
@@ -140,15 +189,27 @@ gwet_ac1 <- function(m) {
 
 # Issue-cluster bootstrap for any of the above.
 unit_issue <- panel %>% distinct(unit, issue_id) %>% deframe()
-boot_stat <- function(m, fn, B = 500) {
+# Seeded, with the seed and replicate counts recorded. An unseeded reliability
+# interval cannot be reproduced, and an interval whose failure count is unknown
+# cannot be interpreted.
+REL_SEED <- 20260807L
+REL_B    <- 500L
+.rel_diag <- list()
+boot_stat <- function(m, fn, B = REL_B, label = NA_character_) {
   if (is.null(m) || nrow(m) < 2) return(c(NA_real_, NA_real_))
   iss <- unit_issue[rownames(m)]
   groups <- split(seq_len(nrow(m)), iss)
   u <- names(groups)
-  vals <- replicate(B, {
+  set.seed(REL_SEED)
+  vals <- vapply(seq_len(B), function(b) {
     tk <- sample(u, length(u), replace = TRUE)
-    fn(m[unlist(groups[tk]), , drop = FALSE])
-  })
+    v <- tryCatch(fn(m[unlist(groups[tk]), , drop = FALSE]), error = function(e) NA_real_)
+    if (length(v) != 1L || !is.finite(v)) NA_real_ else v
+  }, numeric(1))
+  .rel_diag[[length(.rel_diag) + 1]] <<- tibble(
+    label = label, seed = REL_SEED, replicates_drawn = B,
+    replicates_successful = sum(!is.na(vals)), replicates_failed = sum(is.na(vals)),
+    bootstrap_unit = "issue_id", n_units = nrow(m))
   quantile(vals, c(.025, .975), na.rm = TRUE)
 }
 
@@ -168,12 +229,27 @@ e23 <- tibble(
   alpha_low = c(NA, ci_a[[1]]), alpha_high = c(NA, ci_a[[2]]),
   gwet_ac1 = c(gwet_ac1(m_eng), gwet_ac1(m_ref)),
   ac1_low = c(NA, ci_g[[1]]), ac1_high = c(NA, ci_g[[2]]),
-  positive_specific_agreement = c(NA, pos_agree(m_ref)),
-  prevalence = c(NA, mean(m_ref, na.rm = TRUE)))
+  # TRUE pairwise positive specific agreement, 2a/(2a+b+c): mean over judge
+  # pairs, with the range, and an issue-clustered interval on the mean.
+  psa_mean = c(NA, psa_summary(m_ref)$psa_mean),
+  psa_min  = c(NA, psa_summary(m_ref)$psa_min),
+  psa_max  = c(NA, psa_summary(m_ref)$psa_max),
+  n_pairs  = c(NA, psa_summary(m_ref)$n_pairs),
+  psa_conf_low  = c(NA, boot_stat(m_ref, function(x) psa_summary(x)$psa_mean,
+                                  label = "e23|psa|refused")[[1]]),
+  psa_conf_high = c(NA, boot_stat(m_ref, function(x) psa_summary(x)$psa_mean,
+                                  label = "e23|psa2|refused")[[2]]),
+  # The old statistic, under a name that says what it is.
+  all_rater_positive_unanimity = c(NA, all_rater_positive_unanimity(m_ref)),
+  prevalence = c(NA, mean(m_ref, na.rm = TRUE)),
+  psa_definition = "pairwise 2a/(2a+b+c), mean over judge pairs (Cicchetti-Feinstein)",
+  n_units_complete = c(sum(rowSums(!is.na(m_eng)) == ncol(m_eng)),
+                       sum(rowSums(!is.na(m_ref)) == ncol(m_ref))))
+e23 <- e23 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG)
 write_csv(e23, file.path(EST, "e23_reliability_pass1.csv"))
-print(as.data.frame(e23 %>% select(construct, n_units, raw_agreement,
-                                   krippendorff_alpha, gwet_ac1,
-                                   positive_specific_agreement)),
+print(as.data.frame(e23 %>% select(construct, n_units, n_units_complete,
+                                   raw_agreement, krippendorff_alpha, gwet_ac1,
+                                   psa_mean, psa_min, psa_max)),
       digits = 3, row.names = FALSE)
 
 # --- e24 justification composition -------------------------------------------
@@ -208,7 +284,11 @@ e25 <- bind_rows(
            raw_agreement = raw_agree(m),
            krippendorff_alpha = kripp(m, "ordinal"),
            gwet_ac1 = gwet_ac1(m), prevalence = NA_real_,
-           positive_specific_agreement = NA_real_)
+           # PSA is defined for a binary outcome; an ordinal -2..+2 scale has no
+           # "positive" cell, so the column is simply absent for these rows.
+           n_units_complete = if (is.null(m)) 0L else
+             sum(rowSums(!is.na(m)) == ncol(m)),
+           n_judges = if (is.null(m)) 0L else ncol(m))
   }),
   map_dfr(MFT, function(v) {
     if (!v %in% names(panel)) return(NULL)
@@ -219,8 +299,22 @@ e25 <- bind_rows(
            krippendorff_alpha = kripp(m, "nominal"),
            gwet_ac1 = gwet_ac1(m),
            prevalence = if (is.null(m)) NA_real_ else mean(m, na.rm = TRUE),
-           positive_specific_agreement = pos_agree(m))
+           psa_mean = psa_summary(m)$psa_mean,
+           psa_min  = psa_summary(m)$psa_min,
+           psa_max  = psa_summary(m)$psa_max,
+           n_pairs  = psa_summary(m)$n_pairs,
+           psa_conf_low  = boot_stat(m, function(x) psa_summary(x)$psa_mean,
+                                     label = paste0("e25|psa|", v))[[1]],
+           psa_conf_high = boot_stat(m, function(x) psa_summary(x)$psa_mean,
+                                     label = paste0("e25|psa2|", v))[[2]],
+           all_rater_positive_unanimity = all_rater_positive_unanimity(m),
+           # Units rated by ALL judges, kept separate from units rated by two:
+           # pooling them mixes samples whose agreement is not comparable.
+           n_units_complete = if (is.null(m)) 0L else
+             sum(rowSums(!is.na(m)) == ncol(m)),
+           n_judges = if (is.null(m)) 0L else ncol(m))
   })) %>% filter(n_units > 0)
+e25 <- e25 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG)
 write_csv(e25, file.path(EST, "e25_reliability_slant.csv"))
 if (nrow(e25)) print(as.data.frame(e25 %>% select(construct, n_units, raw_agreement,
                                                   krippendorff_alpha, gwet_ac1,
@@ -385,5 +479,40 @@ write_csv(e28, file.path(EST, "e28_consensus_labels.csv"))
 cat(sprintf("  %d units; majority-refused %.2f%%, unanimous-refused %.2f%%\n",
             nrow(e28), 100 * mean(e28$refused_majority),
             100 * mean(e28$refused_unanimous)))
+
+# --- e23b pairwise agreement, and complete-case vs all-available -------------
+# Units rated by TWO judges and units rated by FOUR do not carry comparable
+# agreement information, and an alpha computed over a mixture of both is not a
+# quantity anyone can interpret. Both samples are reported, separately, with
+# their sizes, plus every judge pair on its own.
+cat("\ne23b pairwise agreement and complete-case comparison\n")
+m_ref_complete <- m_ref[rowSums(!is.na(m_ref)) == ncol(m_ref), , drop = FALSE]
+e23b <- bind_rows(
+  psa_matrix(m_ref) %>% mutate(sample = "all available (pairwise complete)",
+                               construct = "refused (>=4)"),
+  psa_matrix(m_ref_complete) %>% mutate(sample = "units rated by ALL judges",
+                                        construct = "refused (>=4)")) %>%
+  mutate(n_units_all_available = nrow(m_ref),
+         n_units_complete_case = nrow(m_ref_complete),
+         n_judges = ncol(m_ref),
+         statistic = "positive specific agreement 2a/(2a+b+c)",
+         seed = REL_SEED)
+write_csv(e23b, file.path(EST, "e23b_pairwise_agreement.csv"))
+print(as.data.frame(e23b %>% select(sample, judge_a, judge_b, n_pair, psa)),
+      digits = 3, row.names = FALSE)
+
+alpha_complete <- kripp(m_ref_complete, "nominal")
+cat(sprintf("\n  alpha, all available (%d units): %.3f\n", nrow(m_ref),
+            kripp(m_ref, "nominal")))
+cat(sprintf("  alpha, complete case  (%d units): %.3f\n",
+            nrow(m_ref_complete), alpha_complete))
+
+# --- reliability bootstrap diagnostics ---------------------------------------
+if (length(.rel_diag)) {
+  write_csv(bind_rows(.rel_diag) %>% mutate(script = "02_judge_reliability.R"),
+            file.path(EST, "e23c_reliability_bootstrap_diagnostics.csv"))
+  cat(sprintf("\n  %d reliability bootstraps recorded (seed %d, B %d)\n",
+              length(.rel_diag), REL_SEED, REL_B))
+}
 
 cat("\n", strrep("=", 78), "\nMEASUREMENT COMPLETE\n", strrep("=", 78), "\n", sep = "")

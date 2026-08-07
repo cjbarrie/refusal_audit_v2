@@ -1,61 +1,61 @@
 language,eligible_engaged,coded,coverage,scope,model,canonical_run_id,canonical_use
-ar,6328,6039,0.9543299620733249,language,NA,canon_006,EXCLUDED: incomplete coverage
-en,6528,6528,1,language,NA,canon_006,eligible for canonical content results
-hi,5905,5905,1,language,NA,canon_006,eligible for canonical content results
-ru,6269,4279,0.6825650023927261,language,NA,canon_006,EXCLUDED: incomplete coverage
-zh,6428,6355,0.9886434349719975,language,NA,canon_006,EXCLUDED: incomplete coverage
-ar,520,516,0.9923076923076923,language x model,allam-7b,canon_006,EXCLUDED: incomplete coverage
-ar,611,603,0.9869067103109657,language x model,claude-opus-4.5,canon_006,EXCLUDED: incomplete coverage
-ar,567,556,0.9805996472663139,language x model,deepseek-chat-v3.1,canon_006,EXCLUDED: incomplete coverage
-ar,424,419,0.9882075471698113,language x model,falcon3-10b,canon_006,EXCLUDED: incomplete coverage
-ar,615,603,0.9804878048780488,language x model,gpt-4o,canon_006,EXCLUDED: incomplete coverage
-ar,592,581,0.981418918918919,language x model,gpt-5.1,canon_006,EXCLUDED: incomplete coverage
-ar,619,606,0.9789983844911146,language x model,grok-4.3,canon_006,EXCLUDED: incomplete coverage
-ar,592,585,0.9881756756756757,language x model,jais-8b,canon_006,EXCLUDED: incomplete coverage
-ar,624,613,0.9823717948717948,language x model,mistral-large-2512,canon_006,EXCLUDED: incomplete coverage
-ar,615,605,0.983739837398374,language x model,qwen3-max,canon_006,EXCLUDED: incomplete coverage
-ar,549,352,0.6411657559198543,language x model,sarvam-30b,canon_006,EXCLUDED: incomplete coverage
-en,512,512,1,language x model,allam-7b,canon_006,eligible for canonical content results
-en,606,606,1,language x model,claude-opus-4.5,canon_006,eligible for canonical content results
-en,597,597,1,language x model,deepseek-chat-v3.1,canon_006,eligible for canonical content results
-en,581,581,1,language x model,falcon3-10b,canon_006,eligible for canonical content results
-en,612,612,1,language x model,gpt-4o,canon_006,eligible for canonical content results
-en,605,605,1,language x model,gpt-5.1,canon_006,eligible for canonical content results
-en,612,612,1,language x model,grok-4.3,canon_006,eligible for canonical content results
-en,606,606,1,language x model,jais-8b,canon_006,eligible for canonical content results
-en,624,624,1,language x model,mistral-large-2512,canon_006,eligible for canonical content results
-en,584,584,1,language x model,qwen3-max,canon_006,eligible for canonical content results
-en,589,589,1,language x model,sarvam-30b,canon_006,eligible for canonical content results
-hi,132,132,1,language x model,allam-7b,canon_006,eligible for canonical content results
-hi,571,571,1,language x model,claude-opus-4.5,canon_006,eligible for canonical content results
-hi,583,583,1,language x model,deepseek-chat-v3.1,canon_006,eligible for canonical content results
-hi,419,419,1,language x model,falcon3-10b,canon_006,eligible for canonical content results
-hi,617,617,1,language x model,gpt-4o,canon_006,eligible for canonical content results
-hi,620,620,1,language x model,gpt-5.1,canon_006,eligible for canonical content results
-hi,616,616,1,language x model,grok-4.3,canon_006,eligible for canonical content results
-hi,499,499,1,language x model,jais-8b,canon_006,eligible for canonical content results
-hi,623,623,1,language x model,mistral-large-2512,canon_006,eligible for canonical content results
-hi,618,618,1,language x model,qwen3-max,canon_006,eligible for canonical content results
-hi,607,607,1,language x model,sarvam-30b,canon_006,eligible for canonical content results
-ru,187,0,0,language x model,allam-7b,canon_006,EXCLUDED: incomplete coverage
-ru,614,613,0.998371335504886,language x model,claude-opus-4.5,canon_006,EXCLUDED: incomplete coverage
-ru,582,579,0.9948453608247423,language x model,deepseek-chat-v3.1,canon_006,EXCLUDED: incomplete coverage
-ru,588,6,0.01020408163265306,language x model,falcon3-10b,canon_006,EXCLUDED: incomplete coverage
-ru,612,611,0.9983660130718954,language x model,gpt-4o,canon_006,EXCLUDED: incomplete coverage
-ru,614,612,0.996742671009772,language x model,gpt-5.1,canon_006,EXCLUDED: incomplete coverage
-ru,617,615,0.9967585089141004,language x model,grok-4.3,canon_006,EXCLUDED: incomplete coverage
-ru,596,7,0.01174496644295302,language x model,jais-8b,canon_006,EXCLUDED: incomplete coverage
-ru,624,621,0.9951923076923077,language x model,mistral-large-2512,canon_006,EXCLUDED: incomplete coverage
-ru,616,615,0.9983766233766234,language x model,qwen3-max,canon_006,EXCLUDED: incomplete coverage
-ru,619,0,0,language x model,sarvam-30b,canon_006,EXCLUDED: incomplete coverage
-zh,405,399,0.9851851851851852,language x model,allam-7b,canon_006,EXCLUDED: incomplete coverage
-zh,603,598,0.9917081260364843,language x model,claude-opus-4.5,canon_006,EXCLUDED: incomplete coverage
-zh,543,541,0.996316758747698,language x model,deepseek-chat-v3.1,canon_006,EXCLUDED: incomplete coverage
-zh,603,598,0.9917081260364843,language x model,falcon3-10b,canon_006,EXCLUDED: incomplete coverage
-zh,621,616,0.9919484702093397,language x model,gpt-4o,canon_006,EXCLUDED: incomplete coverage
-zh,610,603,0.9885245901639345,language x model,gpt-5.1,canon_006,EXCLUDED: incomplete coverage
-zh,620,614,0.9903225806451613,language x model,grok-4.3,canon_006,EXCLUDED: incomplete coverage
-zh,594,580,0.9764309764309764,language x model,jais-8b,canon_006,EXCLUDED: incomplete coverage
-zh,624,616,0.9871794871794872,language x model,mistral-large-2512,canon_006,EXCLUDED: incomplete coverage
-zh,586,582,0.9931740614334471,language x model,qwen3-max,canon_006,EXCLUDED: incomplete coverage
-zh,619,608,0.9822294022617124,language x model,sarvam-30b,canon_006,EXCLUDED: incomplete coverage
+ar,6328,6039,0.9543299620733249,language,NA,canon_008,EXCLUDED: incomplete coverage
+en,6528,6528,1,language,NA,canon_008,eligible for canonical content results
+hi,5905,5905,1,language,NA,canon_008,eligible for canonical content results
+ru,6269,4279,0.6825650023927261,language,NA,canon_008,EXCLUDED: incomplete coverage
+zh,6428,6355,0.9886434349719975,language,NA,canon_008,EXCLUDED: incomplete coverage
+ar,520,516,0.9923076923076923,language x model,allam-7b,canon_008,EXCLUDED: incomplete coverage
+ar,611,603,0.9869067103109657,language x model,claude-opus-4.5,canon_008,EXCLUDED: incomplete coverage
+ar,567,556,0.9805996472663139,language x model,deepseek-chat-v3.1,canon_008,EXCLUDED: incomplete coverage
+ar,424,419,0.9882075471698113,language x model,falcon3-10b,canon_008,EXCLUDED: incomplete coverage
+ar,615,603,0.9804878048780488,language x model,gpt-4o,canon_008,EXCLUDED: incomplete coverage
+ar,592,581,0.981418918918919,language x model,gpt-5.1,canon_008,EXCLUDED: incomplete coverage
+ar,619,606,0.9789983844911146,language x model,grok-4.3,canon_008,EXCLUDED: incomplete coverage
+ar,592,585,0.9881756756756757,language x model,jais-8b,canon_008,EXCLUDED: incomplete coverage
+ar,624,613,0.9823717948717948,language x model,mistral-large-2512,canon_008,EXCLUDED: incomplete coverage
+ar,615,605,0.983739837398374,language x model,qwen3-max,canon_008,EXCLUDED: incomplete coverage
+ar,549,352,0.6411657559198543,language x model,sarvam-30b,canon_008,EXCLUDED: incomplete coverage
+en,512,512,1,language x model,allam-7b,canon_008,eligible for canonical content results
+en,606,606,1,language x model,claude-opus-4.5,canon_008,eligible for canonical content results
+en,597,597,1,language x model,deepseek-chat-v3.1,canon_008,eligible for canonical content results
+en,581,581,1,language x model,falcon3-10b,canon_008,eligible for canonical content results
+en,612,612,1,language x model,gpt-4o,canon_008,eligible for canonical content results
+en,605,605,1,language x model,gpt-5.1,canon_008,eligible for canonical content results
+en,612,612,1,language x model,grok-4.3,canon_008,eligible for canonical content results
+en,606,606,1,language x model,jais-8b,canon_008,eligible for canonical content results
+en,624,624,1,language x model,mistral-large-2512,canon_008,eligible for canonical content results
+en,584,584,1,language x model,qwen3-max,canon_008,eligible for canonical content results
+en,589,589,1,language x model,sarvam-30b,canon_008,eligible for canonical content results
+hi,132,132,1,language x model,allam-7b,canon_008,eligible for canonical content results
+hi,571,571,1,language x model,claude-opus-4.5,canon_008,eligible for canonical content results
+hi,583,583,1,language x model,deepseek-chat-v3.1,canon_008,eligible for canonical content results
+hi,419,419,1,language x model,falcon3-10b,canon_008,eligible for canonical content results
+hi,617,617,1,language x model,gpt-4o,canon_008,eligible for canonical content results
+hi,620,620,1,language x model,gpt-5.1,canon_008,eligible for canonical content results
+hi,616,616,1,language x model,grok-4.3,canon_008,eligible for canonical content results
+hi,499,499,1,language x model,jais-8b,canon_008,eligible for canonical content results
+hi,623,623,1,language x model,mistral-large-2512,canon_008,eligible for canonical content results
+hi,618,618,1,language x model,qwen3-max,canon_008,eligible for canonical content results
+hi,607,607,1,language x model,sarvam-30b,canon_008,eligible for canonical content results
+ru,187,0,0,language x model,allam-7b,canon_008,EXCLUDED: incomplete coverage
+ru,614,613,0.998371335504886,language x model,claude-opus-4.5,canon_008,EXCLUDED: incomplete coverage
+ru,582,579,0.9948453608247423,language x model,deepseek-chat-v3.1,canon_008,EXCLUDED: incomplete coverage
+ru,588,6,0.01020408163265306,language x model,falcon3-10b,canon_008,EXCLUDED: incomplete coverage
+ru,612,611,0.9983660130718954,language x model,gpt-4o,canon_008,EXCLUDED: incomplete coverage
+ru,614,612,0.996742671009772,language x model,gpt-5.1,canon_008,EXCLUDED: incomplete coverage
+ru,617,615,0.9967585089141004,language x model,grok-4.3,canon_008,EXCLUDED: incomplete coverage
+ru,596,7,0.01174496644295302,language x model,jais-8b,canon_008,EXCLUDED: incomplete coverage
+ru,624,621,0.9951923076923077,language x model,mistral-large-2512,canon_008,EXCLUDED: incomplete coverage
+ru,616,615,0.9983766233766234,language x model,qwen3-max,canon_008,EXCLUDED: incomplete coverage
+ru,619,0,0,language x model,sarvam-30b,canon_008,EXCLUDED: incomplete coverage
+zh,405,399,0.9851851851851852,language x model,allam-7b,canon_008,EXCLUDED: incomplete coverage
+zh,603,598,0.9917081260364843,language x model,claude-opus-4.5,canon_008,EXCLUDED: incomplete coverage
+zh,543,541,0.996316758747698,language x model,deepseek-chat-v3.1,canon_008,EXCLUDED: incomplete coverage
+zh,603,598,0.9917081260364843,language x model,falcon3-10b,canon_008,EXCLUDED: incomplete coverage
+zh,621,616,0.9919484702093397,language x model,gpt-4o,canon_008,EXCLUDED: incomplete coverage
+zh,610,603,0.9885245901639345,language x model,gpt-5.1,canon_008,EXCLUDED: incomplete coverage
+zh,620,614,0.9903225806451613,language x model,grok-4.3,canon_008,EXCLUDED: incomplete coverage
+zh,594,580,0.9764309764309764,language x model,jais-8b,canon_008,EXCLUDED: incomplete coverage
+zh,624,616,0.9871794871794872,language x model,mistral-large-2512,canon_008,EXCLUDED: incomplete coverage
+zh,586,582,0.9931740614334471,language x model,qwen3-max,canon_008,EXCLUDED: incomplete coverage
+zh,619,608,0.9822294022617124,language x model,sarvam-30b,canon_008,EXCLUDED: incomplete coverage

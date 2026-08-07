@@ -52,6 +52,16 @@ source("pipeline/_theme.R")
 # global files -- so a release could depend on inputs no manifest recorded.
 EST <- Sys.getenv("CANON_EST_DIR", "pipeline/estimates")
 dir.create(EST, showWarnings = FALSE, recursive = TRUE)
+
+# Every reliability table carries the run id, like every canonical table. The
+# manifest already hashes them, but a table that names its own run can be traced
+# without the manifest in hand -- and acceptance can then require it uniformly.
+write_rel <- function(x, file) {
+  if (!"canonical_run_id" %in% names(x))
+    x <- dplyr::mutate(x, canonical_run_id = Sys.getenv("CANONICAL_RUN_ID", "unset"))
+  readr::write_csv(x, file.path(EST, file))
+  invisible(x)
+}
 run_dir <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/pilot_v1")
 panel_file <- file.path(run_dir, "annotations_panel.jsonl")
 
@@ -109,8 +119,8 @@ n_before_universe <- nrow(panel)
 panel_out <- panel %>% anti_join(UNIVERSE, by = c("prompt_id", "prompt_language", "model"))
 panel <- panel %>% semi_join(UNIVERSE, by = c("prompt_id", "prompt_language", "model"))
 if (nrow(panel_out)) {
-  write_csv(panel_out %>% count(judge_model, name = "n_excluded"),
-            file.path(EST, "e22c_out_of_universe_keys.csv"))
+  write_rel(panel_out %>% count(judge_model, name = "n_excluded"),
+            "e22c_out_of_universe_keys.csv")
   cat(sprintf("excluded %d records outside the canonical key universe (see e22c)\n",
               nrow(panel_out)))
 }
@@ -159,7 +169,7 @@ if ("judge_prompt_version" %in% names(panel)) {
 } else {
   VERSION_NOTE <- "judge_prompt_version absent from the panel file"
 }
-write_csv(VER, file.path(EST, "e22b_panel_version_composition.csv"))
+write_rel(VER, "e22b_panel_version_composition.csv")
 
 panel <- panel %>%
   mutate(unit = paste(prompt_id, prompt_language, model, sep = "|"),
@@ -316,7 +326,7 @@ e23 <- e23 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG,
                       sample_note = paste("n_units is pairwise-available;",
                         "n_units_complete is the PRIMARY all-judge complete-case",
                         "sample. They are different samples and are not pooled."))
-write_csv(e23, file.path(EST, "e23_reliability_pass1.csv"))
+write_rel(e23, "e23_reliability_pass1.csv")
 print(as.data.frame(e23 %>% select(construct, n_units, n_units_complete,
                                    raw_agreement, krippendorff_alpha, gwet_ac1,
                                    psa_mean, psa_min, psa_max)),
@@ -337,7 +347,7 @@ e24 <- tibble(construct = "refusal justification (7 codes)", scale = "nominal",
               krippendorff_alpha = kripp(m_just, "nominal"),
               gwet_ac1 = gwet_ac1(m_just, "nominal"),
               gwet_statistic = "AC1, unweighted (nominal A-G codes)")
-write_csv(e24, file.path(EST, "e24_reliability_justification.csv"))
+write_rel(e24, "e24_reliability_justification.csv")
 print(as.data.frame(e24), digits = 3, row.names = FALSE)
 
 # --- e25 slant reliability ----------------------------------------------------
@@ -389,7 +399,7 @@ e25 <- bind_rows(
            n_judges = if (is.null(m)) 0L else ncol(m))
   })) %>% filter(n_units > 0)
 e25 <- e25 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG)
-write_csv(e25, file.path(EST, "e25_reliability_slant.csv"))
+write_rel(e25, "e25_reliability_slant.csv")
 if (nrow(e25)) print(as.data.frame(e25 %>% select(construct, n_units, raw_agreement,
                                                   krippendorff_alpha, gwet_ac1,
                                                   prevalence)),
@@ -405,7 +415,7 @@ e26 <- panel %>% group_by(judge_model) %>%
             pct_code_1 = mean(engagement_code == 1, na.rm = TRUE),
             n_distinct_codes = n_distinct(engagement_code), .groups = "drop") %>%
   mutate(degenerate = n_distinct_codes <= 1)
-write_csv(e26, file.path(EST, "e26_judge_marginals.csv"))
+write_rel(e26, "e26_judge_marginals.csv")
 print(as.data.frame(e26), digits = 3, row.names = FALSE)
 
 # --- e26b pairwise agreement with the ANCHOR ---------------------------------
@@ -431,7 +441,7 @@ if (ANCHOR %in% colnames(m_ref)) {
            recall_vs_anchor = if (sum(a == 1)) mean(b[a == 1] == 1) else NA_real_,
            precision_vs_anchor = if (sum(b == 1)) mean(a[b == 1] == 1) else NA_real_)
   }) %>% arrange(desc(ac1))
-  write_csv(e26b, file.path(EST, "e26b_pairwise_vs_anchor.csv"))
+  write_rel(e26b, "e26b_pairwise_vs_anchor.csv")
   print(as.data.frame(e26b %>% select(judge, rate_judge, rate_ratio, raw_agreement,
                                       alpha, ac1, recall_vs_anchor)),
         digits = 3, row.names = FALSE)
@@ -451,7 +461,7 @@ if (ncol(m_ref) >= 3) {
   }) %>% mutate(alpha_full = full_a, ac1_full = full_g,
                 alpha_gain_from_dropping = alpha_without - full_a) %>%
     arrange(desc(alpha_gain_from_dropping))
-  write_csv(e26c, file.path(EST, "e26c_leave_one_judge_out.csv"))
+  write_rel(e26c, "e26c_leave_one_judge_out.csv")
   print(as.data.frame(e26c %>% select(dropped, alpha_full, alpha_without,
                                       alpha_gain_from_dropping, ac1_without)),
         digits = 3, row.names = FALSE)
@@ -496,7 +506,7 @@ e28 <- tibble(unit = rownames(m_ref),
 e28 <- e28 %>% mutate(
   status = "UNUSED DIAGNOSTIC: no canonical estimator reads this file",
   majority_vote_used_anywhere = FALSE)
-write_csv(e28, file.path(EST, "e28_consensus_labels.csv"))
+write_rel(e28, "e28_consensus_labels.csv")
 cat(sprintf("  %d units; majority-refused %.2f%%, unanimous-refused %.2f%%\n",
             nrow(e28), 100 * mean(e28$refused_majority),
             100 * mean(e28$refused_unanimous)))
@@ -517,7 +527,7 @@ e23b <- bind_rows(
          n_judges = ncol(m_ref),
          statistic = "positive specific agreement 2a/(2a+b+c)",
          seed = REL_SEED)
-write_csv(e23b, file.path(EST, "e23b_pairwise_agreement.csv"))
+write_rel(e23b, "e23b_pairwise_agreement.csv")
 print(as.data.frame(e23b %>% select(sample, judge_a, judge_b, n_pair, psa)),
       digits = 3, row.names = FALSE)
 
@@ -533,8 +543,8 @@ cat(sprintf("  alpha, complete case  (%d units): %.3f\n",
 
 # --- reliability bootstrap diagnostics ---------------------------------------
 if (length(.rel_diag)) {
-  write_csv(bind_rows(.rel_diag) %>% mutate(script = "02_judge_reliability.R"),
-            file.path(EST, "e23c_reliability_bootstrap_diagnostics.csv"))
+  write_rel(bind_rows(.rel_diag) %>% mutate(script = "02_judge_reliability.R"),
+            "e23c_reliability_bootstrap_diagnostics.csv")
   cat(sprintf("\n  %d reliability bootstraps recorded (seed %d, B %d)\n",
               length(.rel_diag), REL_SEED, REL_B))
 }

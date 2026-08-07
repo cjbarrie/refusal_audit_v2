@@ -1,0 +1,10 @@
+label,seed,replicates_drawn,replicates_successful,replicates_failed,bootstrap_unit,n_units,script
+e23|alpha|refused,20260807,500,500,0,issue_id,27449,02_judge_reliability.R
+e23|ac1|refused,20260807,500,500,0,issue_id,27449,02_judge_reliability.R
+e23|psa|refused,20260807,500,500,0,issue_id,27449,02_judge_reliability.R
+e25|psa|care_harm,20260807,500,500,0,issue_id,6654,02_judge_reliability.R
+e25|psa|fairness_cheating,20260807,500,500,0,issue_id,6654,02_judge_reliability.R
+e25|psa|liberty_oppression,20260807,500,500,0,issue_id,6654,02_judge_reliability.R
+e25|psa|authority_subversion,20260807,500,500,0,issue_id,6654,02_judge_reliability.R
+e25|psa|loyalty_betrayal,20260807,500,500,0,issue_id,6654,02_judge_reliability.R
+e25|psa|sanctity_degradation,20260807,500,500,0,issue_id,6654,02_judge_reliability.R

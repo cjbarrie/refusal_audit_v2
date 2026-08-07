@@ -201,6 +201,15 @@ need_est <- map_dfr(setdiff(tbls, file.path(CAN_EST, DESCRIPTIVE_TABLES)), funct
   x <- read_csv(p, show_col_types = FALSE)
   if (!any(NAMING %in% names(x))) tibble(file = basename(p)) else NULL
 })
+# Reliability tables live in the release build and must name their run too.
+rel_files <- list.files(CAN_EST, pattern = "^e2.*[.]csv$", full.names = TRUE)
+rel_noid <- rel_files[vapply(rel_files, function(f) {
+  x <- suppressMessages(read_csv(f, show_col_types = FALSE, n_max = 1))
+  !("canonical_run_id" %in% names(x)) }, logical(1))]
+chk("D1c", "every reliability table carries the run id",
+    length(rel_noid) == 0,
+    if (length(rel_noid)) paste(basename(rel_noid), collapse = ", ") else
+      sprintf("%d reliability tables", length(rel_files)))
 chk("D2", "every canonical table names its estimand", nrow(need_est) == 0,
     if (nrow(need_est)) paste(need_est$file, collapse = ", ") else "")
 

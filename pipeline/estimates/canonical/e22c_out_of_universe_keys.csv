@@ -1,0 +1,4 @@
+judge_model,n_excluded
+google/gemma-4-31b-it,1
+nvidia/nemotron-3-nano-30b-a3b,1
+nvidia/nemotron-3-super-120b-a12b,1

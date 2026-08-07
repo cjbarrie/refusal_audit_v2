@@ -105,9 +105,14 @@ if (!is.null(c07)) {
     mutate(panel = factor(panel, levels = PORD),
            j = factor(jurisdiction, levels = JORD),
            row = paste0(level, "  [", jurisdiction, "]"))
+  # The primary rule is drawn ONLY in panels that actually contain that
+  # jurisdiction. Drawing all four in every panel put three irrelevant rules in
+  # the hierarchical panel, which contains one jurisdiction.
   prim <- c04 %>% filter(weighting == "nested", support == "full target",
                          estimator == "maximum likelihood", estimable) %>%
-    transmute(j = factor(jurisdiction, levels = JORD), estimate_pp)
+    transmute(jurisdiction, estimate_pp) %>%
+    inner_join(sc %>% distinct(panel, jurisdiction), by = "jurisdiction") %>%
+    mutate(j = factor(jurisdiction, levels = JORD))
 
   ed2 <- ggplot(sc, aes(x = estimate_pp, y = fct_rev(fct_inorder(row)),
                         colour = j)) +

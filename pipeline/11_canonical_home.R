@@ -160,9 +160,9 @@ std_row <- function(d, key, wname, B, tag, outcome = "refused_strict",
     separation_detected = sep$separated,
     separation_blocking = sep$blocking,
     separation_reason = sep$why,
-    # How much of the target weight sits in cells the model can only reach by
-    # extrapolation. This is the number behind "extrapolates heavily".
-    degenerate_prediction_weight = sep$degenerate_weight))
+    # Two different diagnostics, named for what each measures.
+    observed_fit_extreme_weight = sep$observed_fit_extreme_weight,
+    counterfactual_extreme_weight = cf_extreme_weight(probe$fit, d, wfun(d), outcome)))
 
   if (nzchar(why) || sep$blocking)
     return(bind_cols(base, tibble(
@@ -203,7 +203,11 @@ SUPPORT_COLS <- c("model", "domain", "route_f", "tier")
 sup_diag <- map_dfr(JURIS_C, function(j) {
   d <- ENG_HA %>% filter(juris == j) %>% droplevels()
   restrict_support(d, SUPPORT_COLS)$diag %>% mutate(jurisdiction = j, .before = 1)
-}) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)
+}) %>% mutate(
+  # The transparent measure of how much of the original target the
+  # non-extrapolative estimand gives up.
+  unsupported_target_weight = 1 - target_weight_retained,
+  canonical_run_id = CANONICAL_RUN_ID)
 write_csv(sup_diag, file.path(CAN_EST, "c06b_common_support_diagnostics.csv"))
 cat("  common support (jurisdiction x model x domain x route x tier):\n")
 print(as.data.frame(sup_diag %>% select(jurisdiction, cells_total, cells_both_arms,
@@ -226,6 +230,7 @@ c04 <- map_dfr(JURIS_C, function(j) {
       std_row(ds, list(jurisdiction = j, support = "common support"), "nested",
               B_HEAD, sprintf("c04|%s|nested|cs", j)) %>%
         mutate(target_weight_retained = sup$diag$target_weight_retained,
+             unsupported_target_weight = 1 - sup$diag$target_weight_retained,
                cells_both_arms = sup$diag$cells_both_arms,
                cells_total = sup$diag$cells_total)
     },
@@ -344,6 +349,52 @@ cat(sprintf("  c06: %d strata; %d lack an arm\n", nrow(c06), sum(!c06$both_arms)
 # =============================================================================
 cat("\nD. sensitivities (B =", B_SENS, ")\n")
 sens <- list()
+
+# --- functional form ---------------------------------------------------------
+# The primary specification enters topic domain and seed route ADDITIVELY, which
+# assumes the home contrast does not vary across them. That is an assumption, not
+# a finding, so it is tested directly: refit with home x domain and with
+# home x route wherever the interaction is estimable, and standardize as before.
+# Cells that cannot support an interaction are reported rather than dropped.
+cat("  functional form: home x domain, home x route\n")
+ff_row <- function(d, j, term, tag) {
+  f_add <- build_f(d, "refused_strict")
+  f_int <- stats::as.formula(paste(deparse(f_add, width.cutoff = 500),
+                                   "+ home:", term))
+  base <- tibble(sensitivity = "functional_form", jurisdiction = j,
+                 level = paste0("home x ", term), weighting = "nested",
+                 n = nrow(d), n_issues = n_distinct(d$issue_id),
+                 n_models = n_distinct(d$model))
+  # Estimable only if the interacting factor varies and every level has both arms.
+  lv <- droplevels(factor(d[[term]]))
+  tab <- table(lv, d$home)
+  if (nlevels(lv) < 2 || any(tab == 0))
+    return(bind_cols(base, tibble(estimate = NA_real_, conf_low = NA_real_,
+                                  conf_high = NA_real_, estimable = FALSE,
+                                  note = "interaction not estimable: a level lacks one arm")))
+  st <- function(x) {
+    r <- fit_logit(f_int, x)
+    if (is.null(r$fit) || sep_diagnose(r$fit)$blocking) return(NA_real_)
+    p1 <- stats::predict(r$fit, newdata = transform(x, home = 1L), type = "response")
+    p0 <- stats::predict(r$fit, newdata = transform(x, home = 0L), type = "response")
+    if (any(!is.finite(p1)) || any(!is.finite(p0))) return(NA_real_)
+    ic <- if ("bootstrap_issue_instance" %in% names(x)) "bootstrap_issue_instance" else "issue_id"
+    sum(w_nested(x, issue_col = ic) * (p1 - p0))
+  }
+  bt <- boot_canon(d, st, B = B_SENS, label = tag)
+  record_diag(bt$diag)
+  bind_cols(base, tibble(estimate = bt$estimate, conf_low = bt$conf_low,
+                         conf_high = bt$conf_high, estimable = TRUE,
+                         note = if (bt$interval_reliable) "" else
+                           sprintf("UNRELIABLE: %.1f%% of draws undefined",
+                                   100 * bt$failure_rate)))
+}
+sens$functional_form <- map_dfr(JURIS_C, function(j) {
+  d <- ENG_HA %>% filter(juris == j) %>% droplevels()
+  if (nzchar(estimable_chk(d, "refused_strict"))) return(NULL)
+  bind_rows(ff_row(d, j, "domain", sprintf("c07|ff|dom|%s", j)),
+            ff_row(d, j, "route_f", sprintf("c07|ff|route|%s", j)))
+})
 
 cat("  leave-one-model-out\n")
 sens$lomo <- map_dfr(JURIS_C, function(j) {

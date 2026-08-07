@@ -129,10 +129,22 @@ chk("C3", "every bootstrapped quantity records its seed and replicate counts",
       all(c("seed", "replicates_requested", "replicates_drawn") %in% names(c18)) &&
       all(!is.na(boot_rows$seed)) && all(!is.na(boot_rows$replicates_successful)),
     if (is.null(c18)) "c18 missing" else sprintf("%d entries", nrow(c18)))
-chk("C3b", "no bootstrap lost more than 5% of its replicates",
-    !is.null(boot_rows) && all(boot_rows$failure_rate <= 0.05, na.rm = TRUE),
+# A high failure rate is allowed -- some sensitivities are genuinely hard to
+# estimate in every resample -- but it must be DECLARED: the interval is marked
+# unreliable and no interval is reported. Requiring <=5% everywhere would ban
+# reporting the hard specification rather than flagging it.
+# interval_reliable arrives as character whenever jackknife rows leave it blank,
+# so isFALSE() never matched and every flagged bootstrap looked undeclared.
+bad_boot <- if (is.null(boot_rows)) NULL else
+  boot_rows %>%
+    mutate(.declared = tolower(as.character(interval_reliable)) %in% c("false")) %>%
+    filter(failure_rate > 0.05, !.declared)
+chk("C3b", "any bootstrap above the failure threshold is marked unreliable",
+    !is.null(bad_boot) && nrow(bad_boot) == 0,
     if (is.null(boot_rows)) "" else
-      sprintf("max failure rate %.3f", max(boot_rows$failure_rate, na.rm = TRUE)))
+      sprintf("max failure rate %.3f; %d undeclared",
+              max(boot_rows$failure_rate, na.rm = TRUE),
+              if (is.null(bad_boot)) NA_integer_ else nrow(bad_boot)))
 # This is here because it failed silently for an entire release: flush_diag()
 # dropped every row of the current run before appending, so each part wiped the
 # previous part's diagnostics and c18 ended up holding only the LAST part's.
@@ -308,20 +320,21 @@ c10 <- rd("c10_framing_paired.csv")
 MAIN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
 ED_FIG   <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
 MAINF <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
-EDF   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels",
-           "ED3_refusal_text_projection", "ED4_language_detail")
-FMT <- c("pdf", "svg", "png")
-present <- function(dir, stems)
-  all(vapply(as.vector(outer(stems, FMT, function(a, b) paste0(a, ".", b))),
-             function(f) file.exists(file.path(dir, f)), logical(1)))
-chk("H1", "three main figures exist in all three formats",
-    present(MAIN_FIG, MAINF), paste(list.files(MAIN_FIG), collapse = ", "))
-chk("H2", "Extended Data figures exist in all three formats",
-    present(ED_FIG, EDF), sprintf("%d files", length(list.files(ED_FIG))))
-# The PNG-only rule is retired: a raster-only main figure is now a FAILURE.
-chk("H3", "no main figure is raster-only",
-    all(vapply(MAINF, function(s)
-      file.exists(file.path(MAIN_FIG, paste0(s, ".pdf"))), logical(1))))
+EDF   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels", "ED3_language_detail")
+# PNG ONLY: exactly one raster per expected figure, and nothing else.
+chk("H1", "main figures are exactly the expected PNGs",
+    setequal(list.files(MAIN_FIG, recursive = TRUE), paste0(MAINF, ".png")),
+    paste(list.files(MAIN_FIG), collapse = ", "))
+chk("H2", "Extended Data figures are exactly the expected PNGs",
+    setequal(list.files(ED_FIG, recursive = TRUE), paste0(EDF, ".png")),
+    paste(list.files(ED_FIG), collapse = ", "))
+chk("H3", "no non-PNG artefact in any active figure directory",
+    length(grep("[.]png$", c(list.files(MAIN_FIG, recursive = TRUE),
+                             list.files(ED_FIG, recursive = TRUE)),
+                value = TRUE, invert = TRUE)) == 0)
+chk("H3b", "obsolete figure directories are gone",
+    !dir.exists("pipeline/figures/canonical") &&
+      !dir.exists("pipeline/figures/appendix"))
 chk("H4", "FIG2c pooled framing row exists in c10",
     !is.null(c10) && any(c10$scope == "overall"))
 chk("H5", "ideology bins sum to one within each dimension",
@@ -365,8 +378,7 @@ chk("I6", "authority and populism do not carry generic left/right endpoints",
                endpoint_pos %in% c("left", "right"))
       nrow(bad) == 0 })
 
-rel <- if (file.exists("pipeline/estimates/e25_reliability_slant.csv"))
-  read_csv("pipeline/estimates/e25_reliability_slant.csv", show_col_types = FALSE) else NULL
+rel <- rd("e25_reliability_slant.csv")   # from this release's build
 chk("I7", "reliability reports PAIRWISE positive specific agreement",
     !is.null(rel) && all(c("psa_mean", "psa_min", "psa_max", "n_pairs") %in% names(rel)))
 chk("I8", "the mis-named positive_specific_agreement column is gone",
@@ -392,9 +404,19 @@ chk("I12", "every judge in a comparison uses the SAME sample",
          group_by(jurisdiction) %>% summarise(u = n_distinct(n), .groups = "drop")
        nrow(k) > 0 && all(k$u == 1) },
      if (is.null(c17b)) "" else "one n per jurisdiction across judges")
+# The label must not ASSERT that it is a confidence interval; saying "NOT a
+# confidence interval" is the required disclaimer, so the check has to be
+# negation-aware rather than matching the phrase anywhere.
+env_types <- if (is.null(c17b)) character(0) else
+  unique(c17b$interval_type[grepl("ENVELOPE", c17b$judge_model)])
 chk("I13", "the judge envelope is not called a bound or an interval",
-     !is.null(c17b) && any(grepl("OBSERVED JUDGE SENSITIVITY ENVELOPE", c17b$judge_model)) &&
-       !any(grepl("confidence (interval|bound)", c17b$interval_type, ignore.case = TRUE)))
+     !is.null(c17b) && any(grepl("OBSERVED JUDGE POINT ENVELOPE", c17b$judge_model)) &&
+       length(env_types) > 0 &&
+       all(grepl("NOT a confidence interval", env_types, fixed = TRUE)),
+     paste(substr(env_types, 1, 60), collapse = " | "))
+chk("I13b", "the point envelope and the union of intervals are separate columns",
+     !is.null(c17b) && all(c("point_envelope_low_pp", "point_envelope_high_pp",
+                             "union_low_pp", "union_high_pp") %in% names(c17b)))
 chk("I14", "no full-sample estimate is inserted into the envelope",
      !is.null(c17b) && all(c17b$sample[!is.na(c17b$sample)] ==
                              "all-judge common support (see c17c)"))
@@ -415,7 +437,8 @@ chk("I18", "framing captions do not claim prompt content is held fixed",
 c04 <- rd("c04_home_standardized.csv")
 chk("I19", "GLM warnings and separation are recorded on every standardized row",
      !is.null(c04) && all(c("glm_warnings", "separation_detected",
-                            "separation_reason", "degenerate_prediction_weight")
+                            "separation_reason", "observed_fit_extreme_weight",
+                            "counterfactual_extreme_weight")
                           %in% names(c04)))
 chk("I20", "a penalized-logit sensitivity exists",
      !is.null(c04) && any(grepl("Firth", c04$estimator)))

@@ -54,7 +54,24 @@ REL   <- file.path("pipeline/releases", RUN_ID)
 B_EST <- file.path(REL, "estimates")
 B_FIG <- file.path(REL, "figures", "main")
 B_APP <- file.path(REL, "figures", "extended")
+
+# RELEASES ARE IMMUTABLE. Reusing an existing release id silently merged new
+# output into old output: files no longer produced by the current code survived,
+# and the manifest then described a directory that no single run had made.
+if (dir.exists(REL) && !has("--rebuild")) {
+  cat("ERROR: release ", REL, " already exists.\n",
+      "       Releases are immutable. Choose a new CANONICAL_RUN_ID, or pass\n",
+      "       --rebuild to destroy and rebuild this one.\n", sep = "")
+  quit(save = "no", status = 4)
+}
+if (dir.exists(REL) && has("--rebuild")) {
+  cat("--rebuild: removing existing ", REL, "\n", sep = "")
+  unlink(REL, recursive = TRUE)
+}
 for (d in c(B_EST, B_FIG, B_APP)) dir.create(d, recursive = TRUE, showWarnings = FALSE)
+# Clear the figure directories before the build so no stale raster can survive
+# into a release even if a figure script stops emitting it.
+for (d in c(B_FIG, B_APP)) unlink(list.files(d, full.names = TRUE))
 
 rule <- function(ch = "=") cat(strrep(ch, 78), "\n", sep = "")
 rule(); cat("RELEASE BUILD: ", RUN_ID, "\n", sep = ""); rule()
@@ -93,8 +110,10 @@ PLAN <- tribble(
   "21", "pipeline/21_figures_extended.R",           "Extended Data figures",            TRUE)
 if (has("--skip-data")) PLAN <- PLAN %>% filter(id != "01")
 
+CAN_SEED_VALUE <- Sys.getenv("CAN_SEED", "20260807")
 ENVV <- c(paste0("CANONICAL_RUN_ID=", RUN_ID),
           "CANON_RELEASE=1",
+          paste0("CAN_SEED=", CAN_SEED_VALUE),
           paste0("REFUSAL_RUN_DIR=", RUN_DIR),
           paste0("CANON_EST_DIR=", B_EST),
           paste0("CANON_FIG_DIR=", B_FIG),
@@ -138,6 +157,12 @@ out_files <- c(
 
 src_files <- list.files("pipeline", pattern = "[.]R$", full.names = TRUE)
 py_files  <- list.files("scripts", pattern = "[.]py$", full.names = TRUE)
+# Specification and legend documents are part of what a release asserts, so
+# their hashes belong in the manifest too: a spec edited after the build is a
+# different claim about the same numbers.
+doc_files <- c(list.files("docs", pattern = "[.]md$", full.names = TRUE),
+               "CLAUDE.md", "pipeline/README.md")
+doc_files <- doc_files[file.exists(doc_files)]
 ann_inputs <- c(file.path(RUN_DIR, "annotations_all.jsonl"),
                 list.files(RUN_DIR, pattern = "^annotations_.*_boundary[.]jsonl$",
                            full.names = TRUE),
@@ -165,6 +190,8 @@ man <- bind_rows(
          detail = NA_character_),
   tibble(kind = "source_py", path = py_files, sha256 = map_chr(py_files, sha256),
          detail = NA_character_),
+  tibble(kind = "documentation", path = doc_files,
+         sha256 = map_chr(doc_files, sha256), detail = NA_character_),
   tibble(kind = "input_data", path = "pipeline/data_clean.RData",
          sha256 = sha256("pipeline/data_clean.RData"), detail = NA_character_),
   tibble(kind = "input_annotations", path = ann_inputs,
@@ -177,7 +204,7 @@ man <- bind_rows(
                     tryCatch(system2("python3", "--version", stdout = TRUE)[1],
                              error = function(e) NA_character_),
                     emb_model,
-                    Sys.getenv("CAN_SEED", "20260807"),
+                    CAN_SEED_VALUE,
                     Sys.getenv("CANON_B_HEAD", "2000"),
                     Sys.getenv("CANON_B_SENS", "500"),
                     Sys.getenv("CANON_B_JUDGE", "600")))) %>%
@@ -211,23 +238,78 @@ if (has("--no-promote")) {
 }
 
 # --- atomic promotion --------------------------------------------------------
-# Stage into a sibling directory and rename, so a reader never sees a
-# half-copied canonical directory.
-promote <- function(from, to) {
-  if (!dir.exists(from)) return(invisible(NULL))
-  stage <- paste0(to, ".incoming"); old <- paste0(to, ".previous")
-  unlink(stage, recursive = TRUE); unlink(old, recursive = TRUE)
-  dir.create(dirname(to), recursive = TRUE, showWarnings = FALSE)
-  ok1 <- file.copy(from, dirname(stage), recursive = TRUE)
-  file.rename(file.path(dirname(stage), basename(from)), stage)
-  if (dir.exists(to)) file.rename(to, old)
-  file.rename(stage, to)
-  unlink(old, recursive = TRUE)
-  invisible(ok1)
+# THE BUG THIS REPLACES. The old promote() copied the build directory into the
+# PARENT of the live directory. R's file.copy(recursive = TRUE) MERGES into an
+# existing directory, so any live file the new release no longer produces
+# survived promotion -- after the release itself had passed audit. The live tree
+# could therefore contain files from three different runs while every check
+# reported green.
+#
+# Now: stage into an empty, uniquely named sibling, verify the staged contents
+# against the release by name and SHA-256, then swap directories. Nothing is
+# ever merged into the live tree.
+verify_same <- function(a, b) {
+  fa <- sort(list.files(a, recursive = TRUE))
+  fb <- sort(list.files(b, recursive = TRUE))
+  if (!identical(fa, fb)) return(sprintf("file lists differ (%d vs %d)",
+                                         length(fa), length(fb)))
+  bad <- fa[vapply(fa, function(f)
+    !identical(sha256(file.path(a, f)), sha256(file.path(b, f))), logical(1))]
+  if (length(bad)) return(paste("hash mismatch:", paste(head(bad, 3), collapse = ", ")))
+  ""
 }
-promote(B_EST, "pipeline/estimates/canonical")
-promote(B_FIG, "pipeline/figures/main")
-promote(B_APP, "pipeline/figures/extended")
+
+promote <- function(from, to) {
+  if (!dir.exists(from)) return(invisible(FALSE))
+  stage <- paste0(to, ".staging-", RUN_ID)
+  retired <- paste0(to, ".retired-", RUN_ID)
+  unlink(stage, recursive = TRUE); unlink(retired, recursive = TRUE)
+  dir.create(stage, recursive = TRUE, showWarnings = FALSE)
+  # Copy CONTENTS into the empty stage, never the directory into a parent.
+  src <- list.files(from, full.names = TRUE, recursive = FALSE)
+  ok1 <- all(file.copy(src, stage, recursive = TRUE, overwrite = TRUE))
+  why <- verify_same(from, stage)
+  if (!ok1 || nzchar(why)) {
+    cat("PROMOTION ABORTED for ", to, ": ", if (nzchar(why)) why else "copy failed",
+        "\n", sep = "")
+    unlink(stage, recursive = TRUE); return(invisible(FALSE))
+  }
+  if (dir.exists(to)) file.rename(to, retired)
+  ok2 <- file.rename(stage, to)
+  if (!ok2) {                       # put the old tree back rather than leave none
+    if (dir.exists(retired)) file.rename(retired, to)
+    cat("PROMOTION ABORTED for ", to, ": swap failed\n", sep = "")
+    return(invisible(FALSE))
+  }
+  unlink(retired, recursive = TRUE)
+  invisible(TRUE)
+}
+
+pr <- c(promote(B_EST, "pipeline/estimates/canonical"),
+        promote(B_FIG, "pipeline/figures/main"),
+        promote(B_APP, "pipeline/figures/extended"))
+if (!all(pr)) { cat("One or more promotions failed; live tree unchanged.\n"); quit(save = "no", status = 5) }
+
+# Verify the PROMOTED tree, not only the release tree: the point of failure this
+# guards against happens during promotion, after every earlier check has passed.
+for (pair in list(c(B_EST, "pipeline/estimates/canonical"),
+                  c(B_FIG, "pipeline/figures/main"),
+                  c(B_APP, "pipeline/figures/extended"))) {
+  why <- verify_same(pair[1], pair[2])
+  if (nzchar(why)) { cat("PROMOTED TREE DIFFERS from the release: ", pair[2], " -- ",
+                         why, "\n", sep = ""); quit(save = "no", status = 6) }
+}
+cat("promoted trees match the release exactly (names + SHA-256)\n")
+
+# Re-run the figure audit against the LIVE directories.
+aud2 <- system2("Rscript", "pipeline/audit_figures.R",
+                env = c(paste0("CANONICAL_RUN_ID=", RUN_ID),
+                        "CANON_EST_DIR=pipeline/estimates/canonical",
+                        "CANON_FIG_DIR=pipeline/figures/main",
+                        "CANON_APPFIG_DIR=pipeline/figures/extended"))
+if (aud2 != 0) { cat("POST-PROMOTION FIGURE AUDIT FAILED\n"); quit(save = "no", status = 7) }
+cat("post-promotion figure audit: PASS\n")
+
 cat("PROMOTED to pipeline/estimates/canonical and pipeline/figures/\n")
 cat(sprintf("RELEASE %s COMPLETE in %.1f min\n", RUN_ID,
             as.numeric(difftime(Sys.time(), t0, units = "mins"))))

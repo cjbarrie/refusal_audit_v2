@@ -35,34 +35,35 @@ rdc <- function(f) { p <- file.path(CAN_EST, f)
 cat(strrep("=", 78), "\nFIGURE AUDIT\n", strrep("=", 78), "\n", sep = "")
 
 MAIN <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
-ED   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels",
-          "ED3_refusal_text_projection", "ED4_language_detail")
-REQ_FORMATS <- c("pdf", "svg", "png")
+# PNG ONLY. One raster per expected figure and nothing else, anywhere under the
+# active figure directories.
+ED   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels", "ED3_language_detail")
 
 # --- 1. formats ---------------------------------------------------------------
 cat("\n1. output formats\n")
-have <- function(dir, stem, ext) file.exists(file.path(dir, paste0(stem, ".", ext)))
-miss <- c(
-  unlist(lapply(MAIN, function(s) paste0("main/", s, ".",
-    REQ_FORMATS[!vapply(REQ_FORMATS, function(e) have(MAIN_FIG, s, e), logical(1))]))),
-  unlist(lapply(ED, function(s) paste0("extended/", s, ".",
-    REQ_FORMATS[!vapply(REQ_FORMATS, function(e) have(ED_FIG, s, e), logical(1))]))))
-miss <- miss[!grepl("[.]$", miss)]
-ok("every figure exists as PDF, SVG and PNG", length(miss) == 0,
-   if (length(miss)) paste(miss, collapse = ", ") else
-     sprintf("%d figures x 3 formats", length(MAIN) + length(ED)))
-# The PNG-only rule is retired; a main figure that is ONLY a raster now fails.
-png_only <- vapply(MAIN, function(s)
-  have(MAIN_FIG, s, "png") && !have(MAIN_FIG, s, "pdf"), logical(1))
-ok("no main figure is raster-only", !any(png_only),
-   paste(MAIN[png_only], collapse = ", "))
+expect_main <- paste0(MAIN, ".png")
+expect_ed   <- paste0(ED, ".png")
+have_main <- list.files(MAIN_FIG, recursive = TRUE)
+have_ed   <- list.files(ED_FIG, recursive = TRUE)
 
-stray <- setdiff(list.files(MAIN_FIG), as.vector(outer(MAIN, REQ_FORMATS, paste, sep = ".")))
-ok("no stale files in the main figure directory", length(stray) == 0,
-   paste(stray, collapse = ", "))
-stray_ed <- setdiff(list.files(ED_FIG), as.vector(outer(ED, REQ_FORMATS, paste, sep = ".")))
-ok("no stale files in the Extended Data directory", length(stray_ed) == 0,
-   paste(stray_ed, collapse = ", "))
+ok("main figures present, exactly the expected PNGs",
+   setequal(have_main, expect_main),
+   sprintf("missing: %s | unexpected: %s",
+           paste(setdiff(expect_main, have_main), collapse = ","),
+           paste(setdiff(have_main, expect_main), collapse = ",")))
+ok("Extended Data present, exactly the expected PNGs",
+   setequal(have_ed, expect_ed),
+   sprintf("missing: %s | unexpected: %s",
+           paste(setdiff(expect_ed, have_ed), collapse = ","),
+           paste(setdiff(have_ed, expect_ed), collapse = ",")))
+non_png <- grep("[.]png$", c(have_main, have_ed), value = TRUE, invert = TRUE)
+ok("no non-PNG file in any active figure directory", length(non_png) == 0,
+   paste(non_png, collapse = ", "))
+# The obsolete trees must be gone, not merely empty.
+obsolete <- c("pipeline/figures/canonical", "pipeline/figures/appendix")
+gone <- !vapply(obsolete, dir.exists, logical(1))
+ok("obsolete figure directories removed", all(gone),
+   paste(obsolete[!gone], collapse = ", "))
 
 # --- 2. raster integrity, one file at a time ---------------------------------
 cat("\n2. raster integrity (streamed)\n")
@@ -105,26 +106,85 @@ ok("white background", length(bad_bg) == 0, paste(bad_bg, collapse = ", "))
 ok("nothing clipped at the canvas edge", length(bad_edge) == 0,
    paste(bad_edge, collapse = ", "))
 
-# --- 3. rendered layout -------------------------------------------------------
+# --- 3. rendered layout (MEASURED, not inferred from source) -----------------
 cat("\n3. rendered layout\n")
-# The figures are re-rendered here as GROBS and their text is measured, which
-# catches overlaps a raster check cannot: a title running under the next panel's
-# tag, or type below the 5 pt floor. Only the source is inspected for sizes --
-# measuring glyphs in a raster would be guesswork.
-src_all <- unlist(lapply(c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R"),
-                         function(f) readLines(f, warn = FALSE)))
-code <- grep("^\\s*#", src_all, value = TRUE, invert = TRUE)
-# Numeric sizes passed to geom_text/geom_label are in MILLIMETRES; the project
-# helper pt_to_mm makes the point size explicit, so any bare numeric size in a
-# text geom is suspect.
-bare <- grep("geom_(text|label)\\(.*size = [0-9]", code, value = TRUE)
-ok("text geoms declare size in points via pt_to_mm", length(bare) == 0,
-   if (length(bare)) substr(bare[1], 1, 52) else "no bare numeric text sizes")
-lit <- unlist(regmatches(code, gregexpr("size = PT_[A-Z]+", code)))
-below <- setdiff(unique(lit), c("size = PT_MIN", "size = PT_BODY", "size = PT_AXIS",
-                                "size = PT_TITLE", "size = PT_TAG"))
-ok("no type below the 5 pt floor", length(below) == 0 && PT_MIN >= 5,
-   sprintf("floor = %.1f pt", PT_MIN))
+# The previous version of this section claimed to measure layout and in fact
+# grepped the source for font sizes, which is why a clipped subtitle and
+# colliding panel tags both passed. The assembled ggplot/patchwork objects are
+# now saved by the figure scripts and measured here with grid: text grobs that
+# are wider than the canvas they sit on, panels below a usable width, and tags
+# that would overprint a title are all detectable before anyone looks at a PNG.
+suppressPackageStartupMessages({ library(grid); library(patchwork) })
+lay <- c(
+  tryCatch(readRDS(file.path(CAN_EST, "c20_figure_layout_main.rds")),
+           error = function(e) list()),
+  tryCatch(readRDS(file.path(CAN_EST, "c20_figure_layout_extended.rds")),
+           error = function(e) list()))
+ok("assembled figure objects available for measurement", length(lay) > 0,
+   sprintf("%d figures", length(lay)))
+
+FIG_W_IN <- W2
+if (length(lay)) {
+  overflow <- character(); thin <- character(); tagclash <- character()
+  for (nm in names(lay)) {
+    g <- tryCatch(patchwork::patchworkGrob(lay[[nm]]), error = function(e)
+      tryCatch(ggplotGrob(lay[[nm]]), error = function(e2) NULL))
+    if (is.null(g)) { overflow <- c(overflow, paste0(nm, " (ungrobbable)")); next }
+    # Every text grob measured at its real font size and family.
+    ws <- vapply(g$grobs, function(gr) {
+      if (!inherits(gr, "titleGrob") && !inherits(gr, "text")) return(0)
+      as.numeric(grid::convertWidth(grid::grobWidth(gr), "in", valueOnly = TRUE))
+    }, numeric(1))
+    if (any(is.finite(ws) & ws > FIG_W_IN + 0.02))
+      overflow <- c(overflow, sprintf("%s (%.2f in > %.2f)", nm, max(ws), FIG_W_IN))
+    # Panel widths: a panel narrower than this cannot carry a readable axis.
+    pnl <- g$layout[grepl("^panel", g$layout$name), , drop = FALSE]
+    if (nrow(pnl)) {
+      wid <- vapply(seq_len(nrow(pnl)), function(k) {
+        idx <- seq(pnl$l[k], pnl$r[k])
+        idx <- idx[idx >= 1 & idx <= length(g$widths)]
+        if (!length(idx)) return(NA_real_)
+        tryCatch(as.numeric(grid::convertWidth(sum(g$widths[idx]), "in",
+                                               valueOnly = TRUE)),
+                 error = function(e) NA_real_)
+      }, numeric(1))
+      wid <- wid[is.finite(wid) & wid > 0]
+      if (length(wid) && min(wid) < 0.55)
+        thin <- c(thin, sprintf("%s (%.2f in)", nm, min(wid)))
+    }
+  }
+  ok("no text grob wider than the figure canvas", length(overflow) == 0,
+     paste(overflow, collapse = "; "))
+  ok("no panel narrower than 0.55 in", length(thin) == 0,
+     paste(thin, collapse = "; "))
+}
+
+# Tag vs title: the tag sits at the plot's left edge and every panel title is
+# indented by margin(l = ...). Measure the bold tag at its real size and require
+# the indent to clear it.
+tag_w <- as.numeric(grid::convertWidth(grid::grobWidth(grid::textGrob(
+  "a", gp = grid::gpar(fontsize = PT_TAG, fontface = "bold",
+                       fontfamily = FONT_SANS))), "pt", valueOnly = TRUE))
+src_ind <- unlist(regmatches(
+  paste(readLines("pipeline/20_figures_main.R", warn = FALSE), collapse = " "),
+  gregexpr("margin\\(b = [0-9.]+, l = ([0-9.]+)\\)",
+           paste(readLines("pipeline/20_figures_main.R", warn = FALSE), collapse = " "))))
+ind <- suppressWarnings(as.numeric(sub(".*l = ([0-9.]+)\\)", "\\1", src_ind)))
+ok("panel-title indent clears the panel tag",
+   length(ind) == 0 || all(ind[is.finite(ind)] >= tag_w),
+   sprintf("tag %.1f pt, smallest indent %s pt", tag_w,
+           if (length(ind)) sprintf("%.0f", min(ind, na.rm = TRUE)) else "n/a"))
+
+# Subtitles must not carry numbers typed into the script: a hard-coded value
+# goes stale silently when the estimate moves.
+sub_lines <- grep("subtitle = \"", unlist(lapply(
+  c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R"),
+  function(f) grep("^\\s*#", readLines(f, warn = FALSE), value = TRUE, invert = TRUE))),
+  value = TRUE)
+hard <- grep("[0-9]+[.][0-9]+|[0-9]{2,}%", sub_lines, value = TRUE)
+hard <- grep("2\\+2", hard, value = TRUE, invert = TRUE)   # "complete 2+2 blocks" is a rule, not an estimate
+ok("no hard-coded numbers in figure subtitles", length(hard) == 0,
+   if (length(hard)) substr(hard[1], 1, 60) else "")
 
 # --- 4. figures agree with the tables ----------------------------------------
 cat("\n4. figures agree with the tables\n")
@@ -162,11 +222,11 @@ ok("Fig3b: no acceptance verdict is stored on the table",
    !is.null(c14) && !any(grepl("acceptable", unlist(c14[sapply(c14, is.character)]),
                                ignore.case = TRUE)))
 ok("ED1: the envelope is named as an observed envelope",
-   !is.null(c17b) && any(grepl("OBSERVED JUDGE SENSITIVITY ENVELOPE",
+   !is.null(c17b) && any(grepl("OBSERVED JUDGE POINT ENVELOPE",
                                c17b$judge_model)))
 ok("ED1: every judge row comes from the same common-support sample",
    !is.null(c17b) && {
-     n <- c17b %>% filter(estimable, judge_model != "OBSERVED JUDGE SENSITIVITY ENVELOPE") %>%
+     n <- c17b %>% filter(estimable, judge_model != "OBSERVED JUDGE POINT ENVELOPE") %>%
        group_by(jurisdiction) %>% summarise(k = n_distinct(n), .groups = "drop")
      nrow(n) > 0 && all(n$k == 1) })
 
@@ -206,12 +266,12 @@ for (src in c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R")) {
   ok(paste(nm, "does not hard-code the palette"), length(hex) <= 3,
      sprintf("%d literal hex", length(hex)))
 }
-# The projection subtitles must come from the CSV, not from a number typed into
-# the script that would silently go stale.
+# The refusal-text projection is retired, so there is no purity text to check.
+# Its replacement is the general subtitle rule in section 3: no hard-coded
+# numbers in any subtitle.
 ed_src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
-ok("ED3 purity text is read from the CSV, not hard-coded",
-   !any(grepl("purity [0-9][.][0-9]", ed_src)) &&
-     any(grepl("purity_group_observed", ed_src)))
+ok("the retired projection figure is not rebuilt",
+   !any(grepl("umap_x", ed_src)) && !any(grepl("ED3_refusal_text", ed_src)))
 
 # --- 6. colour ----------------------------------------------------------------
 cat("\n6. colour\n")

@@ -8,7 +8,7 @@
 # SCOPE RULES
 #   * Reads only. Never writes to prompts/, responses/, annotations/ or
 #     data_clean.RData.
-#   * Writes only pipeline/estimates/canonical/ and pipeline/figures/canonical/.
+#   * Writes only the release estimate directory and pipeline/figures/{main,extended}/.
 #   * Calls no API, endpoint, generation, translation or annotation service.
 #
 # -----------------------------------------------------------------------------
@@ -38,9 +38,12 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 # promoted only after every check passes. Without this a failed build leaves a
 # half-written canonical directory that looks current.
 CAN_EST  <- Sys.getenv("CANON_EST_DIR", "pipeline/estimates/canonical")
-CAN_FIG  <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/canonical")
-CAN_APP_FIG <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/appendix")
-CAN_SEED <- 20260807L
+CAN_FIG  <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
+CAN_APP_FIG <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
+# Seed comes from the environment so the value the manifest records is the value
+# the run actually used. Hard-coding it here while make_release.R recorded
+# Sys.getenv("CAN_SEED") meant the two could disagree without anything failing.
+CAN_SEED <- as.integer(Sys.getenv("CAN_SEED", "20260807"))
 RUN_DIR  <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/full_v1")
 dir.create(CAN_EST, showWarnings = FALSE, recursive = TRUE)
 dir.create(CAN_FIG, showWarnings = FALSE, recursive = TRUE)
@@ -433,8 +436,33 @@ sep_diagnose <- function(fit, w = NULL) {
   list(separated = length(why) > 0,
        blocking = nonfin || noconv,
        why = paste(why, collapse = "; "),
-       degenerate_weight = if (is.null(w) || !any(is.finite(fv))) NA_real_
-                           else sum(w[deg]))
+       # NAMED FOR WHAT IT MEASURES. This is the share of weight whose OBSERVED
+       # fit is extreme; it is not the g-computation diagnostic, because
+       # g-computation evaluates both counterfactuals. cf_extreme_weight()
+       # below is the quantity that actually bears on the contrast.
+       observed_fit_extreme_weight =
+         if (is.null(w) || !any(is.finite(fv))) NA_real_ else sum(w[deg]))
+}
+
+# Counterfactual extremeness: the share of target weight for which EITHER
+# counterfactual prediction -- p(home = 1) or p(home = 0) -- is numerically 0 or
+# 1. This is the diagnostic that matches the estimand, because the standardized
+# contrast is built from both prediction vectors. A unit whose observed fit is
+# comfortable can still have a degenerate counterfactual, and that is precisely
+# the extrapolation the common-support estimand exists to avoid.
+#
+# The transparent headline measure of unsupported target remains
+# 1 - target_weight_retained from restrict_support(); this adds the
+# model-based view of the same problem.
+cf_extreme_weight <- function(fit, d, w, outcome = "refused_strict") {
+  if (is.null(fit)) return(NA_real_)
+  p1 <- tryCatch(stats::predict(fit, newdata = transform(d, home = 1L),
+                                type = "response"), error = function(e) NULL)
+  p0 <- tryCatch(stats::predict(fit, newdata = transform(d, home = 0L),
+                                type = "response"), error = function(e) NULL)
+  if (is.null(p1) || is.null(p0)) return(NA_real_)
+  ext <- (p1 < 1e-6 | p1 > 1 - 1e-6) | (p0 < 1e-6 | p0 > 1 - 1e-6)
+  sum(w[ext])
 }
 
 # Fit with warnings captured rather than swallowed. suppressWarnings() around a

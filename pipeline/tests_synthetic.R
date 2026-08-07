@@ -57,6 +57,49 @@ t_ok("a high failure rate marks the interval unreliable",
 clean <- boot_canon(syn, function(dd) mean(dd$y), B = 100, seed = 3L, label = "t_clean")
 t_ok("a clean statistic is marked reliable", clean$interval_reliable)
 
+# --- 2b. the PAIRED bootstrap obeys the same rule -----------------------------
+cat("\n2b. paired bootstrap\n")
+# Same contract as boot_canon: fixed draws, failures counted not replaced. This
+# is asserted separately because 12_canonical_language_framing.R carries its own
+# implementation, and it kept the resample-until-B-successes loop for a release
+# after the shared one was fixed.
+paired_src <- readLines("pipeline/12_canonical_language_framing.R", warn = FALSE)
+# CODE lines only: the comment above the fixed implementation quotes the old
+# loop to explain what was wrong, and a whole-file grep matches that quotation.
+paired_code <- grep("^\\s*#", paired_src, value = TRUE, invert = TRUE)
+t_ok("paired bootstrap does not loop until B successes",
+     !any(grepl("while \\(length\\(vals\\) < B", paired_code)))
+t_ok("paired bootstrap records fixed-draw diagnostics",
+     any(grepl("replicates_drawn", paired_src)) &&
+       any(grepl("failed_draws_replaced", paired_src)))
+# Behavioural check: a statistic that fails about half the time must leave about
+# B/2 successes out of exactly B draws.
+local({
+  df <- tibble(issue_id = rep(paste0("i", 1:20), each = 2), y = rnorm(40))
+  # Extract the REAL boot_paired by line span (definition line to the next
+  # top-level closing brace) and evaluate it in a scratch environment, so the
+  # test exercises the shipped function rather than a copy of it.
+  i0 <- grep("^boot_paired <- function", paired_src)[1]
+  i1 <- i0 + which(paired_src[(i0 + 1):length(paired_src)] == "}")[1]
+  e <- new.env(parent = globalenv())
+  e$CAN_SEED <- 99L; e$CANONICAL_RUN_ID <- "tests"
+  e$record_diag <- function(d) assign("last_diag", d, envir = e)
+  eval(parse(text = paste(paired_src[i0:i1], collapse = "\n")), envir = e)
+  set.seed(5)
+  r <- e$boot_paired(df, function(d) if (runif(1) < 0.5) NA_real_ else mean(d$y),
+                     B = 200, label = "t_paired")
+  d <- get("last_diag", envir = e)
+  t_ok("exactly B paired draws taken", d$replicates_drawn == 200)
+  t_ok("about half the paired replicates survive, none replaced",
+       !d$failed_draws_replaced &&
+         d$replicates_successful + d$replicates_failed == 200 &&
+         abs(d$replicates_successful - 100) < 35,
+       sprintf("%d ok / %d failed", d$replicates_successful, d$replicates_failed))
+  t_ok("no trusted interval when the failure threshold is exceeded",
+       is.na(r$conf_low) && is.na(r$conf_high) && !r$interval_reliable,
+       sprintf("failure rate %.2f", r$failure_rate))
+})
+
 # --- 3. separation ------------------------------------------------------------
 cat("\n3. separation\n")
 # tier must NOT be collinear with home, or the design matrix is singular and the
@@ -90,12 +133,19 @@ t_ok("sep_diagnose flags a separated fit", sep_diagnose(fitres$fit)$separated,
 sd1 <- sep_diagnose(fitres$fit, w = rep(1 / nrow(sep_d), nrow(sep_d)))
 t_ok("quasi-separation is reported but does not block",
      sd1$separated && !sd1$blocking && is.finite(gcomp(sep_d, strict = TRUE)),
-     sprintf("degenerate weight %.3f", sd1$degenerate_weight))
+     sprintf("observed-fit extreme weight %.3f", sd1$observed_fit_extreme_weight))
 # Rank-deficient design: a covariate aliased with home gives NA coefficients.
 alias_d <- sep_d
 alias_d$tier <- ifelse(alias_d$home == 1, "regular", "boundary")
 alias_d$refused_strict <- c(rep(0:1, 19), 1L, 0L)
 af <- fit_logit(refused_strict ~ home + tier, alias_d)
+# The counterfactual diagnostic must look at BOTH prediction vectors, not just
+# the observed fit -- that was the point of separating the two measures.
+cf <- cf_extreme_weight(fitres$fit, sep_d, rep(1 / nrow(sep_d), nrow(sep_d)))
+t_ok("counterfactual extremeness is computed from both counterfactuals",
+     is.finite(cf) && cf >= sd1$observed_fit_extreme_weight - 1e-9,
+     sprintf("counterfactual %.3f vs observed %.3f", cf,
+             sd1$observed_fit_extreme_weight))
 t_ok("a rank-deficient fit is blocking", sep_diagnose(af$fit)$blocking,
      sep_diagnose(af$fit)$why)
 t_ok("strict gcomp refuses an undefined fit",

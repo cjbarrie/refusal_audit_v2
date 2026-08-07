@@ -368,57 +368,46 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 
 | figure | content | tables |
 |---|---|---|
-| `Fig1_home_jurisdiction` | a design/locator · b unadjusted rates · c standardized contrasts, full-target and common-support | `c02`, `c04` |
+| `Fig1_home_jurisdiction` | a design/locator · b unadjusted rates · c standardized contrast, **full target only** | `c02`, `c04` |
 | `Fig2_language_framing` | a primary-weighting language effect · b model × language heatmap with printed values · c framing, complete 2+2 blocks | `c08`–`c11` |
-| `Fig3_content` | a five-bin ideology with dimension-specific endpoints · b foundation prevalence with numeric PSA | `c12`, `c14` |
+| `Fig3_content` | a four directional ideology categories with neutral annotated · b foundation prevalence · c agreement on its own 0–1 axis | `c12`, `c14` |
 | `ED1_judge_sensitivity` | the contrast under each judge on ONE common-support sample | `c17b`, `c17c` |
-| `ED2_sensitivity_panels` | sensitivities grouped by what varies; hierarchical separated as a different estimand | `c07`, `c04` |
-| `ED3_refusal_text_projection` | refusal-text projection, diagnostic only | `u01`–`u03` |
-| `ED4_language_detail` | weighting comparison and per-model intervals | `c08`, `c09` |
+| `ED2_sensitivity_panels` | inferential sensitivities split from post-outcome diagnostics; hierarchical tabulated in `c07b` | `c07`, `c04` |
+| `ED3_language_detail` | per-model paired intervals (weighting comparison is `c08b`) | `c09` |
 
 **Fig 1 carries the home family only.** Judge sensitivity and the projection were
 in it and did not belong: a main figure should carry one result family.
 
 ### 6a. Production artwork
 
-The PNG-only rule is **retired**. Every figure is exported as **PDF, SVG and PNG
-from the same ggplot object**, so the formats cannot drift:
+**PNG ONLY.** Every figure is a single 600 dpi RGB PNG through ragg and nothing
+else — no PDF, no SVG, no EPS, no TIFF.
 
-- PDF and SVG keep **text as text** — nothing is outlined or rasterised — so a
-  production editor can restyle the type. Helvetica is one of the 14 standard
-  PDF fonts and needs no embedding.
-- PNG at 600 dpi RGB is a preview, not the deliverable.
+- `save_fig()` refuses a destination that is not `.png`, and deletes any sibling
+  left by an earlier multi-format design before writing.
 - Widths are 89 mm or 183 mm; type is 5–7 pt at final size with 8 pt bold panel
   labels, and nothing falls below 5 pt.
-- Stale sibling formats are deleted before each export.
-- `audit_figures.R` fails a main figure that exists only as a raster.
+- The active figure tree is exactly `pipeline/figures/main/*.png` and
+  `pipeline/figures/extended/*.png`. `audit_figures.R` fails on any other file in
+  either directory, and on the presence of the obsolete `canonical/` or
+  `appendix/` trees.
+- Multi-format export was tried twice and removed twice: the formats drifted,
+  stale siblings accumulated, and the second attempt left the theme header
+  asserting PNG-only while the exporter wrote three formats and the audit
+  *required* all three.
+
+## 6b. Refusal-text projection — RETIRED
+
+The UMAP projection of refusal text no longer ships. Neighbourhood purity in the
+embedding space was 0.57 against 0.44 at random, and the **lexical** TF-IDF
+representation reached 0.58 — so a figure built to show that the judge's reason
+codes track meaning showed that they track wording at least as well. It was also
+never rebuilt by the release driver, so the shipped image could date from a
+different run than every other artefact. `scripts/refusal_umap.py` and `u01`–`u03`
+are in `pipeline/archive/exploratory_umap/` with a README. Nothing in the
+canonical layer reads them.
 
 ## 6b. Refusal-text projection (diagnostic, not an estimand)
-
-`scripts/refusal_umap.py` → `u01` (English, semantic), `u02` (five languages),
-`u03` (English, lexical); drawn in ED3.
-
-Text is embedded with a local sentence-transformer
-(`paraphrase-multilingual-MiniLM-L12-v2`, **revision pinned and recorded**),
-opening 800 characters, then projected with UMAP and coloured by the judge's
-justification code.
-
-**Neighbourhood purity is computed in the original embedding space**, not in the
-2-D projection: UMAP rearranges neighbourhoods to satisfy a layout objective, so
-purity measured on the projection partly measures the projection. The projection
-value is reported separately. Truncation is validated at 400/800/1600 characters
-(0.568 / 0.565 / 0.565) — the choice is not driving the result.
-
-| representation | purity | at random |
-|---|---|---|
-| semantic, English (embedding space) | 0.57 | 0.44 |
-| semantic, English (2-D projection) | 0.53 | 0.44 |
-| lexical, English | 0.58 | 0.44 |
-| semantic, five languages | 0.44 | 0.35 |
-
-The codes track wording about as closely as meaning. **This is a diagnostic. It
-is never evidence that the judge taxonomy is valid, and no estimate in the paper
-derives from it.**
 
 ## 6c. How this maps onto the manuscript
 
@@ -427,7 +416,7 @@ derives from it.**
 | `01`–`02` | inputs | `data_clean.RData`; `e22b`–`e28` reliability |
 | `10`–`14` | estimation | `c00`–`c18` |
 | `20` | **main manuscript** | Fig 1–3 |
-| `21` | **Extended Data** | ED1–ED4 |
+| `21` | **Extended Data** | ED1–ED3 |
 | `30` | acceptance | `c01b` |
 | `40` | appendix | `a01`–`a04`, descriptive views only |
 
@@ -516,4 +505,4 @@ adversarial where it matters:
 | finite battery | percentile interval × √(1−f) | delete-one-issue jackknife with FPC |
 | appendix | independent-sample tests on paired data | archived; descriptive views only |
 | driver | `run_all.R` excluded the canonical layer and `--figures` ran nothing | `make_release.R`, one command, atomic promotion |
-| artwork | PNG only | PDF + SVG + PNG from one object |
+| artwork | PNG-only header contradicted by a three-format exporter and an audit that required all three | one PNG, enforced end to end |

@@ -64,7 +64,9 @@ world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf") %>%
   st_transform("+proj=robin")
 lab <- tribble(~reg, ~disp, ~lon, ~lat,
                "US", "US", -100, 41, "Europe", "EU", 14, 57, "Arab", "MENA", 22, 26,
-               "India", "India", 94, 9, "China", "CN", 104, 40) %>%
+               # India's label sat at 94E/9N -- over the Andaman Sea, well east of
+               # the country it names. Moved onto the peninsula.
+               "India", "India", 79, 22, "China", "CN", 104, 40) %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% st_transform("+proj=robin")
 lab <- bind_cols(st_drop_geometry(lab), as_tibble(st_coordinates(lab)))
 
@@ -77,9 +79,11 @@ p1a <- ggplot() +
             size = pt_to_mm(PT_MIN), family = FONT_SANS, fontface = "bold") +
   scale_fill_manual(values = PAL_REGION, guide = "none") +
   scale_colour_manual(guide = "none",
+                      # India's label now sits ON the filled country, so it is
+                      # white like the other on-country labels; in its old
+                      # position (out at sea) it was drawn in the region colour.
                       values = c(China = "white", Arab = "white",
-                                 India = unname(PAL_REGION[["India"]]),
-                                 US = INK, Europe = INK)) +
+                                 India = "white", US = INK, Europe = INK)) +
   coord_sf(xlim = c(-1.30e7, 1.45e7), ylim = c(-0.4e6, 6.75e6), expand = FALSE) +
   labs(title = "Issue regions") +
   theme_void(base_size = PT_BODY) +
@@ -115,50 +119,39 @@ p1b <- ggplot(obs, aes(x = rate, y = j)) +
        subtitle = "hollow = away issues, filled = home issues") +
   theme_nature(base_size = PT_BODY, grid = "x") + tagt
 
-# --- c: standardized, both estimands -----------------------------------------
+# --- c: the standardized contrast, FULL TARGET only --------------------------
+# The full-target estimate is the headline. Common support is NOT a robustness
+# check of it -- it is a different target population, and the restriction costs
+# a great deal of that target (CN retains 41% of the nested target weight, MENA
+# 77%, India 69%). Showing the two as visually co-equal invited a reader to
+# treat them as two goes at one number. The comparison, with retained weight
+# annotated, is Extended Data.
 std <- c04 %>%
-  filter(weighting == "nested", estimator == "maximum likelihood") %>%
-  mutate(j = factor(jurisdiction, levels = rev(JORD)),
-         sup = factor(support, levels = c("full target", "common support")))
+  filter(weighting == "nested", estimator == "maximum likelihood",
+         support == "full target") %>%
+  mutate(j = factor(jurisdiction, levels = rev(JORD)))
 est <- std %>% filter(estimable)
 noest <- std %>% filter(!estimable) %>% distinct(jurisdiction, j)
 
-p1c <- ggplot(est, aes(x = estimate_pp, y = j, colour = jurisdiction,
-                       shape = sup, group = sup)) +
+p1c <- ggplot(est, aes(x = estimate_pp, y = j, colour = jurisdiction)) +
   geom_vline(xintercept = 0, colour = RULE, linewidth = 0.4) +
-  geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp),
-                 position = position_dodge(width = 0.55), linewidth = LWC) +
-  geom_point(aes(fill = jurisdiction), position = position_dodge(width = 0.55),
-             size = 1.8, colour = "white", stroke = 0.35) +
-  # The label sits to the RIGHT of its own interval, on its own dodged row.
-  # Placing it above/below the marker collided with the other estimand's label
-  # (vjust does not survive position_dodge), and placing it on the point hid the
-  # marker.
+  geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), linewidth = LWC) +
+  geom_point(aes(fill = jurisdiction), shape = 21, size = 2, colour = "white",
+             stroke = 0.4) +
   geom_text(aes(x = conf_high_pp, label = sprintf("%+.1f", estimate_pp)),
-            position = position_dodge(width = 0.55), hjust = -0.25, size = TXT,
-            show.legend = FALSE) +
+            hjust = -0.25, size = TXT, show.legend = FALSE) +
   { if (nrow(noest))
       geom_text(data = noest, aes(x = 0, y = j),
                 label = "no refusals in either arm; not estimable",
                 inherit.aes = FALSE, hjust = -0.04, size = TXT, colour = INK_FAINT) } +
   scale_colour_manual(values = PAL_JURIS, guide = "none") +
   scale_fill_manual(values = PAL_JURIS, guide = "none") +
-  scale_shape_manual(values = c(`full target` = 21, `common support` = 24),
-                     name = NULL) +
-  # Without override.aes the key glyphs inherit an unmapped colour/fill and the
-  # legend renders as bare text with no markers.
-  guides(shape = guide_legend(override.aes = list(fill = INK_SOFT,
-                                                  colour = INK_SOFT, size = 1.6))) +
   scale_y_discrete(limits = rev(JORD)) +
   scale_x_continuous(expand = expansion(mult = c(0.10, 0.20))) +
   labs(x = "Home - away difference (percentage points)", y = NULL,
-       title = "Standardized contrasts",
-       subtitle = "composition held fixed; not a causal effect") +
-  theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(legend.position = "top", legend.justification = "left",
-        legend.text = element_text(size = PT_MIN),
-        legend.key.size = unit(7, "pt"),
-        legend.margin = margin(0, 0, 0, 0)) + tagt
+       title = "Standardized predictive contrast",
+       subtitle = "full target; composition held fixed; not a causal effect") +
+  theme_nature(base_size = PT_BODY, grid = "x") + tagt
 
 fig1 <- (p1a | p1b) / p1c +
   plot_layout(heights = c(0.9, 1.05), widths = c(1, 1)) +
@@ -195,8 +188,8 @@ p2a <- ggplot(prim, aes(x = estimate_pp, y = l)) +
   scale_y_discrete(limits = rev(LORD)) +
   scale_x_continuous(expand = expansion(mult = c(0.12, 0.12))) +
   labs(x = "Paired difference vs. English (pp)", y = NULL,
-       title = "Language effect",
-       subtitle = "equal weight per model; paired within model × prompt") +
+       title = "Paired language contrast",
+       subtitle = "equal weight per model") +
   theme_nature(base_size = PT_BODY, grid = "x") + tagt
 
 # --- b: model x language heatmap, values printed ------------------------------
@@ -207,23 +200,46 @@ p2a <- ggplot(prim, aes(x = estimate_pp, y = l)) +
 hm <- c09 %>% filter(grouping == "model") %>%
   transmute(model = group, language = factor(language_label, levels = LORD),
             estimate_pp, jurisdiction)
-mord <- hm %>% group_by(model) %>% summarise(m = mean(estimate_pp), .groups = "drop") %>%
-  arrange(m) %>% pull(model)
+# FIXED ORDER, grouped by jurisdiction. Ordering rows by their own observed
+# language effects makes the ranking a property of the data being displayed, so
+# the strongest cells always drift to one end and the layout implies a finding.
+JORD_G <- c("CN", "MENA", "India", "US", "EU")
+mord <- hm %>% distinct(model, jurisdiction) %>%
+  mutate(j = factor(jurisdiction, levels = JORD_G)) %>%
+  arrange(j, model) %>% pull(model)
+# Constants that aes() needs live IN the data frame. Referencing a script
+# variable from inside aes() makes the plot object depend on the environment it
+# was built in, so it cannot be re-rendered later -- which is exactly what the
+# layout audit needs to do.
+jline <- hm %>% distinct(model, jurisdiction) %>%
+  mutate(j = factor(jurisdiction, levels = JORD_G)) %>% arrange(j, model) %>%
+  mutate(i = row_number()) %>% group_by(j) %>%
+  summarise(top = max(i) + 0.5, lab = first(j), mid = mean(i), .groups = "drop") %>%
+  mutate(lab_x = length(LORD) + 0.75, lab_chr = as.character(lab))
 LIM <- max(abs(hm$estimate_pp), na.rm = TRUE)
 
-p2b <- ggplot(hm, aes(x = language, y = factor(model, levels = mord),
-                      fill = estimate_pp)) +
+hm <- hm %>% mutate(model_f = factor(model, levels = mord),
+                    cell_lab = sprintf("%+.0f", round(estimate_pp) + 0),
+                    dark_text = abs(estimate_pp) > 0.55 * LIM)
+p2b <- ggplot(hm, aes(x = language, y = model_f, fill = estimate_pp)) +
   geom_tile(colour = "white", linewidth = 0.4) +
   # "%+.0f" prints "-0" for anything in (-0.5, 0); round first so a value that
   # is effectively zero reads as zero.
-  geom_text(aes(label = sprintf("%+.0f", round(estimate_pp) + 0),
-                colour = abs(estimate_pp) > 0.55 * LIM), size = TXT) +
+  geom_text(aes(label = cell_lab, colour = dark_text), size = TXT) +
   scale_fill_gradient2(low = PAL_DIVERGE[[1]], mid = "#F2F2F2",
                        high = PAL_DIVERGE[[5]], midpoint = 0,
                        limits = c(-LIM, LIM), guide = "none") +
   scale_colour_manual(values = c(`TRUE` = "white", `FALSE` = INK), guide = "none") +
-  labs(x = NULL, y = NULL, title = "By model",
-       subtitle = "signed pp difference vs. English, printed in every cell; red = more refusal in that language, blue = less; intervals in Extended Data") +
+  # Subtle jurisdiction separators, plus a label per group in the right margin.
+  # A faint rule, not white: white separators were invisible against the white
+  # gaps the tiles already leave.
+  geom_hline(data = jline %>% filter(top < max(top)), aes(yintercept = top),
+             colour = INK_SOFT, linewidth = 0.3) +
+  geom_text(data = jline, aes(x = lab_x, y = mid, label = lab_chr),
+            inherit.aes = FALSE, hjust = 0, size = TXT, colour = INK_SOFT) +
+  coord_cartesian(xlim = c(0.5, length(LORD) + 1.6), clip = "off") +
+  labs(x = NULL, y = NULL, title = "By model, grouped by jurisdiction",
+       subtitle = "signed pp difference vs. English") +
   theme_nature(base_size = PT_BODY, grid = "none") +
   theme(axis.text.y = element_text(size = PT_MIN),
         axis.text.x = element_text(size = PT_MIN),
@@ -237,11 +253,17 @@ fr_m <- c11 %>% filter(grouping == "model") %>%
   transmute(g = group, estimate_pp, conf_low_pp, conf_high_pp) %>% arrange(estimate_pp)
 fr_all <- c10 %>% filter(scope == "overall") %>%
   transmute(g = "All models", estimate_pp, conf_low_pp, conf_high_pp)
-fr <- bind_rows(fr_m, fr_all)
-ford <- c(fr_m$g, "All models")
+fr <- bind_rows(fr_all, fr_m)
+# "All models" leads: it is the estimate; the per-model rows below it are
+# exploratory heterogeneity, not eleven separate findings.
+ford <- c("All models", fr_m$g)
 
-p2c <- ggplot(fr, aes(x = estimate_pp, y = factor(g, levels = rev(ford)))) +
+fr <- fr %>% mutate(g_f = factor(g, levels = rev(ford)))
+p2c <- ggplot(fr, aes(x = estimate_pp, y = g_f)) +
   geom_vline(xintercept = 0, colour = RULE, linewidth = 0.4) +
+  # Separate the estimate from the exploratory per-model rows below it.
+  geom_hline(data = tibble(yy = length(ford) - 0.5), aes(yintercept = yy),
+             inherit.aes = FALSE, colour = INK_SOFT, linewidth = 0.3) +
   geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
                  linewidth = 0.4) +
   geom_point(aes(fill = g == "All models"), shape = 21, size = 1.5,
@@ -249,7 +271,7 @@ p2c <- ggplot(fr, aes(x = estimate_pp, y = factor(g, levels = rev(ford)))) +
   scale_fill_manual(values = c(`TRUE` = ACCENT, `FALSE` = INK), guide = "none") +
   scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
   labs(x = "Boundary - regular (pp)", y = NULL, title = "Prompt framing",
-       subtitle = "complete 2+2 blocks only; ordered by effect") +
+       subtitle = "complete 2+2 blocks; All models is the estimate, per-model rows are exploratory") +
   theme_nature(base_size = PT_BODY, grid = "x") +
   theme(axis.text.y = element_text(size = PT_MIN),
         plot.margin = margin(3, 4, 2, 2)) + tagt
@@ -270,57 +292,87 @@ DORD <- c("Economic", "Social", "Authority", "Populism")
 BINL <- c(share_neg2 = "-2", share_neg1 = "-1", share_zero = "0",
           share_pos1 = "+1", share_pos2 = "+2")
 
+# DOT AND INTERVAL, not a stacked bar. With 80-92% of mass at the neutral
+# category, a stacked bar renders the four directional categories as slivers --
+# exactly the categories the five-bin estimand exists to show. Each bin now gets
+# its own position and interval, and the neutral share is annotated rather than
+# drawn, so the directional categories occupy the visible range.
 ideo <- c12 %>% filter(role == "PRIMARY") %>%
-  mutate(d = factor(dimension, levels = rev(DORD)),
+  mutate(d = factor(dimension, levels = DORD),
          bin = factor(unname(BINL[quantity]), levels = unname(BINL)),
-         share = estimate * 100)
-# Dimension-specific endpoint text: "left/right" is meaningful for the economic
-# scale and misleading for the other three.
+         share = estimate * 100,
+         lo = pmax(0, conf_low) * 100, hi = conf_high * 100)
+neutral <- ideo %>% filter(bin == "0") %>%
+  transmute(d, lab = sprintf("neutral %.0f%%", share))
+dir4 <- ideo %>% filter(bin != "0") %>% mutate(bin = droplevels(bin))
 ends <- c12 %>% distinct(dimension, endpoint_neg, endpoint_pos) %>%
-  mutate(d = factor(dimension, levels = rev(DORD)))
+  mutate(d = factor(dimension, levels = DORD),
+         lab = paste0(endpoint_neg, "  <-->  ", endpoint_pos))
 
-p3a <- ggplot(ideo, aes(x = share, y = d, fill = bin, group = bin)) +
-  geom_col(width = 0.6, colour = "white", linewidth = 0.2,
-           position = position_stack(reverse = TRUE)) +
-  geom_text(data = ends, aes(x = -1, y = d, label = endpoint_neg),
-            inherit.aes = FALSE, hjust = 1, size = TXT, colour = INK_SOFT) +
-  geom_text(data = ends, aes(x = 101, y = d, label = endpoint_pos),
-            inherit.aes = FALSE, hjust = 0, size = TXT, colour = INK_SOFT) +
-  scale_fill_manual(values = setNames(c(PAL_DIVERGE[[1]], PAL_DIVERGE[[2]],
-                                        "#EDEDED", PAL_DIVERGE[[4]], PAL_DIVERGE[[5]]),
-                                      unname(BINL)), name = NULL) +
-  scale_y_discrete(limits = rev(DORD)) +
-  scale_x_continuous(expand = expansion(mult = c(0.30, 0.30)),
-                     breaks = c(0, 50, 100)) +
-  labs(x = "Share of engaged responses (%)", y = NULL,
-       title = "Ideological placement, all five categories",
-       subtitle = "CONDITIONAL ON ENGAGEMENT · descriptive/exploratory: judge agreement is weak") +
-  theme_nature(base_size = PT_BODY, grid = "none") +
-  theme(legend.position = "top", legend.text = element_text(size = PT_MIN),
-        legend.key.size = unit(6, "pt")) + tagt
+p3a <- ggplot(dir4, aes(x = share, y = bin, colour = bin)) +
+  geom_linerange(aes(xmin = lo, xmax = hi), linewidth = LWC) +
+  geom_point(aes(fill = bin), shape = 21, size = 1.6, colour = "white", stroke = 0.3) +
+  geom_text(data = neutral, aes(x = Inf, y = 0.6, label = lab), inherit.aes = FALSE,
+            hjust = 1.05, size = TXT, colour = INK_SOFT) +
+  scale_colour_manual(values = setNames(PAL_DIVERGE[c(1, 2, 4, 5)],
+                                        c("-2", "-1", "+1", "+2")), guide = "none") +
+  scale_fill_manual(values = setNames(PAL_DIVERGE[c(1, 2, 4, 5)],
+                                      c("-2", "-1", "+1", "+2")), guide = "none") +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0.30))) +
+  facet_wrap(~ d, ncol = 1, scales = "free_y", strip.position = "top") +
+  labs(x = "Share of engaged responses (%)", y = "category",
+       title = "Ideological placement: four directional categories",
+       subtitle = "CONDITIONAL ON ENGAGEMENT; exploratory") +
+  theme_nature(base_size = PT_BODY, grid = "x") +
+  theme(strip.text = element_text(size = PT_MIN, face = "bold"),
+        axis.title.y = element_text(size = PT_MIN, colour = INK_SOFT),
+        panel.spacing = unit(3, "pt")) + tagt
 
+# Foundations: prevalence and agreement in SEPARATE aligned panels. Printing a
+# PSA value at an x-position on a prevalence axis put two different quantities
+# on one scale, so a reader could read 0.86 off the prevalence axis.
 mf <- c14 %>% filter(scope == "overall") %>%
-  mutate(f = fct_reorder(foundation, estimate),
-         psa_lab = ifelse(is.na(psa_mean), "agreement n/a",
-                          sprintf("PSA %.2f", psa_mean)))
+  mutate(f = fct_reorder(foundation, estimate))
+ford3 <- levels(mf$f)
 
 p3b <- ggplot(mf, aes(x = estimate * 100, y = f)) +
   geom_linerange(aes(xmin = conf_low * 100, xmax = conf_high * 100), colour = INK,
                  linewidth = LWC) +
-  geom_point(shape = 21, size = 1.9, fill = ACCENT, colour = "white", stroke = 0.35) +
-  # The agreement statistic is printed as a NUMBER. No "acceptable"/"weak"
-  # verdict: the 0.35 threshold that produced one was invented, not preregistered.
-  geom_text(aes(x = conf_high * 100, label = psa_lab), hjust = -0.15,
-            size = TXT, colour = INK_SOFT) +
-  scale_y_discrete(limits = levels(mf$f)) +
-  scale_x_continuous(expand = expansion(mult = c(0.04, 0.34))) +
+  geom_point(shape = 21, size = 1.8, fill = ACCENT, colour = "white", stroke = 0.35) +
+  scale_y_discrete(limits = ford3) +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0.10))) +
   labs(x = "Prevalence among engaged responses (%)", y = NULL,
        title = "Moral foundations invoked",
-       subtitle = "NON-EXCLUSIVE indicators · PSA = pairwise positive specific agreement") +
+       subtitle = "NON-EXCLUSIVE indicators: a response may invoke several or none") +
   theme_nature(base_size = PT_BODY, grid = "x") + tagt
 
-fig3 <- (p3a | p3b) + plot_annotation(tag_levels = "a")
-save_fig(fig3, file.path(CAN_FIG, "Fig3_content.png"), width = W2, height = 2.6)
+p3c <- ggplot(mf, aes(x = psa_mean, y = f)) +
+  geom_linerange(aes(xmin = psa_min, xmax = psa_max), colour = INK_SOFT,
+                 linewidth = LWC) +
+  geom_point(shape = 21, size = 1.6, fill = INK_SOFT, colour = "white", stroke = 0.3) +
+  scale_y_discrete(limits = ford3, labels = NULL) +
+  scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
+                     expand = expansion(mult = c(0.04, 0.04))) +
+  labs(x = "Pairwise PSA (0-1)", y = NULL, title = "Judge agreement",
+       subtitle = "mean and range over judge pairs") +
+  theme_nature(base_size = PT_BODY, grid = "x") +
+  theme(axis.ticks.y = element_blank()) + tagt
+
+# b and c are ADJACENT COLUMNS sharing row order, so each agreement value sits
+# on the same row as its foundation. Stacked, panel c had no y labels and the
+# reader could not tell which foundation a point belonged to.
+fig3 <- (p3a | p3b | p3c) +
+  plot_layout(widths = c(1.05, 1.15, 0.6)) + plot_annotation(tag_levels = "a")
+save_fig(fig3, file.path(CAN_FIG, "Fig3_content.png"), width = W2, height = 3.2)
+
+# The assembled objects are saved so audit_figures.R can MEASURE the rendered
+# layout (text overflow, panel sizes, tag/title collisions) instead of scanning
+# source code for font sizes. It lives in the estimates directory, not the
+# figure tree, which holds PNGs and nothing else.
+saveRDS(list(Fig1_home_jurisdiction = fig1,
+             Fig2_language_framing = fig2,
+             Fig3_content = fig3),
+        file.path(CAN_EST, "c20_figure_layout_main.rds"))
 
 cat("\nwrote:\n"); print(list.files(CAN_FIG))
 cat("\n", strrep("=", 78), "\nMAIN FIGURES DONE\n", strrep("=", 78), "\n", sep = "")

@@ -26,7 +26,7 @@ cat(strrep("=", 78), "\nCANONICAL PART 4: JUDGE SENSITIVITY\n", strrep("=", 78),
 
 CANON_JUDGE <- "google/gemini-2.5-flash-lite"
 CANON_KEY   <- c("prompt_id", "prompt_language", "model")
-ENVELOPE_LABEL <- "OBSERVED JUDGE SENSITIVITY ENVELOPE"
+ENVELOPE_LABEL <- "OBSERVED JUDGE POINT ENVELOPE"
 B_JUDGE <- as.integer(Sys.getenv("CANON_B_JUDGE", "600"))
 
 JUDGES <- load_judge_panel(language = "en", fields = "engagement_code")
@@ -225,31 +225,57 @@ c17b <- map_dfr(all_judges, function(j) {
 # from the SAME sample. The full-sample c04 interval is deliberately NOT mixed
 # in: it is estimated on a different (larger) sample, and inserting it would
 # produce a range that no single comparison supports.
+# THREE DISTINCT QUANTITIES, kept apart. An earlier version defined "the
+# envelope" as min(conf_low) to max(conf_high) -- the UNION OF PER-JUDGE
+# BOOTSTRAP INTERVALS -- and then called it the observed judge envelope. Those
+# are not the same thing: the union mixes sampling uncertainty into a quantity
+# that is supposed to describe instrument variation, and it is wider than the
+# judge disagreement it purports to show.
+#
+#   1. observed judge point envelope -- min/max of the judge POINT estimates.
+#      This is the instrument-variation quantity. No sampling uncertainty in it.
+#   2. per-judge sampling interval    -- each judge's own issue-cluster bootstrap.
+#   3. union of judge-specific 95% intervals -- reported, but named exactly that,
+#      never "envelope", and never treated as an interval with coverage for
+#      judge uncertainty.
 env <- c17b %>% filter(estimable) %>%
   group_by(jurisdiction) %>%
   summarise(n_judges = n(),
             canonical = estimate[judge_model == CANON_JUDGE][1],
             canonical_low = conf_low[judge_model == CANON_JUDGE][1],
             canonical_high = conf_high[judge_model == CANON_JUDGE][1],
-            point_min = min(estimate), point_max = max(estimate),
-            envelope_low = min(conf_low), envelope_high = max(conf_high),
+            point_envelope_low  = min(estimate),
+            point_envelope_high = max(estimate),
+            union_low  = min(conf_low),
+            union_high = max(conf_high),
             .groups = "drop") %>%
   mutate(judge_model = ENVELOPE_LABEL, comparison = "all-judge intersection",
-         estimate = canonical, conf_low = envelope_low, conf_high = envelope_high,
+         estimate = canonical,
+         # conf_low/high on THIS row are the POINT envelope, so anything that
+         # plots conf_low..conf_high for the envelope row draws instrument
+         # variation, not a mixture.
+         conf_low = point_envelope_low, conf_high = point_envelope_high,
          estimable = TRUE, interval_reliable = NA,
-         # Two different claims. Every judge agreeing on direction is weaker
-         # than the union of their intervals clearing zero.
-         point_sign_stable = (point_min > 0 & point_max > 0) |
-                             (point_min < 0 & point_max < 0),
-         envelope_excludes_zero = (envelope_low > 0) | (envelope_high < 0),
-         note = paste("observed range across four instruments on one shared",
-                      "sample; NOT a confidence interval"))
+         point_sign_stable = (point_envelope_low > 0 & point_envelope_high > 0) |
+                             (point_envelope_low < 0 & point_envelope_high < 0),
+         point_envelope_excludes_zero = (point_envelope_low > 0) |
+                                        (point_envelope_high < 0),
+         union_excludes_zero = (union_low > 0) | (union_high < 0),
+         note = paste("conf_low/conf_high on this row are the OBSERVED JUDGE",
+                      "POINT ENVELOPE: the range of the four judges' point",
+                      "estimates on one shared sample. It is not a confidence",
+                      "interval. union_low/union_high are the union of the",
+                      "judge-specific 95% intervals, reported separately and",
+                      "never called an envelope."))
 
 c17b <- bind_rows(
   c17b %>% mutate(interval_type = "95% issue-cluster bootstrap, instrument held fixed"),
-  env  %>% mutate(interval_type = "OBSERVED JUDGE SENSITIVITY ENVELOPE, no coverage guarantee")) %>%
+  env  %>% mutate(interval_type = "OBSERVED JUDGE POINT ENVELOPE (range of judge point estimates); NOT a confidence interval")) %>%
   mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
          conf_high_pp = pp(conf_high),
+         union_low_pp = pp(union_low), union_high_pp = pp(union_high),
+         point_envelope_low_pp = pp(point_envelope_low),
+         point_envelope_high_pp = pp(point_envelope_high),
          quantity = "standardized home - away refusal contrast",
          sample = "all-judge common support (see c17c)",
          spec = "refused_strict ~ home * model + tier + domain + route; nested weights; g-computation",
@@ -261,15 +287,17 @@ print(as.data.frame(c17b %>% filter(estimable) %>%
         transmute(jurisdiction, judge = substr(judge_model, 1, 36),
                   est = round(estimate_pp, 2), lo = round(conf_low_pp, 2),
                   hi = round(conf_high_pp, 2))), row.names = FALSE)
-cat("\nevery judge agrees on direction:",
+cat("\nevery judge agrees on direction      :",
     paste(env$jurisdiction[env$point_sign_stable], collapse = ", "), "\n")
-cat("envelope excludes zero        :",
-    paste(env$jurisdiction[env$envelope_excludes_zero], collapse = ", "), "\n")
+cat("point envelope excludes zero         :",
+    paste(env$jurisdiction[env$point_envelope_excludes_zero], collapse = ", "), "\n")
+cat("union of judge intervals excludes 0  :",
+    paste(env$jurisdiction[env$union_excludes_zero], collapse = ", "), "\n")
 
 # --- reliability, carried through from the panel layer ------------------------
 rel_files <- c("e23_reliability_pass1.csv", "e25_reliability_slant.csv")
 rel <- map_dfr(rel_files, function(f) {
-  p <- file.path("pipeline/estimates", f)
+  p <- file.path(CAN_EST, f)   # this release's build, not the global directory
   if (!file.exists(p)) return(NULL)
   x <- read_csv(p, show_col_types = FALSE)
   tibble(judge_model = "PANEL (all judges)", quantity = "reliability",

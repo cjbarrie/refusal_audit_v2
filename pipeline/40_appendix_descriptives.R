@@ -68,7 +68,7 @@ a03 <- canon %>% filter(refused_strict == 1, !is.na(refusal_justification)) %>%
   mutate(group = unname(J5[code])) %>%
   group_by(model, prompt_language) %>%
   mutate(share = n / sum(n), n_refusals = sum(n)) %>% ungroup()
-rel <- tryCatch(read_csv("pipeline/estimates/e24_reliability_justification.csv",
+rel <- tryCatch(read_csv(file.path(CAN_EST, "e24_reliability_justification.csv"),
                          show_col_types = FALSE), error = function(e) NULL)
 a03 <- a03 %>%
   mutate(panel_alpha = if (!is.null(rel) && "krippendorff_alpha" %in% names(rel))

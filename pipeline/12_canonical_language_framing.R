@@ -56,34 +56,48 @@ FRAME_INTERP <- paste(
 # Generic paired bootstrap: resample ISSUES, carrying every block for a drawn
 # issue together, with multiplicity preserved.
 # -----------------------------------------------------------------------------
-boot_paired <- function(df, stat, B, label) {
+boot_paired <- function(df, stat, B, label, max_fail_rate = 0.02) {
+  # FIXED NUMBER OF DRAWS. This used to loop `while (length(vals) < B)`, i.e.
+  # resample until B SUCCESSES -- the same conditional-bootstrap defect the
+  # shared boot_canon() had. It conditions the interval on the replicates where
+  # the statistic happened to be finite, which are systematically the draws with
+  # more events, and biases the interval inward. Failures are now stored as NA,
+  # counted, and reported; a draw is never replaced.
   iss <- split(seq_len(nrow(df)), df$issue_id)
   keys <- names(iss)
   d0 <- df; d0$bootstrap_issue_instance <- as.character(d0$issue_id)
-  point <- stat(d0)
+  point <- tryCatch(stat(d0), error = function(e) NA_real_)
   set.seed(CAN_SEED)
-  vals <- numeric(0); att <- 0L; fail <- 0L
-  while (length(vals) < B && att < B * 1.5 + 50) {
-    att <- att + 1L
+  vals <- rep(NA_real_, B)
+  for (b in seq_len(B)) {
     drawn <- sample(keys, length(keys), replace = TRUE)
     rows <- unlist(iss[drawn], use.names = FALSE)
     dd <- df[rows, , drop = FALSE]
+    # One instance label per DRAW, so a twice-drawn issue keeps its copies apart.
     dd$bootstrap_issue_instance <- rep(paste0(drawn, "#", seq_along(drawn)),
                                        times = lengths(iss[drawn]))
-    v <- stat(dd)
-    if (!is.finite(v)) { fail <- fail + 1L; next }
-    vals <- c(vals, v)
+    v <- tryCatch(stat(dd), error = function(e) NA_real_)
+    vals[b] <- if (is.null(v) || length(v) != 1L || !is.finite(v)) NA_real_ else v
   }
+  okv <- vals[!is.na(vals)]
+  nfail <- sum(is.na(vals)); frate <- nfail / B
+  reliable <- frate <= max_fail_rate
   record_diag(tibble(canonical_run_id = CANONICAL_RUN_ID, label = label,
                      bootstrap_unit = "issue_id", multiplicity_preserved = TRUE,
                      copy_id_column = "bootstrap_issue_instance", seed = CAN_SEED,
-                     replicates_requested = B, replicates_attempted = att,
-                     replicates_successful = length(vals), replicates_failed = fail,
-                     failure_rate = fail / max(att, 1), interval_method = "percentile",
+                     replicates_requested = B, replicates_drawn = B,
+                     replicates_successful = length(okv), replicates_failed = nfail,
+                     failure_rate = frate, failed_draws_replaced = FALSE,
+                     interval_reliable = reliable,
+                     interval_method = "percentile",
                      n_rows = nrow(df), n_issues = length(keys)))
-  list(estimate = point, conf_low = unname(quantile(vals, .025)),
-       conf_high = unname(quantile(vals, .975)))
+  # No trusted interval when too many draws had no defined statistic.
+  list(estimate = point,
+       conf_low  = if (reliable && length(okv) > 1) unname(quantile(okv, .025)) else NA_real_,
+       conf_high = if (reliable && length(okv) > 1) unname(quantile(okv, .975)) else NA_real_,
+       failure_rate = frate, interval_reliable = reliable)
 }
+
 
 # Three weightings of a per-block difference `d`.
 wmean_blocks <- function(df, how) {
@@ -108,14 +122,38 @@ wmean_blocks <- function(df, how) {
 PRIMARY_W <- "equal_model"
 cat("\nA. paired language effects (primary weighting:", PRIMARY_W, ")\n")
 
+# The INTENDED block universe is constructed explicitly: every model x prompt
+# the design meant to observe in both arms. Defining missingness only from the
+# rows that happen to exist cannot distinguish "English present, translation
+# missing" from "neither present", and cannot report a completion rate at all.
+# Use the block_id canon already carries. Reconstructing it here produced a
+# different separator, so the join matched nothing and every language reported
+# zero complete pairs.
+INTENDED <- canon %>%
+  distinct(block_id, model, prompt_id, issue_id, juris, home_status, tier)
+
 paired_blocks <- function(L, outcome = "refused_strict", d = canon) {
   en <- d %>% filter(lang == "en") %>%
-    select(block_id, model, prompt_id, issue_id, juris, home_status, tier,
-           y_en = all_of(outcome))
+    select(block_id, y_en = all_of(outcome))
   lx <- d %>% filter(lang == L) %>% select(block_id, y_l = all_of(outcome))
-  full <- inner_join(en, lx, by = "block_id") %>% mutate(d = y_l - y_en)
-  list(blocks = full, n_en = nrow(en), n_l = nrow(lx), n_complete = nrow(full),
-       n_missing = nrow(en) + nrow(lx) - 2 * nrow(full))
+  uni <- INTENDED %>%
+    left_join(en, by = "block_id") %>% left_join(lx, by = "block_id") %>%
+    mutate(status = case_when(
+      !is.na(y_en) & !is.na(y_l) ~ "complete pair",
+      !is.na(y_en) &  is.na(y_l) ~ "English only",
+       is.na(y_en) & !is.na(y_l) ~ "target-language only",
+      TRUE                       ~ "missing in both"))
+  full <- uni %>% filter(status == "complete pair") %>% mutate(d = y_l - y_en)
+  counts <- uni %>% count(status, name = "n")
+  getn <- function(k) { v <- counts$n[counts$status == k]; if (length(v)) v else 0L }
+  list(blocks = full,
+       n_intended = nrow(uni), n_complete = nrow(full),
+       n_en_only = getn("English only"),
+       n_lang_only = getn("target-language only"),
+       n_missing_both = getn("missing in both"),
+       completion_rate = nrow(full) / nrow(uni),
+       n_en = sum(!is.na(uni$y_en)), n_l = sum(!is.na(uni$y_l)),
+       n_missing = nrow(uni) - nrow(full))
 }
 
 c08 <- map_dfr(NONEN, function(L) {
@@ -128,7 +166,11 @@ c08 <- map_dfr(NONEN, function(L) {
            estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
            estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
            conf_high_pp = pp(bt$conf_high),
+           n_intended_blocks = P$n_intended,
            n_complete_blocks = P$n_complete, n_missing_blocks = P$n_missing,
+           n_english_only = P$n_en_only, n_target_language_only = P$n_lang_only,
+           n_missing_in_both = P$n_missing_both,
+           completion_rate = P$completion_rate,
            n_blocks_english = P$n_en, n_blocks_language = P$n_l,
            n_issues = n_distinct(P$blocks$issue_id),
            raw_mean_english = mean(P$blocks$y_en),
@@ -211,9 +253,11 @@ write_csv(c08, file.path(CAN_EST, "c08_language_paired.csv"))
 cat("\n  primary (pooled):\n")
 print(as.data.frame(c08 %>% filter(sensitivity == "primary", weighting == PRIMARY_W) %>%
         select(language_label, estimate_pp, conf_low_pp, conf_high_pp,
-               n_complete_blocks, n_missing_blocks)), digits = 3, row.names = FALSE)
+               n_intended_blocks, n_complete_blocks, n_english_only,
+               n_target_language_only, completion_rate)),
+      digits = 3, row.names = FALSE)
 
-cat("\n  heterogeneity by model and jurisdiction\n")
+cat("\n  heterogeneity by model and jurisdiction (EXPLORATORY)\n")
 c09 <- map_dfr(NONEN, function(L) {
   P <- paired_blocks(L)
   bind_rows(
@@ -237,6 +281,11 @@ c09 <- map_dfr(NONEN, function(L) {
               estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
               conf_high_pp = pp(conf_high), interpretation = LANG_INTERP,
               canonical_run_id = CANONICAL_RUN_ID)
+c09 <- c09 %>% mutate(
+  evidence_status = paste("EXPLORATORY. 44 model x language cells are reported;",
+    "these are not multiplicity-adjusted, and a cell whose interval excludes",
+    "zero is not a confirmatory test. Read them as heterogeneity description."),
+  n_cells_reported = nrow(c09))
 write_csv(c09, file.path(CAN_EST, "c09_language_by_model.csv"))
 cat(sprintf("  c09: %d rows\n", nrow(c09)))
 

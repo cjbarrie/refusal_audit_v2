@@ -109,11 +109,26 @@ jack_slant <- function(d, stat, label) {
 }
 
 # Both, in one row.
-both_intervals <- function(d, stat, B, label) {
+both_intervals <- function(d, stat, B, label, bounded = FALSE) {
   bt <- boot_slant(d, stat, B, label)
   jk <- jack_slant(d, stat, label)
+  # The frozen-battery interval is a NORMAL APPROXIMATION, so for a rare share
+  # it can extend below zero. For a proportion the limits are computed on the
+  # logit scale and mapped back, which keeps them inside [0, 1]; the raw
+  # unbounded limits are retained alongside and labelled, because a reader
+  # comparing to an older table needs to see both. A negative probability limit
+  # is never plotted as a meaningful value.
+  lo <- jk$conf_low; hi <- jk$conf_high
+  if (bounded && is.finite(jk$se) && jk$estimate > 0 && jk$estimate < 1) {
+    z <- stats::qnorm(0.975)
+    se_l <- jk$se / (jk$estimate * (1 - jk$estimate))       # delta method
+    eta <- stats::qlogis(jk$estimate)
+    lo <- stats::plogis(eta - z * se_l); hi <- stats::plogis(eta + z * se_l)
+  }
   list(estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
-       battery_low = jk$conf_low, battery_high = jk$conf_high,
+       battery_low = lo, battery_high = hi,
+       battery_low_unbounded = jk$conf_low, battery_high_unbounded = jk$conf_high,
+       battery_scale = if (bounded) "logit, mapped back to [0,1]" else "identity (unbounded normal)",
        battery_se = jk$se, interval_reliable = bt$interval_reliable)
 }
 
@@ -166,15 +181,34 @@ IDEO_ENDPOINTS <- tribble(
   "authoritarian_libertarian", "authoritarian",   "libertarian",
   "populist_elitist",          "populist",        "elitist")
 
+# Panel alphas are read from THIS release's e25 and formatted into the warning,
+# so the table can never claim a reliability figure the run did not produce.
+.rel25 <- tryCatch(read_csv(file.path(CAN_EST, "e25_reliability_slant.csv"),
+                            show_col_types = FALSE), error = function(e) NULL)
+IDEO_ALPHA <- setNames(rep(NA_real_, length(IDEO)), names(IDEO))
+if (!is.null(.rel25))
+  for (f in names(IDEO)) {
+    v <- .rel25$krippendorff_alpha[.rel25$construct == f]
+    if (length(v)) IDEO_ALPHA[f] <- v[1]
+  }
+IDEO_ALPHA_NOTE <- setNames(vapply(names(IDEO), function(f) sprintf(
+  paste("IDEOLOGY RELIABILITY IS WEAK. Panel Krippendorff alpha for this",
+        "dimension (%s) is %.3f in e25 for this run. DESCRIPTIVE/EXPLORATORY:",
+        "this quantity should not carry substantive weight."),
+  unname(IDEO[f]), IDEO_ALPHA[f]), character(1)), names(IDEO))
+
 c12 <- map_dfr(names(IDEO), function(f) {
   d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
   bins <- map_dfr(names(IDEO_BINS), function(q) {
     v <- IDEO_BINS[[q]]
     st <- function(x) mean(tapply(x[[f]] == v, as.character(x$model), mean))
-    r <- both_intervals(d, st, B_HEAD, sprintf("c12|%s|%s", f, q))
+    r <- both_intervals(d, st, B_HEAD, sprintf("c12|%s|%s", f, q), bounded = TRUE)
     tibble(quantity = q, category = v, estimate = r$estimate,
            conf_low = r$conf_low, conf_high = r$conf_high,
            conf_low_battery = r$battery_low, conf_high_battery = r$battery_high,
+           conf_low_battery_unbounded = r$battery_low_unbounded,
+           conf_high_battery_unbounded = r$battery_high_unbounded,
+           battery_scale = r$battery_scale,
            battery_se = r$battery_se, interval_reliable = r$interval_reliable)
   })
   # Secondary only, and labelled as such on the row.
@@ -196,11 +230,11 @@ c12 <- map_dfr(names(IDEO), function(f) {
   mutate(scale_label = paste0(endpoint_neg, " (-2) <-> ", endpoint_pos, " (+2)"),
          primary_estimand = "equal-model share in each of the five categories -2..+2",
          inference_target = TARGET_NOTE,
-         reliability_warning = paste("IDEOLOGY RELIABILITY IS WEAK. Panel alpha by",
-           "dimension: economic ~0.41, social ~0.30, authority ~0.24,",
-           "populism ~0.14. These are DESCRIPTIVE/EXPLORATORY quantities;",
-           "social, authority and populism in particular should not carry",
-           "substantive weight."),
+         # DERIVED, never typed. The hard-coded alphas that used to sit here
+         # (0.41/0.30/0.24/0.14) had drifted from the values e25 actually
+         # reports (0.39/0.13/0.23/0.02), so the table asserted reliability the
+         # data did not show.
+         reliability_warning = IDEO_ALPHA_NOTE[field],
          conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c12, file.path(CAN_EST, "c12_ideology_distribution.csv"))
 
@@ -234,7 +268,8 @@ write_csv(c15, file.path(CAN_EST, "c15_moral_by_model.csv"))
 # Equal-model points ALWAYS carry an interval computed on the same weighting.
 c14 <- map_dfr(names(MFT), function(f) {
   d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
-  overall <- both_intervals(d, function(x) eqm(x, f), B_HEAD, sprintf("c14|%s|all", f))
+  overall <- both_intervals(d, function(x) eqm(x, f), B_HEAD,
+                            sprintf("c14|%s|all", f), bounded = TRUE)
   rows <- tibble(foundation = unname(MFT[f]), field = f, scope = "overall",
                  level = "all models", weighting = "equal-model",
                  estimate = overall$estimate, conf_low = overall$conf_low,
@@ -247,7 +282,8 @@ c14 <- map_dfr(names(MFT), function(f) {
   juris_rows <- map_dfr(JURIS_C, function(j) {
     dd <- d %>% filter(juris == j)
     if (nrow(dd) < 50) return(NULL)
-    b <- both_intervals(dd, function(x) eqm(x, f), B_SENS, sprintf("c14|%s|%s", f, j))
+    b <- both_intervals(dd, function(x) eqm(x, f), B_SENS,
+                        sprintf("c14|%s|%s", f, j), bounded = TRUE)
     tibble(foundation = unname(MFT[f]), field = f, scope = "jurisdiction",
            level = j, weighting = "equal-model", estimate = b$estimate,
            conf_low = b$conf_low, conf_high = b$conf_high,
@@ -271,7 +307,9 @@ c14 <- map_dfr(names(MFT), function(f) {
 # measurement-quality statistic into a verdict ("acceptable agreement") that the
 # figure then repeated. The value and its interval are reported instead, and any
 # tiering is left to the reader.
-rel <- tryCatch(read_csv("pipeline/estimates/e25_reliability_slant.csv",
+# Read the reliability table from THIS release's estimate directory, so the
+# canonical layer never depends on an unmanifested global file.
+rel <- tryCatch(read_csv(file.path(CAN_EST, "e25_reliability_slant.csv"),
                          show_col_types = FALSE), error = function(e) NULL)
 if (!is.null(rel)) {
   keep <- intersect(c("construct", "krippendorff_alpha", "gwet_ac1", "prevalence",
@@ -324,6 +362,88 @@ write_csv(bind_rows(
            canonical_use = ifelse(coverage >= 0.999, "eligible for canonical content results",
                                   "EXCLUDED: incomplete coverage")),
   file.path(CAN_EST, "c12b_slant_coverage.csv"))
+
+# =============================================================================
+# c19 -- content outcomes under each judge, on an all-judge common sample
+# =============================================================================
+# The home contrast has a judge-sensitivity table (c17b); the content outcomes
+# did not, so a reader had no way to tell whether the five-bin ideology shares
+# or the foundation prevalences depend on the instrument. Observed judge POINT
+# ranges are kept separate from issue-bootstrap intervals throughout.
+cat("\nD. content outcomes under each judge (common support)\n")
+CONTENT_FIELDS <- c(names(IDEO), names(MFT))
+JP <- tryCatch(load_judge_panel(language = "en", fields = CONTENT_FIELDS),
+               error = function(e) NULL)
+
+c19 <- tibble()
+if (!is.null(JP) && nrow(JP)) {
+  KEY <- c("prompt_id", "prompt_language", "model")
+  judges <- sort(unique(JP$judge_model))
+  # Keys every judge coded for at least one content field, intersected with the
+  # slant analysis sample.
+  covered <- JP %>%
+    filter(if_any(all_of(CONTENT_FIELDS), ~ !is.na(.x))) %>%
+    distinct(across(all_of(KEY)), judge_model) %>%
+    count(across(all_of(KEY)), name = "k") %>%
+    filter(k == length(judges)) %>% select(all_of(KEY))
+  base_keys <- SLANT_EN %>% distinct(across(all_of(KEY))) %>%
+    inner_join(covered, by = KEY)
+  cat(sprintf("  all-judge content support: %d of %d slant responses\n",
+              nrow(base_keys), nrow(SLANT_EN)))
+
+  if (nrow(base_keys) > 50) {
+    frame_j <- function(j) {
+      lab <- JP %>% filter(judge_model == j) %>%
+        select(all_of(KEY), all_of(intersect(CONTENT_FIELDS, names(JP))))
+      SLANT_EN %>% select(-any_of(CONTENT_FIELDS)) %>%
+        inner_join(base_keys, by = KEY) %>% inner_join(lab, by = KEY)
+    }
+    c19 <- map_dfr(judges, function(j) {
+      d <- frame_j(j)
+      if (!nrow(d)) return(NULL)
+      ide <- map_dfr(names(IDEO), function(f) {
+        if (!f %in% names(d)) return(NULL)
+        dd <- d %>% filter(!is.na(.data[[f]]))
+        if (!nrow(dd)) return(NULL)
+        map_dfr(names(IDEO_BINS), function(q) tibble(
+          outcome = "ideology", dimension = unname(IDEO[f]), field = f,
+          quantity = q,
+          estimate = mean(tapply(dd[[f]] == IDEO_BINS[[q]],
+                                 as.character(dd$model), mean)),
+          n = nrow(dd)))
+      })
+      mft <- map_dfr(names(MFT), function(f) {
+        if (!f %in% names(d)) return(NULL)
+        dd <- d %>% filter(!is.na(.data[[f]]))
+        if (!nrow(dd)) return(NULL)
+        tibble(outcome = "moral foundation", dimension = unname(MFT[f]),
+               field = f, quantity = "prevalence",
+               estimate = eqm(dd, f), n = nrow(dd))
+      })
+      bind_rows(ide, mft) %>% mutate(judge_model = j)
+    })
+    if (nrow(c19)) {
+      env19 <- c19 %>% group_by(outcome, dimension, field, quantity) %>%
+        summarise(n_judges = n(),
+                  point_envelope_low = min(estimate),
+                  point_envelope_high = max(estimate),
+                  .groups = "drop") %>%
+        mutate(judge_model = "OBSERVED JUDGE POINT ENVELOPE",
+               estimate = NA_real_,
+               note = paste("range of judge POINT estimates on one shared",
+                            "sample; contains no sampling uncertainty and is",
+                            "not an interval"))
+      c19 <- bind_rows(c19, env19) %>%
+        mutate(sample = sprintf("all-judge content common support (n = %d responses)",
+                                nrow(base_keys)),
+               conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
+      write_csv(c19, file.path(CAN_EST, "c19_content_by_judge.csv"))
+      cat("  c19 written: ", nrow(c19), " rows\n", sep = "")
+    }
+  } else {
+    cat("  SKIP c19: fewer than 50 responses coded by every judge\n")
+  }
+}
 
 flush_diag()
 cat("\n", strrep("=", 78), "\nPART 3 DONE\n", strrep("=", 78), "\n", sep = "")

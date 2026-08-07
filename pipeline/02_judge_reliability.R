@@ -2,7 +2,7 @@
 # Script 24: Measurement reliability and robustness  (ESTIMATION ONLY)
 # =============================================================================
 # Input : <run_dir>/annotations_panel.jsonl   (long: one row per response x judge)
-# Output: pipeline/estimates/e23..e28*.csv
+# Output: <CANON_EST_DIR or pipeline/estimates>/e2*.csv
 #
 # Supersedes 16_irr_analysis.R, which was structurally limited to TWO raters
 # (irr::kappa2 is Cohen's kappa) and covered Pass 1 and Pass 2 only -- no
@@ -45,7 +45,13 @@ suppressPackageStartupMessages({
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("pipeline/_theme.R")
 
-EST <- "pipeline/estimates"; dir.create(EST, showWarnings = FALSE, recursive = TRUE)
+# RELEASE ISOLATION. When a release build is in progress, the e-series lands in
+# that release's estimate directory, not in the mutable global one. Writing to
+# pipeline/estimates during a build meant a FAILED release still mutated the
+# live reliability tables, and the canonical scripts then read those unmanifested
+# global files -- so a release could depend on inputs no manifest recorded.
+EST <- Sys.getenv("CANON_EST_DIR", "pipeline/estimates")
+dir.create(EST, showWarnings = FALSE, recursive = TRUE)
 run_dir <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/pilot_v1")
 panel_file <- file.path(run_dir, "annotations_panel.jsonl")
 
@@ -81,6 +87,7 @@ source("pipeline/10_canonical_common.R")
 # re-estimation, and nothing failed. load_judge_panel() prefers the per-judge
 # directories and applies one resume-key rule, so both scripts now see the same
 # rows by construction.
+REL_LANG_INIT <- "en"
 REL_FIELDS <- c("engagement_code", "refusal_justification", "issue_id",
                 "economic_left_right", "social_left_right",
                 "authoritarian_libertarian", "populist_elitist",
@@ -91,6 +98,24 @@ panel <- load_judge_panel(run_dir = run_dir, language = "en", fields = REL_FIELD
 if (is.null(panel) || !nrow(panel)) {
   cat("SKIP: the shared loader found no panel records.\n"); quit(save = "no", status = 0)
 }
+# RESTRICT TO THE CANONICAL KEY UNIVERSE. The loader returns whatever each judge
+# rated; the analysis sample is 27,449 English responses. Without this
+# intersection e23 reported 27,450 units -- one key that is not in the canonical
+# sample -- so the reliability sample and the estimation sample were not the
+# same set of responses.
+UNIVERSE <- canon %>% filter(prompt_language == REL_LANG_INIT) %>%
+  distinct(prompt_id, prompt_language, model)
+n_before_universe <- nrow(panel)
+panel_out <- panel %>% anti_join(UNIVERSE, by = c("prompt_id", "prompt_language", "model"))
+panel <- panel %>% semi_join(UNIVERSE, by = c("prompt_id", "prompt_language", "model"))
+if (nrow(panel_out)) {
+  write_csv(panel_out %>% count(judge_model, name = "n_excluded"),
+            file.path(EST, "e22c_out_of_universe_keys.csv"))
+  cat(sprintf("excluded %d records outside the canonical key universe (see e22c)\n",
+              nrow(panel_out)))
+}
+cat(sprintf("reliability universe: %d canonical English responses\n", nrow(UNIVERSE)))
+
 n_dup <- attr(panel, "duplicates_collapsed")
 if (is.null(n_dup)) n_dup <- 0L
 cat(sprintf("panel rows: %d after resume-key collapse (%d duplicates removed)\n",
@@ -193,11 +218,22 @@ raw_agree <- function(m) {
 # measure. It is retained under the name all_rater_positive_unanimity, and the
 # reported quantity is now the mean and range of true pairwise PSA.
 
-gwet_ac1 <- function(m) {
+# Gwet's AC1/AC2. The WEIGHTING MUST BE STATED: unweighted AC1 treats an ordinal
+# scale as nominal, so a 1-vs-5 disagreement counts the same as 1-vs-2. Presenting
+# that as an ordinal reliability coefficient overstates agreement on the 1-5
+# engagement scale and on the -2..+2 ideology scales. Ordinal constructs use
+# AC2 with ordinal weights; binary and nominal constructs use AC1.
+gwet_ac1 <- function(m, scale = c("nominal", "ordinal")) {
+  scale <- match.arg(scale)
   if (!has_cac || is.null(m) || nrow(m) < 2) return(NA_real_)
-  out <- tryCatch(irrCAC::gwet.ac1.raw(as.data.frame(m)), error = function(e) NULL)
+  out <- tryCatch(
+    if (scale == "ordinal")
+      irrCAC::gwet.ac1.raw(as.data.frame(m), weights = "ordinal")
+    else irrCAC::gwet.ac1.raw(as.data.frame(m)),
+    error = function(e) NULL)
   if (is.null(out)) NA_real_ else out$est$coeff.val
 }
+
 
 # Issue-cluster bootstrap for any of the above.
 unit_issue <- panel %>% distinct(unit, issue_id) %>% deframe()
@@ -208,6 +244,7 @@ REL_SEED <- 20260807L
 REL_B    <- 500L
 .rel_diag <- list()
 boot_stat <- function(m, fn, B = REL_B, label = NA_character_) {
+  if (is.na(label)) stop("every reliability bootstrap must carry a label")
   if (is.null(m) || nrow(m) < 2) return(c(NA_real_, NA_real_))
   iss <- unit_issue[rownames(m)]
   groups <- split(seq_len(nrow(m)), iss)
@@ -225,12 +262,27 @@ boot_stat <- function(m, fn, B = REL_B, label = NA_character_) {
   quantile(vals, c(.025, .975), na.rm = TRUE)
 }
 
+# One bootstrap, both endpoints, memoised by label. Calling boot_stat() twice --
+# once for [[1]] and once for [[2]] -- ran the identical 500-replicate bootstrap
+# twice and wrote two diagnostic rows for one quantity.
+.boot_cache <- new.env(parent = emptyenv())
+boot_ci <- function(m, fn, label) {
+  if (is.null(label) || is.na(label)) stop("boot_ci() requires a label")
+  if (!is.null(.boot_cache[[label]])) return(.boot_cache[[label]])
+  v <- boot_stat(m, fn, label = label)
+  .boot_cache[[label]] <- v
+  v
+}
+
 # --- e23 Pass 1 reliability ---------------------------------------------------
 cat("e23 Pass 1 (engagement + refusal)\n")
 m_eng <- rater_matrix(panel, "engagement_code")
 m_ref <- rater_matrix(panel, "refused")
-ci_a <- boot_stat(m_ref, function(x) kripp(x, "nominal"))
-ci_g <- boot_stat(m_ref, gwet_ac1)
+# The all-judge complete case is the PRIMARY multi-rater sample, so it is built
+# here, next to the matrix it comes from, and used by e23 below.
+m_ref_complete <- m_ref[rowSums(!is.na(m_ref)) == ncol(m_ref), , drop = FALSE]
+ci_a <- boot_ci(m_ref, function(x) kripp(x, "nominal"), "e23|alpha|refused")
+ci_g <- boot_ci(m_ref, function(x) gwet_ac1(x, "nominal"), "e23|ac1|refused")
 e23 <- tibble(
   construct = c("engagement code (1-5)", "refused (>=4)"),
   scale = c("ordinal", "binary"),
@@ -239,7 +291,8 @@ e23 <- tibble(
   raw_agreement = c(raw_agree(m_eng), raw_agree(m_ref)),
   krippendorff_alpha = c(kripp(m_eng, "ordinal"), kripp(m_ref, "nominal")),
   alpha_low = c(NA, ci_a[[1]]), alpha_high = c(NA, ci_a[[2]]),
-  gwet_ac1 = c(gwet_ac1(m_eng), gwet_ac1(m_ref)),
+  gwet_ac1 = c(gwet_ac1(m_eng, "ordinal"), gwet_ac1(m_ref, "nominal")),
+  gwet_statistic = c("AC2, ordinal weights", "AC1, unweighted (binary)"),
   ac1_low = c(NA, ci_g[[1]]), ac1_high = c(NA, ci_g[[2]]),
   # TRUE pairwise positive specific agreement, 2a/(2a+b+c): mean over judge
   # pairs, with the range, and an issue-clustered interval on the mean.
@@ -247,17 +300,22 @@ e23 <- tibble(
   psa_min  = c(NA, psa_summary(m_ref)$psa_min),
   psa_max  = c(NA, psa_summary(m_ref)$psa_max),
   n_pairs  = c(NA, psa_summary(m_ref)$n_pairs),
-  psa_conf_low  = c(NA, boot_stat(m_ref, function(x) psa_summary(x)$psa_mean,
-                                  label = "e23|psa|refused")[[1]]),
-  psa_conf_high = c(NA, boot_stat(m_ref, function(x) psa_summary(x)$psa_mean,
-                                  label = "e23|psa2|refused")[[2]]),
+  psa_conf_low  = c(NA, boot_ci(m_ref, function(x) psa_summary(x)$psa_mean,
+                                "e23|psa|refused")[[1]]),
+  psa_conf_high = c(NA, boot_ci(m_ref, function(x) psa_summary(x)$psa_mean,
+                                "e23|psa|refused")[[2]]),
   # The old statistic, under a name that says what it is.
   all_rater_positive_unanimity = c(NA, all_rater_positive_unanimity(m_ref)),
   prevalence = c(NA, mean(m_ref, na.rm = TRUE)),
   psa_definition = "pairwise 2a/(2a+b+c), mean over judge pairs (Cicchetti-Feinstein)",
   n_units_complete = c(sum(rowSums(!is.na(m_eng)) == ncol(m_eng)),
                        sum(rowSums(!is.na(m_ref)) == ncol(m_ref))))
-e23 <- e23 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG)
+e23 <- e23 %>% mutate(codebook = VERSION_NOTE, language = REL_LANG,
+                      primary_sample = "all-judge complete case",
+                      n_units_primary = nrow(m_ref_complete),
+                      sample_note = paste("n_units is pairwise-available;",
+                        "n_units_complete is the PRIMARY all-judge complete-case",
+                        "sample. They are different samples and are not pooled."))
 write_csv(e23, file.path(EST, "e23_reliability_pass1.csv"))
 print(as.data.frame(e23 %>% select(construct, n_units, n_units_complete,
                                    raw_agreement, krippendorff_alpha, gwet_ac1,
@@ -277,7 +335,8 @@ e24 <- tibble(construct = "refusal justification (7 codes)", scale = "nominal",
               conditioned_on = "units all judges called a refusal",
               raw_agreement = raw_agree(m_just),
               krippendorff_alpha = kripp(m_just, "nominal"),
-              gwet_ac1 = gwet_ac1(m_just))
+              gwet_ac1 = gwet_ac1(m_just, "nominal"),
+              gwet_statistic = "AC1, unweighted (nominal A-G codes)")
 write_csv(e24, file.path(EST, "e24_reliability_justification.csv"))
 print(as.data.frame(e24), digits = 3, row.names = FALSE)
 
@@ -295,7 +354,9 @@ e25 <- bind_rows(
            n_units = if (is.null(m)) 0 else nrow(m),
            raw_agreement = raw_agree(m),
            krippendorff_alpha = kripp(m, "ordinal"),
-           gwet_ac1 = gwet_ac1(m), prevalence = NA_real_,
+           gwet_ac1 = gwet_ac1(m, "ordinal"),
+           gwet_statistic = "AC2, ordinal weights",
+           prevalence = NA_real_,
            # PSA is defined for a binary outcome; an ordinal -2..+2 scale has no
            # "positive" cell, so the column is simply absent for these rows.
            n_units_complete = if (is.null(m)) 0L else
@@ -309,16 +370,17 @@ e25 <- bind_rows(
            n_units = if (is.null(m)) 0 else nrow(m),
            raw_agreement = raw_agree(m),
            krippendorff_alpha = kripp(m, "nominal"),
-           gwet_ac1 = gwet_ac1(m),
+           gwet_ac1 = gwet_ac1(m, "nominal"),
+           gwet_statistic = "AC1, unweighted (binary)",
            prevalence = if (is.null(m)) NA_real_ else mean(m, na.rm = TRUE),
            psa_mean = psa_summary(m)$psa_mean,
            psa_min  = psa_summary(m)$psa_min,
            psa_max  = psa_summary(m)$psa_max,
            n_pairs  = psa_summary(m)$n_pairs,
-           psa_conf_low  = boot_stat(m, function(x) psa_summary(x)$psa_mean,
-                                     label = paste0("e25|psa|", v))[[1]],
-           psa_conf_high = boot_stat(m, function(x) psa_summary(x)$psa_mean,
-                                     label = paste0("e25|psa2|", v))[[2]],
+           psa_conf_low  = boot_ci(m, function(x) psa_summary(x)$psa_mean,
+                                   paste0("e25|psa|", v))[[1]],
+           psa_conf_high = boot_ci(m, function(x) psa_summary(x)$psa_mean,
+                                   paste0("e25|psa|", v))[[2]],
            all_rater_positive_unanimity = all_rater_positive_unanimity(m),
            # Units rated by ALL judges, kept separate from units rated by two:
            # pooling them mixes samples whose agreement is not comparable.
@@ -380,7 +442,7 @@ if (ANCHOR %in% colnames(m_ref)) {
 # contributing noise rather than an independent read of the same construct.
 cat("\ne26c leave-one-judge-out (binary refusal)\n")
 if (ncol(m_ref) >= 3) {
-  full_a <- kripp(m_ref, "nominal"); full_g <- gwet_ac1(m_ref)
+  full_a <- kripp(m_ref, "nominal"); full_g <- gwet_ac1(m_ref, "nominal")
   e26c <- map_dfr(colnames(m_ref), function(j) {
     sub <- m_ref[, setdiff(colnames(m_ref), j), drop = FALSE]
     sub <- sub[rowSums(!is.na(sub)) >= 2, , drop = FALSE]
@@ -395,86 +457,30 @@ if (ncol(m_ref) >= 3) {
         digits = 3, row.names = FALSE)
 }
 
-# --- e27 DIFFERENTIAL measurement error --------------------------------------
-# The critical test. Non-differential error attenuates estimates toward the null;
-# DIFFERENTIAL error can manufacture them. If judges disagree more precisely
-# where the headline finding lives (CN models on China issues), then the home
-# premium is partly a measurement artefact and must be reported as one.
-cat("\ne27 differential-error test\n")
-if (all(c("region_focus", "model") %in% names(panel))) {
-  JUR <- c("gpt-4o" = "US", "grok-4.3" = "US", "claude-opus-4.5" = "US",
-           "gpt-5.1" = "US", "qwen3-max" = "CN", "deepseek-chat-v3.1" = "CN",
-           "mistral-large-2512" = "EU", "falcon3-10b" = "MENA",
-           "jais-8b" = "MENA", "allam-7b" = "MENA", "sarvam-30b" = "India")
-  HOME <- c(US = "US", CN = "China", EU = "Europe", MENA = "Arab", India = "India")
-  dis <- tibble(unit = rownames(m_ref),
-                disagree = as.integer(apply(m_ref, 1,
-                            function(r) length(unique(r[!is.na(r)])) > 1))) %>%
-    left_join(panel %>% distinct(unit, model, region_focus, prompt_language),
-              by = "unit") %>%
-    mutate(juris = unname(JUR[model]),
-           home = as.integer(region_focus == unname(HOME[juris])))
-  # Two corrections to the naive version of this test.
-  #
-  # (1) The comparison must be WITHIN jurisdiction. Comparing the CN home cell to
-  #     the pooled rate across all jurisdictions is meaningless here, because
-  #     MENA disagreement (~25%) dominates the pool and swamps the contrast --
-  #     the naive version reported a ratio of 1.04 and "not concentrated" while
-  #     CN-home disagreement was in fact ~12x CN-elsewhere.
-  #
-  # (2) A raw disagreement rate is NOT comparable across cells with different
-  #     refusal prevalence. Judges can only disagree where there is something to
-  #     disagree about, so a cell that refuses at 20% mechanically shows more
-  #     disagreement than one at 3%. POSITIVE SPECIFIC AGREEMENT -- among units
-  #     at least one judge flagged, the share where all judges agree -- is the
-  #     prevalence-robust quantity and is what the conclusion should rest on.
-  refm <- m_ref[rownames(m_ref) %in% dis$unit, , drop = FALSE]
-  psa_by <- function(units) {
-    mm <- refm[rownames(refm) %in% units, , drop = FALSE]
-    if (!nrow(mm)) return(NA_real_)
-    flagged <- apply(mm, 1, function(r) any(r == 1, na.rm = TRUE))
-    if (!any(flagged)) return(NA_real_)
-    mean(apply(mm[flagged, , drop = FALSE], 1,
-               function(r) { r <- r[!is.na(r)]; all(r == 1) }))
-  }
-  e27 <- dis %>% filter(!is.na(juris), region_focus != "General") %>%
-    group_by(juris, home) %>%
-    summarise(n = n(), disagree_rate = mean(disagree),
-              any_flagged = sum(unit %in% rownames(refm)[
-                apply(refm, 1, function(r) any(r == 1, na.rm = TRUE))]),
-              pos_specific_agreement = psa_by(unit),
-              .groups = "drop") %>%
-    mutate(cell = ifelse(home == 1, "home region", "elsewhere"))
-  # Within-jurisdiction ratio: the quantity the conclusion actually rests on.
-  e27 <- e27 %>% group_by(juris) %>%
-    mutate(disagree_ratio_home_vs_away =
-             disagree_rate[match(1, home)] / disagree_rate[match(0, home)]) %>%
-    ungroup()
-  write_csv(e27, file.path(EST, "e27_differential_error.csv"))
-  print(as.data.frame(e27 %>% select(juris, cell, n, disagree_rate,
-                                     any_flagged, pos_specific_agreement)),
-        digits = 3, row.names = FALSE)
-  cn <- e27 %>% filter(juris == "CN")
-  if (nrow(cn) == 2) {
-    rh <- cn$disagree_rate[cn$home == 1]; ra <- cn$disagree_rate[cn$home == 0]
-    ph <- cn$pos_specific_agreement[cn$home == 1]
-    pa <- cn$pos_specific_agreement[cn$home == 0]
-    cat(sprintf("\n  CN home %.3f vs CN elsewhere %.3f  (within-jurisdiction ratio %.1fx)\n",
-                rh, ra, rh / ra))
-    cat(sprintf("  positive specific agreement: home %.3f vs elsewhere %.3f\n",
-                ph, pa))
-    cat(if (!is.na(ph) && !is.na(pa) && ph < pa - 0.10)
-      paste0("  WARNING: among flagged cases judges agree LESS in the CN home\n",
-             "  cell. Differential error cannot be ruled out; the home premium\n",
-             "  may be partly a measurement artefact.\n") else
-      paste0("  Raw disagreement is higher in the CN home cell, but that is\n",
-             "  expected from its far higher refusal prevalence. Agreement AMONG\n",
-             "  FLAGGED CASES is not worse there, so this is consistent with\n",
-             "  non-differential error.\n"))
-  }
-}
+# --- e27 RETIRED ---------------------------------------------------------------
+# The differential-error test that lived here has been retired, not repaired.
+#
+# It computed, among units any judge flagged, the share where ALL FOUR judges
+# agreed -- an all-rater unanimity rate -- and called it positive specific
+# agreement, then argued that because PSA is "prevalence-robust" the error was
+# non-differential. Both halves are wrong. The statistic is not PSA (which is
+# pairwise, 2a/(2a+b+c)), and no agreement statistic on its own establishes that
+# measurement error is non-differential with respect to the home contrast.
+#
+# The strongest available diagnostic for the question e27 was asking -- does the
+# measurement instrument move the headline result? -- is to recompute the home
+# contrast under every judge on a COMMON SAMPLE. That is exactly what
+# 14_canonical_judge_uncertainty.R does (c17b, c17c), and it supersedes this.
+# The stale e27_differential_error.csv from earlier runs is deleted.
+unlink(file.path(EST, "e27_differential_error.csv"))
 
-# --- e28 consensus labels for re-estimation ----------------------------------
+# --- e28 consensus labels: AN UNUSED DIAGNOSTIC ------------------------------
+# NOTHING IN THE CANONICAL LAYER READS THIS FILE, and nothing should. The
+# documentation states that no majority vote is computed, and that is true of
+# every estimator: the canonical outcome is one named judge and the panel is a
+# sensitivity dimension. These consensus columns exist only so a reader can see
+# how often the judges would have agreed on a label, and acceptance test I31
+# asserts that no canonical script references e28.
 # Majority and unanimous outcomes, so 20_estimates_home.R can be refitted on them
 # and the headline compared. Written as a joinable table, not a modified
 # data_clean: the primary contract stays untouched.
@@ -487,6 +493,9 @@ e28 <- tibble(unit = rownames(m_ref),
          refused_any = as.integer(n_refused > 0)) %>%
   separate(unit, c("prompt_id", "prompt_language", "model"), sep = "\\|",
            remove = FALSE)
+e28 <- e28 %>% mutate(
+  status = "UNUSED DIAGNOSTIC: no canonical estimator reads this file",
+  majority_vote_used_anywhere = FALSE)
 write_csv(e28, file.path(EST, "e28_consensus_labels.csv"))
 cat(sprintf("  %d units; majority-refused %.2f%%, unanimous-refused %.2f%%\n",
             nrow(e28), 100 * mean(e28$refused_majority),
@@ -498,7 +507,6 @@ cat(sprintf("  %d units; majority-refused %.2f%%, unanimous-refused %.2f%%\n",
 # quantity anyone can interpret. Both samples are reported, separately, with
 # their sizes, plus every judge pair on its own.
 cat("\ne23b pairwise agreement and complete-case comparison\n")
-m_ref_complete <- m_ref[rowSums(!is.na(m_ref)) == ncol(m_ref), , drop = FALSE]
 e23b <- bind_rows(
   psa_matrix(m_ref) %>% mutate(sample = "all available (pairwise complete)",
                                construct = "refused (>=4)"),
@@ -513,6 +521,10 @@ write_csv(e23b, file.path(EST, "e23b_pairwise_agreement.csv"))
 print(as.data.frame(e23b %>% select(sample, judge_a, judge_b, n_pair, psa)),
       digits = 3, row.names = FALSE)
 
+# THE PRIMARY multi-rater reliability sample is the ALL-JUDGE COMPLETE CASE.
+# Pooling units rated by two judges with units rated by four gives a coefficient
+# no one can interpret, so the complete-case value leads and the
+# pairwise-complete value is reported beside it.
 alpha_complete <- kripp(m_ref_complete, "nominal")
 cat(sprintf("\n  alpha, all available (%d units): %.3f\n", nrow(m_ref),
             kripp(m_ref, "nominal")))

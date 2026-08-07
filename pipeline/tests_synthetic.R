@@ -80,8 +80,26 @@ t_ok("glm warnings are captured, not swallowed",
 fitres <- fit_logit(refused_strict ~ home, sep_d)
 t_ok("sep_diagnose flags a separated fit", sep_diagnose(fitres$fit)$separated,
      sep_diagnose(fitres$fit)$why)
-t_ok("strict gcomp refuses a separated fit",
-     is.na(gcomp(sep_d, strict = TRUE)))
+# The contract has TWO halves and both are asserted, because narrowing the
+# blocking rule was a deliberate design choice, not a relaxation:
+#   quasi-separation confined to a nuisance cell leaves the contrast defined,
+#     so gcomp returns a number and the caller reports how much target weight
+#     sits in degenerate cells;
+#   a genuinely undefined fit -- non-finite parameters, no convergence -- makes
+#     the replicate fail.
+sd1 <- sep_diagnose(fitres$fit, w = rep(1 / nrow(sep_d), nrow(sep_d)))
+t_ok("quasi-separation is reported but does not block",
+     sd1$separated && !sd1$blocking && is.finite(gcomp(sep_d, strict = TRUE)),
+     sprintf("degenerate weight %.3f", sd1$degenerate_weight))
+# Rank-deficient design: a covariate aliased with home gives NA coefficients.
+alias_d <- sep_d
+alias_d$tier <- ifelse(alias_d$home == 1, "regular", "boundary")
+alias_d$refused_strict <- c(rep(0:1, 19), 1L, 0L)
+af <- fit_logit(refused_strict ~ home + tier, alias_d)
+t_ok("a rank-deficient fit is blocking", sep_diagnose(af$fit)$blocking,
+     sep_diagnose(af$fit)$why)
+t_ok("strict gcomp refuses an undefined fit",
+     is.na(gcomp(alias_d, strict = TRUE)))
 firth_est <- gcomp(sep_d, firth = TRUE)
 t_ok("Firth returns a finite estimate where ML does not",
      is.finite(firth_est) && firth_est > 0.5, sprintf("%.3f", firth_est))

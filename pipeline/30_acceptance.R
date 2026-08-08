@@ -329,7 +329,9 @@ c10 <- rd("c10_framing_paired.csv")
 MAIN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
 ED_FIG   <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
 MAINF <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
-EDF   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels", "ED3_language_detail")
+EDF   <- c("ED1_judge_sensitivity", "ED2_inferential_robustness",
+           "ED3_postoutcome_diagnostics", "ED4_language_heterogeneity",
+           "ED5_measurement_reliability")
 # PNG ONLY: exactly one raster per expected figure, and nothing else.
 chk("H1", "main figures are exactly the expected PNGs",
     setequal(list.files(MAIN_FIG, recursive = TRUE), paste0(MAINF, ".png")),
@@ -351,6 +353,61 @@ chk("H5", "ideology bins sum to one within each dimension",
       ss <- c12 %>% filter(role == "PRIMARY") %>% group_by(dimension) %>%
         summarise(s = sum(estimate), .groups = "drop")
       all(abs(ss$s - 1) < 1e-8) })
+
+# --- H6-H11: the paired judge-difference estimand -----------------------------
+# c17d is a NEW canonical quantity introduced with this figure set, so it gets
+# adversarial checks rather than a presence test.
+c17d <- rd("c17d_judge_paired_differences.csv")
+c17b <- rd("c17b_judge_envelope.csv")
+chk("H6", "c17d exists and declares itself paired",
+    !is.null(c17d) && "paired" %in% names(c17d) && all(c17d$paired))
+chk("H7", "the canonical judge's own paired difference is exactly zero",
+    !is.null(c17d) && {
+      s <- c17d %>% filter(estimable, is_canonical_judge)
+      nrow(s) > 0 && all(abs(s$estimate) < 1e-12) },
+    "theta_canonical - theta_canonical must be 0 by construction")
+chk("H8", "c17d point estimates reproduce c17b on the same sample",
+    !is.null(c17d) && !is.null(c17b) && {
+      a <- c17d %>% filter(estimable) %>%
+        transmute(judge_model, jurisdiction, p = judge_estimate_pp)
+      b <- c17b %>% filter(estimable,
+                           judge_model != "OBSERVED JUDGE POINT ENVELOPE") %>%
+        transmute(judge_model, jurisdiction, q = estimate_pp)
+      m <- inner_join(a, b, by = c("judge_model", "jurisdiction"))
+      nrow(m) > 0 && max(abs(m$p - m$q)) < 1e-8 },
+    "both must come from the identical gcomp() on the identical sample")
+# THE POINT OF THE PAIRING. Because the judges label the same responses, the
+# paired interval must be materially narrower than differencing two marginal
+# intervals. If it is not, the replicate-level pairing was not actually used.
+chk("H9", "paired intervals are narrower than combined marginal intervals",
+    !is.null(c17d) && !is.null(c17b) && {
+      m <- c17b %>% filter(estimable,
+                           judge_model != "OBSERVED JUDGE POINT ENVELOPE") %>%
+        transmute(judge_model, jurisdiction, mw = conf_high_pp - conf_low_pp)
+      can <- m %>% filter(grepl("gemini", judge_model)) %>%
+        transmute(jurisdiction, cw = mw)
+      j <- c17d %>% filter(estimable, !is_canonical_judge) %>%
+        transmute(judge_model, jurisdiction, pw = conf_high_pp - conf_low_pp) %>%
+        inner_join(m, by = c("judge_model", "jurisdiction")) %>%
+        inner_join(can, by = "jurisdiction")
+      nrow(j) > 0 && all(j$pw < j$mw + j$cw) })
+chk("H10", "c17d records a fixed draw count with failures counted",
+    !is.null(c17d) && all(c("replicates_drawn", "replicates_failed",
+                            "failure_rate") %in% names(c17d)))
+chk("H11", "c17d never calls the canonical judge ground truth",
+    !is.null(c17d) && any(grepl("not ground truth", c17d$interpretation)) &&
+      !any(grepl("ground truth", c17d$quantity)))
+# The canonical tables the plotting scripts used to write must now come from
+# their estimation scripts, or they exist only when the artwork is rebuilt.
+chk("H12", "c07b and c08b are written by estimation scripts, not figure scripts",
+    any(grepl("c07b_hierarchical_marginal",
+              readLines("pipeline/11_canonical_home.R", warn = FALSE))) &&
+      any(grepl("c08b_weighting_comparison",
+                readLines("pipeline/12_canonical_language_framing.R", warn = FALSE))) &&
+      !any(grepl("write_csv",
+                 grep("^\\s*#",
+                      readLines("pipeline/21_figures_extended.R", warn = FALSE),
+                      value = TRUE, invert = TRUE))))
 
 # =============================================================================
 # I. ADVERSARIAL CHECKS ADDED AFTER REVIEW

@@ -250,6 +250,25 @@ c08 <- bind_rows(
          bootstrap_unit = "issue_id",
          canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c08, file.path(CAN_EST, "c08_language_paired.csv"))
+
+# --- c08b: the weighting comparison, as a table -------------------------------
+# Pooled, equal-per-model and equal-per-model-issue agree to within a fraction
+# of a percentage point here, because the design is balanced. Showing all three
+# is how a reader knows that, but it does not need a panel -- so it is a table,
+# and the figure space goes to the per-model intervals instead.
+#
+# Written HERE rather than in 21_figures_extended.R, where it used to live: a
+# canonical output must be produced by the script that estimates it, not by the
+# script that draws it.
+write_csv(
+  c08 %>% filter(sensitivity == "primary") %>%
+    transmute(language = language_label, weighting, estimate_pp, conf_low_pp,
+              conf_high_pp,
+              primary_weighting,
+              note = paste("weighting comparison; the three agree closely, so",
+                           "this is tabulated rather than plotted"),
+              canonical_run_id = CANONICAL_RUN_ID),
+  file.path(CAN_EST, "c08b_weighting_comparison.csv"))
 cat("\n  primary (pooled):\n")
 print(as.data.frame(c08 %>% filter(sensitivity == "primary", weighting == PRIMARY_W) %>%
         select(language_label, estimate_pp, conf_low_pp, conf_high_pp,

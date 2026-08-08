@@ -37,7 +37,14 @@ cat(strrep("=", 78), "\nFIGURE AUDIT\n", strrep("=", 78), "\n", sep = "")
 MAIN <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
 # PNG ONLY. One raster per expected figure and nothing else, anywhere under the
 # active figure directories.
-ED   <- c("ED1_judge_sensitivity", "ED2_sensitivity_panels", "ED3_language_detail")
+ED   <- c("ED1_judge_sensitivity", "ED2_inferential_robustness",
+          "ED3_postoutcome_diagnostics", "ED4_language_heterogeneity",
+          "ED5_measurement_reliability")
+# Approved two-column canvases, in pixels at 600 dpi. Every figure must land on
+# one of these exactly: letting each script choose its own height produced a set
+# whose aspect ratios ran from 183x81 to 183x208 mm, so identical point sizes
+# read as different sizes side by side on the page.
+CANVAS_PX <- round(unname(CANVASES) * 600)
 
 # --- 1. formats ---------------------------------------------------------------
 cat("\n1. output formats\n")
@@ -77,6 +84,28 @@ png_dim <- function(p) {
   h <- sum(as.integer(raw[21:24]) * 256^(3:0))
   c(w, h)
 }
+# RESOLUTION METADATA, read from the pHYs chunk rather than inferred from the
+# pixel count. A large raster is not a 600 dpi figure: without pHYs a journal's
+# layout software places the image at 72 dpi and the type comes out four times
+# too big. Returns dpi (x, y) or NA if the chunk is absent.
+png_dpi <- function(p) {
+  d <- readBin(p, "raw", n = min(file.size(p), 65536L))
+  i <- 9L
+  while (i + 8L <= length(d)) {
+    ln  <- sum(as.integer(d[i:(i + 3)]) * 256^(3:0))
+    typ <- rawToChar(d[(i + 4):(i + 7)])
+    if (identical(typ, "pHYs")) {
+      b <- d[(i + 8):(i + 16)]
+      px <- sum(as.integer(b[1:4]) * 256^(3:0))
+      py <- sum(as.integer(b[5:8]) * 256^(3:0))
+      if (as.integer(b[9]) != 1L) return(c(NA_real_, NA_real_))  # not metres
+      return(round(c(px, py) * 0.0254, 1))
+    }
+    if (identical(typ, "IDAT")) break
+    i <- i + 12L + ln
+  }
+  c(NA_real_, NA_real_)
+}
 inspect <- function(p) {
   d <- png_dim(p)
   a <- png::readPNG(p)
@@ -92,16 +121,30 @@ inspect <- function(p) {
 }
 W2_PX <- round(W2 * 600)
 bad_w <- character(); bad_bg <- character(); bad_edge <- character()
+bad_h <- character(); bad_dpi <- character()
 for (s in c(MAIN, ED)) {
   p <- file.path(if (s %in% MAIN) MAIN_FIG else ED_FIG, paste0(s, ".png"))
   if (!file.exists(p)) next
   r <- inspect(p)
   if (!is.na(r$w) && abs(r$w - W2_PX) > 3) bad_w <- c(bad_w, s)
+  # ONE-COLUMN OUTPUT IS FORBIDDEN. Every figure is designed at 183 mm; an 89 mm
+  # variant would need different type sizes and would drift from its sibling.
+  if (!is.na(r$w) && abs(r$w - round(W1 * 600)) <= 3)
+    bad_w <- c(bad_w, paste0(s, " (one-column)"))
+  if (!is.na(r$h) && !any(abs(r$h - CANVAS_PX) <= 3))
+    bad_h <- c(bad_h, sprintf("%s (%d px)", s, r$h))
+  dpi <- png_dpi(p)
+  if (any(is.na(dpi)) || any(abs(dpi - 600) > 1)) bad_dpi <- c(bad_dpi, s)
   if (r$corner <= 0.97) bad_bg <- c(bad_bg, s)
   if (r$edge <= 0.985) bad_edge <- c(bad_edge, s)
 }
 ok("all figures at the declared column width", length(bad_w) == 0,
    sprintf("%d px expected; %s", W2_PX, paste(bad_w, collapse = ", ")))
+ok("every height matches an approved canvas", length(bad_h) == 0,
+   sprintf("approved: %s px; %s", paste(CANVAS_PX, collapse = "/"),
+           paste(bad_h, collapse = ", ")))
+ok("PNGs carry 600 dpi resolution metadata (pHYs)", length(bad_dpi) == 0,
+   paste(bad_dpi, collapse = ", "))
 ok("white background", length(bad_bg) == 0, paste(bad_bg, collapse = ", "))
 ok("nothing clipped at the canvas edge", length(bad_edge) == 0,
    paste(bad_edge, collapse = ", "))
@@ -138,17 +181,35 @@ if (length(lay)) {
     if (any(is.finite(ws) & ws > FIG_W_IN + 0.02))
       overflow <- c(overflow, sprintf("%s (%.2f in > %.2f)", nm, max(ws), FIG_W_IN))
     # Panel widths: a panel narrower than this cannot carry a readable axis.
+    #
+    # A PANEL'S WIDTH IS A `null` UNIT and convertWidth() cannot resolve it
+    # outside a drawing context -- it silently returns 0. The previous version
+    # summed the columns and converted, so every panel measured 0 in, the
+    # zero-width results were then dropped by a `> 0` filter, and the check
+    # reported OK while measuring nothing. Resolve the allocation the way grid
+    # does instead: absolute widths first, then the remainder shared among the
+    # null units in proportion to their null values.
     pnl <- g$layout[grepl("^panel", g$layout$name), , drop = FALSE]
+    # patchwork adds a "panel-area" row spanning every sub-panel; it is the
+    # container, not a panel.
+    pnl <- pnl[pnl$name != "panel-area", , drop = FALSE]
     if (nrow(pnl)) {
+      is_null <- grid::unitType(g$widths) == "null"
+      abs_in <- vapply(seq_along(g$widths), function(i)
+        if (is_null[i]) 0 else
+          tryCatch(as.numeric(grid::convertWidth(g$widths[i], "in",
+                                                 valueOnly = TRUE)),
+                   error = function(e) 0), numeric(1))
+      null_val <- ifelse(is_null, as.numeric(g$widths), 0)
+      free <- FIG_W_IN - sum(abs_in)
+      per_null <- if (sum(null_val) > 0) free / sum(null_val) else 0
       wid <- vapply(seq_len(nrow(pnl)), function(k) {
         idx <- seq(pnl$l[k], pnl$r[k])
         idx <- idx[idx >= 1 & idx <= length(g$widths)]
         if (!length(idx)) return(NA_real_)
-        tryCatch(as.numeric(grid::convertWidth(sum(g$widths[idx]), "in",
-                                               valueOnly = TRUE)),
-                 error = function(e) NA_real_)
+        sum(abs_in[idx]) + per_null * sum(null_val[idx])
       }, numeric(1))
-      wid <- wid[is.finite(wid) & wid > 0]
+      wid <- wid[is.finite(wid)]
       if (length(wid) && min(wid) < 0.55)
         thin <- c(thin, sprintf("%s (%.2f in)", nm, min(wid)))
     }
@@ -159,32 +220,38 @@ if (length(lay)) {
      paste(thin, collapse = "; "))
 }
 
-# Tag vs title: the tag sits at the plot's left edge and every panel title is
-# indented by margin(l = ...). Measure the bold tag at its real size and require
-# the indent to clear it.
-tag_w <- as.numeric(grid::convertWidth(grid::grobWidth(grid::textGrob(
-  "a", gp = grid::gpar(fontsize = PT_TAG, fontface = "bold",
-                       fontfamily = FONT_SANS))), "pt", valueOnly = TRUE))
-src_ind <- unlist(regmatches(
-  paste(readLines("pipeline/20_figures_main.R", warn = FALSE), collapse = " "),
-  gregexpr("margin\\(b = [0-9.]+, l = ([0-9.]+)\\)",
-           paste(readLines("pipeline/20_figures_main.R", warn = FALSE), collapse = " "))))
-ind <- suppressWarnings(as.numeric(sub(".*l = ([0-9.]+)\\)", "\\1", src_ind)))
-ok("panel-title indent clears the panel tag",
-   length(ind) == 0 || all(ind[is.finite(ind)] >= tag_w),
-   sprintf("tag %.1f pt, smallest indent %s pt", tag_w,
-           if (length(ind)) sprintf("%.0f", min(ind, na.rm = TRUE)) else "n/a"))
+# NO TITLES, SUBTITLES OR CAPTIONS INSIDE A PNG. Checked two ways, because the
+# earlier rule (an indent wide enough to clear the tag) accepted titles and
+# merely tried to stop them colliding -- which they then did anyway.
+#   1. no figure script may pass title=, subtitle= or caption= at all;
+#   2. no assembled object may render a non-empty title/subtitle grob.
+fig_src <- c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R")
+code_of <- function(f) grep("^\\s*#", readLines(f, warn = FALSE),
+                            value = TRUE, invert = TRUE)
+titled <- unlist(lapply(fig_src, function(f)
+  grep("(title|subtitle|caption)\\s*=\\s*[\"'a-z]", code_of(f), value = TRUE)))
+titled <- grep("plot\\.(title|subtitle|caption)|axis\\.title|legend\\.title|strip",
+               titled, value = TRUE, invert = TRUE)
+ok("no title/subtitle/caption passed by any figure script", length(titled) == 0,
+   if (length(titled)) substr(titled[1], 1, 70) else "")
 
-# Subtitles must not carry numbers typed into the script: a hard-coded value
-# goes stale silently when the estimate moves.
-sub_lines <- grep("subtitle = \"", unlist(lapply(
-  c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R"),
-  function(f) grep("^\\s*#", readLines(f, warn = FALSE), value = TRUE, invert = TRUE))),
-  value = TRUE)
-hard <- grep("[0-9]+[.][0-9]+|[0-9]{2,}%", sub_lines, value = TRUE)
-hard <- grep("2\\+2", hard, value = TRUE, invert = TRUE)   # "complete 2+2 blocks" is a rule, not an estimate
-ok("no hard-coded numbers in figure subtitles", length(hard) == 0,
-   if (length(hard)) substr(hard[1], 1, 60) else "")
+# Prose belongs in the external legend, never in the plotting region. These are
+# the specific strings the previous design embedded.
+BANNED_PROSE <- c("hollow = away", "composition held fixed", "equal weight per model",
+                  "per-model rows are exploratory", "CONDITIONAL ON ENGAGEMENT",
+                  "NON-EXCLUSIVE", "mean and range over judge pairs",
+                  "all judges recomputed", "alternative but comparable",
+                  "these condition on a property", "the values behind",
+                  "Unadjusted rates", "Issue regions", "signed pp difference")
+prose_hits <- unlist(lapply(fig_src, function(f) {
+  cd <- code_of(f)
+  # Only string literals reach the canvas; a variable name mentioning a banned
+  # phrase does not.
+  lit <- unlist(regmatches(cd, gregexpr('"[^"]*"', cd)))
+  unlist(lapply(BANNED_PROSE, function(b) grep(b, lit, fixed = TRUE, value = TRUE)))
+}))
+ok("no explanatory prose in any plotting specification", length(prose_hits) == 0,
+   if (length(prose_hits)) substr(prose_hits[1], 1, 60) else "")
 
 # --- 4. figures agree with the tables ----------------------------------------
 cat("\n4. figures agree with the tables\n")
@@ -230,6 +297,60 @@ ok("ED1: every judge row comes from the same common-support sample",
        group_by(jurisdiction) %>% summarise(k = n_distinct(n), .groups = "drop")
      nrow(n) > 0 && all(n$k == 1) })
 
+# --- the new panels -----------------------------------------------------------
+c07  <- rdc("c07_home_sensitivities.csv")
+c17d <- rdc("c17d_judge_paired_differences.csv")
+# ED1 plots a PAIRED difference. Its interval must come from a paired bootstrap,
+# not from differencing two marginal intervals -- so the table has to declare
+# itself paired, and the interval must be narrower than the naive combination of
+# the two marginal intervals it would replace.
+ok("ED1: the plotted judge difference is a paired estimate",
+   !is.null(c17d) && "paired" %in% names(c17d) && all(c17d$paired))
+ok("ED1: paired intervals are narrower than differenced marginal intervals",
+   !is.null(c17d) && !is.null(c17b) && {
+     m <- c17b %>% filter(estimable, judge_model != "OBSERVED JUDGE POINT ENVELOPE") %>%
+       transmute(judge_model, jurisdiction, mw = conf_high_pp - conf_low_pp)
+     can <- m %>% filter(grepl("gemini", judge_model)) %>%
+       transmute(jurisdiction, cw = mw)
+     j <- c17d %>% filter(estimable, !is_canonical_judge) %>%
+       transmute(judge_model, jurisdiction, pw = conf_high_pp - conf_low_pp) %>%
+       inner_join(m, by = c("judge_model", "jurisdiction")) %>%
+       inner_join(can, by = "jurisdiction")
+     nrow(j) > 0 && all(j$pw < j$mw + j$cw) },
+   "a paired interval that is not narrower has not used the pairing")
+ok("ED1: the canonical judge is a reference, not ground truth",
+   !is.null(c17d) && any(grepl("not ground truth", c17d$interpretation)))
+# ED2 must not draw a row it has no estimate for. `estimable` in c07 records
+# that a fit was attempted; five functional-form rows carry estimable = TRUE
+# with no estimate, and an earlier ED2 reserved a whole empty facet for them.
+ok("ED2: no plotted sensitivity row lacks a point or an interval",
+   !is.null(c07) && {
+     drawable <- c07 %>% filter(sensitivity != "hierarchical_marginal",
+                                sensitivity != "min_response_chars", estimable,
+                                is.finite(estimate_pp), is.finite(conf_low_pp))
+     nrow(drawable) > 0 })
+ok("ED2: the hierarchical marginal estimand is not in the forest",
+   !is.null(c07) && file.exists(file.path(CAN_EST, "c07b_hierarchical_marginal.csv")))
+ok("ED3: response-length rows are a separate post-outcome figure",
+   !is.null(c07) && any(c07$sensitivity == "min_response_chars"))
+ok("ED4: heatmap and interval panel use one model and language ordering",
+   !is.null(c09) && {
+     src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
+     # both panels are built from the same `bym` frame and the same `model_f`
+     # factor, so an ordering divergence is impossible by construction
+     sum(grepl("model_f = factor\\(model, levels = mord\\)", src)) == 1 &&
+       sum(grepl("levels = LORD", src)) >= 1 })
+ok("ED5: reliability shows more than one agreement statistic",
+   !is.null(rdc("e25_reliability_slant.csv")) && {
+     e <- rdc("e25_reliability_slant.csv")
+     all(c("raw_agreement", "krippendorff_alpha", "gwet_ac1", "psa_mean") %in% names(e)) })
+# A distribution estimand must be shown as a distribution: the neutral bin holds
+# 80-92% of the mass and an earlier Fig3a plotted only the four directional bins.
+ok("Fig3a: the neutral bin is drawn, not annotated",
+   { src <- readLines("pipeline/20_figures_main.R", warn = FALSE)
+     !any(grepl('filter\\(bin != "0"\\)', src)) &&
+       any(grepl("geom_col", src)) })
+
 # Plot-data equality: the labels drawn in Fig1c are re-derived from c04 here, so
 # a figure that formats a different number than its source row fails.
 if (!is.null(c04)) {
@@ -266,12 +387,26 @@ for (src in c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R")) {
   ok(paste(nm, "does not hard-code the palette"), length(hex) <= 3,
      sprintf("%d literal hex", length(hex)))
 }
-# The refusal-text projection is retired, so there is no purity text to check.
-# Its replacement is the general subtitle rule in section 3: no hard-coded
-# numbers in any subtitle.
+# The refusal-text projection is retired.
 ed_src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
 ok("the retired projection figure is not rebuilt",
    !any(grepl("umap_x", ed_src)) && !any(grepl("ED3_refusal_text", ed_src)))
+# A plotting script must not be the sole implementation of a canonical table:
+# the table would then exist only if the figure ran, and would change whenever
+# the artwork did. Both c07b and c08b were written here until this release.
+wrote <- grep("write_csv\\(", code_of("pipeline/21_figures_extended.R"), value = TRUE)
+ok("no figure script writes a canonical estimate table", length(wrote) == 0,
+   if (length(wrote)) substr(wrote[1], 1, 60) else "")
+ok("c07b and c08b are produced by their estimation scripts",
+   any(grepl("c07b_hierarchical_marginal",
+             readLines("pipeline/11_canonical_home.R", warn = FALSE))) &&
+     any(grepl("c08b_weighting_comparison",
+               readLines("pipeline/12_canonical_language_framing.R", warn = FALSE))))
+# A structural zero -- no refusals at all, so no contrast exists -- must not be
+# drawn as an estimate of zero. Both figure scripts carry the shared encoding.
+for (src in fig_src)
+  ok(paste(basename(src), "distinguishes structural zeros from estimated nulls"),
+     any(grepl("SHAPE_NOT_ESTIMABLE|NOT_ESTIMABLE_TEXT", code_of(src))))
 
 # --- 6. colour ----------------------------------------------------------------
 cat("\n6. colour\n")

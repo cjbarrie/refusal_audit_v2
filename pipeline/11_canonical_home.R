@@ -511,6 +511,26 @@ c07 <- bind_rows(sens) %>%
 write_csv(c07, file.path(CAN_EST, "c07_home_sensitivities.csv"))
 cat(sprintf("\n  c07: %d rows across %d sensitivity families\n",
             nrow(c07), n_distinct(c07$sensitivity)))
+
+# --- c07b: the hierarchical marginal estimate, split out as a table -----------
+# A DIFFERENT ESTIMAND, not a sensitivity of the standardized contrast: it
+# integrates over the issue random effect instead of standardizing over the
+# observed issue set, and it has no comparable interval. It is tabulated here so
+# it can never be read as a competing point in a forest of estimates that do
+# target the same quantity.
+#
+# This table used to be written by 21_figures_extended.R. A plotting script must
+# not be the sole implementation of a canonical output: the table then exists
+# only if the figure ran, and it changes whenever the artwork does.
+hier <- c07 %>% filter(sensitivity == "hierarchical_marginal")
+if (nrow(hier))
+  write_csv(hier %>% mutate(
+      note = paste("DIFFERENT ESTIMAND: integrates over the issue random",
+                   "effect instead of standardizing over the observed issue",
+                   "set. Not comparable to the sensitivity forest and",
+                   "deliberately not plotted beside it."),
+      canonical_run_id = CANONICAL_RUN_ID),
+    file.path(CAN_EST, "c07b_hierarchical_marginal.csv"))
 print(as.data.frame(c07 %>% filter(sensitivity == "hierarchical_marginal") %>%
         select(jurisdiction, estimable, estimate_pp, note)), digits = 3, row.names = FALSE)
 

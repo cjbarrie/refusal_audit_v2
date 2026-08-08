@@ -319,8 +319,27 @@ Multi-format export was tried and removed twice: the formats drifted apart
 accumulated in the directory. One writer, one format.
 
 **The figures directory holds exactly what the manuscript ships**, in two
-subdirectories: `figures/canonical/` (`FIG1`–`FIG3`, main text) and
-`figures/appendix/` (`S1`–`S4`). `audit_figures.R` fails on anything else in
-there, in either direction — a missing expected figure *or* a stale extra one.
-That check exists because 23 PNGs from superseded scripts sat in the directory
-looking current for weeks.
+subdirectories: `figures/main/` (`Fig1`–`Fig3`, main text) and
+`figures/extended/` (`ED1`–`ED5`, Extended Data). The obsolete `figures/canonical/`
+and `figures/appendix/` trees must not exist at all. `audit_figures.R` fails on
+anything else in there, in either direction — a missing expected figure *or* a
+stale extra one. That check exists because 23 PNGs from superseded scripts sat
+in the directory looking current for weeks.
+
+Three further rules the audit enforces mechanically:
+
+* **Every figure is two-column (183 mm) and one of three approved heights**
+  (85 / 125 / 165 mm, `H_WIDE`/`H_STD`/`H_TALL` in `_theme.R`). No one-column
+  variants, no `_1col`/`_2col` duplicates, and no script picks its own
+  dimensions. The audit checks the pixel width *and* the `pHYs` resolution
+  chunk — a large raster with no `pHYs` is placed at 72 dpi by a journal's
+  layout software.
+* **No titles, subtitles or captions inside a PNG.** Panel letters, axis
+  labels, tick labels, category names, facet headings, compact legends and
+  direct numeric labels only. Captions live in
+  `docs/CANONICAL_FIGURE_LEGENDS.md`, the single authoritative caption
+  document. `tag_only()` blanks the title slots and the audit fails on any
+  `title=`/`subtitle=`/`caption=` in a figure script.
+* **A figure script may not write a canonical table.** `20`/`21` read tables and
+  fit nothing; if a plotting script is the sole producer of an output, the
+  output exists only when the artwork is rebuilt.

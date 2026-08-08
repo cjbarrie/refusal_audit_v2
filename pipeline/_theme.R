@@ -184,6 +184,18 @@ PAL_TIER <- c("Regular Prompts" = INK_FAINT, "Boundary Prompts" = ACCENT)
 # "no excess" reads as absence rather than as a category.
 PAL_DIVERGE <- c("#2C5F7C", "#8FAFC2", "#EFEFEF", "#D69B7A", "#8C363C")
 
+# Ideology: its OWN diverging palette, five ordered bins. It must not borrow the
+# jurisdiction reds -- a colour carries one meaning at a time, and CN red
+# already means CN. The neutral bin is deliberately the palest thing in the
+# whole system: it holds 80-92% of the mass, and if it were saturated it would
+# be the only thing on the page.
+PAL_IDEO <- c("-2" = "#2C5F7C", "-1" = "#93B0C4", "0" = "#EDEDEA",
+              "+1" = "#DCA982", "+2" = "#A2603A")
+
+# Judge sensitivity: greys, with ONE accent for the canonical reference
+# instrument. Judges are not jurisdictions and must not wear their colours.
+PAL_JUDGE <- c(reference = ACCENT, other = INK_SOFT)
+
 # Neutral land on the locator map, and the fill for a cell whose value is not
 # estimable. Defined here so no colour literal appears in a figure script.
 MAP_LAND   <- "#F4F5F6"
@@ -205,6 +217,17 @@ PAL_LANGUAGE <- c("Chinese" = "#6E0C18", "English" = "#2A5183",
 W1 <- 89  / 25.4   # single column, 3.50 in
 W15 <- 120 / 25.4  # 1.5 column,   4.72 in
 W2 <- 183 / 25.4   # double column, 7.20 in
+
+# APPROVED CANVASES. Every figure is TWO-COLUMN (183 mm) and picks one of three
+# heights. No script invents its own dimensions: letting each choose produced a
+# set whose aspect ratios ran from 183x81 mm to 183x208 mm, so type that was
+# 6 pt in one figure read as a different size beside another on the page.
+# Content decides WHICH template; it does not decide the numbers.
+H_SHORT <- 62  / 25.4  # 183 x  62 mm -- 2-4 rows; a single band of facets
+H_WIDE  <- 85  / 25.4  # 183 x  85 mm -- few rows, wide value axes
+H_STD   <- 125 / 25.4  # 183 x 125 mm -- the default multi-panel canvas
+H_TALL  <- 165 / 25.4  # 183 x 165 mm -- many stacked rows
+CANVASES <- c(short = H_SHORT, wide = H_WIDE, standard = H_STD, tall = H_TALL)
 
 # =============================================================================
 # theme_nature()
@@ -343,6 +366,46 @@ PT_TITLE   <- 7.0
 PT_TAG     <- 8.0    # panel labels, bold
 # ggplot's `size` for geom_text is in millimetres, not points.
 pt_to_mm <- function(pt) pt / .pt
+
+# =============================================================================
+# NO TITLES, SUBTITLES OR CAPTIONS INSIDE A PLOT
+# =============================================================================
+# Every figure carries panel letters, axis labels, tick labels, category names,
+# concise facet headings, compact legends and direct numeric labels -- and
+# nothing else. Titles, subtitles and methodological prose live in
+# docs/CANONICAL_FIGURE_LEGENDS.md, where a reader can see them next to the n,
+# the weighting and the interval definition.
+#
+# This is enforced two ways: tag_only() BLANKS the title and subtitle slots so a
+# stray labs(title=) cannot render, and audit_figures.R fails the build if any
+# figure script passes title= or subtitle= at all.
+tag_only <- function() {
+  theme(plot.tag = element_text(family = FONT_SANS, face = "bold",
+                                size = PT_TAG, colour = INK),
+        plot.tag.position = c(0, 1),
+        plot.title = element_blank(),
+        plot.subtitle = element_blank(),
+        plot.caption = element_blank(),
+        # The tag sits at the panel's top-left; reserve the strip it needs so it
+        # cannot overprint the first row label or a facet heading.
+        plot.margin = margin(11, 5, 3, 3))
+}
+
+# Signed percentage points, with the precision the uncertainty supports and no
+# signed zero. "%+.1f" prints "-0.0" for anything in (-0.05, 0), and a diverging
+# fill then shows a minus sign on a cell that is exactly nothing.
+fmt_pp <- function(x, digits = 1) {
+  r <- round(x, digits)
+  ifelse(abs(r) < 10^(-digits) / 2, "0", sprintf(paste0("%+.", digits, "f"), r))
+}
+fmt_pp0 <- function(x) fmt_pp(x, 0)
+
+# A STRUCTURAL ZERO is not an estimate of no effect. Where a model or a
+# jurisdiction produced no refusals at all, the contrast does not exist, and
+# drawing it at 0 with a zero-width interval claims a precisely estimated null.
+# One encoding everywhere: hollow square, plus words.
+SHAPE_NOT_ESTIMABLE <- 22
+NOT_ESTIMABLE_TEXT  <- "not estimable"
 
 # Height that keeps row pitch constant in a dot plot: n rows at ~0.16 in each
 # plus fixed chrome for title/axis.

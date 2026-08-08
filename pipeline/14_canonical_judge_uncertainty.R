@@ -294,6 +294,163 @@ cat("point envelope excludes zero         :",
 cat("union of judge intervals excludes 0  :",
     paste(env$jurisdiction[env$union_excludes_zero], collapse = ", "), "\n")
 
+# =============================================================================
+# c17d -- PAIRED judge-minus-canonical difference
+# =============================================================================
+# A NEW ESTIMAND, not a re-expression of c17b. c17b answers "what does each
+# judge produce"; this answers "how far does the estimate move when the judge
+# changes", which is the actual sensitivity question.
+#
+#     Delta_{j,r} = theta_{j,r} - theta_{canonical,r}
+#
+# WHY IT CANNOT BE OBTAINED BY SUBTRACTING c17b. The four judges label THE SAME
+# RESPONSES on the all-judge common-support sample, so their estimates are
+# strongly positively dependent. Differencing two point estimates and carrying
+# either one's marginal interval -- or combining the two marginal intervals --
+# ignores that dependence and produces an interval far too wide. The difference
+# must be formed INSIDE each replicate, on one shared issue draw.
+#
+# So: one bootstrap, one resampled issue set per replicate, every judge's
+# contrast recomputed on that same draw, differences taken within the draw.
+# Same bootstrap unit (issue_id), same multiplicity labelling
+# (bootstrap_issue_instance), same fixed-B rule -- failures counted, never
+# replaced -- as every other interval in this layer.
+#
+# ZERO on this scale means the alternative judge reproduces the canonical
+# judge's estimate. It does NOT mean either is correct. The canonical judge is a
+# REFERENCE INSTRUMENT, not ground truth: no human-validated labels exist, which
+# is also why no majority vote is computed anywhere in this file.
+cat("\nc17d: paired judge-minus-canonical differences (B =", B_JUDGE, ")\n")
+
+# One frame per jurisdiction carrying EVERY judge's label on the same rows, so a
+# replicate can refit all four on one draw.
+YCOL <- setNames(paste0("y_j", seq_along(all_judges)), all_judges)
+
+paired_frame <- function(jj) {
+  base <- frame_for(CANON_JUDGE, K_ALL) %>%
+    filter(home_status %in% c("home", "away"), juris == jj) %>% droplevels()
+  if (!nrow(base)) return(NULL)
+  base[[YCOL[[CANON_JUDGE]]]] <- base$refused_strict
+  for (j in alt_judges) {
+    lab <- judge_lab %>% filter(judge_model == j) %>%
+      select(all_of(CANON_KEY), .jc = engagement_code)
+    base <- base %>% left_join(lab, by = CANON_KEY) %>%
+      mutate("{YCOL[[j]]}" := as.integer(.jc >= 4)) %>% select(-.jc)
+  }
+  # K_ALL is the four-judge intersection, so no label may be missing here.
+  stopifnot(!anyNA(base[unname(YCOL)]))
+  base
+}
+
+# All judges' contrasts on ONE data frame. Returns a named vector, or NULL if
+# any judge is undefined on this draw -- a replicate in which one judge fails is
+# not a valid paired replicate for any comparison, so the whole draw fails.
+all_contrasts <- function(dd) {
+  v <- vapply(all_judges, function(j)
+    suppressWarnings(gcomp(dd, w_nested, outcome = YCOL[[j]])), numeric(1))
+  if (any(!is.finite(v))) return(NULL)
+  v
+}
+
+boot_paired_judges <- function(d, jj, B = B_JUDGE, seed = CAN_SEED) {
+  issues <- unique(d$issue_id)
+  idx <- split(seq_len(nrow(d)), d$issue_id)
+  d0 <- d; d0$bootstrap_issue_instance <- as.character(d0$issue_id)
+  point <- tryCatch(all_contrasts(d0), error = function(e) NULL)
+  if (is.null(point)) return(NULL)
+
+  set.seed(seed)
+  reps <- matrix(NA_real_, nrow = B, ncol = length(all_judges),
+                 dimnames = list(NULL, all_judges))
+  for (b in seq_len(B)) {
+    drawn <- sample(issues, length(issues), replace = TRUE)
+    rows <- unlist(idx[drawn], use.names = FALSE)
+    dd <- d[rows, , drop = FALSE]
+    dd$bootstrap_issue_instance <-
+      rep(paste0(drawn, "#", seq_along(drawn)), times = lengths(idx[drawn]))
+    v <- tryCatch(all_contrasts(dd), error = function(e) NULL)
+    if (!is.null(v)) reps[b, ] <- v
+  }
+  okrow <- stats::complete.cases(reps)
+  nfail <- sum(!okrow); frate <- nfail / B
+  # The difference is formed WITHIN the replicate, from the same issue draw.
+  diffs <- reps[okrow, , drop = FALSE] - reps[okrow, CANON_JUDGE]
+  record_diag(tibble(
+    canonical_run_id = CANONICAL_RUN_ID,
+    label = sprintf("c17d|paired|%s", jj), bootstrap_unit = "issue_id",
+    multiplicity_preserved = TRUE, copy_id_column = "bootstrap_issue_instance",
+    seed = seed, replicates_requested = B, replicates_drawn = B,
+    replicates_successful = sum(okrow), replicates_failed = nfail,
+    failure_rate = frate, failed_draws_replaced = FALSE,
+    interval_reliable = frate <= 0.02, interval_method = "percentile (paired)",
+    n_rows = nrow(d), n_issues = length(issues)))
+
+  map_dfr(all_judges, function(j) {
+    dv <- diffs[, j]
+    tibble(judge_model = j, jurisdiction = jj,
+           is_canonical_judge = identical(j, CANON_JUDGE),
+           judge_estimate = point[[j]], canonical_estimate = point[[CANON_JUDGE]],
+           estimate = point[[j]] - point[[CANON_JUDGE]],
+           conf_low  = if (length(dv) > 1) unname(quantile(dv, .025)) else NA_real_,
+           conf_high = if (length(dv) > 1) unname(quantile(dv, .975)) else NA_real_,
+           n = nrow(d), n_issues = length(issues),
+           replicates_drawn = B, replicates_failed = nfail,
+           failure_rate = frate, interval_reliable = frate <= 0.02)
+  })
+}
+
+c17d <- map_dfr(JURIS_C, function(jj) {
+  d <- paired_frame(jj)
+  if (is.null(d)) return(NULL)
+  why <- estimable_chk(d, YCOL[[CANON_JUDGE]])
+  cat(sprintf("    %-6s n=%-6d %s\n", jj, nrow(d),
+              if (nzchar(why)) paste("NOT ESTIMABLE:", why) else ""))
+  if (nzchar(why))
+    return(tibble(judge_model = all_judges, jurisdiction = jj,
+                  is_canonical_judge = all_judges == CANON_JUDGE,
+                  estimate = NA_real_, conf_low = NA_real_, conf_high = NA_real_,
+                  n = nrow(d), n_issues = n_distinct(d$issue_id),
+                  estimable = FALSE, note = why))
+  out <- boot_paired_judges(d, jj)
+  if (is.null(out))
+    return(tibble(judge_model = all_judges, jurisdiction = jj,
+                  is_canonical_judge = all_judges == CANON_JUDGE,
+                  estimate = NA_real_, conf_low = NA_real_, conf_high = NA_real_,
+                  n = nrow(d), n_issues = n_distinct(d$issue_id),
+                  estimable = FALSE, note = "point estimate undefined for at least one judge"))
+  out %>% mutate(estimable = TRUE, note = "")
+}) %>%
+  mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
+         conf_high_pp = pp(conf_high),
+         judge_estimate_pp = pp(judge_estimate),
+         canonical_estimate_pp = pp(canonical_estimate),
+         quantity = "PAIRED difference in the standardized home-away contrast: this judge minus the canonical judge",
+         reference_judge = CANON_JUDGE,
+         paired = TRUE,
+         bootstrap_unit = "issue_id",
+         interval_type = paste("95% PAIRED issue-cluster bootstrap: both judges",
+                               "recomputed on the SAME resampled issue set in",
+                               "every replicate, difference taken within the",
+                               "replicate; percentile"),
+         sample = "all-judge common support (see c17c)",
+         spec = "refused_strict ~ home * model + tier + domain + route; nested weights; g-computation; identical under every judge",
+         interpretation = paste("Zero means this judge reproduces the canonical",
+                                "judge's estimate on the same sample. The",
+                                "canonical judge is a REFERENCE INSTRUMENT, not",
+                                "ground truth: no human-validated labels exist,",
+                                "so no judge is known to be correct. This is NOT",
+                                "the difference of the two marginal intervals in",
+                                "c17b, which would ignore the dependence induced",
+                                "by both judges labelling the same responses."),
+         canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c17d, file.path(CAN_EST, "c17d_judge_paired_differences.csv"))
+
+cat("\npaired judge-minus-canonical difference (pp):\n")
+print(as.data.frame(c17d %>% filter(estimable, !is_canonical_judge) %>%
+        transmute(jurisdiction, judge = substr(judge_model, 1, 36),
+                  diff = round(estimate_pp, 2), lo = round(conf_low_pp, 2),
+                  hi = round(conf_high_pp, 2))), row.names = FALSE)
+
 # --- reliability, carried through from the panel layer ------------------------
 rel_files <- c("e23_reliability_pass1.csv", "e25_reliability_slant.csv")
 rel <- map_dfr(rel_files, function(f) {

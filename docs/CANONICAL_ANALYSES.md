@@ -333,6 +333,33 @@ a sampling interval, and the full-sample `c04` interval is **not** inserted into
 it — that interval comes from a different, larger sample, and mixing it in would
 produce a range no single comparison supports.
 
+### 5c-bis. The paired judge difference (`c17d`)
+
+`c17b` answers *what does each judge produce*. The sensitivity question is *how
+far does the estimate move when the judge changes*, and `c17d` estimates that
+directly:
+
+```
+Delta_{j,r} = theta_{j,r} - theta_{canonical,r}
+```
+
+**It cannot be obtained by subtracting two rows of `c17b`.** On the all-judge
+common-support sample the four judges label *the same responses*, so their
+estimates are strongly positively dependent; differencing point estimates and
+carrying either marginal interval — or combining the two — gives an interval far
+too wide. The difference is therefore formed **inside** each bootstrap
+replicate: one issue set is resampled, every judge's contrast is recomputed on
+that same draw, and the difference is taken within the draw. Same bootstrap unit
+(`issue_id`), same multiplicity labelling, same fixed-B rule with failures
+counted and never replaced. A replicate in which any judge is undefined fails
+for all of them. Acceptance H7–H9 check that the canonical judge's own
+difference is exactly zero, that the point estimates reproduce `c17b`, and that
+the paired interval is narrower than the naive combination.
+
+**Zero means the alternative judge reproduces the canonical judge**, not that
+either is correct. The canonical judge is a **reference instrument, not ground
+truth** — which is the same reason no majority vote is computed.
+
 `c17b` reports two distinct claims separately, because conflating them would
 overstate the result:
 
@@ -368,15 +395,29 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 
 | figure | content | tables |
 |---|---|---|
-| `Fig1_home_jurisdiction` | a design/locator · b unadjusted rates · c standardized contrast, **full target only** | `c02`, `c04` |
-| `Fig2_language_framing` | a primary-weighting language effect · b model × language heatmap with printed values · c framing, complete 2+2 blocks | `c08`–`c11` |
-| `Fig3_content` | a four directional ideology categories with neutral annotated · b foundation prevalence · c agreement on its own 0–1 axis | `c12`, `c14` |
-| `ED1_judge_sensitivity` | the contrast under each judge on ONE common-support sample | `c17b`, `c17c` |
-| `ED2_sensitivity_panels` | inferential sensitivities split from post-outcome diagnostics; hierarchical tabulated in `c07b` | `c07`, `c04` |
-| `ED3_language_detail` | per-model paired intervals (weighting comparison is `c08b`) | `c09` |
+| `Fig1_home_jurisdiction` | row-aligned by jurisdiction: a unadjusted rates, both endpoints labelled · b unadjusted difference with its interval · c standardized contrast, **full target only** | `c02`, `c04` |
+| `Fig2_language_framing` | a pooled language effect (primary weighting) · b the same estimand across models, one shared axis · c framing, complete 2+2 blocks | `c08`–`c11` |
+| `Fig3_content` | a **all five** ideology bins as a distribution · b foundation prevalence · c agreement, aligned to b on its own 0–1 axis | `c12`, `c14` |
+| `ED1_judge_sensitivity` | **paired** difference from the canonical judge, bootstrapped in the same replicates | `c17d` (`c17b`, `c17c` for absolutes and support) |
+| `ED2_inferential_robustness` | sensitivities **by jurisdiction**, families grouped within; hierarchical tabulated in `c07b` | `c07`, `c04` |
+| `ED3_postoutcome_diagnostics` | response-length filters — post-outcome, **not** design robustness | `c07`, `c04` |
+| `ED4_language_heterogeneity` | a model × language matrix · b the same cells with intervals; matched ordering | `c09` (weighting comparison is `c08b`) |
+| `ED5_measurement_reliability` | construct × metric: raw agreement, α, Gwet AC1/AC2, PSA | `e23`, `e24`, `e25` |
 
 **Fig 1 carries the home family only.** Judge sensitivity and the projection were
-in it and did not belong: a main figure should carry one result family.
+in it and did not belong: a main figure should carry one result family. The
+locator map has also left it — it carried no estimate and took roughly a third
+of the area; the region coding is documented in the legends instead.
+
+**No figure carries a title, a subtitle or a caption.** Panel letters, axes,
+tick labels, category names, facet headings, compact legends and direct numeric
+labels only. `audit_figures.R` fails the build if a figure script passes
+`title=`, `subtitle=` or `caption=`. Full legends: `docs/CANONICAL_FIGURE_LEGENDS.md`.
+
+**A figure script must not write a canonical table.** `c07b` and `c08b` were
+produced by `21_figures_extended.R` until this release, so they existed only if
+the artwork ran. They are now written by `11_canonical_home.R` and
+`12_canonical_language_framing.R`; acceptance test H12 enforces it.
 
 ### 6a. Production artwork
 
@@ -416,7 +457,7 @@ canonical layer reads them.
 | `01`–`02` | inputs | `data_clean.RData`; `e22b`–`e28` reliability |
 | `10`–`14` | estimation | `c00`–`c18` |
 | `20` | **main manuscript** | Fig 1–3 |
-| `21` | **Extended Data** | ED1–ED3 |
+| `21` | **Extended Data** | ED1–ED5 |
 | `30` | acceptance | `c01b` |
 | `40` | appendix | `a01`–`a04`, descriptive views only |
 
@@ -444,6 +485,7 @@ row-level bootstraps ignoring issue clustering, unclustered GLMs,
 | `c14`, `c15` | foundation prevalence with agreement statistics |
 | `c16` | joint outcomes, refusal as its own category |
 | `c17`, `c17b`, `c17c` | judge sensitivity, envelope, common-support description |
+| `c17d` | **paired** judge-minus-canonical difference, bootstrapped in the same replicates |
 | `c18` | bootstrap and jackknife diagnostics |
 | `a01`–`a04` | appendix descriptive views |
 

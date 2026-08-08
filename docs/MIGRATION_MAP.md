@@ -32,7 +32,7 @@ estimate CSV stays where it was.
 | `FIG3_canonical_content` (3-way ideology, "acceptable agreement") | `Fig3_content` (five bins, dimension endpoints, numeric PSA) | Recomputed and relabelled. |
 | `S1_home_descriptive` | folded into `Fig1` panel b | The unadjusted rates belong beside the standardized ones. |
 | `S2_judge_multiverse` | `ED1_judge_sensitivity` | Common-support samples only; envelope renamed. |
-| `S3_specification_curve` | `ED2_sensitivity_panels` | Grouped by what varies; hierarchical separated as a different estimand; response-length labelled post-outcome. |
+| `S3_specification_curve` | `ED2_sensitivity_panels` → `ED2_inferential_robustness` | Grouped by what varies; hierarchical separated as a different estimand; response-length labelled post-outcome. Then reorganised by jurisdiction — see below. |
 | `S4_projection_supplement` | **retired** | Moved to `pipeline/archive/exploratory_umap/`: lexical purity matched semantic purity, so the figure did not support its own premise, and it was never rebuilt by the release driver. |
 | — | `ED3_language_detail` | **New.** Per-model intervals behind the heatmap; the weighting comparison is the `c08b` table. |
 | `P15_refusal_text_umap` | retired | Content lives in ED3. |
@@ -49,6 +49,47 @@ estimate CSV stays where it was.
 | `02`, `06`–`09` (v1 descriptive) → `40`–`44` | `40_appendix_descriptives.R`; the five originals archived to `pipeline/archive/precanonical_appendix/` |
 | `16_irr_analysis.R`, `57_refusal_umap_figure.R` | `pipeline/archive/retired/` |
 | — | `tests_synthetic.R` (new) |
+
+## The figure redesign
+
+A later revision audited every shipped panel against its source table
+([`FIGURE_ESTIMAND_AUDIT.md`](../FIGURE_ESTIMAND_AUDIT.md)) and compared at least
+two graphical forms for each ([`FIGURE_REDESIGN_MEMO.md`](../FIGURE_REDESIGN_MEMO.md)).
+**No stale v1 or v2 estimate was found in any figure.** Every change below is
+classified by how much of the analysis it touches.
+
+| final panel | previous | classification | what changed |
+|---|---|---|---|
+| Fig 1a rates | Fig 1b | graphical re-expression | Both endpoints labelled, not just home; EU drawn as a structural zero rather than a point at 0. Same table, filter, weighting and (absent) uncertainty. |
+| Fig 1b unadjusted difference | **not plotted** | previously-unplotted table row | `c02 quantity == "home_minus_away"` already carried a bootstrap interval and never reached a figure. No new estimation. |
+| Fig 1c standardized | Fig 1c | graphical re-expression | Same row filter, more width. |
+| Fig 1 locator map | Fig 1a | **panel retirement** | Carried no estimate and took ≈35% of the area; its region coding was recoded in the plotting script from a hard-coded ISO-3 list rather than read from the analysis data. Region coding now documented in the legends. |
+| Fig 2a pooled language | Fig 2a | graphical re-expression | Rows ordered by magnitude, derived from the table. |
+| Fig 2b model distribution | **replaces** the heatmap | derived graphical summary | Plots `c09` cells as points on one shared axis. Deterministic transformation of an existing table; no new estimation, no new uncertainty. |
+| Fig 2b heatmap | Fig 2b | **panel relocation** → ED4a | Colour was scaled to max\|estimate\| = 61.4 pp, so 30 of 44 cells were indistinguishable; it showed an inferential quantity with no uncertainty at all. |
+| Fig 2c framing | Fig 2c | graphical re-expression | Pooled row made visually primary; structural zero separated from estimated nulls; row order made explicit rather than resting on a reversed factor. |
+| Fig 3a ideology | Fig 3a | **graphical re-expression, estimand/graphic mismatch corrected** | The estimand is a five-bin distribution summing to one; the panel plotted four bins and annotated the fifth, giving all its ink to 8–20% of the distribution. All five bins are now drawn. Same table, same rows. |
+| Fig 3b/c foundations + PSA | Fig 3b, Fig 3c | graphical re-expression | Merged into one aligned compound panel with a single row-label column; PSA range redrawn with end ticks so it cannot be mistaken for the sampling interval beside it. |
+| ED1 judge sensitivity | ED1 | **new statistical estimand** | Now plots `c17d`, the paired judge-minus-canonical difference with a paired bootstrap. Absolute estimates stay tabulated in `c17b`. The point-envelope bracket is removed as redundant. |
+| ED2 | ED2 panel a | graphical re-expression | Reorganised by jurisdiction; five functional-form rows carrying `estimable = TRUE` with no estimate are omitted and counted instead of being given an empty facet. |
+| ED3 post-outcome | ED2 panel b | **panel relocation** | Own figure number: a shared one is a claim of kinship, and these condition on a realized property of the response. |
+| ED4 language | ED3 | **renamed output**, plus the relocated heatmap | Heatmap and interval panel now share model order, language order and spelling. Free x-scales in panel b retained deliberately. |
+| ED5 reliability | **new** | derived graphical summary | Construct × metric matrix from `e23`/`e24`/`e25`, all four statistics already computed. No new estimation. |
+
+New and renamed outputs:
+
+| output | change |
+|---|---|
+| `c17d_judge_paired_differences.csv` | **New canonical table.** The only genuinely new estimand in the redesign. |
+| `c07b_hierarchical_marginal.csv` | Unchanged content; **now written by `11_canonical_home.R`** instead of by the figure script. |
+| `c08b_weighting_comparison.csv` | Unchanged content; **now written by `12_canonical_language_framing.R`** instead of by the figure script. |
+| `ED2_sensitivity_panels.png` | → `ED2_inferential_robustness.png` (content changed; the legacy name is not kept). |
+| `ED3_language_detail.png` | → `ED4_language_heterogeneity.png`. |
+| — | `ED3_postoutcome_diagnostics.png`, `ED5_measurement_reliability.png` are new. |
+
+`FIGURE_ESTIMAND_AUDIT.md` and `FIGURE_REDESIGN_MEMO.md` are the working record
+of that audit. **`docs/CANONICAL_FIGURE_LEGENDS.md` remains the single
+authoritative caption document**; no separate caption file was created.
 
 ## Retired outputs, and why
 

@@ -215,6 +215,34 @@ man <- bind_rows(
   mutate(canonical_run_id = RUN_ID, git_sha = GIT_SHA, git_branch = GIT_BRANCH,
          git_dirty = DIRTY,
          generated_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"))
+
+# --- did the tree move under us? ---------------------------------------------
+# The cleanliness gate runs before the build; the build then takes over an hour,
+# and a source file edited during it is used by every stage that has not run
+# yet. That happened: an edit to a figure script landed while stage 11 was
+# running, so the figures were produced by code the recorded git_sha does not
+# describe. The SHA-256 entries above were still correct -- they are hashed at
+# manifest time, i.e. after the edit -- so the release was reproducible, but
+# `git_sha` alone would have sent a reader to the wrong commit.
+#
+# Record both endpoints and say plainly whether they agree. A mid-build edit is
+# not automatically fatal (the hashes remain the authoritative record), so this
+# reports rather than fails, but it can never again be invisible.
+GIT_SHA_END <- git("rev-parse", "HEAD")[1]
+DIRTY_END   <- { s <- git("status", "--porcelain"); length(s) > 0 && any(nzchar(s)) }
+MOVED <- !identical(GIT_SHA, GIT_SHA_END) || !identical(DIRTY, DIRTY_END)
+man <- man %>% mutate(git_sha_at_start = GIT_SHA, git_sha_at_end = GIT_SHA_END,
+                      tree_moved_during_build = MOVED)
+if (MOVED) {
+  cat("\n", strrep("!", 78), "\n", sep = "")
+  cat("WARNING: the working tree moved during the build.\n")
+  cat("  HEAD at start: ", GIT_SHA, if (DIRTY) " [DIRTY]" else "", "\n", sep = "")
+  cat("  HEAD at end  : ", GIT_SHA_END, if (DIRTY_END) " [DIRTY]" else "", "\n", sep = "")
+  cat("  The SHA-256 columns describe the files that actually produced these\n")
+  cat("  outputs; git_sha_at_start does not. Verify the source hashes before\n")
+  cat("  citing a commit for this release.\n")
+  cat(strrep("!", 78), "\n", sep = "")
+}
 write_csv(man, file.path(B_EST, MANIFEST_NAME))
 cat(sprintf("manifest: %d entries (%d outputs, %d sources, %d inputs)\n",
             nrow(man), sum(man$kind == "output"),

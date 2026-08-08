@@ -1,13 +1,13 @@
-language,weighting,estimate_pp,conf_low_pp,conf_high_pp,note,canonical_run_id
-Chinese,pooled,1.322886297376093,0.8961180600922279,1.7127062765614538,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Chinese,equal_model,1.319700388721682,0.8988972301874882,1.7194407384719648,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Chinese,equal_model_issue,1.319213713876636,0.8945759185660715,1.719739325515309,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Arabic,pooled,2.3289718263658563,1.9275268591718104,2.7196389744482805,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Arabic,equal_model,2.329985362140775,1.9172893494590608,2.7046964311191983,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Arabic,equal_model_issue,2.3310023310023316,1.9209826631701608,2.704994658119659,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Russian,pooled,3.948231862923806,3.5479677624831383,4.3357214658864915,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Russian,equal_model,3.939008290934524,3.5541852328491124,4.322121521009791,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Russian,equal_model_issue,3.938422688422691,3.5538983585858595,4.321216977466974,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Hindi,pooled,8.517626450624043,8.074863915864753,8.956871071655549,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Hindi,equal_model,8.495386495265736,8.0189075644898,8.90180912554866,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
-Hindi,equal_model_issue,8.494803807303807,8.018769425019428,8.900938471250969,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_009
+language,weighting,estimate_pp,conf_low_pp,conf_high_pp,primary_weighting,note,canonical_run_id
+Chinese,pooled,1.3228862973760933,0.8961180600922279,1.7127062765614538,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Chinese,equal_model,1.319700388721682,0.8988972301874882,1.7194407384719648,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Chinese,equal_model_issue,1.319213713876636,0.8945759185660715,1.719739325515309,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Arabic,pooled,2.3289718263658563,1.9275268591718104,2.7196389744482805,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Arabic,equal_model,2.329985362140775,1.9172893494590608,2.7046964311191983,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Arabic,equal_model_issue,2.3310023310023316,1.9209826631701608,2.704994658119659,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Russian,pooled,3.948231862923806,3.5479677624831383,4.3357214658864915,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Russian,equal_model,3.939008290934524,3.5541852328491124,4.322121521009791,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Russian,equal_model_issue,3.938422688422691,3.5538983585858595,4.321216977466974,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Hindi,pooled,8.517626450624043,8.074863915864753,8.956871071655549,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Hindi,equal_model,8.495386495265736,8.0189075644898,8.90180912554866,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010
+Hindi,equal_model_issue,8.494803807303807,8.018769425019428,8.900938471250969,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_010

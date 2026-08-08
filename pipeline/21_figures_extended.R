@@ -69,10 +69,13 @@ if (!is.null(c17d) && nrow(c17d) && "estimable" %in% names(c17d)) {
                    linewidth = LWC) +
     geom_point(shape = 21, size = 1.6, fill = INK_SOFT, colour = "white",
                stroke = 0.3) +
-    geom_text(aes(x = conf_high_pp, label = fmt_pp(estimate_pp)),
-              hjust = -0.28, size = TXT, colour = INK_SOFT) +
+    # Values in a right-hand column, not beside each interval: with the zero
+    # rule near the right edge in two facets, a label placed at conf_high
+    # printed on top of it.
+    geom_text(aes(x = Inf, label = fmt_pp(estimate_pp)), hjust = 1.05,
+              size = TXT, colour = INK_SOFT) +
     facet_wrap(~ j, ncol = 2, scales = "free_x") +
-    scale_x_continuous(expand = expansion(mult = c(0.10, 0.26))) +
+    scale_x_continuous(expand = expansion(mult = c(0.10, 0.20))) +
     labs(x = "Difference from the canonical judge (pp)", y = NULL) +
     theme_nature(base_size = PT_BODY, grid = "x") +
     theme(axis.text.y = element_text(size = PT_MIN),

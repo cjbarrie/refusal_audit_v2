@@ -31,7 +31,7 @@ several scripts were adapted to the v2 prompt schema (`topic_domain`,
 > imports.
 
 ### `pipeline/` (R)
-All 23 R scripts `01_data_loading.R` … `archive/pipeline_study_ab/16_engaged_state_alignment.R`.
+The R analysis layer. Since the canonical revision this is `01`, `02`, `10`–`14`, `20`–`21`, `30`, `40`, plus `_theme.R`, `make_release.R`, `audit_figures.R` and `tests_synthetic.R`; the superseded scripts named below live under `pipeline/archive/` with a README per group. See `docs/R_PIPELINE_WALKTHROUGH.md`.
 `01_data_loading.R` has been **patched for v2 and validated** (portable
 `here::here()`, run-dir env-var inputs, 7-model factor levels, provenance
 join-collision fix — see `docs/ANNOTATION_RUNBOOK.md`). Scripts **02–16 still

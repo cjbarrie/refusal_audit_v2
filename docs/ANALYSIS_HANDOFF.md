@@ -11,6 +11,9 @@
 > `pipeline/archive/README.md`, never by number alone. The analyses the paper
 > reports are specified in **`docs/CANONICAL_ANALYSES.md`**. This document is
 > kept as a dated record of what was true when it was written.
+>
+> **The `run_all.R` command below no longer exists.** The one driver is
+> `CANONICAL_RUN_ID=<id> Rscript pipeline/make_release.R`.
 
 Written 2026-08-03 for external review of the analyses and figure quality.
 Everything here is current as of that date; **generation is still running**, so

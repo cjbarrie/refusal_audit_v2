@@ -8,13 +8,17 @@
 > |---|---|---|
 > | `01`–`02` | inputs | `01_data_loading.R`, `02_judge_reliability.R` |
 > | `10`–`14` | estimation (canonical) | `10_canonical_common.R`, `11_canonical_home.R`, `12_canonical_language_framing.R`, `13_canonical_content.R`, `14_canonical_judge_uncertainty.R` |
-> | `20`–`21` | figures | `20_figures_main.R` (FIG1–3), `21_figures_appendix.R` (S1–S4) |
+> | `20`–`21` | figures | `20_figures_main.R` (Fig 1–3), `21_figures_extended.R` (ED1–ED5) |
 > | `30` | tests | `30_acceptance.R` |
-> | `40`–`44` | appendix analyses | engagement, justifications, three DeepSeek scripts |
+> | `40` | appendix descriptives | `40_appendix_descriptives.R` (`a01`–`a04`) |
 >
 > Specification, statistical models and inferential limits:
-> **`docs/CANONICAL_ANALYSES.md`**. Two drivers: `run_all.R` (inputs + appendix)
-> and `run_canonical.R` (estimation → figures → tests, ~1 h).
+> **`docs/CANONICAL_ANALYSES.md`**. Figure legends:
+> **`docs/CANONICAL_FIGURE_LEGENDS.md`**. **One driver**:
+> `CANONICAL_RUN_ID=<id> Rscript pipeline/make_release.R`, which builds into an
+> immutable `pipeline/releases/<id>/` and promotes only if acceptance and the
+> figure audit both pass. The earlier `run_all.R` / `run_canonical.R` pair is
+> gone.
 >
 > **The scripts described in the rest of this document have been renumbered or
 > archived.** The v1 estimand layer (`20`–`30`) and the v2 layer (`40`–`47`) are

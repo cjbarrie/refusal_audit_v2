@@ -61,7 +61,8 @@ sourcing/   Wikipedia/protection-log seed -> enrich -> format -> merge -> transl
 scripts/    sample -> generate subject-model responses -> LLM-as-judge annotate
               -> assemble into the R-contract file layout   -> annotations/<run_id>/
 pipeline/   R analysis: 01_data_loading.R builds the clean table every other
-              script reads; 02-16_*.R are individual analyses/figures/tables
+              script reads; 10-14 estimate, 20-21 plot, 30 accepts, 40 describes.
+              One driver: make_release.R
 ```
 
 ### 1. Sourcing (`sourcing/`) — two disjoint seed routes, one shared spine
@@ -162,8 +163,9 @@ Output surfaces per run dir: `responses/<battery>_<lang>.jsonl`,
 
 **Estimation and plotting are separate, and must stay separate.** `11_`–`14_`
 fit models and write tidy tables to `pipeline/estimates/canonical/`;
-`20_figures_main.R` and `21_figures_appendix.R` read those tables and draw,
-fitting nothing.
+`20_figures_main.R` and `21_figures_extended.R` read those tables and draw,
+fitting nothing — and may not write a canonical table either, or the table
+exists only when the artwork is rebuilt.
 
 **The canonical layer is what the paper reports.** Read
 `docs/CANONICAL_ANALYSES.md` before touching any of it — it is the spec, not a
@@ -178,22 +180,28 @@ The numbering encodes the manuscript structure:
 | range | role | scripts |
 |---|---|---|
 | `01`–`02` | **inputs** | `01_data_loading.R` (builds `data_clean.RData`), `02_judge_reliability.R` (panel reliability `e23`–`e28`, feeds `c17`) |
-| `10`–`14` | **estimation** | `10_canonical_common.R` (sample, nested weights, multiplicity-preserving bootstrap, shared `gcomp`), `11_canonical_home.R` → `c02`–`c07`, `12_canonical_language_framing.R` → `c08`–`c11`, `13_canonical_content.R` → `c12`–`c16`, `14_canonical_judge_uncertainty.R` → `c17`, `c17b` |
-| `20`–`21` | **figures** | `20_figures_main.R` → `FIG1`–`FIG3` (manuscript), `21_figures_appendix.R` → `S1`–`S4` (appendix) |
+| `10`–`14` | **estimation** | `10_canonical_common.R` (sample, nested weights, multiplicity-preserving bootstrap, shared `gcomp`), `11_canonical_home.R` → `c02`–`c07`, `12_canonical_language_framing.R` → `c08`–`c11`, `13_canonical_content.R` → `c12`–`c16`, `14_canonical_judge_uncertainty.R` → `c17`–`c17d` |
+| `20`–`21` | **figures** | `20_figures_main.R` → `Fig1`–`Fig3` (manuscript), `21_figures_extended.R` → `ED1`–`ED5` (Extended Data) |
 | `30` | **tests** | `30_acceptance.R` → `c01b`, non-zero exit on failure |
-| `40`–`44` | **appendix analyses** | engagement, justifications, and the three DeepSeek case-study scripts |
+| `40` | **appendix descriptives** | `40_appendix_descriptives.R` → `a01`–`a04` |
 
-Two drivers: `pipeline/run_all.R` runs the inputs and the appendix analyses;
-`CANONICAL_RUN_ID=<id> Rscript pipeline/run_canonical.R` runs estimation →
-figures → acceptance → reconciliation (~1 h). `pipeline/audit_figures.R` is the
-figure gate.
+**One driver**: `CANONICAL_RUN_ID=<id> Rscript pipeline/make_release.R`. It runs
+inputs → reliability → estimation → appendix → figures → manifest → acceptance →
+figure audit, builds into an immutable `pipeline/releases/<id>/`, and promotes to
+the live directories only if every check passes. `run_all.R` and
+`run_canonical.R` were removed: `run_all.R` called itself the analysis driver
+while excluding every canonical script, and its `--figures` mode selected a
+stage that no longer existed, so it ran nothing and exited 0.
 
 Four rules the canonical layer depends on, all checked mechanically:
 * the **issue-cluster bootstrap must label each draw** (`bootstrap_issue_instance`),
   so a resample that draws one issue twice keeps the copies distinct;
 * the **canonical outcome is one named judge**, with the rest of the panel
   reported as an instrument-sensitivity *envelope* (`c17b`) that is never pooled
-  with a bootstrap interval and never called a confidence interval;
+  with a bootstrap interval and never called a confidence interval — and, since
+  the judges label the same responses, the judge-minus-canonical difference
+  (`c17d`) is bootstrapped **paired**, inside each replicate, never by
+  differencing two marginal intervals;
 * **`gcomp()` lives in `10_canonical_common.R`** and is shared by `11` and `14`,
   so a judge-sensitivity result can never be a specification difference;
 * `flush_diag()` replaces only the **(run, label)** pairs it recomputed — dropping
@@ -203,7 +211,7 @@ Four rules the canonical layer depends on, all checked mechanically:
 derives `engaged`/`refused` (`engagement_code <= 3` / `>= 4`), the 5-point
 `engagement_category`, and factor columns with fixed level orders (so
 model/language always plot in the same order), and writes `data_clean.RData`,
-which the estimation layer and the `40`–`44` appendix scripts read. It has been **patched for v2**
+which the estimation layer and `40_appendix_descriptives.R` read. It has been **patched for v2**
 (`setwd()` → `here::here()`, run-dir input via `REFUSAL_RUN_DIR` env var
 (default `annotations/pilot_v1`), 7-model factor levels, a join-collision fix
 for `controversy_tier` — see `docs/ANNOTATION_RUNBOOK.md` for exact detail).
@@ -217,14 +225,13 @@ layer — do not read the old numbering into the new one.)
 Run with:
 
 ```bash
-REFUSAL_RUN_DIR=annotations/<run_id> Rscript pipeline/01_data_loading.R
-Rscript pipeline/run_all.R                                   # inputs + appendix analyses
-CANONICAL_RUN_ID=<id> Rscript pipeline/run_canonical.R       # estimation -> figures -> tests
-Rscript pipeline/audit_figures.R                             # the figure gate
-``` `docs/R_PIPELINE_WALKTHROUGH.md` maps
-what each of the 23 scripts does and which are core vs. optional/consolidatable
-(several — `06`/`07`/`07b`/`06b` — investigate the same DeepSeek finding at
-different rigor levels).
+CANONICAL_RUN_ID=<id> Rscript pipeline/make_release.R   # the whole thing
+CANONICAL_RUN_ID=<id> Rscript pipeline/make_release.R --no-promote   # build + check only
+Rscript pipeline/audit_figures.R                        # the figure gate on its own
+```
+
+`docs/R_PIPELINE_WALKTHROUGH.md` maps what each script does; its dated top block
+is authoritative over the rest of that file.
 
 The **annotation contract** (`docs/ANNOTATION_CONTRACT.md`) is the interface
 between Python annotation output and this R stage — if you touch the judge's
@@ -268,7 +275,7 @@ output schema, check that contract for what fields/joins R depends on.
     inside the replicate.
   * Ideology and moral-foundation tables are **conditional on engagement** and
     must say so; ideology additionally carries a weak-reliability warning.
-  * Not registered in `run_all.R` (~2 h runtime); run `pipeline/run_canonical.R`.
+  * ~2 h runtime; built by `pipeline/make_release.R`, which is the only driver.
 - **Multi-judge reliability panel** (`docs/MULTI_JUDGE_PLAN.md`). Every
   annotation record carries `judge_model` / `judge_prompt_version` /
   `annotation_run_id`. `run_pilot.py --judge-panel [MODEL ...]` annotates the

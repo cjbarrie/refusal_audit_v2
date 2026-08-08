@@ -12,7 +12,7 @@ banned prose string appears in a plotting specification.
 
 Every figure is a **single 600 dpi RGB PNG** and nothing else — no PDF, no SVG,
 no EPS, no TIFF, and no one-column variant. Width is 183 mm (double column) for
-all eight. Height is one of three approved canvases — 85 mm, 125 mm or 165 mm —
+all eight. Height is one of four approved canvases — 62, 85, 125 or 165 mm —
 and the audit checks both the pixel dimensions and the `pHYs` resolution
 metadata, because a large raster without `pHYs` is placed at 72 dpi by a
 journal's layout software.
@@ -315,7 +315,7 @@ MENA has a value (+3.79 pp, point only).
 
 ## ED3 · Post-outcome data-quality diagnostics
 
-183 × 85 mm. The standardized contrast recomputed on responses above a minimum
+183 × 62 mm. The standardized contrast recomputed on responses above a minimum
 character length (20, 50, 100), from `c07` (`sensitivity == "min_response_chars"`),
 one facet per jurisdiction, with the primary estimate as the dashed accent rule.
 

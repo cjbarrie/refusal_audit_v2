@@ -178,15 +178,18 @@ metrics for every construct in `e23`, `e24` and `e25`. No new estimation.
 
 ## Typography, colour and geometry decisions
 
-**Canvas templates.** Three, and every figure uses one:
+**Canvas templates.** Four, and every figure uses one:
 
 | template | size | used by |
 |---|---|---|
-| `wide` | 183 × 100 mm | Fig 1, Fig 3, ED1, ED3 |
+| `short` | 183 × 62 mm | ED3 |
+| `wide` | 183 × 85 mm | Fig 1, Fig 3, ED1 |
 | `standard` | 183 × 125 mm | Fig 2, ED4 |
 | `tall` | 183 × 165 mm | ED2, ED5 |
 
-No script chooses its own dimensions.
+No script chooses its own dimensions. `short` was added after review: ED3 has
+three rows, and at 85 mm the row pitch was pure whitespace. `audit_figures.R`
+checks every rendered height against this list.
 
 **Type.** One sans family everywhere, including model names — the monospaced
 model labels were dropped because at 7 pt Courier reads as a different class of

@@ -11,6 +11,11 @@ __pycache__/
 *.toc
 *.synctex.gz
 writeup/*.log
+writeup/*.aux
+writeup/*.out
+writeup/*.toc
+writeup/*.fls
+writeup/*.fdb_latexmk
 writeup/p[0-9].log
 
 # Secrets — never commit

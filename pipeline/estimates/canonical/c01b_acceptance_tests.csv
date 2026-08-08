@@ -1,72 +1,73 @@
 test,description,result,detail,canonical_run_id
-A1,"canonical sample is 137,186 rows",PASS,"137,186",canon_008
-A2,one row per model x prompt_id x language,PASS,,canon_008
-A3,624 issues / 11 models / 5 languages / 2 tiers,PASS,,canon_008
-A4,General issues never enter the home or away arms,PASS,"22,868 General rows, all held at home_status='general'",canon_008
-A5,refused_strict is exactly engagement_code >= 4,PASS,,canon_008
-B1,nested weights sum to 1,PASS,sum = 1.000000000000,canon_008
-B2,nested weights give every model equal total mass,PASS,range 0.00e+00 across 11 models,canon_008
-B3,weights equalise an artificially imbalanced roster (raw shares do not),PASS,weighted range 1.57e-15; raw share range 0.0833,canon_008
-B4,weighting changes the answer when the roster is imbalanced,PASS,imbalanced frame: weighted 0.0889 vs unweighted 0.1038,canon_008
-B5,"on the real (balanced) design, weighted equals unweighted",PASS,"0.088942 both ways; balance is why, and it is not a free pass",canon_008
-C1,replicate frames carry a per-draw instance label,PASS,,canon_008
-C2,replicates that draw an issue twice keep the copies distinct,PASS,duplicate draws seen: TRUE; instance- and issue-keyed answers diverge: TRUE,canon_008
-C3,every bootstrapped quantity records its seed and replicate counts,PASS,468 entries,canon_008
-C3b,any bootstrap above the failure threshold is marked unreliable,PASS,max failure rate 0.472; 0 undeclared,canon_008
-C3c,"c18 holds diagnostics from every bootstrapping part, not just the last",PASS,missing: ,canon_008
-C4,c18 labels are unique within the run,PASS,,canon_008
-D1,every estimate table carries exactly one canonical_run_id,PASS,25 tables,canon_008
-D1b,all estimate tables come from the same run,PASS,canon_008,canon_008
-D2,every canonical table names its estimand,PASS,,canon_008
-E1,no un-negated causal claim in any canonical table,PASS,,canon_008
-E2,standardized contrast is labelled non-causal,PASS,,canon_008
-E3,content tables declare conditioning on engagement,PASS,,canon_008
-E4,ideology tables carry the weak-reliability warning,PASS,,canon_008
-E5,moral foundations are declared non-exclusive,PASS,,canon_008
-F1,"non-estimable jurisdictions are flagged, not silently dropped",PASS,not estimable: EU,canon_008
-F2,"English slant coverage is complete, and partial languages are excluded",PASS,"en 6528/6528; excluded: ar, ru, zh",canon_008
-F3,"all four non-English languages are estimated, nulls included",PASS,"ar, hi, ru, zh",canon_008
-F4,paired tables report incomplete blocks rather than dropping silently,PASS,,canon_008
-F5,a design-based FPC jackknife is recorded with the right sampling fraction,PASS,"60 jackknives, f = 0.250",canon_008
-F5b,the frozen-battery interval is narrower on average,PASS,median width ratio 0.891,canon_008
-G1,no majority-vote label is used as ground truth,PASS,,canon_008
-G2,"judge spread is labelled as an observed envelope, not an interval",PASS,,canon_008
-G3,the latent-error simulation layer refuses to run without validation data,PASS,"draw_latent_labels() requires human-estimated sensitivity, s",canon_008
-G4,the canonical outcome is a single named judge,PASS,google/gemini-2.5-flash-lite,canon_008
-H1,main figures are exactly the expected PNGs,PASS,"Fig1_home_jurisdiction.png, Fig2_language_framing.png, Fig3_content.png",canon_008
-H2,Extended Data figures are exactly the expected PNGs,PASS,"ED1_judge_sensitivity.png, ED2_sensitivity_panels.png, ED3_language_detail.png",canon_008
-H3,no non-PNG artefact in any active figure directory,PASS,,canon_008
-H3b,obsolete figure directories are gone,PASS,,canon_008
-H4,FIG2c pooled framing row exists in c10,PASS,,canon_008
-H5,ideology bins sum to one within each dimension,PASS,,canon_008
-I1,ideology has EXACTLY five bins per dimension,PASS,5,canon_008
-I2,"the five bins are the five categories, not a 3-way collapse",PASS,,canon_008
-I3,each dimension's bins sum to one,PASS,,canon_008
-I4,every ideology bin carries an interval,PASS,,canon_008
-I5,"signed_mean is secondary, not the declared primary",PASS,,canon_008
-I6,authority and populism do not carry generic left/right endpoints,PASS,,canon_008
-I7,reliability reports PAIRWISE positive specific agreement,PASS,,canon_008
-I8,the mis-named positive_specific_agreement column is gone,PASS,,canon_008
-I9,the PSA formula is 2a/(2a+b+c),PASS,0.6667 on the reference case,canon_008
-I10,no arbitrary agreement threshold or verdict is stored,PASS,,canon_008
-I11,judge comparisons state their common support,PASS,,canon_008
-I12,every judge in a comparison uses the SAME sample,PASS,one n per jurisdiction across judges,canon_008
-I13,the judge envelope is not called a bound or an interval,PASS,OBSERVED JUDGE POINT ENVELOPE (range of judge point estimate,canon_008
-I13b,the point envelope and the union of intervals are separate columns,PASS,,canon_008
-I14,no full-sample estimate is inserted into the envelope,PASS,,canon_008
-I15,the one-armed judge perturbation of c08 is retired,PASS,,canon_008
-I16,primary framing uses complete 2+2 blocks only,PASS,,canon_008
-I17,incomplete framing blocks are listed by key,PASS,7 incomplete blocks,canon_008
-I18,framing captions do not claim prompt content is held fixed,PASS,,canon_008
-I19,GLM warnings and separation are recorded on every standardized row,PASS,,canon_008
-I20,a penalized-logit sensitivity exists,PASS,,canon_008
-I21,both a full-target and a common-support estimand are reported,PASS,,canon_008
-I22,"support restriction reports retained rows, issues, cells and weight",PASS,,canon_008
-I23,the equal-model average carries an interval,PASS,,canon_008
-I24,"failed bootstrap draws are counted, never replaced",PASS,,canon_008
-I25,every bootstrap draws a fixed number of replicates,PASS,,canon_008
-I26,"the finite-battery interval is design-based, not a rescaled percentile",PASS,,canon_008
-I27,timings are present and non-empty,PASS,8 stages,canon_008
-I28,"the manifest records git sha, hashes and environment",PASS,,canon_008
-I29,the manifest does not list itself,PASS,,canon_008
-I30,"the release is not built from a dirty tree, or says so",PASS,dirty: FALSE,canon_008
+A1,"canonical sample is 137,186 rows",PASS,"137,186",canon_009
+A2,one row per model x prompt_id x language,PASS,,canon_009
+A3,624 issues / 11 models / 5 languages / 2 tiers,PASS,,canon_009
+A4,General issues never enter the home or away arms,PASS,"22,868 General rows, all held at home_status='general'",canon_009
+A5,refused_strict is exactly engagement_code >= 4,PASS,,canon_009
+B1,nested weights sum to 1,PASS,sum = 1.000000000000,canon_009
+B2,nested weights give every model equal total mass,PASS,range 0.00e+00 across 11 models,canon_009
+B3,weights equalise an artificially imbalanced roster (raw shares do not),PASS,weighted range 1.57e-15; raw share range 0.0833,canon_009
+B4,weighting changes the answer when the roster is imbalanced,PASS,imbalanced frame: weighted 0.0889 vs unweighted 0.1038,canon_009
+B5,"on the real (balanced) design, weighted equals unweighted",PASS,"0.088942 both ways; balance is why, and it is not a free pass",canon_009
+C1,replicate frames carry a per-draw instance label,PASS,,canon_009
+C2,replicates that draw an issue twice keep the copies distinct,PASS,duplicate draws seen: TRUE; instance- and issue-keyed answers diverge: TRUE,canon_009
+C3,every bootstrapped quantity records its seed and replicate counts,PASS,468 entries,canon_009
+C3b,any bootstrap above the failure threshold is marked unreliable,PASS,max failure rate 0.472; 0 undeclared,canon_009
+C3c,"c18 holds diagnostics from every bootstrapping part, not just the last",PASS,missing: ,canon_009
+C4,c18 labels are unique within the run,PASS,,canon_009
+D1,every estimate table carries exactly one canonical_run_id,PASS,25 tables,canon_009
+D1b,all estimate tables come from the same run,PASS,canon_009,canon_009
+D1c,every reliability table carries the run id,PASS,11 reliability tables,canon_009
+D2,every canonical table names its estimand,PASS,,canon_009
+E1,no un-negated causal claim in any canonical table,PASS,,canon_009
+E2,standardized contrast is labelled non-causal,PASS,,canon_009
+E3,content tables declare conditioning on engagement,PASS,,canon_009
+E4,ideology tables carry the weak-reliability warning,PASS,,canon_009
+E5,moral foundations are declared non-exclusive,PASS,,canon_009
+F1,"non-estimable jurisdictions are flagged, not silently dropped",PASS,not estimable: EU,canon_009
+F2,"English slant coverage is complete, and partial languages are excluded",PASS,"en 6528/6528; excluded: ar, ru, zh",canon_009
+F3,"all four non-English languages are estimated, nulls included",PASS,"ar, hi, ru, zh",canon_009
+F4,paired tables report incomplete blocks rather than dropping silently,PASS,,canon_009
+F5,a design-based FPC jackknife is recorded with the right sampling fraction,PASS,"60 jackknives, f = 0.250",canon_009
+F5b,the frozen-battery interval is narrower on average,PASS,median width ratio 0.891,canon_009
+G1,no majority-vote label is used as ground truth,PASS,,canon_009
+G2,"judge spread is labelled as an observed envelope, not an interval",PASS,,canon_009
+G3,the latent-error simulation layer refuses to run without validation data,PASS,"draw_latent_labels() requires human-estimated sensitivity, s",canon_009
+G4,the canonical outcome is a single named judge,PASS,google/gemini-2.5-flash-lite,canon_009
+H1,main figures are exactly the expected PNGs,PASS,"Fig1_home_jurisdiction.png, Fig2_language_framing.png, Fig3_content.png",canon_009
+H2,Extended Data figures are exactly the expected PNGs,PASS,"ED1_judge_sensitivity.png, ED2_sensitivity_panels.png, ED3_language_detail.png",canon_009
+H3,no non-PNG artefact in any active figure directory,PASS,,canon_009
+H3b,obsolete figure directories are gone,PASS,,canon_009
+H4,FIG2c pooled framing row exists in c10,PASS,,canon_009
+H5,ideology bins sum to one within each dimension,PASS,,canon_009
+I1,ideology has EXACTLY five bins per dimension,PASS,5,canon_009
+I2,"the five bins are the five categories, not a 3-way collapse",PASS,,canon_009
+I3,each dimension's bins sum to one,PASS,,canon_009
+I4,every ideology bin carries an interval,PASS,,canon_009
+I5,"signed_mean is secondary, not the declared primary",PASS,,canon_009
+I6,authority and populism do not carry generic left/right endpoints,PASS,,canon_009
+I7,reliability reports PAIRWISE positive specific agreement,PASS,,canon_009
+I8,the mis-named positive_specific_agreement column is gone,PASS,,canon_009
+I9,the PSA formula is 2a/(2a+b+c),PASS,0.6667 on the reference case,canon_009
+I10,no arbitrary agreement threshold or verdict is stored,PASS,,canon_009
+I11,judge comparisons state their common support,PASS,,canon_009
+I12,every judge in a comparison uses the SAME sample,PASS,one n per jurisdiction across judges,canon_009
+I13,the judge envelope is not called a bound or an interval,PASS,OBSERVED JUDGE POINT ENVELOPE (range of judge point estimate,canon_009
+I13b,the point envelope and the union of intervals are separate columns,PASS,,canon_009
+I14,no full-sample estimate is inserted into the envelope,PASS,,canon_009
+I15,the one-armed judge perturbation of c08 is retired,PASS,,canon_009
+I16,primary framing uses complete 2+2 blocks only,PASS,,canon_009
+I17,incomplete framing blocks are listed by key,PASS,7 incomplete blocks,canon_009
+I18,framing captions do not claim prompt content is held fixed,PASS,,canon_009
+I19,GLM warnings and separation are recorded on every standardized row,PASS,,canon_009
+I20,a penalized-logit sensitivity exists,PASS,,canon_009
+I21,both a full-target and a common-support estimand are reported,PASS,,canon_009
+I22,"support restriction reports retained rows, issues, cells and weight",PASS,,canon_009
+I23,the equal-model average carries an interval,PASS,,canon_009
+I24,"failed bootstrap draws are counted, never replaced",PASS,,canon_009
+I25,every bootstrap draws a fixed number of replicates,PASS,,canon_009
+I26,"the finite-battery interval is design-based, not a rescaled percentile",PASS,,canon_009
+I27,timings are present and non-empty,PASS,8 stages,canon_009
+I28,"the manifest records git sha, hashes and environment",PASS,,canon_009
+I29,the manifest does not list itself,PASS,,canon_009
+I30,"the release is not built from a dirty tree, or says so",PASS,dirty: FALSE,canon_009

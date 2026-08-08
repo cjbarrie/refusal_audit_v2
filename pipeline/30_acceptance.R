@@ -498,7 +498,15 @@ chk("I30", "the release is not built from a dirty tree, or says so",
 
 # --- write --------------------------------------------------------------------
 res <- bind_rows(RES) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)
-write_csv(res, file.path(CAN_EST, "c01b_acceptance_tests.csv"))
+# WRITING RESULTS MUTATES THE DIRECTORY BEING AUDITED. Pointed at a promoted
+# tree, this rewrites c01b there and the tree no longer matches the release it
+# was promoted from. Set CANON_ACCEPT_READONLY=1 to run the checks without
+# writing -- which is what a post-promotion verification should do.
+if (nzchar(Sys.getenv("CANON_ACCEPT_READONLY", ""))) {
+  cat("\n(read-only: c01b not written)\n")
+} else {
+  write_csv(res, file.path(CAN_EST, "c01b_acceptance_tests.csv"))
+}
 nf <- sum(res$result == "FAIL")
 cat("\n", strrep("=", 78), "\n", sprintf("%d/%d passed, %d failed\n",
     sum(res$result == "PASS"), nrow(res), nf), strrep("=", 78), "\n", sep = "")

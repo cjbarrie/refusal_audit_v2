@@ -1,2 +1,2 @@
-construct,scale,n_units,n_judges,conditioned_on,raw_agreement,krippendorff_alpha,gwet_ac1,gwet_statistic
-refusal justification (7 codes),nominal,595,4,units all judges called a refusal,0.19831932773109243,0.3241741873302376,0.45924,"AC1, unweighted (nominal A-G codes)"
+construct,scale,n_units,n_judges,conditioned_on,raw_agreement,krippendorff_alpha,gwet_ac1,gwet_statistic,canonical_run_id
+refusal justification (7 codes),nominal,595,4,units all judges called a refusal,0.19831932773109243,0.3241741873302376,0.45924,"AC1, unweighted (nominal A-G codes)",canon_009

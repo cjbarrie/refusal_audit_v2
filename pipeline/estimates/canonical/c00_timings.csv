@@ -1,9 +1,9 @@
 step,script,minutes,status,canonical_run_id
-02,pipeline/02_judge_reliability.R,8.011029934883117,0,canon_008
-11,pipeline/11_canonical_home.R,55.165847114721934,0,canon_008
-12,pipeline/12_canonical_language_framing.R,3.2979031006495156,0,canon_008
-13,pipeline/13_canonical_content.R,2.323006983598073,0,canon_008
-14,pipeline/14_canonical_judge_uncertainty.R,7.371910834312439,0,canon_008
-40,pipeline/40_appendix_descriptives.R,0.35006351868311564,0,canon_008
-20,pipeline/20_figures_main.R,0.10053623119990031,0,canon_008
-21,pipeline/21_figures_extended.R,0.043984369436899824,0,canon_008
+02,pipeline/02_judge_reliability.R,8.046236483256022,0,canon_009
+11,pipeline/11_canonical_home.R,55.34047613143921,0,canon_009
+12,pipeline/12_canonical_language_framing.R,2.9094290018081663,0,canon_009
+13,pipeline/13_canonical_content.R,2.346155067284902,0,canon_009
+14,pipeline/14_canonical_judge_uncertainty.R,7.346588746706645,0,canon_009
+40,pipeline/40_appendix_descriptives.R,0.3531117002169291,0,canon_009
+20,pipeline/20_figures_main.R,0.10241611798604329,0,canon_009
+21,pipeline/21_figures_extended.R,0.044004833698272704,0,canon_009

@@ -1,193 +1,193 @@
 model,jurisdiction,joint,n,share,foundation,field,note,canonical_run_id
-allam-7b,MENA,"engaged, foundation absent",218,0.34935897435897434,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",294,0.47115384615384615,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",369,0.5913461538461539,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",237,0.3798076923076923,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",278,0.44551282051282054,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",319,0.5112179487179487,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",320,0.5128205128205128,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",261,0.4182692307692308,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",320,0.5136436597110754,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",292,0.46869983948635635,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",279,0.44711538461538464,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",326,0.5224358974358975,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",400,0.6410256410256411,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",212,0.33974358974358976,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",279,0.44711538461538464,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",327,0.5240384615384616,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",252,0.40384615384615385,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",372,0.5961538461538461,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",274,0.4391025641025641,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",310,0.4967948717948718,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",292,0.47020933977455714,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",297,0.4782608695652174,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation absent",190,0.30448717948717946,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",322,0.5160256410256411,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",241,0.38621794871794873,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",365,0.5849358974358975,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",228,0.36538461538461536,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",369,0.5913461538461539,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",274,0.4391025641025641,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",307,0.49198717948717946,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",275,0.44141252006420545,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",337,0.5409309791332263,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",207,0.3317307692307692,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",398,0.6378205128205128,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",271,0.4342948717948718,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",341,0.5464743589743589,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",246,0.3942307692307692,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",360,0.5769230769230769,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",184,0.2948717948717949,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",440,0.7051282051282052,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",204,0.3269230769230769,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",380,0.6089743589743589,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",246,0.3961352657004831,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",343,0.5523349436392915,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation absent",296,0.47435897435897434,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",216,0.34615384615384615,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",366,0.5865384615384616,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",240,0.38461538461538464,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",309,0.4951923076923077,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",288,0.46153846153846156,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",378,0.6057692307692307,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",203,0.32532051282051283,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",372,0.5971107544141252,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",240,0.3852327447833066,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",273,0.4375,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",332,0.532051282051282,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",334,0.5352564102564102,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",278,0.44551282051282054,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",296,0.47435897435897434,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",310,0.4967948717948718,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",242,0.38782051282051283,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",382,0.6121794871794872,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",291,0.46634615384615385,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",293,0.46955128205128205,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",286,0.4605475040257649,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",303,0.48792270531400966,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation absent",454,0.7275641025641025,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",58,0.09294871794871795,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",526,0.842948717948718,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",80,0.1282051282051282,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",492,0.7884615384615384,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",105,0.16826923076923078,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",525,0.8413461538461539,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",56,0.08974358974358974,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",546,0.8764044943820225,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",66,0.10593900481540931,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",524,0.8397435897435898,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",81,0.12980769230769232,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",498,0.7980769230769231,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",114,0.18269230769230768,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",531,0.8509615384615384,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",75,0.1201923076923077,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",519,0.8317307692307693,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",105,0.16826923076923078,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",495,0.7932692307692307,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",89,0.14262820512820512,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",503,0.8099838969404187,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",86,0.13848631239935588,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation absent",471,0.7548076923076923,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",570,0.9134615384615384,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",36,0.057692307692307696,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",516,0.8269230769230769,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",81,0.12980769230769232,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",548,0.8782051282051282,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",33,0.052884615384615384,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",577,0.9261637239165329,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",35,0.056179775280898875,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",564,0.9038461538461539,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",549,0.8798076923076923,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",63,0.10096153846153846,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",565,0.905448717948718,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",568,0.9102564102564102,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",56,0.08974358974358974,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",513,0.8221153846153846,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",71,0.11378205128205128,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",536,0.8631239935587761,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",53,0.0853462157809984,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation absent",481,0.7708333333333334,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,"engaged, foundation present",31,0.049679487179487176,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-allam-7b,MENA,refusal,112,0.1794871794871795,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation absent",599,0.9599358974358975,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,"engaged, foundation present",7,0.011217948717948718,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-claude-opus-4.5,US,refusal,18,0.028846153846153848,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation absent",574,0.9198717948717948,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,"engaged, foundation present",23,0.03685897435897436,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation absent",569,0.9118589743589743,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,"engaged, foundation present",12,0.019230769230769232,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-falcon3-10b,MENA,refusal,43,0.06891025641025642,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation absent",593,0.9518459069020867,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,"engaged, foundation present",19,0.030497592295345103,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-4o,US,refusal,11,0.01765650080256822,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation absent",590,0.9455128205128205,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-gpt-5.1,US,refusal,19,0.030448717948717948,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation absent",584,0.9358974358974359,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,"engaged, foundation present",28,0.04487179487179487,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-grok-4.3,US,refusal,12,0.019230769230769232,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation absent",586,0.9391025641025641,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,"engaged, foundation present",20,0.03205128205128205,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-jais-8b,MENA,refusal,18,0.028846153846153848,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation absent",609,0.9759615384615384,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-mistral-large-2512,EU,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation absent",569,0.9118589743589743,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-qwen3-max,CN,refusal,40,0.0641025641025641,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation absent",571,0.9194847020933977,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,"engaged, foundation present",18,0.028985507246376812,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
-sarvam-30b,India,refusal,32,0.05152979066022544,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_008
+allam-7b,MENA,"engaged, foundation absent",218,0.34935897435897434,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",294,0.47115384615384615,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",369,0.5913461538461539,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",237,0.3798076923076923,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",278,0.44551282051282054,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",319,0.5112179487179487,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",320,0.5128205128205128,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",261,0.4182692307692308,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",320,0.5136436597110754,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",292,0.46869983948635635,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",279,0.44711538461538464,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",326,0.5224358974358975,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",400,0.6410256410256411,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",212,0.33974358974358976,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",279,0.44711538461538464,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",327,0.5240384615384616,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",252,0.40384615384615385,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",372,0.5961538461538461,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",274,0.4391025641025641,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",310,0.4967948717948718,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",292,0.47020933977455714,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",297,0.4782608695652174,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Care / harm,care_harm,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation absent",190,0.30448717948717946,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",322,0.5160256410256411,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",241,0.38621794871794873,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",365,0.5849358974358975,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",228,0.36538461538461536,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",369,0.5913461538461539,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",274,0.4391025641025641,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",307,0.49198717948717946,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",275,0.44141252006420545,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",337,0.5409309791332263,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",207,0.3317307692307692,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",398,0.6378205128205128,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",271,0.4342948717948718,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",341,0.5464743589743589,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",246,0.3942307692307692,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",360,0.5769230769230769,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",184,0.2948717948717949,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",440,0.7051282051282052,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",204,0.3269230769230769,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",380,0.6089743589743589,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",246,0.3961352657004831,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",343,0.5523349436392915,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Fairness / cheating,fairness_cheating,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation absent",296,0.47435897435897434,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",216,0.34615384615384615,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",366,0.5865384615384616,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",240,0.38461538461538464,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",309,0.4951923076923077,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",288,0.46153846153846156,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",378,0.6057692307692307,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",203,0.32532051282051283,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",372,0.5971107544141252,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",240,0.3852327447833066,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",273,0.4375,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",332,0.532051282051282,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",334,0.5352564102564102,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",278,0.44551282051282054,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",296,0.47435897435897434,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",310,0.4967948717948718,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",242,0.38782051282051283,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",382,0.6121794871794872,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",291,0.46634615384615385,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",293,0.46955128205128205,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",286,0.4605475040257649,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",303,0.48792270531400966,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Liberty / oppression,liberty_oppression,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation absent",454,0.7275641025641025,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",58,0.09294871794871795,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",526,0.842948717948718,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",80,0.1282051282051282,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",492,0.7884615384615384,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",105,0.16826923076923078,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",525,0.8413461538461539,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",56,0.08974358974358974,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",546,0.8764044943820225,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",66,0.10593900481540931,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",524,0.8397435897435898,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",81,0.12980769230769232,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",498,0.7980769230769231,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",114,0.18269230769230768,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",531,0.8509615384615384,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",75,0.1201923076923077,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",519,0.8317307692307693,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",105,0.16826923076923078,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",495,0.7932692307692307,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",89,0.14262820512820512,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",503,0.8099838969404187,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",86,0.13848631239935588,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Authority / subversion,authority_subversion,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation absent",471,0.7548076923076923,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",570,0.9134615384615384,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",36,0.057692307692307696,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",516,0.8269230769230769,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",81,0.12980769230769232,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",548,0.8782051282051282,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",33,0.052884615384615384,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",577,0.9261637239165329,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",35,0.056179775280898875,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",564,0.9038461538461539,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",549,0.8798076923076923,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",63,0.10096153846153846,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",565,0.905448717948718,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",41,0.06570512820512821,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",568,0.9102564102564102,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",56,0.08974358974358974,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",513,0.8221153846153846,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",71,0.11378205128205128,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",536,0.8631239935587761,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",53,0.0853462157809984,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Loyalty / betrayal,loyalty_betrayal,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation absent",481,0.7708333333333334,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,"engaged, foundation present",31,0.049679487179487176,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+allam-7b,MENA,refusal,112,0.1794871794871795,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation absent",599,0.9599358974358975,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,"engaged, foundation present",7,0.011217948717948718,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+claude-opus-4.5,US,refusal,18,0.028846153846153848,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation absent",574,0.9198717948717948,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,"engaged, foundation present",23,0.03685897435897436,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+deepseek-chat-v3.1,CN,refusal,27,0.04326923076923077,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation absent",569,0.9118589743589743,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,"engaged, foundation present",12,0.019230769230769232,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+falcon3-10b,MENA,refusal,43,0.06891025641025642,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation absent",593,0.9518459069020867,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,"engaged, foundation present",19,0.030497592295345103,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-4o,US,refusal,11,0.01765650080256822,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation absent",590,0.9455128205128205,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+gpt-5.1,US,refusal,19,0.030448717948717948,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation absent",584,0.9358974358974359,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,"engaged, foundation present",28,0.04487179487179487,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+grok-4.3,US,refusal,12,0.019230769230769232,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation absent",586,0.9391025641025641,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,"engaged, foundation present",20,0.03205128205128205,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+jais-8b,MENA,refusal,18,0.028846153846153848,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation absent",609,0.9759615384615384,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+mistral-large-2512,EU,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation absent",569,0.9118589743589743,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,"engaged, foundation present",15,0.02403846153846154,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+qwen3-max,CN,refusal,40,0.0641025641025641,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation absent",571,0.9194847020933977,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,"engaged, foundation present",18,0.028985507246376812,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009
+sarvam-30b,India,refusal,32,0.05152979066022544,Sanctity / degradation,sanctity_degradation,refusals are a SEPARATE category and are never coded as foundation absence,canon_009

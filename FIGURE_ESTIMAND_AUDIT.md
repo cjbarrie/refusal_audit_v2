@@ -1,5 +1,15 @@
 # Figure–estimand crosswalk
 
+
+> **⚠ DATED RECORD — this audits release `canon_009`.** Its findings drove the
+> redesign in `canon_010` and the estimand-driven restructure in `canon_011`,
+> after which most of the panels described below no longer exist. It is kept
+> because it is the evidence for why they changed, and because its
+> panel-by-panel traces are the reason the current figures can be checked
+> against their tables at all. **For the current figure set, read
+> `docs/CANONICAL_FIGURE_LEGENDS.md`; for the current estimands,
+> `docs/CANONICAL_ANALYSES.md`.**
+
 Forensic trace of every panel shipped in release **`canon_009`** (git
 `3af636e`, branch `audit/inference-pipeline-review`), performed before any
 redesign. Every displayed number was traced back to a canonical table, a row

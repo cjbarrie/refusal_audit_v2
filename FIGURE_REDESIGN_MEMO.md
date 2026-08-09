@@ -1,5 +1,13 @@
 # Graph-type challenge: what was compared, and what won
 
+
+> **⚠ DATED RECORD — this compares graph types for release `canon_010`.** The
+> later restructure (`canon_011`) revisited several of these decisions: Figure 1
+> became a single overlaid forest with the rates removed entirely, the language
+> model-distribution strip was dropped in favour of ED4, and ED2/ED3 were
+> re-scoped. The comparison logic below is why each form was chosen at the time.
+> **For what actually ships, read `docs/CANONICAL_FIGURE_LEGENDS.md`.**
+
 Companion to [`FIGURE_ESTIMAND_AUDIT.md`](FIGURE_ESTIMAND_AUDIT.md). For every
 panel, at least two visual forms were considered before any code was written.
 The selection criteria, applied in this order:

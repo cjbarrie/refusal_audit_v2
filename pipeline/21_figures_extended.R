@@ -1,14 +1,18 @@
 # =============================================================================
-# EXTENDED DATA FIGURES -- ED1 .. ED5
+# EXTENDED DATA FIGURES -- ED1 .. ED9
 # =============================================================================
-#   ED1  judge sensitivity: PAIRED difference from the canonical judge
-#   ED2  inferential robustness of the home contrast, BY JURISDICTION
-#   ED3  post-outcome data-quality diagnostics (response-length filters)
-#   ED4  language heterogeneity: the model x language matrix and its intervals
-#   ED5  measurement reliability: construct x metric
+#   ED1  judge-instrument sensitivity      (c17d)
+#   ED2  focused estimator/support/outcome (c04, c07)
+#   ED3  issue-subsample stability         (c21)
+#   ED4  model x language heterogeneity    (c09)
+#   ED5  ideological slant by model        (c13)
+#   ED6  moral foundations by model        (c14, c15)
+#   ED7  measurement reliability           (e23, e24, e25)
+#   ED8  prompt-semantic UMAP              (c22)
+#   ED9  prompt-semantic UMAP by model     (c22)  -- optional
 #
-# Like the main figures, these read tables and fit nothing. No titles, no
-# subtitles, no prose inside a panel -- see docs/CANONICAL_FIGURE_LEGENDS.md.
+# Read tables, fit nothing, write no canonical table. No titles, subtitles or
+# captions inside a panel. Orderings come from pipeline/_orders.R.
 
 source("pipeline/_theme.R")
 suppressPackageStartupMessages({
@@ -16,415 +20,460 @@ suppressPackageStartupMessages({
 })
 
 CAN_EST <- Sys.getenv("CANON_EST_DIR", "pipeline/estimates/canonical")
-CANONICAL_RUN_ID <- Sys.getenv("CANONICAL_RUN_ID", "unset")
 ED_FIG  <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
 dir.create(ED_FIG, showWarnings = FALSE, recursive = TRUE)
 rd <- function(f) { p <- file.path(CAN_EST, f)
-  if (file.exists(p)) read_csv(p, show_col_types = FALSE) else NULL }
+  if (file.exists(p)) suppressMessages(read_csv(p, show_col_types = FALSE)) else NULL }
 
 theme_set(theme_nature(base_size = PT_BODY))
-JORD <- c("CN", "MENA", "India", "US", "EU")
 TXT <- pt_to_mm(PT_MIN); LWC <- 0.45
 short_judge <- function(x) str_remove(x, "^[a-z]+/")
-
-cat(strrep("=", 78), "\nEXTENDED DATA FIGURES\n", strrep("=", 78), "\n", sep = "")
 figs <- list()
 
+cat(strrep("=", 78), "\nEXTENDED DATA FIGURES\n", strrep("=", 78), "\n", sep = "")
+
 # =============================================================================
-# ED1 -- judge sensitivity as a PAIRED difference from the canonical judge
+# ED1 -- judge sensitivity, one compact forest
 # =============================================================================
-# The question is "how far does the estimate move when the judge changes", so
-# the figure plots that quantity directly: c17d, the paired difference
-# theta_j - theta_canonical, formed INSIDE each bootstrap replicate on one
-# shared issue draw.
+# The quantity is the PAIRED difference from the canonical judge (c17d), formed
+# inside each bootstrap replicate on one shared issue draw. Zero already means
+# "agrees with the canonical judge", so no separate reference line is drawn --
+# a dashed canonical rule on top of a zero rule was two marks for one fact.
 #
-# What this replaces: four absolute estimates per jurisdiction, which asked the
-# reader to difference overlapping intervals by eye. Differencing them on the
-# page would also be wrong -- the judges label the SAME responses, so their
-# estimates are strongly dependent and a marginal-interval subtraction is far
-# too wide. The absolute estimates remain tabulated in c17b.
-#
-# The "range of judge point estimates" bracket is gone. With every judge's
-# deviation drawn, it restated the spread of the points beneath it.
-#
-# Zero = this judge reproduces the canonical judge. The canonical judge is a
-# REFERENCE INSTRUMENT, not ground truth.
+# ONE COMMON X-AXIS across jurisdictions. The 2x2 grid of free scales it
+# replaces made a -0.7 pp difference in US look the same size as a -5.2 pp
+# difference in CN.
 c17d <- rd("c17d_judge_paired_differences.csv")
-if (!is.null(c17d) && nrow(c17d) && "estimable" %in% names(c17d)) {
-  cat("ED1 judge sensitivity (paired)\n")
+if (!is.null(c17d) && "estimable" %in% names(c17d)) {
+  cat("ED1 judge sensitivity\n")
   d <- c17d %>% filter(estimable, !is_canonical_judge) %>%
     mutate(judge = short_judge(judge_model),
-           j = factor(jurisdiction, levels = JORD))
-  ne <- c17d %>% filter(!estimable) %>% distinct(jurisdiction) %>%
-    mutate(j = factor(jurisdiction, levels = JORD))
-  jl <- sort(unique(d$judge))
-  d <- d %>% mutate(judge_f = factor(judge, levels = rev(jl)))
+           j = factor(jurisdiction, levels = ORDER_JURIS)) %>%
+    arrange(j, judge)
+  ne <- c17d %>% filter(!estimable) %>% distinct(jurisdiction) %>% pull()
+  # Interleave a heading row per jurisdiction, so the grouping lives in the
+  # y-axis labels rather than in a facet strip with its own scale.
+  lay <- d %>% distinct(j) %>% mutate(lab = as.character(j), head = TRUE, k = 0L) %>%
+    bind_rows(d %>% group_by(j) %>% mutate(k = row_number()) %>% ungroup() %>%
+                transmute(j, lab = paste0("   ", judge), head = FALSE, k)) %>%
+    arrange(j, k) %>% mutate(y = -row_number())
+  dd <- d %>% arrange(j, judge) %>%
+    mutate(y = lay$y[match(paste0("   ", judge, "|", j), paste0(lay$lab, "|", lay$j))])
 
-  # Greys, not jurisdiction colour: these rows are instruments, and the
-  # jurisdiction is already named by the facet.
-  ed1 <- ggplot(d, aes(x = estimate_pp, y = judge_f)) +
-    # Zero is the canonical reference, so it is the strongest rule here.
-    geom_vline(xintercept = 0, colour = ACCENT, linewidth = 0.35) +
+  ed1 <- ggplot(dd, aes(x = estimate_pp, y = y)) +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.4) +
     geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
                    linewidth = LWC) +
-    geom_point(shape = 21, size = 1.6, fill = INK_SOFT, colour = "white",
-               stroke = 0.3) +
-    # Values in a right-hand column, not beside each interval: with the zero
-    # rule near the right edge in two facets, a label placed at conf_high
-    # printed on top of it.
-    geom_text(aes(x = Inf, label = fmt_pp(estimate_pp)), hjust = 1.05,
-              size = TXT, colour = INK_SOFT) +
-    facet_wrap(~ j, ncol = 2, scales = "free_x") +
-    scale_x_continuous(expand = expansion(mult = c(0.10, 0.20))) +
-    labs(x = "Difference from the canonical judge (pp)", y = NULL) +
+    geom_point(size = 1.7, shape = 21, fill = INK, colour = "white", stroke = 0.3) +
+    geom_text(aes(x = Inf, label = sprintf("%+.2f [%+.2f, %+.2f]",
+                                           estimate_pp, conf_low_pp, conf_high_pp)),
+              hjust = 1.02, size = TXT, colour = INK_SOFT) +
+    scale_y_continuous(breaks = lay$y, labels = lay$lab,
+                       limits = range(lay$y) + c(-0.8, 0.8)) +
+    scale_x_continuous(expand = expansion(mult = c(0.04, 0.42))) +
+    labs(x = "Alternative judge minus canonical judge (pp)", y = NULL) +
     theme_nature(base_size = PT_BODY, grid = "x") +
-    theme(axis.text.y = element_text(size = PT_MIN),
-          strip.text = element_text(size = PT_BODY)) + tag_only()
-  if (nrow(ne))
-    cat(sprintf("  not estimable, omitted: %s\n",
-                paste(ne$jurisdiction, collapse = ", ")))
+    theme(axis.text.y = element_text(size = PT_MIN, hjust = 0, colour = INK_SOFT),
+          axis.ticks.y = element_blank()) +
+    tag_only() + theme(plot.tag = element_blank())
   save_fig(ed1, file.path(ED_FIG, "ED1_judge_sensitivity.png"),
-           width = W2, height = H_WIDE)
+           width = W2, height = H_SHORT)
   figs$ED1_judge_sensitivity <- ed1
+  if (length(ne)) cat("  not estimable, omitted:", paste(ne, collapse = ", "), "\n")
 }
 
 # =============================================================================
-# ED2 -- inferential robustness, ORGANISED BY JURISDICTION
+# ED2 -- FOCUSED estimator / support / outcome sensitivity
 # =============================================================================
-# Reorganised around the reader's question. "Is the CN conclusion robust?" used
-# to require visiting six specification-family facets and picking the CN-red
-# rows out of each; jurisdiction was the within-facet nuisance dimension. Now
-# each jurisdiction is a facet and the sensitivity families are grouped rows
-# inside it, so stability is visible without reading a number.
+# The sprawling multiverse forest is retired as a figure. It put rows that
+# change the ESTIMATOR next to rows that change the TARGET POPULATION and rows
+# that change the OUTCOME DEFINITION, and called them all robustness.
 #
-# Post-outcome diagnostics are NOT here -- they are ED3. A shared figure number
-# is itself a claim of kinship, and a response-length filter conditions on a
-# realized property of the outcome.
-c07 <- rd("c07_home_sensitivities.csv"); c04 <- rd("c04_home_standardized.csv")
-if (!is.null(c07)) {
-  cat("ED2 inferential robustness\n")
-  FAM <- tribble(
-    ~sensitivity,            ~family,                 ~kind,
-    "leave_one_model_out",   "Model composition",     "inferential",
-    "prompt_type",           "Prompt tier",           "inferential",
-    "language",              "Language",              "inferential",
-    "outcome_code3",         "Outcome definition",    "inferential",
-    "functional_form",       "Functional form",       "inferential",
-    "overlap_restricted",    "Support restriction",   "inferential",
-    "min_response_chars",    "Response-length filter", "post-outcome")
-  FORD <- FAM$family[FAM$kind == "inferential"]
+# Four points per jurisdiction, and only four:
+#   * primary  -- maximum likelihood, full target
+#   * Firth    -- different ESTIMATOR, same target
+#   * common support -- different TARGET POPULATION
+#   * refused_any    -- different OUTCOME DEFINITION
+# Shape marks what changed. The full grid -- language, tier, leave-one-model-out,
+# functional form, response length, hierarchical -- is the c07c table.
+#
+# Overlapping intervals here are NOT a test of equality between specifications.
+c04 <- rd("c04_home_standardized.csv"); c07 <- rd("c07_home_sensitivities.csv")
+if (!is.null(c04)) {
+  cat("ED2 focused sensitivity\n")
+  SPEC <- c("Primary (ML, full target)", "Firth (estimator)",
+            "Common support (target)", "refused_any (outcome)")
+  s1 <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
+                       support == "full target") %>%
+    transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp, estimable,
+              spec = SPEC[1])
+  s2 <- c04 %>% filter(weighting == "nested", estimator == "Firth penalized logit",
+                       support == "full target") %>%
+    transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp, estimable,
+              spec = SPEC[2])
+  s3 <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
+                       support == "common support") %>%
+    transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp, estimable,
+              spec = SPEC[3])
+  s4 <- if (is.null(c07)) NULL else c07 %>% filter(sensitivity == "outcome_code3") %>%
+    transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp, estimable,
+              spec = SPEC[4])
+  sd2 <- bind_rows(s1, s2, s3, s4) %>%
+    mutate(j = factor(jurisdiction, levels = ORDER_JURIS),
+           s = factor(spec, levels = SPEC))
+  drawable <- sd2 %>% filter(estimable, is.finite(estimate_pp), is.finite(conf_low_pp))
+  ne2 <- sd2 %>% filter(!(estimable & is.finite(estimate_pp))) %>%
+    distinct(jurisdiction) %>%
+    filter(!jurisdiction %in% drawable$jurisdiction)
+  off <- setNames(seq(0.30, -0.30, length.out = length(SPEC)), SPEC)
+  drawable <- drawable %>% mutate(y = as.numeric(factor(j, levels = rev(ORDER_JURIS))) +
+                                    off[as.character(s)])
 
-  # A row is PLOTTABLE only if it has a point AND an interval. `estimable` in
-  # c07 records that a fit was attempted, not that an estimate exists: five
-  # functional-form rows carry estimable = TRUE with estimate_pp = NA, and the
-  # previous figure filtered on that flag and reserved a whole empty facet for
-  # them. Unplottable rows are counted and named in a terse marker instead.
-  sc <- c07 %>% left_join(FAM, by = "sensitivity") %>%
-    filter(kind == "inferential")
-  drawable <- sc %>% filter(estimable, is.finite(estimate_pp),
-                            is.finite(conf_low_pp), is.finite(conf_high_pp))
-  dropped <- sc %>% anti_join(drawable, by = c("sensitivity", "jurisdiction",
-                                               "level"))
-
-  prim <- c04 %>% filter(weighting == "nested", support == "full target",
-                         estimator == "maximum likelihood", estimable) %>%
-    transmute(jurisdiction, primary_pp = estimate_pp)
-
-  # Rows are stacked family by family, in a fixed family order, with the row
-  # order inside a family fixed by the table rather than by the estimates -- so
-  # the layout never implies a finding.
-  #
-  # The family name is a HEADER ROW in the y axis, not a text grob floating in
-  # the panel: drawn in the panel it printed on top of whichever data row
-  # happened to sit at the same height. Data rows are indented under their
-  # header. Every facet needs its own y positions, and different facets carry
-  # different families, so the row set is built per jurisdiction and the panels
-  # use free y.
-  base <- drawable %>%
-    mutate(family = factor(family, levels = FORD),
-           j = factor(jurisdiction, levels = JORD),
-           level_lab = paste0("   ", str_replace(level, "^drop_", "- ")))
-  rows <- base %>% arrange(j, family, level_lab) %>%
-    group_by(j, family) %>% mutate(k = row_number()) %>% ungroup()
-  # Interleave one header per family with its data rows.
-  # y runs NEGATIVE downward on a plain continuous scale. scale_y_reverse()
-  # clipped the topmost break in every panel -- so each facet lost its first
-  # family heading -- and the loss was invisible unless you counted the rows
-  # against the table.
-  lay <- rows %>% distinct(j, family) %>% arrange(j, family) %>%
-    mutate(level_lab = as.character(family), header = TRUE, k = 0L) %>%
-    bind_rows(rows %>% mutate(header = FALSE)) %>%
-    arrange(j, family, k) %>%
-    group_by(j) %>% mutate(y = -row_number()) %>% ungroup()
-  rows <- lay %>% filter(!header)
-  # Terse marker for what a family could not deliver, carried as one more row
-  # label rather than a floating annotation, so the absence is visible and
-  # cannot drift off the panel.
-  miss <- dropped %>% group_by(jurisdiction, family) %>%
-    summarise(k = n(), .groups = "drop") %>%
-    mutate(j = factor(jurisdiction, levels = JORD),
-           level_lab = sprintf("%s: %d not estimable", family, k)) %>%
-    semi_join(rows, by = "j") %>%
-    group_by(j) %>% mutate(y = min(lay$y[lay$j == first(j)]) - row_number()) %>%
-    ungroup()
-  lay <- bind_rows(lay, miss %>% mutate(header = FALSE))
-
-  # One PLOT per jurisdiction, not one facet. Each carries a different set of
-  # families and therefore a different row-label vector, and a facetted y scale
-  # is shared across facets -- which is what forced the previous version to
-  # draw row labels as in-panel text, where they printed over the data.
-  #
-  # An empty facet is canvas spent on nothing. EU has no estimable sensitivity
-  # of any kind -- it produced zero refusals in both arms -- so it gets no
-  # panel at all, and the legend says why.
-  mk_panel <- function(jj, show_x) {
-    rr <- rows %>% filter(j == jj); if (!nrow(rr)) return(NULL)
-    ll <- lay %>% filter(j == jj)
-    pr <- prim %>% filter(jurisdiction == jj)
-    ggplot(rr, aes(x = estimate_pp, y = y)) +
-      geom_vline(xintercept = 0, colour = RULE, linewidth = 0.3) +
-      { if (nrow(pr))
-          geom_vline(xintercept = pr$primary_pp[1], colour = ACCENT,
-                     linewidth = 0.3, linetype = "22") } +
-      geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
-                     linewidth = 0.3) +
-      geom_point(size = 0.85, colour = INK) +
-      facet_wrap(~ j) +
-      # LIMITS FROM THE LABEL SET, not from the data. A scale takes its range
-      # from the plotted points, and the family headings and the
-      # "not estimable" markers are label-only rows with no point -- so every
-      # panel silently dropped its first heading and all of its markers.
-      scale_y_continuous(breaks = ll$y, labels = ll$level_lab,
-                         limits = range(ll$y) + c(-0.9, 0.9),
-                         expand = expansion(add = 0)) +
-      scale_x_continuous(expand = expansion(mult = c(0.06, 0.06))) +
-      # The axis title is identical in all four panels; printing it four times
-      # is three redundant strings, so only the bottom row carries it.
-      labs(x = if (show_x) "Home - away difference (pp)" else NULL, y = NULL) +
-      theme_nature(base_size = PT_BODY, grid = "x") +
-      theme(axis.text.y = element_text(size = PT_MIN, colour = INK_SOFT,
-                                       hjust = 0),
-            axis.ticks.y = element_blank(),
-            axis.title.x = element_text(size = PT_MIN),
-            strip.text = element_text(size = PT_BODY)) + tag_only()
-  }
-  have <- JORD[vapply(JORD, function(z) any(rows$j == z), logical(1))]
-  panels <- Filter(Negate(is.null),
-                   lapply(seq_along(have), function(i)
-                     mk_panel(have[i], i > length(have) - 2)))
-  ed2 <- patchwork::wrap_plots(panels, ncol = 2) +
-    plot_annotation(tag_levels = "a")
-  save_fig(ed2, file.path(ED_FIG, "ED2_inferential_robustness.png"),
-           width = W2, height = H_TALL)
-  figs$ED2_inferential_robustness <- ed2
-  cat(sprintf("  %d rows drawn, %d not estimable and omitted\n",
-              nrow(rows), nrow(dropped)))
-
-  # ===========================================================================
-  # ED3 -- post-outcome data-quality diagnostics, in their OWN figure
-  # ===========================================================================
-  # Response-length filters condition on a property of the response, i.e. after
-  # the outcome. They are a data-quality check, not design robustness, and they
-  # do not belong under the same figure number as the inferential forest.
-  cat("ED3 post-outcome diagnostics\n")
-  po <- c07 %>% left_join(FAM, by = "sensitivity") %>%
-    filter(kind == "post-outcome", estimable, is.finite(estimate_pp),
-           is.finite(conf_low_pp)) %>%
-    mutate(j = factor(jurisdiction, levels = JORD),
-           thresh = factor(level, levels = sort(unique(as.numeric(level)))))
-  if (nrow(po)) {
-    ed3 <- ggplot(po, aes(x = estimate_pp, y = fct_rev(thresh))) +
-      geom_vline(xintercept = 0, colour = RULE, linewidth = 0.3) +
-      geom_vline(data = prim %>%
-                   mutate(j = factor(jurisdiction, levels = JORD)) %>%
-                   semi_join(po, by = "j"),
-                 aes(xintercept = primary_pp), colour = ACCENT,
-                 linewidth = 0.3, linetype = "22") +
-      geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
-                     linewidth = 0.35) +
-      geom_point(size = 1.2, colour = INK) +
-      facet_wrap(~ j, nrow = 1, scales = "free_x") +
-      labs(x = "Home - away difference (pp)",
-           y = "Minimum response length (characters)") +
-      theme_nature(base_size = PT_BODY, grid = "x") +
-      theme(strip.text = element_text(size = PT_BODY),
-            axis.title.y = element_text(size = PT_MIN)) + tag_only()
-    save_fig(ed3, file.path(ED_FIG, "ED3_postoutcome_diagnostics.png"),
-             width = W2, height = H_SHORT)
-    figs$ED3_postoutcome_diagnostics <- ed3
-  }
+  ed2 <- ggplot(drawable, aes(x = estimate_pp, y = y)) +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp, colour = s),
+                   linewidth = LWC) +
+    geom_point(aes(shape = s, fill = s, colour = s), size = 1.9, stroke = 0.5) +
+    { if (nrow(ne2))
+        geom_text(data = ne2 %>% mutate(y = as.numeric(factor(jurisdiction,
+                                        levels = rev(ORDER_JURIS)))),
+                  aes(x = 0, y = y), inherit.aes = FALSE,
+                  label = NOT_ESTIMABLE_TEXT, hjust = -0.12, size = TXT,
+                  colour = INK_FAINT) } +
+    scale_shape_manual(values = c(23, 21, 22, 24), breaks = SPEC, name = NULL) +
+    scale_fill_manual(values = c(INK, "white", INK_SOFT, "white"),
+                      breaks = SPEC, name = NULL) +
+    scale_colour_manual(values = c(INK, INK, INK_SOFT, INK_SOFT),
+                        breaks = SPEC, name = NULL) +
+    scale_y_continuous(breaks = seq_along(ORDER_JURIS), labels = rev(ORDER_JURIS),
+                       limits = c(0.4, length(ORDER_JURIS) + 0.6)) +
+    scale_x_continuous(expand = expansion(mult = c(0.06, 0.10))) +
+    labs(x = "Home - away difference (pp)", y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "x") +
+    theme(axis.text.y = element_text(colour = INK, size = PT_BODY),
+          axis.ticks.y = element_blank(),
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(7, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed2, file.path(ED_FIG, "ED2_focused_sensitivity.png"),
+           width = W2, height = H_SHORT)
+  figs$ED2_focused_sensitivity <- ed2
 }
 
 # =============================================================================
-# ED4 -- language heterogeneity: the matrix AND its intervals, as ONE pair
+# ED3 -- issue-subsample stability
 # =============================================================================
-# The two panels are designed as a pair and must be readable against each other,
-# so they share model order, language order and spelling exactly. Panel a is the
-# cross-language overview; panel b is the within-language uncertainty companion.
-#
-# Panel b keeps free x-scales DELIBERATELY: its task is within-language model
-# comparison and interval width, and the cross-language magnitude comparison is
-# panel a's job. One panel is not asked to do both tasks poorly.
-c08 <- rd("c08_language_paired.csv"); c09 <- rd("c09_language_by_model.csv")
-if (!is.null(c09)) {
-  cat("ED4 language heterogeneity\n")
-  LORD <- c08 %>% filter(sensitivity == "primary", weighting == "equal_model") %>%
-    arrange(estimate_pp) %>% pull(language_label)
-  bym <- c09 %>% filter(grouping == "model") %>%
-    transmute(model = group, jurisdiction,
-              language = factor(language_label, levels = LORD),
-              estimate_pp, conf_low_pp, conf_high_pp)
-  # ONE model order for both panels, fixed by jurisdiction group and then name,
-  # never by the effects being displayed.
-  mord <- bym %>% distinct(model, jurisdiction) %>%
-    mutate(j = factor(jurisdiction, levels = JORD)) %>%
-    arrange(desc(j), desc(model)) %>% pull(model)
-  bym <- bym %>% mutate(model_f = factor(model, levels = mord))
+# THE BANDS ARE NOT CONFIDENCE INTERVALS. They are across-subsample ranges: the
+# spread of the estimate when the issue battery is smaller. The question the
+# panel answers is how much of the full-sample conclusion is already recovered
+# as issues are added.
+c21 <- rd("c21_subsample_summary.csv")
+if (!is.null(c21) && nrow(c21)) {
+  cat("ED3 subsample stability\n")
+  keep_fam <- c("home", "language", "framing")
+  st <- c21 %>% filter(family %in% keep_fam) %>%
+    mutate(panel = case_when(
+      grepl("standardized", estimand) ~ paste0("Standardized home  ", level),
+      grepl("descriptive", estimand)  ~ paste0("Unadjusted home  ", level),
+      family == "language"            ~ paste0("Language  ", level),
+      TRUE                            ~ "Framing  all models")) %>%
+    filter(!is.na(full_value)) %>%
+    # A structural zero has no stability to display: EU recorded no refusals at
+    # any fraction, so its panel would be a flat line at zero with no band and
+    # would read as a precisely recovered estimate.
+    group_by(panel) %>% filter(!all(p10 == 0 & p90 == 0)) %>% ungroup()
+  pord <- c(paste0("Standardized home  ", ORDER_JURIS),
+            paste0("Unadjusted home  ", ORDER_JURIS),
+            paste0("Language  ", ORDER_LANG_CONTRAST), "Framing  all models")
+  st <- st %>% mutate(p = factor(panel, levels = intersect(pord, unique(panel))))
 
-  # A model that never refused in any language has an undefined paired
-  # difference, not a zero one. It is excluded from the colour scale and drawn
-  # as the hollow square used everywhere else for a structural zero.
-  const <- bym %>% group_by(model) %>%
-    summarise(z = all(estimate_pp == 0), .groups = "drop") %>%
-    filter(z) %>% pull(model)
-  hm_e <- bym %>% filter(!model %in% const)
-  hm_z <- bym %>% filter(model %in% const)
-  # Colour scale is set by a robust quantile, not by the maximum. Scaling to
-  # max|estimate| = 61 pp pushed the 30 cells below 6 pp into the middle 10% of
-  # the ramp, where they were indistinguishable. Cells beyond the limit are
-  # squished to the endpoint colour and still carry their printed value, so no
-  # information is lost -- only saturation is.
-  LIM <- max(6, as.numeric(quantile(abs(hm_e$estimate_pp), 0.85)))
-  hm_e <- hm_e %>%
-    mutate(cell = fmt_pp0(estimate_pp),
-           dark = abs(estimate_pp) > 0.72 * LIM)
+  band <- ggplot(st, aes(x = 100 * fraction)) +
+    geom_ribbon(aes(ymin = p025, ymax = p975), fill = RULE, alpha = 0.55) +
+    geom_ribbon(aes(ymin = p10, ymax = p90), fill = INK_FAINT, alpha = 0.55) +
+    geom_hline(aes(yintercept = full_value), colour = ACCENT, linewidth = 0.3) +
+    geom_line(aes(y = median_estimate), colour = INK, linewidth = 0.4) +
+    facet_wrap(~ p, ncol = 5, scales = "free_y") +
+    scale_x_continuous(breaks = c(10, 50, 100)) +
+    labs(x = NULL, y = "Estimate (pp)") +
+    theme_nature(base_size = PT_BODY, grid = "y") +
+    theme(strip.text = element_text(size = PT_MIN),
+          axis.text = element_text(size = PT_MIN)) + tag_only()
 
-  p4a <- ggplot(hm_e, aes(x = language, y = model_f, fill = estimate_pp)) +
-    geom_tile(colour = "white", linewidth = 0.4) +
-    geom_text(aes(label = cell, colour = dark), size = TXT) +
-    { if (nrow(hm_z))
-        geom_tile(data = hm_z, aes(x = language, y = model_f),
-                  inherit.aes = FALSE, fill = CELL_EMPTY, colour = "white",
-                  linewidth = 0.4) } +
-    { if (nrow(hm_z))
-        geom_point(data = hm_z, aes(x = language, y = model_f),
-                   inherit.aes = FALSE, shape = SHAPE_NOT_ESTIMABLE, size = 1.2,
-                   colour = INK_FAINT, stroke = 0.35) } +
-    scale_fill_gradient2(low = PAL_DIVERGE[[1]], mid = "#F4F4F2",
-                         high = PAL_DIVERGE[[5]], midpoint = 0,
-                         limits = c(-LIM, LIM), oob = scales::squish,
-                         guide = "none") +
-    scale_colour_manual(values = c(`TRUE` = "white", `FALSE` = INK),
-                        guide = "none") +
-    # limits = mord EXPLICITLY. A discrete scale drops unused levels, so with
-    # the structural-zero model filtered out of the main layer its level was
-    # dropped and then re-appended by the second layer -- putting one row at the
-    # top of panel a and the bottom of panel b, in a pair whose whole purpose is
-    # a shared ordering.
-    scale_y_discrete(limits = mord) +
-    labs(x = NULL, y = NULL) +
-    theme_nature(base_size = PT_BODY, grid = "none") +
-    theme(axis.text = element_text(size = PT_MIN),
-          axis.line = element_blank(), axis.ticks = element_blank()) +
+  # Sign agreement in a narrow ALIGNED strip, not on a second y-axis.
+  strip <- ggplot(st, aes(x = 100 * fraction, y = sign_agreement)) +
+    geom_hline(yintercept = 1, colour = RULE, linewidth = 0.3) +
+    geom_line(colour = INK_SOFT, linewidth = 0.4) +
+    facet_wrap(~ p, ncol = 5) +
+    scale_x_continuous(breaks = c(10, 50, 100)) +
+    scale_y_continuous(limits = c(0, 1), breaks = c(0, 1)) +
+    labs(x = "Issue battery sampled (%)", y = "Sign agreement") +
+    theme_nature(base_size = PT_BODY, grid = "y") +
+    theme(strip.text = element_blank(), axis.text = element_text(size = PT_MIN)) +
     tag_only()
 
-  p4b <- ggplot(bym, aes(x = estimate_pp, y = model_f)) +
-    geom_vline(xintercept = 0, colour = RULE, linewidth = 0.3) +
-    geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
-                   linewidth = 0.3) +
-    geom_point(size = 0.9, colour = INK) +
-    facet_wrap(~ language, nrow = 1, scales = "free_x") +
-    scale_y_discrete(limits = mord) +
+  ed3 <- (band / strip) + plot_layout(heights = c(2.5, 1)) +
+    plot_annotation(tag_levels = "a")
+  save_fig(ed3, file.path(ED_FIG, "ED3_sample_size_stability.png"),
+           width = W2, height = H_TALL)
+  figs$ED3_sample_size_stability <- ed3
+}
+
+# =============================================================================
+# ED4 -- model x language heterogeneity
+# =============================================================================
+# ONE display, not two. The heatmap-plus-forest pair showed the same 44 numbers
+# twice; the exact values live in c09, so the figure spends its space on the
+# thing the table cannot show, which is the uncertainty.
+#
+# COMMON X-AXIS across the four language facets, so the ten-fold difference in
+# dispersion between Hindi and Chinese is visible rather than normalised away.
+c09 <- rd("c09_language_by_model.csv")
+if (!is.null(c09)) {
+  cat("ED4 language heterogeneity\n")
+  bym <- c09 %>% filter(grouping == "model") %>%
+    transmute(model = group, jurisdiction,
+              language = factor(language_label, levels = ORDER_LANG_CONTRAST),
+              estimate_pp, conf_low_pp, conf_high_pp) %>%
+    mutate(m = factor(model, levels = rev(ORDER_MODEL)))
+  lab4 <- bym %>% filter(abs(estimate_pp) >= 15)
+  ed4 <- ggplot(bym, aes(x = estimate_pp, y = m)) +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp,
+                       colour = jurisdiction), linewidth = 0.4) +
+    geom_point(aes(colour = jurisdiction), size = 1.1) +
+    geom_text(data = lab4, aes(label = sprintf("%+.0f", estimate_pp)),
+              hjust = -0.35, size = TXT, colour = INK_SOFT) +
+    facet_wrap(~ language, nrow = 1) +
+    scale_colour_manual(values = PAL_JURIS, breaks = ORDER_JURIS, name = NULL) +
+    scale_y_discrete(limits = rev(ORDER_MODEL)) +
+    scale_x_continuous(expand = expansion(mult = c(0.04, 0.12))) +
     labs(x = "Paired difference vs. English (pp)", y = NULL) +
     theme_nature(base_size = PT_BODY, grid = "x") +
-    theme(axis.text.y = element_text(size = PT_MIN),
-          strip.text = element_text(size = PT_MIN)) + tag_only()
-
-  ed4 <- (p4a / p4b) + plot_layout(heights = c(1, 1)) +
-    plot_annotation(tag_levels = "a")
+    theme(axis.text.y = element_text(size = PT_MIN, colour = INK),
+          strip.text = element_text(size = PT_BODY),
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(6, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
   save_fig(ed4, file.path(ED_FIG, "ED4_language_heterogeneity.png"),
-           width = W2, height = H_STD)
+           width = W2, height = H_WIDE)
   figs$ED4_language_heterogeneity <- ed4
 }
 
 # =============================================================================
-# ED5 -- measurement reliability: construct x metric
+# ED5 -- ideological slant by model
 # =============================================================================
-# A single "agreement" axis would imply these statistics are interchangeable.
-# They are not, and the run says so plainly: engagement has Krippendorff alpha
-# 0.51 and Gwet AC1 0.97 on the same labels, because alpha's chance correction
-# collapses when one category dominates. Rare constructs are exactly where the
-# metrics diverge most, so the reliability figure shows them side by side rather
-# than choosing one.
-#
-# PSA is defined only for binary constructs (it is agreement on POSITIVE labels),
-# so its column is empty for the ordinal scales. That is a property of the
-# statistic, marked with a dash rather than left blank.
+# The five-bin composition is the PRIMARY estimand and is what is drawn: a
+# signed mean alone would collapse a distribution that is 80-92% neutral into
+# one number and invite over-reading of a tiny directional tail.
+c13 <- rd("c13_ideology_by_model.csv")
+if (!is.null(c13) && "quantity" %in% names(c13)) {
+  cat("ED5 slant by model\n")
+  BINL <- c(share_neg2 = "-2", share_neg1 = "-1", share_zero = "0",
+            share_pos1 = "+1", share_pos2 = "+2")
+  i5 <- c13 %>% filter(role == "PRIMARY") %>%
+    mutate(bin = factor(unname(BINL[quantity]), levels = ORDER_IDEO_BIN),
+           d = factor(dimension, levels = ORDER_IDEO_DIM),
+           m = factor(model, levels = rev(ORDER_MODEL)),
+           share = estimate * 100)
+  stk <- position_stack(reverse = TRUE)
+  ed5 <- ggplot(i5, aes(x = share, y = m, fill = bin)) +
+    geom_col(width = 0.72, colour = "white", linewidth = 0.18, position = stk) +
+    facet_wrap(~ d, nrow = 1) +
+    scale_fill_manual(values = PAL_IDEO, name = NULL, breaks = ORDER_IDEO_BIN) +
+    scale_y_discrete(limits = rev(ORDER_MODEL)) +
+    scale_x_continuous(labels = label_percent(scale = 1, accuracy = 1),
+                       breaks = c(0, 50), expand = expansion(mult = c(0, 0.02))) +
+    labs(x = "Share of that model's engaged responses", y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "none") +
+    theme(axis.text.y = element_text(size = PT_MIN, colour = INK),
+          strip.text = element_text(size = PT_BODY),
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(5, "pt"),
+          panel.spacing.x = unit(11, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed5, file.path(ED_FIG, "ED5_slant_by_model.png"),
+           width = W2, height = H_WIDE)
+  figs$ED5_slant_by_model <- ed5
+}
+
+# =============================================================================
+# ED6 -- moral foundations by model
+# =============================================================================
+# Point AND interval for every model-foundation cell: a heatmap without
+# uncertainty would rank eleven models on differences the design may not
+# resolve. The aggregate is a thin reference rule, deliberately subordinate.
+c15 <- rd("c15_moral_by_model.csv"); c14 <- rd("c14_moral_prevalence_equal_model.csv")
+if (!is.null(c15) && "conf_low" %in% names(c15)) {
+  cat("ED6 foundations by model\n")
+  m6 <- c15 %>% mutate(f = factor(foundation, levels = ORDER_FOUNDATION),
+                       m = factor(model, levels = rev(ORDER_MODEL)))
+  ref <- if (is.null(c14)) NULL else c14 %>% filter(scope == "overall") %>%
+    transmute(f = factor(foundation, levels = ORDER_FOUNDATION), agg = estimate)
+  ed6 <- ggplot(m6, aes(x = estimate * 100, y = m)) +
+    { if (!is.null(ref))
+        geom_vline(data = ref, aes(xintercept = agg * 100), colour = INK_FAINT,
+                   linewidth = 0.25, linetype = "22") } +
+    geom_linerange(aes(xmin = conf_low * 100, xmax = conf_high * 100,
+                       colour = jurisdiction), linewidth = 0.4) +
+    geom_point(aes(colour = jurisdiction), size = 1.1) +
+    facet_wrap(~ f, nrow = 1) +
+    scale_colour_manual(values = PAL_JURIS, breaks = ORDER_JURIS, name = NULL) +
+    scale_y_discrete(limits = rev(ORDER_MODEL)) +
+    scale_x_continuous(labels = label_percent(scale = 1, accuracy = 1),
+                       breaks = c(0, 30, 60),
+                       expand = expansion(mult = c(0.05, 0.05))) +
+    labs(x = "Prevalence among that model's engaged responses", y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "x") +
+    theme(axis.text.y = element_text(size = PT_MIN, colour = INK),
+          axis.text.x = element_text(size = PT_MIN),
+          strip.text = element_text(size = PT_MIN),
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(6, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed6, file.path(ED_FIG, "ED6_foundations_by_model.png"),
+           width = W2, height = H_WIDE)
+  figs$ED6_foundations_by_model <- ed6
+}
+
+# =============================================================================
+# ED7 -- measurement reliability
+# =============================================================================
+# A compact dot matrix with ONE shared row-label column and no stems. The
+# statistics keep separate facets because they are not commensurable: engagement
+# scores alpha 0.51 and Gwet AC1 0.97 on the same labels. A structurally
+# undefined cell gets an em dash, once, not a repeated sentence.
 e23 <- rd("e23_reliability_pass1.csv"); e24 <- rd("e24_reliability_justification.csv")
 e25 <- rd("e25_reliability_slant.csv")
 if (!is.null(e23) && !is.null(e25)) {
-  cat("ED5 measurement reliability\n")
-  grab <- function(x, grp) {
-    if (is.null(x)) return(NULL)
-    tibble(construct = x$construct, group = grp, scale = x$scale,
-           raw = x$raw_agreement, alpha = x$krippendorff_alpha,
-           ac = x$gwet_ac1,
-           ac_stat = if ("gwet_statistic" %in% names(x)) x$gwet_statistic else NA_character_,
-           psa = if ("psa_mean" %in% names(x)) x$psa_mean else NA_real_,
-           prev = if ("prevalence" %in% names(x)) x$prevalence else NA_real_)
-  }
-  rel <- bind_rows(grab(e23, "Engagement"), grab(e24, "Justification"),
-                   grab(e25 %>% filter(grepl("ordinal", scale)), "Ideology"),
-                   grab(e25 %>% filter(!grepl("ordinal", scale)), "Moral foundations")) %>%
+  cat("ED7 measurement reliability\n")
+  grab <- function(x, grp) if (is.null(x)) NULL else tibble(
+    construct = x$construct, group = grp,
+    `Raw agreement` = x$raw_agreement,
+    `Krippendorff alpha` = x$krippendorff_alpha,
+    `Gwet AC1 / AC2` = x$gwet_ac1,
+    `Positive specific agreement` = if ("psa_mean" %in% names(x)) x$psa_mean else NA_real_)
+  rel <- bind_rows(
+    grab(e23, "Engagement"), grab(e24, "Justification"),
+    grab(e25 %>% filter(grepl("ordinal", scale)), "Ideology"),
+    grab(e25 %>% filter(!grepl("ordinal", scale)), "Foundations")) %>%
     mutate(construct = str_replace_all(construct, "_", " "),
-           row = paste(group, construct, sep = "  |  "))
-  # Ordered by group, then by alpha within group: the grouping is structural and
-  # the ordering inside it is informative.
-  rel <- rel %>% arrange(factor(group, levels = c("Engagement", "Justification",
-                                                  "Ideology", "Moral foundations")),
-                         desc(alpha)) %>%
-    mutate(row_f = fct_rev(fct_inorder(row)))
+           row = paste0(group, "  ", construct)) %>%
+    arrange(factor(group, levels = c("Engagement", "Justification", "Ideology",
+                                     "Foundations")),
+            desc(`Krippendorff alpha`)) %>%
+    mutate(r = fct_rev(fct_inorder(row)))
   long <- rel %>%
-    transmute(row_f, group,
-              `Raw agreement` = raw, `Krippendorff alpha` = alpha,
-              `Gwet AC1 / AC2` = ac, `Positive specific agreement` = psa) %>%
-    pivot_longer(-c(row_f, group), names_to = "metric", values_to = "value") %>%
-    mutate(metric = factor(metric, levels = c("Raw agreement",
-                                              "Krippendorff alpha",
+    pivot_longer(c(`Raw agreement`, `Krippendorff alpha`, `Gwet AC1 / AC2`,
+                   `Positive specific agreement`),
+                 names_to = "metric", values_to = "value") %>%
+    mutate(metric = factor(metric, levels = c("Raw agreement", "Krippendorff alpha",
                                               "Gwet AC1 / AC2",
                                               "Positive specific agreement")))
-  na_marks <- long %>% filter(is.na(value))
-
-  ed5 <- ggplot(long %>% filter(!is.na(value)),
-                aes(x = value, y = row_f)) +
+  ed7 <- ggplot(long %>% filter(!is.na(value)), aes(x = value, y = r)) +
     geom_vline(xintercept = c(0, 0.5, 1), colour = RULE, linewidth = 0.25) +
-    geom_segment(aes(x = 0, xend = value, yend = row_f), colour = RULE,
-                 linewidth = 0.5) +
     geom_point(aes(colour = group), size = 1.5) +
-    geom_text(aes(label = sprintf("%.2f", value)), hjust = -0.35, size = TXT,
+    geom_text(aes(label = sprintf("%.2f", value)), hjust = -0.4, size = TXT,
               colour = INK_SOFT) +
-    { if (nrow(na_marks))
-        geom_text(data = na_marks, aes(x = 0.02, y = row_f),
-                  inherit.aes = FALSE, label = "-- not defined for this scale",
-                  hjust = 0, size = TXT, colour = INK_FAINT) } +
+    geom_text(data = long %>% filter(is.na(value)), aes(x = 0.5, y = r),
+              inherit.aes = FALSE, label = "—", size = TXT, colour = INK_FAINT) +
     facet_wrap(~ metric, nrow = 1) +
-    scale_colour_manual(values = c(Engagement = ACCENT,
-                                   Justification = ACCENT_2,
-                                   Ideology = INK_SOFT,
-                                   `Moral foundations` = INK), guide = "none") +
-    scale_x_continuous(limits = c(0, 1.18), breaks = c(0, 0.5, 1),
+    scale_colour_manual(values = c(Engagement = ACCENT, Justification = ACCENT_2,
+                                   Ideology = INK_SOFT, Foundations = INK),
+                        name = NULL) +
+    scale_x_continuous(limits = c(0, 1.25), breaks = c(0, 0.5, 1),
                        expand = expansion(mult = c(0.02, 0))) +
-    labs(x = "Agreement statistic", y = NULL) +
+    labs(x = NULL, y = NULL) +
     theme_nature(base_size = PT_BODY, grid = "none") +
-    theme(axis.text.y = element_text(size = PT_MIN),
+    theme(axis.text.y = element_text(size = PT_MIN, colour = INK),
+          axis.text.x = element_text(size = PT_MIN),
           strip.text = element_text(size = PT_MIN),
-          panel.spacing.x = unit(4, "pt")) + tag_only()
-  save_fig(ed5, file.path(ED_FIG, "ED5_measurement_reliability.png"),
-           width = W2, height = H_TALL)
-  figs$ED5_measurement_reliability <- ed5
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(6, "pt"),
+          panel.spacing.x = unit(3, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed7, file.path(ED_FIG, "ED7_measurement_reliability.png"),
+           width = W2, height = H_WIDE)
+  figs$ED7_measurement_reliability <- ed7
+}
+
+# =============================================================================
+# ED8 -- prompt-semantic UMAP
+# =============================================================================
+# ONE fixed geometry, reused in every panel. Colour is a refusal PROPENSITY
+# across models, on a shared perceptually-uniform scale -- never a binary "ever
+# refused", which would make a prompt one model declined look identical to one
+# that all eleven declined.
+c22 <- rd("c22_prompt_umap_coordinates.csv")
+if (!is.null(c22) && nrow(c22)) {
+  cat("ED8 prompt-semantic UMAP\n")
+  panels <- c(ALL = "All languages", en = "English", zh = "Chinese",
+              ar = "Arabic", ru = "Russian", hi = "Hindi")
+  long8 <- map_dfr(names(panels), function(k) {
+    col <- if (k == "ALL") "refusal_propensity_all" else paste0("refusal_", k)
+    if (!col %in% names(c22)) return(NULL)
+    c22 %>% transmute(umap_x, umap_y, p = .data[[col]],
+                      panel = factor(unname(panels[k]), levels = unname(panels)))
+  })
+  LIMP <- c(0, max(long8$p, na.rm = TRUE))
+  ed8 <- ggplot(long8 %>% arrange(p), aes(umap_x, umap_y, colour = p)) +
+    geom_point(size = 0.22, alpha = 0.85, shape = 16) +
+    facet_wrap(~ panel, nrow = 2) +
+    scale_colour_viridis_c(option = "magma", direction = -1, limits = LIMP,
+                           breaks = c(0, 0.25, 0.50),
+                           labels = label_percent(accuracy = 1), name = NULL,
+                           guide = guide_colourbar(barwidth = unit(70, "pt"),
+                                                   barheight = unit(4, "pt"),
+                                                   ticks = FALSE)) +
+    coord_fixed() +
+    labs(x = NULL, y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "none") +
+    theme(axis.text = element_blank(), axis.ticks = element_blank(),
+          axis.ticks.length = unit(0, "pt"),
+          axis.line = element_blank(), axis.line.x = element_blank(),
+          strip.text = element_text(size = PT_BODY),
+          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          panel.spacing = unit(3, "pt")) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed8, file.path(ED_FIG, "ED8_prompt_semantic_umap.png"),
+           width = W2, height = H_STD)
+  figs$ED8_prompt_semantic_umap <- ed8
+
+  # ---- ED9: the same geometry, one panel per model -------------------------
+  bym9 <- rd("c22_prompt_refusal_by_model.csv")
+  if (!is.null(bym9) && nrow(bym9)) {
+    cat("ED9 UMAP by model\n")
+    # In a single language a single model either refused a prompt or did not, so
+    # this quantity is BINARY by construction -- a continuous ramp would imply a
+    # gradation that does not exist here. Two levels, one of them near-invisible,
+    # so the eye reads the refusals as marks on a common ground rather than
+    # hunting shades. The continuous propensity across models is ED8.
+    d9 <- bym9 %>% inner_join(c22 %>% select(prompt_id, umap_x, umap_y),
+                              by = "prompt_id") %>%
+      mutate(m = factor(model, levels = ORDER_MODEL),
+             r = factor(ifelse(refused > 0.5, "refused", "engaged"),
+                        levels = c("engaged", "refused")))
+    ed9 <- ggplot(d9 %>% arrange(r), aes(umap_x, umap_y, colour = r, size = r)) +
+      geom_point(alpha = 0.9, shape = 16) +
+      facet_wrap(~ m, nrow = 3) +
+      scale_colour_manual(values = c(engaged = "#E4E6E4", refused = ACCENT),
+                          name = NULL) +
+      scale_size_manual(values = c(engaged = 0.14, refused = 0.34), guide = "none") +
+      coord_fixed() + labs(x = NULL, y = NULL) +
+      theme_nature(base_size = PT_BODY, grid = "none") +
+      theme(axis.text = element_blank(), axis.ticks = element_blank(),
+            axis.ticks.length = unit(0, "pt"),
+            axis.line = element_blank(), axis.line.x = element_blank(),
+            strip.text = element_text(size = PT_MIN),
+            legend.position = "top", legend.text = element_text(size = PT_MIN),
+            legend.key.size = unit(6, "pt"),
+            panel.spacing = unit(2, "pt")) +
+      tag_only() + theme(plot.tag = element_blank())
+    save_fig(ed9, file.path(ED_FIG, "ED9_prompt_semantic_umap_by_model.png"),
+             width = W2, height = H_STD)
+    figs$ED9_prompt_semantic_umap_by_model <- ed9
+  }
 }
 
 saveRDS(figs, file.path(CAN_EST, "c20_figure_layout_extended.rds"))
-
 cat("\nwrote:\n"); print(list.files(ED_FIG))
 cat("\n", strrep("=", 78), "\nEXTENDED DATA DONE\n", strrep("=", 78), "\n", sep = "")

@@ -37,9 +37,18 @@ cat(strrep("=", 78), "\nFIGURE AUDIT\n", strrep("=", 78), "\n", sep = "")
 MAIN <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
 # PNG ONLY. One raster per expected figure and nothing else, anywhere under the
 # active figure directories.
-ED   <- c("ED1_judge_sensitivity", "ED2_inferential_robustness",
-          "ED3_postoutcome_diagnostics", "ED4_language_heterogeneity",
-          "ED5_measurement_reliability")
+ED   <- c("ED1_judge_sensitivity", "ED2_focused_sensitivity",
+          "ED3_sample_size_stability", "ED4_language_heterogeneity",
+          "ED5_slant_by_model", "ED6_foundations_by_model",
+          "ED7_measurement_reliability", "ED8_prompt_semantic_umap",
+          "ED9_prompt_semantic_umap_by_model")
+# Filenames retired in the restructure. Their presence means a stale raster
+# survived, which is exactly the failure the inventory check exists to catch.
+RETIRED_FIG <- c("ED2_inferential_robustness", "ED2_sensitivity_panels",
+                 "ED3_postoutcome_diagnostics", "ED3_language_detail",
+                 "ED5_measurement_reliability", "S1_home_descriptive",
+                 "S2_judge_multiverse", "S3_specification_curve",
+                 "S4_projection_supplement", "P15_refusal_text_umap")
 # Approved two-column canvases, in pixels at 600 dpi. Every figure must land on
 # one of these exactly: letting each script choose its own height produced a set
 # whose aspect ratios ran from 183x81 to 183x208 mm, so identical point sizes
@@ -71,6 +80,9 @@ obsolete <- c("pipeline/figures/canonical", "pipeline/figures/appendix")
 gone <- !vapply(obsolete, dir.exists, logical(1))
 ok("obsolete figure directories removed", all(gone),
    paste(obsolete[!gone], collapse = ", "))
+stale <- intersect(sub("[.]png$", "", c(have_main, have_ed)), RETIRED_FIG)
+ok("no retired figure filename survives", length(stale) == 0,
+   paste(stale, collapse = ", "))
 
 # --- 2. raster integrity, one file at a time ---------------------------------
 cat("\n2. raster integrity (streamed)\n")
@@ -323,27 +335,52 @@ ok("ED1: the canonical judge is a reference, not ground truth",
 # ED2 must not draw a row it has no estimate for. `estimable` in c07 records
 # that a fit was attempted; five functional-form rows carry estimable = TRUE
 # with no estimate, and an earlier ED2 reserved a whole empty facet for them.
-ok("ED2: no plotted sensitivity row lacks a point or an interval",
-   !is.null(c07) && {
-     drawable <- c07 %>% filter(sensitivity != "hierarchical_marginal",
-                                sensitivity != "min_response_chars", estimable,
-                                is.finite(estimate_pp), is.finite(conf_low_pp))
-     nrow(drawable) > 0 })
+ok("ED2: only same-estimand-family specs are plotted; the grid is a table",
+   !is.null(c07) && file.exists(file.path(CAN_EST, "c07c_sensitivity_catalogue.csv")))
 ok("ED2: the hierarchical marginal estimand is not in the forest",
    !is.null(c07) && file.exists(file.path(CAN_EST, "c07b_hierarchical_marginal.csv")))
-ok("ED3: response-length rows are a separate post-outcome figure",
-   !is.null(c07) && any(c07$sensitivity == "min_response_chars"))
-ok("ED4: heatmap and interval panel use one model and language ordering",
+ok("ED2: response-length rows are tabulated, not plotted",
+   !is.null(c07) && any(c07$sensitivity == "min_response_chars") &&
+     !any(grepl("min_response_chars", readLines("pipeline/21_figures_extended.R",
+                                                warn = FALSE))),
+   "post-outcome diagnostics belong in c07c")
+c21s <- rdc("c21_subsample_summary.csv")
+ok("ED3: stability bands are named as ranges, never confidence intervals",
+   !is.null(c21s) && "interval_note" %in% names(c21s) &&
+     all(grepl("NOT confidence intervals", c21s$interval_note)))
+ok("ED3: the resampling unit is the issue",
+   !is.null(c21s) && all(grepl("^issue_id", c21s$resampling_unit)))
+ok("ED4: one display of the model x language cells, with intervals",
    !is.null(c09) && {
      src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
-     # both panels are built from the same `bym` frame and the same `model_f`
-     # factor, so an ordering divergence is impossible by construction
-     sum(grepl("model_f = factor\\(model, levels = mord\\)", src)) == 1 &&
-       sum(grepl("levels = LORD", src)) >= 1 })
-ok("ED5: reliability shows more than one agreement statistic",
+     !any(grepl("geom_tile", src)) })
+c13a <- rdc("c13_ideology_by_model.csv"); c15a <- rdc("c15_moral_by_model.csv")
+ok("ED5: model-level ideology carries issue-clustered intervals",
+   !is.null(c13a) && all(c("conf_low", "conf_high", "conf_low_battery") %in% names(c13a)))
+ok("ED5: the five bins sum to one within every (dimension, model)",
+   !is.null(c13a) && {
+     k <- c13a %>% filter(role == "PRIMARY") %>% group_by(dimension, model) %>%
+       summarise(s = sum(estimate), .groups = "drop")
+     nrow(k) > 0 && all(abs(k$s - 1) < 1e-8) })
+ok("ED6: model-level foundations carry issue-clustered intervals",
+   !is.null(c15a) && all(c("conf_low", "conf_high", "conf_low_battery") %in% names(c15a)))
+ok("ED7: reliability shows more than one agreement statistic",
    !is.null(rdc("e25_reliability_slant.csv")) && {
      e <- rdc("e25_reliability_slant.csv")
      all(c("raw_agreement", "krippendorff_alpha", "gwet_ac1", "psa_mean") %in% names(e)) })
+c22c <- rdc("c22_prompt_umap_coordinates.csv")
+c22p <- rdc("c22_prompt_refusal_propensities.csv")
+ok("ED8: exactly one UMAP coordinate pair per prompt",
+   is.null(c22c) || (nrow(c22c) == dplyr::n_distinct(c22c$prompt_id) &&
+                     !anyNA(c22c$umap_x) && !anyNA(c22c$umap_y)),
+   "skipped when the embedding cache is absent", warn_only = is.null(c22c))
+ok("ED8: refusal propensities are bounded in [0,1]",
+   is.null(c22p) || all(c22p$refusal_propensity >= 0 & c22p$refusal_propensity <= 1,
+                        na.rm = TRUE),
+   "", warn_only = is.null(c22p))
+ok("ED8/ED9: no facet refits the projection",
+   { src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
+     !any(grepl("uwot::|umap\\(", src)) })
 # A distribution estimand must be shown as a distribution: the neutral bin holds
 # 80-92% of the mass and an earlier Fig3a plotted only the four directional bins.
 ok("Fig3a: the neutral bin is drawn, not annotated",

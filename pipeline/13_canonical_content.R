@@ -143,29 +143,46 @@ eqm <- function(d, col) mean(tapply(d[[col]], as.character(d$model), mean))
 # concentrated distribution into one number and invites over-reading.
 cat("\nB. ideology (model-level first, then equal-model aggregates)\n")
 
-c13 <- map_dfr(names(IDEO), function(f) {
-  d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
-  map_dfr(sort(unique(as.character(d$model))), function(m) {
-    dd <- d %>% filter(model == m)
-    x <- dd[[f]]
-    tibble(dimension = unname(IDEO[f]), field = f, model = m,
-           jurisdiction = as.character(dd$juris[1]), n = nrow(dd),
-           n_issues = n_distinct(dd$issue_id),
-           share_neg2 = mean(x == -2), share_neg1 = mean(x == -1),
-           share_zero = mean(x == 0), share_pos1 = mean(x == 1),
-           share_pos2 = mean(x == 2),
-           share_negative = mean(x < 0), share_positive = mean(x > 0),
-           share_neutral = mean(x == 0), signed_mean = mean(x))
-  })
-}) %>% mutate(conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
-write_csv(c13, file.path(CAN_EST, "c13_ideology_by_model.csv"))
+# -----------------------------------------------------------------------------
+# Model-level content estimands CARRY UNCERTAINTY
+# -----------------------------------------------------------------------------
+# c13 and c15 used to be point estimates and nothing else, which made them
+# unusable for the model-comparison figures they exist to support: eleven bare
+# numbers invite ranking, and nothing on the row said whether the gap between
+# first and last was larger than the noise.
+#
+# Every model-level row now carries BOTH inference targets, exactly as the
+# aggregate tables do -- the issue-cluster bootstrap for an issue
+# superpopulation, and the delete-one-issue jackknife with FPC for the frozen
+# battery. Issues remain the resampling unit; a row-level bootstrap would treat
+# the four prompts of one issue as independent and be far too narrow.
+#
+# The frame handed to the bootstrap is slimmed to the three columns the statistic
+# needs. boot_canon() rebuilds a data frame on every replicate, and carrying
+# forty unused columns through 500 replicates x 264 quantities is the difference
+# between a minute and an hour.
+#
+# `both_intervals()` is the shared helper; nothing here re-implements it.
+model_level <- function(d, f, stat, label, bounded = FALSE) {
+  slim <- d %>% transmute(issue_id, model, .y = .data[[f]])
+  r <- both_intervals(slim, stat, B_SENS, label, bounded = bounded)
+  y <- slim$.y
+  tibble(estimate = r$estimate, conf_low = r$conf_low, conf_high = r$conf_high,
+         conf_low_battery = r$battery_low, conf_high_battery = r$battery_high,
+         conf_low_battery_unbounded = r$battery_low_unbounded,
+         conf_high_battery_unbounded = r$battery_high_unbounded,
+         battery_se = r$battery_se, battery_scale = r$battery_scale,
+         n = length(y), n_issues = n_distinct(slim$issue_id),
+         # A constant outcome has a defined point and a degenerate interval.
+         # Flagged, not silently reported as a precisely estimated value.
+         degenerate_outcome = length(unique(y)) < 2,
+         # Two clusters cannot support a jackknife; the flag says so rather than
+         # letting a meaningless width through.
+         support_ok = n_distinct(slim$issue_id) >= 10,
+         estimable = length(y) > 0,
+         interval_reliable = r$interval_reliable)
+}
 
-# PRIMARY ESTIMAND: the equal-model share in EACH of the five categories, with
-# an interval on every bin. The collapsed negative/neutral/positive split is
-# gone from the primary table: it threw away the distinction between -2 and -1
-# (and between +1 and +2), which is the only place the strength of a placement
-# lives, and it was declared "the full distribution" while being a three-way
-# summary of it.
 IDEO_BINS <- c(share_neg2 = -2L, share_neg1 = -1L, share_zero = 0L,
                share_pos1 = 1L, share_pos2 = 2L)
 
@@ -197,6 +214,62 @@ IDEO_ALPHA_NOTE <- setNames(vapply(names(IDEO), function(f) sprintf(
         "this quantity should not carry substantive weight."),
   unname(IDEO[f]), IDEO_ALPHA[f]), character(1)), names(IDEO))
 
+
+cat("  c13: model-level ideology with intervals (B =", B_SENS, ")\n")
+c13 <- map_dfr(names(IDEO), function(f) {
+  d_all <- SLANT_EN
+  d <- d_all %>% filter(!is.na(.data[[f]]))
+  map_dfr(ORDER_MODEL, function(m) {
+    dd  <- d     %>% filter(model == m)
+    all_m <- d_all %>% filter(model == m)
+    if (!nrow(dd)) return(NULL)
+    juris <- as.character(dd$juris[1])
+    # The five bins PLUS the signed mean. The bins are the primary estimand and
+    # sum to one within (dimension, model); the signed mean is secondary and is
+    # labelled as such on the row, so a reader cannot mistake it for the
+    # distribution it summarises.
+    bins <- map_dfr(names(IDEO_BINS), function(q) {
+      k <- IDEO_BINS[[q]]
+      model_level(dd, f, function(x) mean(x$.y == k),
+                  sprintf("c13|%s|%s|%s", f, m, q), bounded = TRUE) %>%
+        mutate(quantity = q, category = as.character(k), role = "PRIMARY")
+    })
+    sm <- model_level(dd, f, function(x) mean(x$.y),
+                      sprintf("c13|%s|%s|signed_mean", f, m)) %>%
+      mutate(quantity = "signed_mean", category = NA_character_,
+             role = "SECONDARY")
+    bind_rows(bins, sm) %>%
+      mutate(dimension = unname(IDEO[f]), field = f, model = m,
+             jurisdiction = juris,
+             # Missingness is REPORTED, never collapsed into a zero: a model
+             # whose slant pass failed on 40 responses is not a model that
+             # placed 40 responses at neutral.
+             n_missing = nrow(all_m) - nrow(dd),
+             reliability_warning = unname(IDEO_ALPHA_NOTE[f]))
+  })
+}) %>%
+  mutate(weighting = "within-model (unweighted over that model's responses)",
+         inference_target = TARGET_NOTE,
+         jurisdiction_caveat = paste("jurisdiction is a property of the model",
+           "roster; do NOT read a developer-region effect off these",
+           "model comparisons"),
+         conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID) %>%
+  select(dimension, field, model, jurisdiction, quantity, category, role,
+         estimate, conf_low, conf_high, conf_low_battery, conf_high_battery,
+         everything())
+stopifnot(nrow(c13) == length(IDEO) * length(ORDER_MODEL) * (length(IDEO_BINS) + 1))
+# The five bins must still sum to one within every (dimension, model).
+.chk13 <- c13 %>% filter(role == "PRIMARY") %>%
+  group_by(dimension, model) %>% summarise(s = sum(estimate), .groups = "drop")
+stopifnot(all(abs(.chk13$s - 1) < 1e-9))
+write_csv(c13, file.path(CAN_EST, "c13_ideology_by_model.csv"))
+
+# PRIMARY ESTIMAND: the equal-model share in EACH of the five categories, with
+# an interval on every bin. The collapsed negative/neutral/positive split is
+# gone from the primary table: it threw away the distinction between -2 and -1
+# (and between +1 and +2), which is the only place the strength of a placement
+# lives, and it was declared "the full distribution" while being a three-way
+# summary of it.
 c12 <- map_dfr(names(IDEO), function(f) {
   d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
   bins <- map_dfr(names(IDEO_BINS), function(q) {
@@ -256,13 +329,36 @@ print(as.data.frame(c12 %>% filter(role == "PRIMARY") %>%
 # so they never form a composition and no stacked form is valid.
 cat("\nC. moral foundations\n")
 
+# Model-level prevalence with BOTH inference targets, on the same footing as
+# c13. The point column is `estimate`, matching every other canonical table;
+# it was called `prevalence` while the table carried no interval, and a rename
+# is safe because nothing read it (see docs/MIGRATION_MAP.md).
+cat("  c15: model-level foundations with intervals (B =", B_SENS, ")\n")
 c15 <- map_dfr(names(MFT), function(f) {
-  d <- SLANT_EN %>% filter(!is.na(.data[[f]]))
-  d %>% group_by(model, jurisdiction = as.character(juris)) %>%
-    summarise(n = n(), n_issues = n_distinct(issue_id),
-              prevalence = mean(.data[[f]]), .groups = "drop") %>%
-    mutate(foundation = unname(MFT[f]), field = f)
-}) %>% mutate(conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID)
+  d_all <- SLANT_EN
+  d <- d_all %>% filter(!is.na(.data[[f]]))
+  map_dfr(ORDER_MODEL, function(m) {
+    dd <- d %>% filter(model == m)
+    if (!nrow(dd)) return(NULL)
+    model_level(dd, f, function(x) mean(x$.y),
+                sprintf("c15|%s|%s", f, m), bounded = TRUE) %>%
+      mutate(model = m, jurisdiction = as.character(dd$juris[1]),
+             foundation = unname(MFT[f]), field = f,
+             n_missing = nrow(d_all %>% filter(model == m)) - nrow(dd))
+  })
+}) %>%
+  mutate(weighting = "within-model (unweighted over that model's responses)",
+         nonexclusive = paste("six NON-EXCLUSIVE indicators: a response may",
+                              "invoke several or none, so these never form a",
+                              "composition"),
+         inference_target = TARGET_NOTE,
+         jurisdiction_caveat = paste("jurisdiction is a property of the model",
+           "roster; do NOT read a developer-region effect off these",
+           "model comparisons"),
+         conditional = CONDITIONAL, canonical_run_id = CANONICAL_RUN_ID) %>%
+  select(foundation, field, model, jurisdiction, estimate, conf_low, conf_high,
+         conf_low_battery, conf_high_battery, everything())
+stopifnot(nrow(c15) == length(MFT) * length(ORDER_MODEL))
 write_csv(c15, file.path(CAN_EST, "c15_moral_by_model.csv"))
 
 # Equal-model points ALWAYS carry an interval computed on the same weighting.

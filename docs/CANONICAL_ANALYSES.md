@@ -7,7 +7,7 @@ and is described here. Everything else — the `e`-series, the `d`-series, `FIG1
 [`ESTIMANDS.md`](ESTIMANDS.md) and archived under `pipeline/archive/` with a
 file-by-file mapping in [`pipeline/archive/README.md`](../pipeline/archive/README.md).
 
-> **Current as of release `canon_010`.** Every number quoted below was checked
+> **Current as of release `canon_011`.** Every number quoted below was checked
 > against the promoted tables in `pipeline/estimates/canonical/` when this
 > document was last revised. The authoritative release id is the
 > `canonical_run_id` column of `c00_manifest.csv`; where a figure or interval is
@@ -74,10 +74,9 @@ rather than in a footnote.
 
 Two estimands. They answer different questions and neither is a check on the
 other, so they are reported separately: the standardized contrast is the primary
-quantity and carries the main figure, and the descriptive rates are reported in
-`c02` and plotted in Fig 1a/1b. They were shown side by side in one figure
-until it became clear that the layout itself invited the wrong reading — that
-these are two attempts at one number, with the "adjusted" one to be preferred.
+quantity, and the descriptive rates are reported in `c02` and **not plotted at
+all** — an absolute rate and a difference are different quantities and do not
+belong on one axis. The two DIFFERENCES share the single forest of Fig 1.
 
 ### 2a. Descriptive (`c02`, `c03`)
 
@@ -89,11 +88,20 @@ asking "what does this corpus look like?"
 
 Reported at `weighting = "response"` (every response counts once) and
 `weighting = "equal_model"` (every model counts once). `c03` repeats it in all
-five languages as a supplement. Plotted as **Fig 1a** (the two rates) and
-**Fig 1b** (their difference, with the interval `c02` already carried), on rows
-aligned with the standardized contrast in Fig 1c. The alignment is graphical
-only: a and b are response-weighted descriptions, c is a nested-weighted model
-estimate, and they are three different quantities.
+five languages as a supplement.
+
+**Figure 1 plots the `equal_model` descriptive difference.** This is a
+deliberate choice, not the default: the standardized contrast standardizes to a
+target in which every model carries equal weight, so the descriptive point it is
+overlaid against must weight models the same way, or the two marks would differ
+in *two* respects at once. The two weightings differ by at most 0.001 pp here,
+but they are different targets and the figure states which it draws.
+
+**The two marks in Figure 1 are not two estimates of one effect.** They differ
+in adjustment *and* nothing else only because the weighting was matched; the
+standardized point remains a covariate-standardized predictive contrast, not a
+causal effect. Overlaying them shows how the descriptive gap moves once measured
+composition is held fixed.
 
 ### 2b. Covariate-standardized (`c04`–`c07`) — the primary estimand
 
@@ -444,6 +452,94 @@ through the existing estimators as `c19+` alongside — never replacing — the
 canonical numbers, and reporting the correction's own uncertainty. Until steps
 1–3 exist, the honest position is the current one.
 
+## 5f. Part 5 — issue-subsample stability (`c21`)
+
+**Question.** Not "how uncertain is the estimate" — that is the bootstrap. This
+asks a **design** question: how much of the full-sample conclusion is already
+recovered when the issue battery is smaller?
+
+**It is not a bootstrap and its ranges are not confidence intervals.** A
+bootstrap resamples *with* replacement at full size to approximate sampling
+uncertainty at the observed n. This resamples *without* replacement at reduced
+size to describe how the answer moves as issues are added. The summaries are
+called **across-subsample ranges** and **sampling-stability bands** and never
+anything else; acceptance J11 fails the build on the word "confidence".
+
+**Unit.** The issue. A sampled issue carries all of its prompts, tiers,
+languages, models and annotations, so the paired language and framing blocks
+Part 2 rests on stay intact. Resampling response rows would describe a study
+nobody ran.
+
+**Design.** Simple random sampling without replacement within each of the nine
+**topic-domain strata**, allocation `min(n_h, max(1, ceil(f·n_h)))`. Within a
+replicate the issues of each stratum are permuted **once** and every fraction is
+a *prefix* of that permutation, so the 20% sample contains the 10% sample and a
+trajectory reads as the effect of adding issues. Fractions 10–90% plus a
+deterministic 100% endpoint; 500 replicates per fraction; master seed with
+`set.seed(MASTER_SEED + replicate)` so any replicate is reproducible alone.
+Acceptance J15 re-derives the nesting from the recorded rule rather than trusting
+it.
+
+**Estimands refitted inside each sample** (never held fixed at full-sample
+coefficients): descriptive home−away, standardized full-target home contrast,
+the four pooled language contrasts, the framing contrast, the five-bin ideology
+composition, foundation prevalence, and pairwise PSA. Model-level heterogeneity
+is **not** refitted — it is too expensive, and that restriction is stated rather
+than hidden.
+
+**Prespecified tolerances**, fixed before any result was seen: 1 pp and 2 pp for
+percentage-point contrasts, 0.02 and 0.05 for shares.
+
+**Result for the current release.** 188,047 replicate-estimand rows; overall
+estimability 97.8%, convergence 99.99%. The median tracks the full-sample value
+at every fraction and the bands narrow monotonically. Sign agreement reaches 1.00
+by 20% of the battery for CN and by 40% for MENA; the US framing contrast, which
+is near zero, does not stabilise in sign at any fraction — which is the honest
+reading of an estimate whose interval covers zero.
+
+## 5g. Part 6 — prompt-semantic geometry (`c22`)
+
+**Question.** Which regions of prompt-meaning space attract refusal, and does the
+pattern move with the language the prompt is delivered in? Not "do the prompts
+form clusters" — a projection always shows clusters.
+
+**One geometry, reused everywhere.** Exactly one 2-D coordinate pair per prompt,
+fitted once on the English prompt text. Every panel of ED8 and ED9 reuses it.
+Fitting a separate projection per language or per model would make the axes mean
+different things in each facet, so a point that appeared to move would be an
+artefact of the fit. Acceptance J20–J21 assert one coordinate pair per prompt
+and one seed.
+
+**Embedding.** `openai/text-embedding-3-small` at 512 of its 1,536 dimensions
+(the model is Matryoshka-trained, so a truncated prefix is a valid embedding).
+The input is the English prompt as delivered, with the boundary directive
+`"Write a persuasive argument defending the following position:"` **stripped** —
+it opens all 1,248 boundary prompts identically and, left in, the map separates
+tiers on template wording rather than on subject matter. Produced once by
+`scripts/embed_prompts.py` and cached in `data/`; **the release itself never
+calls an API**, and `16_prompt_umap.R` skips cleanly when the cache is absent.
+
+**Refusal propensity** is equal per jurisdiction with models nested equally
+within jurisdiction, so the four-model US arm cannot outvote the two-model CN
+arm; the `ALL` row additionally weights every language equally. Numerator and
+denominator are carried alongside. Bounded in [0,1], asserted.
+
+**Diagnostics, reported before any semantic claim.** Neighbourhood preservation
+at k = 15 is 0.395. Topic-domain neighbourhood purity is **0.649 against a
+shuffled baseline of 0.117**, so the map does recover the topic structure. Across
+three alternative seeds, Procrustes RMSE is 0.37–0.42 while neighbour overlap is
+0.65–0.67: **read neighbourhoods, not absolute positions**. A 3 × 3
+hyper-parameter grid gives preservation 0.30–0.44. No near-duplicate prompts
+(cosine ≥ 0.995) and no missing embeddings.
+
+**Representative regions are selected deterministically** — highest local
+refusal, highest between-language disagreement, highest between-model
+disagreement, each taking the top non-overlapping neighbourhood and its medoid.
+Full prompt text is in the companion table, never printed on the point cloud.
+
+**Exploratory and descriptive.** It establishes no causal effect and validates no
+taxonomy.
+
 ## 6. Figures
 
 Main figures in `pipeline/figures/main/`, Extended Data in
@@ -452,14 +548,25 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 
 | figure | content | tables |
 |---|---|---|
-| `Fig1_home_jurisdiction` | row-aligned by jurisdiction: a unadjusted rates, both endpoints labelled · b unadjusted difference with its interval · c standardized contrast, **full target only** | `c02`, `c04` |
-| `Fig2_language_framing` | a pooled language effect (primary weighting) · b the same estimand across models, one shared axis · c framing, complete 2+2 blocks | `c08`–`c11` |
+| `Fig1_home_jurisdiction` | **one forest**: the unadjusted (equal-model) difference and the standardized full-target contrast, overlaid on a shared axis, one row per jurisdiction. Absolute rates are **not** plotted — they are a different quantity and live in `c02` | `c02`, `c04` |
+| `Fig2_language_framing` | a pooled paired language contrasts · b framing, pooled estimate plus per-model heterogeneity | `c08`, `c10`, `c11` |
 | `Fig3_content` | a **all five** ideology bins as a distribution · b foundation prevalence · c agreement, aligned to b on its own 0–1 axis | `c12`, `c14` |
-| `ED1_judge_sensitivity` | **paired** difference from the canonical judge, bootstrapped in the same replicates | `c17d` (`c17b`, `c17c` for absolutes and support) |
-| `ED2_inferential_robustness` | sensitivities **by jurisdiction**, families grouped within; hierarchical tabulated in `c07b` | `c07`, `c04` |
-| `ED3_postoutcome_diagnostics` | response-length filters — post-outcome, **not** design robustness | `c07`, `c04` |
-| `ED4_language_heterogeneity` | a model × language matrix · b the same cells with intervals; matched ordering | `c09` (weighting comparison is `c08b`) |
-| `ED5_measurement_reliability` | construct × metric: raw agreement, α, Gwet AC1/AC2, PSA | `e23`, `e24`, `e25` |
+| `ED1_judge_sensitivity` | **paired** difference from the canonical judge, one compact forest, common axis | `c17d` (`c17b`, `c17c` for absolutes and support) |
+| `ED2_focused_sensitivity` | **four** specifications per jurisdiction: primary ML, Firth (estimator), common support (target), `refused_any` (outcome). The full grid is `c07c` | `c04`, `c07` |
+| `ED3_sample_size_stability` | issue-subsample stability bands and sign agreement | `c21` |
+| `ED4_language_heterogeneity` | model × language paired contrasts **with intervals**, common axis, one display | `c09` |
+| `ED5_slant_by_model` | five-bin ideology composition per model × dimension | `c13` |
+| `ED6_foundations_by_model` | per-model foundation prevalence with issue-clustered intervals | `c15`, `c14` |
+| `ED7_measurement_reliability` | construct × metric: raw agreement, α, Gwet AC1/AC2, PSA | `e23`, `e24`, `e25` |
+| `ED8_prompt_semantic_umap` | one fixed prompt geometry; overall and per-language refusal propensity | `c22` |
+| `ED9_prompt_semantic_umap_by_model` | the same geometry, refusal by model | `c22` |
+
+**Moved to tables rather than forced into figures**: the full specification grid
+and leave-one-model-out (`c07c`), response-length thresholds (`c07c`, class E),
+the hierarchical marginal estimand (`c07b`), the weighting comparison (`c08b`),
+detailed reliability entries (`e23`–`e25`), complete subsampling diagnostics
+(`c21_subsample_summary.csv`), and exact model-level content estimates
+(`c13`, `c15`).
 
 **Fig 1 carries the home family only.** Judge sensitivity and the projection were
 in it and did not belong: a main figure should carry one result family. The
@@ -510,9 +617,9 @@ canonical layer reads them.
 | range | role | produces |
 |---|---|---|
 | `01`–`02` | inputs | `data_clean.RData`; `e22b`–`e28` reliability |
-| `10`–`14` | estimation | `c00`–`c18` |
+| `10`–`16` | estimation | `c00`–`c22` |
 | `20` | **main manuscript** | Fig 1–3 |
-| `21` | **Extended Data** | ED1–ED5 |
+| `21` | **Extended Data** | ED1–ED9 |
 | `30` | acceptance | `c01b` |
 | `40` | appendix | `a01`–`a04`, descriptive views only |
 
@@ -534,6 +641,7 @@ row-level bootstraps ignoring issue clustering, unclustered GLMs,
 | `c06`, `c06b` | overlap and common-support diagnostics |
 | `c07` | sensitivities |
 | `c07b` | hierarchical marginal — a **different estimand**, tabulated because it has no comparable interval |
+| `c07c` | the sensitivity **catalogue**, every row classified by what it changes: A estimator / B target population / C outcome definition / D model roster / E post-outcome diagnostic / F different estimand, with the difference from the primary point |
 | `c08b` | weighting comparison for the paired language effect |
 | `c08`, `c09` | paired language effects |
 | `c10`, `c10b`, `c11` | framing; incomplete blocks by key; by model and domain |
@@ -544,6 +652,16 @@ row-level bootstraps ignoring issue clustering, unclustered GLMs,
 | `c17d` | **paired** judge-minus-canonical difference, bootstrapped in the same replicates |
 | `c18` | bootstrap and jackknife diagnostics |
 | `c19` | content outcomes (ideology bins, foundation prevalence) recomputed under each judge |
+| `c21_subsample_draws.parquet` | every replicate-level subsample estimate |
+| `c21_subsample_summary.csv` | per fraction and estimand: median, p10–p90 and p2.5–p97.5 **across-subsample ranges**, deviation from full sample, sign agreement, within-tolerance rates, estimability and convergence |
+| `c21_subsample_failures.csv` | non-estimable replicate cells by fraction |
+| `c21_subsample_metadata.json` | seed, fractions, strata, sampling and nesting algorithms, tolerances, versions, git SHA, input hashes |
+| `c22_prompt_umap_coordinates.csv` | one fixed 2-D coordinate pair per prompt, plus per-language propensities and neighbourhood diagnostics |
+| `c22_prompt_refusal_propensities.csv` | prompt × language refusal propensity with numerator and denominator |
+| `c22_prompt_refusal_by_model.csv` | per-prompt English refusal indicator by model |
+| `c22_prompt_umap_diagnostics.csv` | neighbourhood preservation, topic purity against a shuffled baseline, hyper-parameter grid, seed stability |
+| `c22_prompt_umap_regions.csv` | deterministically selected representative regions and their medoid prompts |
+| `c22_prompt_umap_metadata.json` | embedding model and preprocessing, UMAP implementation and parameters, hashes |
 | `a01`–`a04` | appendix descriptive views |
 
 **Not tables.** `c20_figure_layout_main.rds` and `c20_figure_layout_extended.rds`
@@ -681,3 +799,18 @@ a re-expression of an existing table.
 | in-plot text | titles, subtitles and methodological prose | panel letters, axes, labels; captions in `CANONICAL_FIGURE_LEGENDS.md` |
 | panel-width audit | summed `null` grid units, got 0 for every panel, filtered the zeros out, reported OK | resolves the allocation the way grid does |
 | release provenance | one `git_sha`, recorded before an 85-minute build | `git_sha_at_start`, `git_sha_at_end`, `tree_moved_during_build` |
+
+## 12. What changed in the analysis and figure restructure (`canon_011`)
+
+| area | before | now |
+|---|---|---|
+| Fig 1 | three panels: rates, unadjusted difference, standardized contrast | **one forest**, the two differences overlaid on a shared axis; absolute rates are a table, because they are a different quantity |
+| Fig 1 descriptive weighting | response-weighted, undeclared | **equal-model**, declared, matching the standardized target |
+| Fig 1 EU | a point at zero | structural zero, marked not estimable |
+| Fig 2 | pooled language + per-model cloud + framing | pooled language + framing; the model × language display is ED4 only |
+| model-level content | point estimates with **no uncertainty at all** | `c13`/`c15` carry issue-cluster and jackknife-FPC intervals, n, n_issues, n_missing, and estimability/support flags |
+| ED2 | a multiverse forest mixing estimator, target, outcome and post-outcome rows | **four** comparable specifications per jurisdiction; the classified grid is `c07c` |
+| response-length | a figure | `c07c`, class E, post-outcome diagnostic |
+| sample-size stability | did not exist | `c21` + ED3 |
+| prompt semantics | retired refusal-text UMAP | `c22` + ED8/ED9, one fixed prompt geometry with diagnostics |
+| orderings | re-derived in three figure scripts from the data | `pipeline/_orders.R`, one declaration, shared with the estimation layer |

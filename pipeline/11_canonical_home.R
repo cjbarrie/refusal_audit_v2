@@ -512,6 +512,71 @@ write_csv(c07, file.path(CAN_EST, "c07_home_sensitivities.csv"))
 cat(sprintf("\n  c07: %d rows across %d sensitivity families\n",
             nrow(c07), n_distinct(c07$sensitivity)))
 
+# --- c07c: the sensitivity CATALOGUE, classified by what each row changes -----
+# The single word "robustness" was doing far too much work. These rows are not
+# all alternative estimators of one estimand: some change the ESTIMATOR while
+# holding the target fixed, some change the TARGET POPULATION, some change the
+# OUTCOME DEFINITION, and one conditions on a property of the response that is
+# only known AFTER the outcome. Putting them in one undifferentiated forest
+# invited exactly the reading that overlapping intervals mean agreement about
+# the same quantity.
+#
+# The classification is explicit here so the figure can plot only the
+# same-target comparisons and the table can carry the rest.
+SENS_CLASS <- tribble(
+  ~sensitivity,            ~change_class,                ~target_changed, ~note,
+  "leave_one_model_out",   "D. model roster",            TRUE,
+    "drops a model, so the equal-model target is over a different roster",
+  "prompt_type",           "B. target population",       TRUE,
+    "restricts to one prompt tier",
+  "language",              "B. target population",       TRUE,
+    "restricts to one prompt language",
+  "outcome_code3",         "C. outcome definition",      FALSE,
+    "same target, different label threshold (codes 3-5 rather than 4-5)",
+  "functional_form",       "A. estimator, same target",  FALSE,
+    "alternative adjustment terms for the same standardized contrast",
+  "overlap_restricted",    "B. target population",       TRUE,
+    "common support: covariate cells present in both arms only",
+  "min_response_chars",    "E. POST-OUTCOME diagnostic", TRUE,
+    "conditions on a realized property of the response; NOT design robustness",
+  "hierarchical_marginal", "F. different estimand",      TRUE,
+    "integrates over the issue random effect instead of standardizing")
+
+prim_pp <- c04 %>%
+  filter(weighting == "nested", support == "full target",
+         estimator == "maximum likelihood") %>%
+  transmute(jurisdiction, primary_pp = estimate_pp,
+            primary_estimable = estimable)
+
+c07c <- c07 %>%
+  left_join(SENS_CLASS, by = "sensitivity") %>%
+  left_join(prim_pp, by = "jurisdiction") %>%
+  mutate(
+    difference_from_primary_pp = estimate_pp - primary_pp,
+    plottable = estimable & is.finite(estimate_pp) & is.finite(conf_low_pp),
+    # `estimable` records that a FIT WAS ATTEMPTED, not that an estimate exists.
+    # Anything consuming this table must use `plottable`.
+    estimable_flag_note = paste("`estimable` means a fit was attempted;",
+                                "`plottable` means a point AND an interval",
+                                "exist. Five functional-form rows are",
+                                "estimable = TRUE with no estimate."),
+    difference_note = paste("difference_from_primary_pp is a DIFFERENCE OF",
+                            "POINT ESTIMATES. No interval is given for it:",
+                            "subtracting marginal endpoints is not a paired",
+                            "contrast, and the paired issue bootstrap that",
+                            "would be required is not run for these rows."),
+    canonical_run_id = CANONICAL_RUN_ID) %>%
+  select(sensitivity, change_class, target_changed, jurisdiction, level,
+         estimate_pp, conf_low_pp, conf_high_pp, primary_pp,
+         difference_from_primary_pp, n, n_issues, n_models,
+         events_home, events_away, estimable, plottable, interval_reliable,
+         replicate_failure_rate, glm_warnings, separation_detected,
+         everything())
+write_csv(c07c, file.path(CAN_EST, "c07c_sensitivity_catalogue.csv"))
+cat(sprintf("  c07c: %d rows; %d plottable; classes %s\n", nrow(c07c),
+            sum(c07c$plottable),
+            paste(sort(unique(c07c$change_class)), collapse = " / ")))
+
 # --- c07b: the hierarchical marginal estimate, split out as a table -----------
 # A DIFFERENT ESTIMAND, not a sensitivity of the standardized contrast: it
 # integrates over the issue random effect instead of standardizing over the

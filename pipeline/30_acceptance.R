@@ -329,9 +329,11 @@ c10 <- rd("c10_framing_paired.csv")
 MAIN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
 ED_FIG   <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
 MAINF <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
-EDF   <- c("ED1_judge_sensitivity", "ED2_inferential_robustness",
-           "ED3_postoutcome_diagnostics", "ED4_language_heterogeneity",
-           "ED5_measurement_reliability")
+EDF   <- c("ED1_judge_sensitivity", "ED2_focused_sensitivity",
+           "ED3_sample_size_stability", "ED4_language_heterogeneity",
+           "ED5_slant_by_model", "ED6_foundations_by_model",
+           "ED7_measurement_reliability", "ED8_prompt_semantic_umap",
+           "ED9_prompt_semantic_umap_by_model")
 # PNG ONLY: exactly one raster per expected figure, and nothing else.
 chk("H1", "main figures are exactly the expected PNGs",
     setequal(list.files(MAIN_FIG, recursive = TRUE), paste0(MAINF, ".png")),
@@ -552,6 +554,122 @@ chk("I30", "the release is not built from a dirty tree, or says so",
 } else {
   cat("  [SKIP] I27-I30 release provenance (set CANON_RELEASE=1 to enforce)\n")
 }
+
+# =============================================================================
+# J. THE RESTRUCTURED LAYER: model-level content, subsampling, UMAP
+# =============================================================================
+cat("\nJ. model-level content, subsampling, UMAP\n")
+
+c13m <- rd("c13_ideology_by_model.csv"); c15m <- rd("c15_moral_by_model.csv")
+NMODEL <- 11L
+
+chk("J1", "c13 has one row per dimension x model x quantity",
+    !is.null(c13m) && nrow(c13m) == 4L * NMODEL * 6L,
+    if (is.null(c13m)) "absent" else sprintf("%d rows", nrow(c13m)))
+chk("J2", "c15 has one row per foundation x model",
+    !is.null(c15m) && nrow(c15m) == 6L * NMODEL,
+    if (is.null(c15m)) "absent" else sprintf("%d rows", nrow(c15m)))
+# The whole point of extending these tables: model comparisons without
+# uncertainty invite ranking eleven models on noise.
+for (nm in c("conf_low", "conf_high", "conf_low_battery", "conf_high_battery",
+             "n", "n_issues", "estimable", "support_ok")) {
+  chk(paste0("J3.", nm), paste("c13 and c15 carry", nm),
+      !is.null(c13m) && !is.null(c15m) && nm %in% names(c13m) && nm %in% names(c15m))
+}
+chk("J4", "every model-level interval brackets its point estimate",
+    !is.null(c13m) && !is.null(c15m) && {
+      f <- function(x) all(x$conf_low <= x$estimate + 1e-12 &
+                           x$estimate <= x$conf_high + 1e-12, na.rm = TRUE)
+      f(c13m) && f(c15m) })
+chk("J5", "model-level share intervals stay inside [0,1]",
+    !is.null(c15m) && all(c15m$conf_low_battery >= 0 &
+                          c15m$conf_high_battery <= 1, na.rm = TRUE))
+chk("J6", "c13 five bins sum to one within every (dimension, model)",
+    !is.null(c13m) && {
+      k <- c13m %>% filter(role == "PRIMARY") %>% group_by(dimension, model) %>%
+        summarise(s = sum(estimate), .groups = "drop")
+      nrow(k) > 0 && all(abs(k$s - 1) < 1e-8) })
+# Missingness must be visible, never folded into a zero category.
+chk("J7", "c13/c15 report missing content labels rather than zeroing them",
+    !is.null(c13m) && "n_missing" %in% names(c13m) &&
+      !is.null(c15m) && "n_missing" %in% names(c15m))
+chk("J8", "the equal-model aggregate is the mean of the model-level rows",
+    !is.null(c15m) && !is.null(c14) && {
+      a <- c15m %>% group_by(foundation) %>%
+        summarise(m = mean(estimate), .groups = "drop")
+      b <- c14 %>% filter(scope == "overall") %>% select(foundation, estimate)
+      j <- inner_join(a, b, by = "foundation")
+      nrow(j) == 6 && max(abs(j$m - j$estimate)) < 1e-9 })
+
+# --- subsampling -------------------------------------------------------------
+c21s <- rd("c21_subsample_summary.csv")
+c21m <- tryCatch(jsonlite::fromJSON(file.path(CAN_EST, "c21_subsample_metadata.json")),
+                 error = function(e) NULL)
+chk("J10", "c21 resamples ISSUES, not response rows",
+    !is.null(c21s) && all(grepl("^issue_id", c21s$resampling_unit)))
+chk("J11", "c21 ranges are never called confidence intervals",
+    !is.null(c21s) && all(grepl("NOT confidence intervals", c21s$interval_note)))
+chk("J12", "c21 records a master seed and a deterministic replicate-seed rule",
+    !is.null(c21m) && !is.null(c21m$master_seed) &&
+      grepl("MASTER_SEED", c21m$replicate_seed_rule %||% ""))
+chk("J13", "c21 tolerances were prespecified",
+    !is.null(c21m) && isTRUE(c21m$tolerances$prespecified))
+chk("J14", "the 100% fraction is the deterministic full sample",
+    !is.null(c21s) && {
+      f <- c21s %>% filter(fraction == 1)
+      nrow(f) > 0 && all(abs(f$median_estimate - f$full_value) < 1e-9, na.rm = TRUE) })
+# Nested design: within a replicate a smaller fraction must be a SUBSET of a
+# larger one. Re-derived here from the recorded rule, not taken on trust.
+chk("J15", "subsample draws are nested and reproducible from the master seed",
+    !is.null(c21m) && {
+      set.seed(c21m$master_seed + 1L)
+      strata <- split(sort(unique(as.character(canon$issue_id))),
+                      canon$domain[match(sort(unique(as.character(canon$issue_id))),
+                                         as.character(canon$issue_id))])
+      perms <- lapply(strata, function(v) sample(v, length(v), replace = FALSE))
+      take <- function(f) unlist(lapply(perms, function(v)
+        v[seq_len(min(length(v), max(1L, ceiling(f * length(v)))))]), use.names = FALSE)
+      all(take(0.10) %in% take(0.20)) && all(take(0.20) %in% take(0.50)) &&
+        all(take(0.90) %in% take(1.00)) })
+chk("J16", "c21 estimability is recorded and mostly satisfied",
+    !is.null(c21s) && mean(c21s$estimability_rate, na.rm = TRUE) > 0.90,
+    if (is.null(c21s)) "" else sprintf("mean %.3f", mean(c21s$estimability_rate, na.rm = TRUE)))
+
+# --- UMAP --------------------------------------------------------------------
+# Absent embeddings are a SKIP, not a failure: the release must build on a
+# machine that has never called the embedding API.
+c22c <- rd("c22_prompt_umap_coordinates.csv")
+c22p <- rd("c22_prompt_refusal_propensities.csv")
+if (is.null(c22c)) {
+  cat("  [SKIP] J20-J24 UMAP (no embedding cache; run scripts/embed_prompts.py)\n")
+} else {
+  chk("J20", "exactly one UMAP coordinate pair per prompt",
+      nrow(c22c) == n_distinct(c22c$prompt_id) &&
+        !anyNA(c22c$umap_x) && !anyNA(c22c$umap_y),
+      sprintf("%d rows, %d prompts", nrow(c22c), n_distinct(c22c$prompt_id)))
+  chk("J21", "one geometry: every facet reads the same coordinate table",
+      all(c("umap_seed", "umap_n_neighbors", "umap_min_dist") %in% names(c22c)) &&
+        n_distinct(c22c$umap_seed) == 1)
+  chk("J22", "refusal propensities are bounded in [0,1]",
+      !is.null(c22p) && all(c22p$refusal_propensity >= 0 &
+                            c22p$refusal_propensity <= 1, na.rm = TRUE))
+  chk("J23", "propensity weighting is equal-per-jurisdiction, models nested",
+      !is.null(c22p) && all(grepl("equal weight per jurisdiction", c22p$weighting)))
+  chk("J24", "every prompt-language cell has a propensity and a denominator",
+      !is.null(c22p) && all(c("n_responses", "n_refusals") %in% names(c22p)) &&
+        n_distinct(c22p$prompt_id) == nrow(c22c))
+}
+
+# --- documentation references resolve ----------------------------------------
+DOC_REFS <- c("c02_home_descriptive_english.csv", "c04_home_standardized.csv",
+              "c07c_sensitivity_catalogue.csv", "c08_language_paired.csv",
+              "c10_framing_paired.csv", "c12_ideology_distribution.csv",
+              "c13_ideology_by_model.csv", "c14_moral_prevalence_equal_model.csv",
+              "c15_moral_by_model.csv", "c17d_judge_paired_differences.csv",
+              "c21_subsample_summary.csv")
+missing_doc <- DOC_REFS[!file.exists(file.path(CAN_EST, DOC_REFS))]
+chk("J30", "every table the documentation names exists in the release",
+    length(missing_doc) == 0, paste(missing_doc, collapse = ", "))
 
 # --- write --------------------------------------------------------------------
 res <- bind_rows(RES) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)

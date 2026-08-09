@@ -59,10 +59,14 @@ CANONICAL_RUN_ID <- Sys.getenv("CANONICAL_RUN_ID",
 # -----------------------------------------------------------------------------
 load("pipeline/data_clean.RData")
 
-HOME_REGION_C <- c(US = "US", CN = "China", EU = "Europe",
-                   MENA = "Arab", India = "India")
-LANGS_C  <- c("en", "zh", "ar", "ru", "hi")
-JURIS_C  <- c("CN", "MENA", "India", "US", "EU")
+# ONE declaration of every canonical ordering, shared with the figure layer
+# (`_theme.R` sources the same file). These three names are aliases kept so the
+# existing call sites in 11-14 keep working. Before this, the estimation layer
+# and the figure layer each declared their own copy; they agreed by luck.
+source("pipeline/_orders.R")
+HOME_REGION_C <- HOME_REGION_OF   # alias -> _orders.R
+LANGS_C       <- ORDER_LANG       # alias -> _orders.R
+JURIS_C       <- ORDER_JURIS      # alias -> _orders.R
 
 canon <- data_clean %>%
   filter(!is.na(jurisdiction_f), !is.na(engagement_code),

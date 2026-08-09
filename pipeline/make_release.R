@@ -107,8 +107,13 @@ PLAN <- tribble(
   "02", "pipeline/02_judge_reliability.R",          "judge-panel reliability",          TRUE,
   "11", "pipeline/11_canonical_home.R",             "home standardization (c02-c07)",   TRUE,
   "12", "pipeline/12_canonical_language_framing.R", "language + framing (c08-c11)",     TRUE,
-  "13", "pipeline/13_canonical_content.R",          "content (c12-c16)",                TRUE,
-  "14", "pipeline/14_canonical_judge_uncertainty.R","judge sensitivity (c17-c17c)",     TRUE,
+  "13", "pipeline/13_canonical_content.R",          "content (c12-c16, c19)",           TRUE,
+  "14", "pipeline/14_canonical_judge_uncertainty.R","judge sensitivity (c17-c17d)",     TRUE,
+  "15", "pipeline/15_subsample_stability.R",        "issue-subsample stability (c21)",  TRUE,
+  # 16 SKIPS cleanly when the embedding cache is absent, so it is not
+  # foundational: a machine that has never run scripts/embed_prompts.py still
+  # builds a complete release, minus the two UMAP figures.
+  "16", "pipeline/16_prompt_umap.R",                "prompt-semantic UMAP (c22)",       FALSE,
   "40", "pipeline/40_appendix_descriptives.R",      "appendix descriptives (a01-a04)",  FALSE,
   "20", "pipeline/20_figures_main.R",               "main figures",                     TRUE,
   "21", "pipeline/21_figures_extended.R",           "Extended Data figures",            TRUE)
@@ -172,6 +177,11 @@ ann_inputs <- c(file.path(RUN_DIR, "annotations_all.jsonl"),
                            full.names = TRUE),
                 file.path(RUN_DIR, "annotations_panel.jsonl"))
 ann_inputs <- ann_inputs[file.exists(ann_inputs)]
+# The prompt-embedding cache is an INPUT, produced once outside the release by
+# scripts/embed_prompts.py (which calls an API; the release never does). Its
+# hash belongs in the manifest so the UMAP is traceable to the vectors it used.
+emb_inputs <- c("data/prompt_embeddings_en.csv.gz", "data/prompt_embeddings_en.json")
+emb_inputs <- emb_inputs[file.exists(emb_inputs)]
 
 pkgs <- c("tidyverse", "ggplot2", "dplyr", "lme4", "logistf", "irr", "umap",
           "digest", "svglite", "ragg", "statmod")
@@ -200,6 +210,8 @@ man <- bind_rows(
          sha256 = sha256("pipeline/data_clean.RData"), detail = NA_character_),
   tibble(kind = "input_annotations", path = ann_inputs,
          sha256 = map_chr(ann_inputs, sha256), detail = NA_character_),
+  tibble(kind = "input_embeddings", path = emb_inputs,
+         sha256 = map_chr(emb_inputs, sha256), detail = NA_character_),
   pkg_ver,
   tibble(kind = "environment", path = c("R", "python", "embedding_model", "seed",
                                         "B_head", "B_sens", "B_judge"),

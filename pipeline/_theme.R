@@ -42,6 +42,12 @@ suppressPackageStartupMessages({
   library(grid)
 })
 
+# ONE declaration of every canonical ordering, shared with the estimation layer.
+# The names below are kept as aliases so existing call sites keep working.
+# Every script in this repo is run from the repository root, which is how
+# `_theme.R` itself is sourced.
+if (!exists("ORDER_JURIS")) source("pipeline/_orders.R")
+
 # --- fonts -----------------------------------------------------------------
 # Resolve once, with fallbacks, so the file is portable off this machine.
 .pick_font <- function(candidates, fallback) {
@@ -102,8 +108,8 @@ PAL_REGION <- c(
   "US"      = "#96A8B6", "Europe" = "#C0CBD3", "General" = "#E5E9EC"
 )
 
-JURIS_LEVELS  <- c("CN", "MENA", "India", "US", "EU")
-REGION_LEVELS <- c("China", "Arab", "India", "US", "Europe", "General")
+JURIS_LEVELS  <- ORDER_JURIS      # alias -> _orders.R
+REGION_LEVELS <- ORDER_REGION     # alias -> _orders.R
 
 # DISPLAY labels for issue regions. The stored level is "Arab" (the 22 Arab
 # League states, as harvested), but every figure shows "MENA" so the issue
@@ -113,8 +119,7 @@ REGION_LEVELS <- c("China", "Arab", "India", "US", "Europe", "General")
 REGION_DISPLAY <- c("China" = "China", "Arab" = "MENA", "India" = "India",
                     "US" = "US", "Europe" = "Europe", "General" = "General")
 region_label <- function(x) unname(REGION_DISPLAY[as.character(x)])
-HOME_REGION   <- c(US = "US", CN = "China", EU = "Europe",
-                   MENA = "Arab", India = "India")
+HOME_REGION   <- HOME_REGION_OF   # alias -> _orders.R
 
 scale_colour_juris <- function(...)
   scale_colour_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)

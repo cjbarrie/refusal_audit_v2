@@ -180,8 +180,8 @@ The numbering encodes the manuscript structure:
 | range | role | scripts |
 |---|---|---|
 | `01`–`02` | **inputs** | `01_data_loading.R` (builds `data_clean.RData`), `02_judge_reliability.R` (panel reliability `e23`–`e28`, feeds `c17`) |
-| `10`–`14` | **estimation** | `10_canonical_common.R` (sample, nested weights, multiplicity-preserving bootstrap, shared `gcomp`), `11_canonical_home.R` → `c02`–`c07`, `12_canonical_language_framing.R` → `c08`–`c11`, `13_canonical_content.R` → `c12`–`c16`, `14_canonical_judge_uncertainty.R` → `c17`–`c17d` |
-| `20`–`21` | **figures** | `20_figures_main.R` → `Fig1`–`Fig3` (manuscript), `21_figures_extended.R` → `ED1`–`ED5` (Extended Data) |
+| `10`–`16` | **estimation** | `10_canonical_common.R` (sample, nested weights, multiplicity-preserving bootstrap, shared `gcomp`), `11_canonical_home.R` → `c02`–`c07`, `12_canonical_language_framing.R` → `c08`–`c11`, `13_canonical_content.R` → `c12`–`c16`, `14_canonical_judge_uncertainty.R` → `c17`–`c17d`, `15_subsample_stability.R` → `c21`, `16_prompt_umap.R` → `c22` |
+| `20`–`21` | **figures** | `20_figures_main.R` → `Fig1`–`Fig3` (manuscript), `21_figures_extended.R` → `ED1`–`ED9` (Extended Data) |
 | `30` | **tests** | `30_acceptance.R` → `c01b`, non-zero exit on failure |
 | `40` | **appendix descriptives** | `40_appendix_descriptives.R` → `a01`–`a04` |
 
@@ -331,7 +331,7 @@ accumulated in the directory. One writer, one format.
 
 **The figures directory holds exactly what the manuscript ships**, in two
 subdirectories: `figures/main/` (`Fig1`–`Fig3`, main text) and
-`figures/extended/` (`ED1`–`ED5`, Extended Data). The obsolete `figures/canonical/`
+`figures/extended/` (`ED1`–`ED9`, Extended Data). The obsolete `figures/canonical/`
 and `figures/appendix/` trees must not exist at all. `audit_figures.R` fails on
 anything else in there, in either direction — a missing expected figure *or* a
 stale extra one. That check exists because 23 PNGs from superseded scripts sat
@@ -339,8 +339,12 @@ in the directory looking current for weeks.
 
 Three further rules the audit enforces mechanically:
 
-* **Every figure is two-column (183 mm) and one of three approved heights**
-  (85 / 125 / 165 mm, `H_WIDE`/`H_STD`/`H_TALL` in `_theme.R`). No one-column
+* **Every ordering is declared once** in `pipeline/_orders.R` — models,
+  languages, jurisdictions, ideology bins, foundations — and sourced by BOTH
+  `_theme.R` and `10_canonical_common.R`. Row order in a figure comes from
+  there, never from the estimates being displayed.
+* **Every figure is two-column (183 mm) and one of four approved heights**
+  (62 / 85 / 125 / 165 mm, `H_SHORT`/`H_WIDE`/`H_STD`/`H_TALL` in `_theme.R`). No one-column
   variants, no `_1col`/`_2col` duplicates, and no script picks its own
   dimensions. The audit checks the pixel width *and* the `pHYs` resolution
   chunk — a large raster with no `pHYs` is placed at 72 dpi by a journal's

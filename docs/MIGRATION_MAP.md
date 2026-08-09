@@ -91,6 +91,40 @@ New and renamed outputs:
 of that audit. **`docs/CANONICAL_FIGURE_LEGENDS.md` remains the single
 authoritative caption document**; no separate caption file was created.
 
+## The estimand-driven restructure (`canon_011`)
+
+The figure architecture was rebuilt from the inferential questions rather than
+inherited. Two analyses that the documentation implied but the repository did not
+contain were added.
+
+| final figure | previous | classification | what changed |
+|---|---|---|---|
+| `Fig1_home_jurisdiction` | 3 panels (rates, unadjusted Δ, standardized Δ) | **panel retirement + graphical re-expression** | Rates removed from the figure — an absolute rate and a difference are different quantities and do not belong on one axis; they remain in `c02`. The two differences now share one forest. Descriptive weighting switched to `equal_model` to match the standardized target, and declared. EU is a structural zero, not a point at zero. |
+| `Fig2_language_framing` | 3 panels incl. a per-model language cloud | **panel relocation** | The model × language display is ED4 only. |
+| `Fig3_content` | unchanged | — | Row order now comes from `_orders.R`. |
+| `ED1_judge_sensitivity` | 2×2 free-scale grid | graphical re-expression | One forest, common x-axis, jurisdiction row groups, no redundant canonical rule. |
+| `ED2_focused_sensitivity` | `ED2_inferential_robustness` (multiverse forest) | **renamed + scope reduced** | Four comparable specifications per jurisdiction; the classified grid moves to `c07c`. |
+| `ED3_sample_size_stability` | `ED3_postoutcome_diagnostics` | **replaced** | Response-length diagnostics become `c07c` class E; ED3 is now the new stability analysis. |
+| `ED4_language_heterogeneity` | heatmap + interval forest | **display halved** | One interval forest on a common axis; the exact values were always in `c09`. |
+| `ED5_slant_by_model` | — | **new** | Five-bin composition per model × dimension. |
+| `ED6_foundations_by_model` | — | **new** | Per-model prevalence with intervals. |
+| `ED7_measurement_reliability` | `ED5_measurement_reliability` | **renumbered** | Same content. |
+| `ED8_prompt_semantic_umap` | retired refusal-text UMAP | **new estimand and unit** | Prompt geometry, not refusal text; one fixed projection; diagnostics reported first. |
+| `ED9_prompt_semantic_umap_by_model` | — | **new, optional** | Same geometry, binary per-model refusal. |
+
+New and changed outputs:
+
+| output | change |
+|---|---|
+| `c13_ideology_by_model.csv` | **Reshaped and recomputed.** Was 44 wide rows of point estimates with no uncertainty; now 264 long rows carrying the issue-cluster bootstrap, the jackknife-FPC battery interval, `n`, `n_issues`, `n_missing`, and `degenerate_outcome` / `support_ok` / `interval_reliable`. |
+| `c15_moral_by_model.csv` | **Recomputed.** Same additions; the point column is renamed `prevalence` → `estimate` for consistency with every other canonical table. Nothing read the old shape. |
+| `c07c_sensitivity_catalogue.csv` | **New.** Every sensitivity row classified A–F by what it changes, with `difference_from_primary_pp` and a `plottable` flag distinct from `estimable`. |
+| `c21_*` | **New.** Issue-subsample stability: draws (parquet), summary, failures, metadata. |
+| `c22_*` | **New.** Prompt UMAP: coordinates, propensities, per-model indicators, diagnostics, regions, metadata. |
+| `data/prompt_embeddings_en.csv.gz` | **New input**, produced once by `scripts/embed_prompts.py` (the only step that calls an API) and hashed in the release manifest. |
+| `pipeline/_orders.R` | **New.** One declaration of every ordering, shared by the estimation and figure layers, which had each kept their own. |
+| `ED2_inferential_robustness.png`, `ED3_postoutcome_diagnostics.png`, `ED5_measurement_reliability.png` | **Retired filenames.** `audit_figures.R` now fails if any of them reappears. |
+
 ## Retired outputs, and why
 
 | output | reason |

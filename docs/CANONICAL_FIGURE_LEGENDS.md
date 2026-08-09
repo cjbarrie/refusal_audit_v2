@@ -1,7 +1,7 @@
 # Canonical figure legends
 
 **This is the single authoritative caption document.** Publication legends for
-`pipeline/figures/main/` (Fig 1–3) and `pipeline/figures/extended/` (ED1–ED5).
+`pipeline/figures/main/` (Fig 1–3) and `pipeline/figures/extended/` (ED1–ED9).
 
 The figures carry **panel letters, axis labels, tick labels, category names,
 facet headings, compact legends and direct numeric labels — and nothing else**.
@@ -12,7 +12,7 @@ banned prose string appears in a plotting specification.
 
 Every figure is a **single 600 dpi RGB PNG** and nothing else — no PDF, no SVG,
 no EPS, no TIFF, and no one-column variant. Width is 183 mm (double column) for
-all eight. Height is one of four approved canvases — 62, 85, 125 or 165 mm —
+all twelve. Height is one of four approved canvases — 62, 85, 125 or 165 mm —
 and the audit checks both the pixel dimensions and the `pHYs` resolution
 metadata, because a large raster without `pHYs` is placed at 72 dpi by a
 journal's layout software.
@@ -21,373 +21,406 @@ Numbers below are filled from the release named in
 `pipeline/estimates/canonical/c00_manifest.csv`. Where a legend quotes an n, it
 is the n on which that panel's estimate was computed.
 
-**Two encodings are constant across the whole set and carry no legend:**
+**Three encodings are constant across the whole set and carry no legend:**
 * an **interval** is thin, dark and centred on its estimate; a **paired
   connector** is thicker, much paler, and runs only between two paired
   endpoints;
 * a **structural zero** — a model or jurisdiction that produced no refusals at
   all, so the contrast does not exist — is drawn as a hollow square with the
-  words `not estimable`, never as a point at zero with a zero-width interval.
+  words `not estimable`, never as a point at zero with a zero-width interval;
+* **colour never carries two meanings in one figure.** Jurisdiction hues are
+  reserved for jurisdictions and for models keyed to their developer's
+  jurisdiction (ED4, ED6); ideology bins have their own diverging palette
+  (Fig 3a, ED5); refusal propensity has a perceptually-uniform sequential scale
+  (ED8, ED9); and Fig 1, Fig 2, ED1, ED2 and ED3 use no hue at all, because
+  position, shape and fill already carry the distinction.
+
+**Row order is fixed centrally** in `pipeline/_orders.R` — models, languages,
+jurisdictions, ideology bins and foundations — and is never re-derived from the
+estimates being displayed. An order computed from the data makes the ranking a
+property of the thing shown, so the strongest cells always drift to one end and
+the layout implies a finding.
 
 ---
 
 ## Figure 1 · Home-jurisdiction asymmetry
 
-183 × 85 mm. Three panels, **row-aligned**: each jurisdiction occupies the same
-horizontal band throughout, so one region can be followed across all three.
+183 × 62 mm. **One forest, two estimands, one axis.** For each jurisdiction, the
+unadjusted home−away difference (hollow circle, grey) and the
+covariate-standardized full-target contrast (filled diamond, black), with 95%
+issue-cluster bootstrap intervals.
 
-**The alignment is graphical only. Panels a and b are descriptive and
-response-weighted; panel c is model-based and nested-weighted. They are three
-different quantities.** The panel letters, the three different axis titles, and
-the hollow (descriptive) versus filled (standardized) markers all mark that
-apart. Aligning them does not make them the same estimand, and panel c is not
-an improved version of panel b.
-
-**a**, **Unadjusted** English refusal rates, from `c02`
-(`grouping == "jurisdiction"`, `quantity == "observed_rate"`,
-`weighting == "response"`). Hollow point = away issues, filled point = home
-issues; **both endpoints are labelled**, and the two marks are named directly on
-the top row. Rates are response-weighted over all English responses in that
-jurisdiction's arm. *Outcome*: `refused_strict`, the judge's engagement code 4
-or 5. **This is a description of the corpus, not an effect**: home and away
-issue sets differ in topic domain, prompt tier and seed route, so the gap mixes
-model behaviour with issue composition. EU recorded zero refusals in both arms
-and is shown as a structural zero.
-
-**b**, The **unadjusted** home-minus-away difference, from `c02`
-(`quantity == "home_minus_away"`, `weighting == "response"`).
-*Interval*: 95% issue-cluster bootstrap, percentile, bootstrap unit `issue_id`.
-Hollow markers, matching panel a: this is the descriptive gap with its sampling
-uncertainty, and no adjustment of any kind. It is the deterministic difference
-of the two endpoints in panel a.
-
-**c**, **Covariate-standardized** home−away contrast, from `c04`. **The
-full-target estimate is the headline and the only one shown here**, and it is
-given the most width in the figure.
-*Outcome*: `refused_strict`.
-*Sample*: English only, home and away arms, General excluded; 520 issues per
+*Sample*: English only, home and away arms, `General` excluded — 520 issues per
 jurisdiction.
-*Estimand*: per jurisdiction, `refused_strict ~ home * model + tier +
-topic_domain + route` fitted by maximum likelihood, then g-computation on the
-probability scale — predict every observation as if home, again as if away, and
-take the weighted difference.
-*Weighting*: nested — equal mass per model, then equal per issue within model,
-then equal per prompt within model × issue.
-*Interval*: 95% issue-cluster bootstrap, 2,000 draws, percentile. Each replicate
-resamples whole issues, labels each draw so a twice-drawn issue keeps its copies
-distinct, and refits and re-standardizes inside the replicate. A fixed number of
-draws is taken; failures are counted and reported, never replaced.
-*Region fixed effects are excluded*: within a jurisdiction, region determines
-home status, so the two are not separately identified.
-**EU is not estimable** — Mistral produced zero refusals in both arms — and is
-shown as a flagged row, never as zero.
-**This is not a causal effect.** Home is a fixed property of an issue's region;
-nothing randomises it. It is not a difference-in-differences and not a
-within-issue contrast. Standardization adjusts for measured composition only.
+*Outcome*: `refused_strict`, the judge's engagement code 4 or 5.
 
-**The locator map is no longer part of this figure.** It carried no estimate and
-occupied roughly a third of the area. The region coding it showed is a
-data-coding fact: `China`, `India`, `US`, `Europe` (excluding Russia), and
-`Arab` (the 22 Arab League states, displayed as *MENA* so the issue region reads
-against the MENA jurisdiction it is the home region of). `General` issues
-(22,868 responses) belong to no region and are neither home nor away for any
-model.
+**Unadjusted difference**, from `c02` (`quantity == "home_minus_away"`,
+`weighting == "equal_model"`). The observed home rate minus the observed away
+rate, with every model given equal weight. It is a **description of the
+corpus**: home and away issue sets differ in topic domain, prompt tier and seed
+route, so the gap mixes model behaviour with issue composition.
 
-**The common-support estimand is NOT shown here, and it is not a robustness
-check.** It is a different target population: restricting to covariate cells
-present in both arms retains only **41% of the nested target weight for CN**,
-77% for MENA, 69% for India, 92% for US and 95% for EU (`c06b`,
-`unsupported_target_weight`). The CN estimate is numerically almost unchanged
-under the restriction (+16.5 → +16.6), which is reassuring about functional
-form, but the non-extrapolative target is a substantially smaller population.
-That comparison, and the Firth penalized-logit sensitivity, are ED2.
+**Standardized contrast**, from `c04` (`weighting == "nested"`,
+`estimator == "maximum likelihood"`, `support == "full target"`). Per
+jurisdiction, `refused_strict ~ home * model + tier + topic_domain + route`
+fitted by maximum likelihood, then g-computation on the probability scale.
+Weights are nested — equal per model, then per issue within model, then per
+prompt within model × issue. 95% issue-cluster bootstrap, 2,000 draws,
+percentile; each replicate resamples whole issues, labels each draw, and refits
+and re-standardizes inside the replicate. Region fixed effects are excluded:
+within a jurisdiction, region determines home status.
 
-**The inferential pattern to report**: CN and MENA are clearly positive under
-the main estimators; India is borderline and changes interval status between
-maximum likelihood and Firth; US is uncertain; EU is not estimable. India should
-not be presented as a directional headline.
+**The equal-model weighting of the descriptive point is deliberate.** The
+standardized contrast targets a population in which every model carries equal
+weight, so the descriptive point overlaid against it is weighted the same way;
+otherwise the two marks would differ in adjustment *and* in target at once. The
+response-weighted version is in `c02` and differs by at most 0.001 pp.
+
+**These are not two estimates of one effect, and neither is causal.** Home is a
+fixed property of an issue's region; nothing randomises it. The standardized
+mark is a **covariate-standardized predictive contrast** — not a causal effect,
+not a difference-in-differences, not a within-issue contrast. Standardization
+adjusts for measured composition only.
+
+**Absolute home and away rates are not plotted.** A rate and a difference are
+different quantities and do not belong on one axis; the rates are in `c02`
+(CN 19.6% home / 3.6% away, MENA 13.6/7.8, India 7.5/6.5, US 2.6/3.5, EU 0/0).
+
+**EU is marked `not estimable`, not drawn at zero.** Mistral produced zero
+refusals in both arms, so the standardized contrast does not exist and the
+descriptive difference is a structural 0 − 0 rather than a measured null.
+
+**Colour is not used.** Jurisdiction is a direct y-axis label, so hue would be
+redundant, and the accent hues available are close to the CN and India
+jurisdiction colours used elsewhere — the same red would mean "China" in one
+figure and "adjusted" in another. Ink, fill and shape separate the two series,
+which survives greyscale and every form of colour-vision deficiency.
+
+**The pattern to report**: CN is large and barely moves under adjustment
+(+16.0 → +16.5); MENA shrinks (+5.9 → +3.8); India and US **change sign**
+(+0.9 → −3.1 and −0.9 → +1.9) and both standardized intervals are close to zero,
+so neither should be presented as a directional headline. The common-support and
+Firth estimands are ED2.
 
 ---
 
 ## Figure 2 · Language and prompt framing
 
-183 × 125 mm. Panels a and b are the **same estimand at two levels of
-aggregation**, on the same four language rows, read across: the aggregate on the
-left, the spread it summarises on the right. They are two panels rather than one
-because the pooled effects span 1.3–8.5 pp while the per-model effects span
-−6 to +61 pp, and one axis cannot serve both.
+183 × 85 mm. Two panels; both estimands are **paired within-block differences**,
+which is what makes them the strongest designs in the paper — prompt content is
+held fixed by construction rather than adjusted for.
 
 **a**, Pooled paired difference in refusal between each tested language and
 English, from `c08` (`sensitivity == "primary"`, `weighting == "equal_model"`).
-*Block*: model × prompt_id. Within a block the same prompt reaches the same model
-in both languages, so prompt content is held fixed by construction.
+*Block*: model × prompt_id — the same prompt reaches the same model in both
+languages, so **prompt identity is held fixed**. Model is held fixed within the
+block as well; framing is not held fixed but is balanced by construction, since
+every block appears in both tiers. Nothing else is adjusted for.
 *Estimand*: mean paired difference, **equal weight per model** — the predeclared
-primary weighting (`c08$primary_weighting`). Pooled and equal-per-model×issue
-weightings are tabulated in `c08b`; the three agree to within 0.03 pp.
-*Sample*: all four non-English languages are shown, including those whose
-intervals cover zero. Blocks are counted, not silently dropped: of an intended
-27,456 blocks (11 models × 2,496 prompts), 16 are missing for Chinese, 19 for
-Arabic, 26 for Russian and 54 for Hindi (`c08$n_missing_blocks`).
+primary weighting. Pooled and equal-per-model×issue are in `c08b`; the three
+agree to within 0.03 pp.
+*Sample*: all four non-English languages, including those whose intervals cover
+zero. Of an intended 27,456 blocks (11 models × 2,496 prompts), 16 are missing
+for Chinese, 19 Arabic, 26 Russian, 54 Hindi (`c08$n_missing_blocks`).
 *Interval*: 95% issue-cluster bootstrap, percentile, bootstrap unit `issue_id`.
-*Rows are ordered by the pooled estimate*, derived from the table rather than
-typed in. English is the paired reference by design, which is a property of the
-estimand, not a ranking of languages.
-**This is not the causal effect of a user's language.** It is the effect of
-delivering the tested translation, and it assumes translation equivalence and no
-language-specific provider, run-time or annotation drift.
-**No judge-sensitivity estimate exists for this quantity**: the judge panel
-covers English only, and re-labelling one arm compares two instruments rather
-than perturbing one.
+**Not the causal effect of a user's language**: it is the effect of delivering
+the tested translation, and it assumes translation equivalence and no
+language-specific provider, run-time or annotation drift. **No judge-sensitivity
+estimate exists** — the panel is English-only, and re-labelling one arm of a
+paired difference compares two instruments rather than perturbing one.
 
-**b**, The **same paired estimator** applied within each model, from `c09`
-(`grouping == "model"`), on **one shared x-axis across all four languages**.
-Hindi genuinely disperses about ten times more than Chinese; normalising each
-language separately would delete exactly that. Point colour is the model
-developer's jurisdiction. Only models beyond ±20 pp are directly labelled.
-Vertical offsets within a row are a **deterministic function of rank**, applied
-so that the near-zero cluster reads as nine models rather than three; they carry
-no meaning. `mistral-large-2512` returned zero refusals in every language, so
-its paired difference is undefined rather than null, and it is drawn as a
-structural zero. **These 44 model × language cells are exploratory**: they are
-not multiplicity-adjusted, and their intervals are ED4.
-
-**c**, Paired boundary-minus-regular framing difference, from `c10`
-(`scope == "overall"`, the pooled diamond) and `c11` (`grouping == "model"`).
-*Block*: issue × model × language.
-*Primary rule*: **complete blocks only — exactly 2 regular and 2 boundary
-prompts**; 6,857 English blocks qualify. Seven English blocks are incomplete and
-are listed by key in `c10b`; the looser rule that keeps them is a labelled
-sensitivity row in `c10`.
+**b**, Paired boundary-minus-regular framing difference. The pooled estimate
+(`c10`, `scope == "overall"`) is the larger accent diamond above a rule; the
+eleven per-model estimates (`c11`, `grouping == "model"`) are below it in a fixed
+model order and are **exploratory heterogeneity, not eleven findings**.
+*Block*: issue × model × language, **complete 2 regular + 2 boundary only**
+(6,857 English blocks). Seven incomplete English blocks are listed by key in
+`c10b`; the looser rule is a labelled sensitivity row in `c10`.
 *The block holds the issue and the model fixed; it does NOT hold prompt content
 fixed* — the regular and boundary variants are different realized prompts about
-the same issue, which is the exposure being varied. A causal reading requires the
-generated variants to be exchangeable given the issue, which is an assumption
-about the generation template, not a randomisation.
-**"All models" is the estimate**; it is drawn as a larger accent diamond above a
-separator rule. The eleven per-model rows below it are **exploratory
-heterogeneity, not eleven findings**, and are ordered by their own estimate.
-The pooled estimate conceals complete sign reversal across models — sarvam-30b
-+8.3 pp against falcon3-10b −5.6 pp — which is why the per-model rows are shown
-rather than summarised. `mistral-large-2512` is again a structural zero.
+the same issue, which is the exposure being varied. A causal reading requires
+the generated variants to be exchangeable given the issue: an assumption about
+the generation template, not a randomisation.
+The pooled +0.09 pp **conceals complete sign reversal**: sarvam-30b +8.3 pp
+[6.4, 10.0] against falcon3-10b −5.6 pp [−7.3, −3.6]. `mistral-large-2512`
+refused nothing in either arm and is a structural zero.
+
+**The model × language display is ED4 and appears nowhere here.** Showing the
+same 44 numbers in the main figure and in Extended Data was one display too many.
 
 ---
 
 ## Figure 3 · Content of engaged responses
 
 183 × 85 mm. **All three panels are conditional on engagement.** The judge skips
-these passes for refusals, so the denominator is engaged responses. Because
-refusal itself varies by model and jurisdiction, this conditioning is not
-ignorable and these panels say nothing about what a refused response would have
-contained.
+these passes for refusals, so the denominator is engaged responses; because
+refusal itself varies by model and jurisdiction, **this conditioning is not
+ignorable** and these panels say nothing about what a refused response would
+have contained. They are not unconditional model behaviour.
 
 **a**, Ideological placement, from `c12` (`role == "PRIMARY"`). The estimand is
-the **equal-model share in each of the five categories** (−2, −1, 0, +1, +2);
-the five sum to one within each dimension, which acceptance test H5 enforces.
-**All five bins are drawn**, as a 100% stacked distribution per dimension, so
-the neutral category occupies the panel in the proportion it occupies the data:
-92% economic, 80% social, 80% authority, 80% populism. A previous version
-plotted only the four directional bins and printed the neutral share as an
-annotation, which gave 100% of the ink to between 8% and 20% of the
-distribution. Segments at or above 8% carry their value printed inside them.
-*Cost of this encoding, stated plainly*: a stacked composition cannot carry a
-per-bin interval. The intervals are in `c12` — both the issue-cluster bootstrap
-for the issue superpopulation and, for the frozen 624-issue battery, a
-delete-one-issue jackknife with a finite population correction for f = 156/624,
-computed on the logit scale so the limits stay inside [0, 1], with the raw
-unbounded normal limits retained in `conf_*_battery_unbounded`.
-*Endpoints are dimension-specific* and are printed at the ends of each row:
-economic left↔right, social progressive↔traditional, authority
-authoritarian↔libertarian, populism populist↔elitist. Generic left/right labels
-are not used on the last three, because the codebook makes no such mapping.
+the **equal-model share in each of five categories** (−2, −1, 0, +1, +2); the
+five sum to one within each dimension, enforced by acceptance H5. **All five
+bins are drawn** as a 100% stacked distribution, so the neutral category
+occupies the row in the proportion it occupies the data: 92% economic, 80%
+social, 80% authority, 80% populism. Segments at or above 8% carry their value.
+*Cost of this encoding, stated*: a composition cannot carry a per-bin interval.
+The intervals are in `c12` — both the issue-cluster bootstrap for the issue
+superpopulation and, for the frozen 624-issue battery, a delete-one-issue
+jackknife with FPC (f = 156/624) computed on the logit scale.
+*Endpoints are dimension-specific* and printed at the row ends: economic
+left↔right, social progressive↔traditional, authority authoritarian↔libertarian,
+populism populist↔elitist. Generic left/right is not used on the last three.
 *Sample*: English engaged boundary responses in the slant subsample, n = 6,528,
-**156 of the 624 issues**. The content estimators are English-only by
-construction (`13_canonical_content.R` fixes `lang == "en"`). Coverage is not the
-whole reason: it is complete for English *and Hindi*, 98.9% for Chinese, 95.4%
-for Arabic and 68.3% for Russian (`c12b`). See `CANONICAL_ANALYSES.md` §9.
-**Descriptive and exploratory.** Panel Krippendorff's α is read from `e25` for
-the run and written into `c12$reliability_warning`; for the current release it
-is economic 0.39, social 0.13, authority 0.23, populism 0.02. Social, authority
-and populism carry no substantive weight. Judge sensitivity for these outcomes
-is in `c19`. The signed mean is in `c12` as `role == "SECONDARY"` only.
+**156 of the 624 issues**. See `CANONICAL_ANALYSES.md` §9 on why the content
+estimators are English-only.
+**Descriptive and exploratory.** Panel Krippendorff's α is read from `e25`:
+economic 0.39, social 0.13, authority 0.23, populism 0.02. Social, authority and
+populism carry no substantive weight. Per-model detail is ED5.
 
-**b** and **c** are **one aligned compound panel**: a single row-label column,
-two value columns, one shared row order (descending prevalence). The category
-names are written once.
+**b** and **c** are **one aligned compound block**: a single row-label column,
+two value columns, one shared row order (descending prevalence).
 
 **b**, Moral foundations invoked, from `c14` (`scope == "overall"`). Six
-**non-exclusive binary indicators** — a response can invoke several or none — so
-they do not form a composition and are never plotted as shares of a whole.
-Equal weight per model; the eleven per-model prevalences in `c15` average
-exactly to the value plotted here. *Interval*: 95% issue-cluster bootstrap
-sampling interval.
+**non-exclusive binary indicators** — a response may invoke several or none — so
+they never form a composition. Equal weight per model; the eleven per-model
+prevalences in `c15` average exactly to the plotted value.
+*Interval*: 95% issue-cluster bootstrap **sampling** interval. Per-model detail
+is ED6.
 
-**c**, Agreement on the same six foundations, on its **own 0–1 axis**. This is
-**pairwise positive specific agreement**, PSA = 2a/(2a+b+c), computed for each of
-the six judge pairs and shown as the mean with a **min–max range over pairs**
-(`c14$psa_mean`, `psa_min`, `psa_max`, from `e25`; n = 6,468 units rated by all
-four judges). **The range is not a confidence interval**: it is variation across
-instruments and has no coverage. It is drawn with end ticks in a lighter ink,
-deliberately unlike the dark centred sampling intervals in column b. It is
-reported as a number with no acceptance threshold: none is preregistered, and an
-earlier version's 0.35 cut-off was invented here.
-**PSA is prevalence-sensitive.** Ranking the six foundations by prevalence and by
-PSA gives nearly the same order, so the low agreement on the rare foundations —
-sanctity 3% prevalence, PSA 0.47 — is partly a property of the statistic, not
-solely a judge-quality finding. The full metric suite is ED5.
+**c**, Agreement on the same six foundations, on its own 0–1 axis. **Pairwise
+positive specific agreement**, PSA = 2a/(2a+b+c), mean over the six judge pairs,
+with a **min–max range across pairs** (n = 6,468 units rated by all four judges).
+**The range is not a confidence interval** — it is variation across instruments
+and has no coverage. It is drawn with end ticks in lighter ink, deliberately
+unlike the dark centred sampling intervals in column b.
+**PSA is prevalence-sensitive**: ranking the foundations by prevalence and by PSA
+gives nearly the same order, so low agreement on the rare foundations is partly a
+property of the statistic. The full metric suite is ED7.
 
 ---
 
 ## ED1 · Judge sensitivity
 
-183 × 85 mm. **The paired difference between each alternative judge and the
-canonical judge**, from `c17d`. Four facets, one per estimable jurisdiction.
+183 × 62 mm. **The paired difference between each alternative judge and the
+canonical judge**, from `c17d`, in one forest with jurisdiction row groups and a
+**common x-axis**.
 
-*Quantity*: Δ_{j,r} = θ̂_{j,r} − θ̂_{canonical,r}, where θ̂ is the Fig 1c
-standardized contrast.
-*Sample*: **one all-judge common-support sample** — the four-judge intersection,
+*Quantity*: Δ = θ̂_alternative − θ̂_canonical, where θ̂ is the Fig 1 standardized
+contrast.
+*Sample*: one **all-judge common-support** sample — the four-judge intersection,
 27,429 of 27,449 English responses, 624 issues, 11 models (`c17c`). Per
 jurisdiction: CN 4,157 rows, MENA 6,233, India 2,075, US 8,313. Every judge is
 recomputed on it, so a difference between judges is not a difference in sample.
-*Estimator*: the identical `gcomp()` from `10_canonical_common.R`, shared with
-`11_canonical_home.R`, so a judge-sensitivity result can never be a
-specification difference wearing a judge's name.
-*Interval*: **95% paired issue-cluster bootstrap**, B = 600, percentile. In each
-replicate one issue set is resampled, **every judge's contrast is recomputed on
-that same draw**, and the difference is taken **inside the replicate**. Fixed
-number of draws; failures counted, never replaced; a replicate in which any
-judge is undefined fails for all of them.
-**This is why the interval is not the difference of two intervals in `c17b`.**
-The four judges label the same responses, so their estimates are strongly
-positively dependent; differencing point estimates and carrying marginal
-intervals would give an interval far too wide. Acceptance test H9 fails the
-build if the paired interval is not narrower than the naive combination.
-*Zero* means the alternative judge reproduces the canonical judge's estimate on
-the same sample. It does **not** mean either is correct: **the canonical judge
-(`google/gemini-2.5-flash-lite`) is a reference instrument, not ground truth.**
-No human-validated labels exist, no judge is known to be correct, and no
-majority vote is computed anywhere in this layer.
-EU is not estimable under any judge and is omitted from the facets.
+*Estimator*: the identical `gcomp()` shared with `11_canonical_home.R`.
+*Interval*: 95% **paired** issue-cluster bootstrap, B = 600, percentile. One
+issue set is resampled per replicate, **every judge's contrast is recomputed on
+that same draw**, and the difference is taken **inside** the replicate. Fixed
+draws; failures counted, never replaced; a replicate in which any judge is
+undefined fails for all of them. Zero replicates failed.
+**This is why it is not the difference of two `c17b` intervals.** The judges
+label the same responses, so their estimates are strongly dependent; the paired
+intervals are 16–49% as wide as the naive combination, and acceptance H9 fails
+the build if they are not narrower.
+*Zero* means the alternative judge reproduces the canonical judge on the same
+sample. It does **not** mean either is correct: the canonical judge
+(`google/gemini-2.5-flash-lite`) is a **reference instrument, not ground truth**.
+No human-validated labels exist and no majority vote is computed anywhere.
+**No separate canonical reference line is drawn** — zero already is it.
+EU is not estimable under any judge and is omitted.
+Absolute per-judge estimates, the observed judge point envelope, and the union of
+judge intervals are three further quantities, kept apart in `c17b`.
 
-**Three related quantities are kept apart, and only one of them is plotted
-here.** `c17b` holds the other two: each judge's **own** issue-cluster sampling
-interval with the instrument held fixed, and the **observed judge point
-envelope** (`point_envelope_low`/`_high`, the min and max of the four point
-estimates — instrument variation, containing no sampling uncertainty). `c17b`
-additionally records `union_low`/`union_high`, the union of the judge-specific
-95% intervals, under exactly that name; **the union is never called an envelope**
-and is never treated as an interval with coverage for judge uncertainty.
-`c17b` reports `point_sign_stable`, `point_envelope_excludes_zero` and
-`union_excludes_zero` as three separate columns.
+**What it shows**: for MENA all three alternative judges sit below the canonical
+judge and all three differences exclude zero; for India none differ from zero.
 
-The bracket spanning the range of judge point estimates has been removed from
-the figure: with every judge's deviation drawn, it restated the spread of the
-points beneath it.
+## ED2 · Focused estimator, support and outcome sensitivity
 
-## ED2 · Inferential robustness of the standardized contrast
+183 × 62 mm. **Four specifications per jurisdiction, and only four.** Shape marks
+what changed:
 
-183 × 165 mm. **Organised by jurisdiction, not by specification family**, from
-`c07` with the primary estimate from `c04` as the dashed accent rule in each
-facet. The reader's question is "is the CN conclusion robust?", and the previous
-layout required visiting six family facets and picking the CN rows out of each.
+| mark | specification | what changes |
+|---|---|---|
+| filled diamond | ML, full target (`c04`) | — the primary estimate |
+| hollow circle | Firth penalized logit, full target (`c04`) | **estimator**, same target |
+| filled square | common support (`c04`) | **target population** |
+| hollow triangle | `refused_any`, codes 3–5 (`c07`) | **outcome definition** |
 
-Within each jurisdiction, rows are grouped by what is being varied: **model
-composition** (leave one model out), **prompt tier**, **language**, **outcome
-definition** (`refused_any`, codes 3–5), **functional form** (`home × domain`,
-`home × route`) and the **support restriction**. Row order inside a family is
-fixed by the table, not by the estimates, so the layout never implies a finding.
-*Interval*: 95% issue-cluster bootstrap, B = 500.
+*Interval*: 95% issue-cluster bootstrap.
 
-**These are alternative but comparable estimators of the same target.**
-Post-outcome diagnostics are not here — they are ED3.
+**These are not all alternative estimators of one estimand.** Only the Firth row
+holds the target fixed. Common support restricts to covariate cells present in
+both arms and therefore describes a **different population** — one that retains
+41% of CN's nested target weight (`c06b`). `refused_any` changes the label
+threshold.
 
-**Rows without an estimate are omitted and counted, not given empty space.** A
-row is drawn only if it has both a point and an interval. `c07$estimable`
-records that a fit was attempted, not that an estimate exists: five
-functional-form rows carry `estimable = TRUE` with no estimate (MENA and US
-`home × domain` failed in 47.2% and 16.8% of draws respectively; MENA, India and
-US `home × route` produced none). A previous version filtered on that flag and
-reserved a whole empty facet for them. The count per family is printed in the
-facet corner.
+**Overlapping intervals here are not a test of equality** between
+specifications, and no such test is offered.
 
-The **hierarchical marginal** estimate is in neither this figure nor ED3. It is a
-different estimand — it integrates over the issue random effect instead of
-standardizing over the observed issue set — and it has no comparable interval,
-so it is tabulated in `c07b`. Four of five jurisdictions did not converge; only
-MENA has a value (+3.79 pp, point only).
+**The full grid is a table, not a figure**: `c07c_sensitivity_catalogue.csv`
+classifies every sensitivity row as A estimator / B target population /
+C outcome definition / D model roster / E post-outcome diagnostic / F different
+estimand, with `difference_from_primary_pp`, counts, convergence and estimability
+flags. It holds the language and prompt-tier restrictions, the nine
+leave-one-model-out fits, the functional-form specifications and the
+response-length thresholds. `difference_from_primary_pp` is a **difference of
+point estimates**; no interval is attached to it, because subtracting marginal
+endpoints is not a paired contrast and the paired bootstrap that would be
+required is not run for those rows.
 
-## ED3 · Post-outcome data-quality diagnostics
+**Response-length filters are post-outcome** — they condition on a realized
+property of the response — and are class E in `c07c`, not a robustness check and
+not a figure. **The hierarchical marginal estimate** is class F, a different
+estimand that integrates over the issue random effect; it is in `c07b`, and four
+of five jurisdictions did not converge.
 
-183 × 62 mm. The standardized contrast recomputed on responses above a minimum
-character length (20, 50, 100), from `c07` (`sensitivity == "min_response_chars"`),
-one facet per jurisdiction, with the primary estimate as the dashed accent rule.
+## ED3 · Issue-subsample stability
 
-**These are not robustness checks of the design.** A response-length filter
-conditions on a realized property of the response — that is, on something
-determined after the outcome — so it can induce exactly the kind of selection it
-is meant to rule out. It has its own figure number because sharing one with the
-inferential forest is itself a claim of kinship.
+183 × 165 mm. **a**, For each estimand, the median across 500 subsample
+replicates (dark line) with the **p10–p90** band (mid grey) and **p2.5–p97.5**
+band (light grey), against sample fraction; the accent rule is the full-sample
+estimate. **b**, An aligned strip showing the **sign-agreement rate** with the
+full-sample estimate.
 
-## ED4 · Language heterogeneity
+**The bands are NOT confidence intervals.** They are across-subsample ranges
+describing design stability: how much the estimate moves when the issue battery
+is smaller. A bootstrap resamples with replacement at full size to approximate
+sampling uncertainty; this resamples **without** replacement at reduced size to
+describe the effect of adding issues.
 
-183 × 125 mm. The two panels are **designed as a pair** and share model order,
-language order and spelling exactly, so the cognitive map between them is
-immediate.
+*Resampling unit*: the **issue**. A sampled issue carries all of its prompts,
+tiers, languages, models and annotations, so the paired blocks stay intact.
+*Design*: simple random sampling without replacement within each of nine
+**topic-domain strata**; allocation `min(n_h, max(1, ⌈f·n_h⌉))`. Within a
+replicate each stratum is permuted **once** and every fraction is a **prefix** of
+that permutation, so smaller samples are subsets of larger ones and a trajectory
+reads as the effect of adding issues.
+*Fractions*: 10–90% plus a deterministic 100% endpoint. 500 replicates per
+fraction. Master seed 20260809, replicate seeds `MASTER_SEED + r`.
+*Refitting*: the full canonical model is refitted inside every sampled issue set;
+no full-sample coefficient is held fixed.
+*Estimability* 97.8% overall, convergence 99.99% (`c21_subsample_summary.csv`).
 
-**a**, The model × language matrix of paired contrasts from `c09`
-(`grouping == "model"`), with the signed value printed in every cell so it never
-depends on reading a colour. Rows are grouped by jurisdiction in a **fixed**
-order, never ordered by the effects being displayed. **The colour scale is set
-by the 85th percentile of |estimate|, not by the maximum**: scaling to
-max|estimate| = 61.4 pp pushed the 30 cells below 6 pp into the middle tenth of
-the ramp, where they were indistinguishable. Cells beyond the limit are squished
-to the endpoint colour and still carry their printed value, so saturation is
-lost but no information is. `mistral-large-2512` is a structural zero and is
-excluded from the scale.
+**Not shown here**: the content estimands (ideology, foundations, PSA) and the
+detailed per-fraction diagnostics — median absolute and RMS deviation from the
+full sample, within-tolerance rates at prespecified 1/2 pp and 0.02/0.05
+thresholds, failure counts. All are in `c21_subsample_summary.csv`. Structural
+zeros (EU) have no stability to display and are omitted.
 
-**b**, The same 44 estimates with their **95% issue-cluster bootstrap
-intervals** — the uncertainty the matrix cannot show. Interval half-widths range
-from 0.0 to 2.3 pp (median 1.0), so cells with equal values do not carry equal
-precision. **Free x-scales across the four language facets are deliberate**:
-this panel's task is within-language model comparison and interval width, and
-the cross-language magnitude comparison is panel a's job. One panel is not asked
-to do both tasks poorly.
+## ED4 · Model × language heterogeneity
 
-**Exploratory.** These cells are not multiplicity-adjusted, and a cell whose
-interval excludes zero is not a confirmatory test. The weighting comparison is a
-**table** (`c08b`), not a panel: pooled, equal-per-model and
-equal-per-model×issue agree to within a fraction of a percentage point.
+183 × 85 mm. The 44 per-model paired language contrasts from `c09`
+(`grouping == "model"`) with **95% issue-cluster bootstrap intervals**, four
+language facets, fixed model rows, **one common x-axis**.
 
-## ED5 · Measurement reliability
+The common scale is deliberate: Hindi disperses roughly ten times more than
+Chinese, and per-facet scaling would delete exactly that. Cells beyond ±15 pp are
+labelled directly. Colour is the model's developer jurisdiction.
 
-183 × 165 mm. Every annotated construct against **four agreement statistics**,
+**One display, not two.** The heatmap that used to accompany this is gone — the
+exact values are in `c09`, so the figure spends its space on the uncertainty the
+table cannot show. Interval half-widths range from 0.0 to 2.3 pp (median 1.0), so
+cells with equal values do not carry equal precision.
+
+**Exploratory**: these cells are not multiplicity-adjusted, and a cell whose
+interval excludes zero is not a confirmatory test. The weighting comparison is
+`c08b`.
+
+## ED5 · Ideological slant by model
+
+183 × 85 mm. The **five-bin composition** for every model × dimension, from
+`c13` (`role == "PRIMARY"`). Four dimension facets, eleven fixed model rows,
+100% stacked.
+
+The composition is the primary estimand and is what is drawn; a signed mean alone
+would collapse a distribution that is 80–92% neutral into one number. The signed
+mean is in `c13` as `role == "SECONDARY"`, with its own intervals.
+
+**Every model-level row carries uncertainty in the table**: issue-cluster
+bootstrap (`conf_low`/`conf_high`) and delete-one-issue jackknife with FPC
+(`conf_low_battery`/`conf_high_battery`), plus `n`, `n_issues`, `n_missing`,
+`degenerate_outcome`, `support_ok` and `interval_reliable`. Intervals are not
+drawn on a stacked composition; read them from `c13`.
+
+**Conditional on engagement, descriptive and exploratory**, with the weak
+reliability of §Fig 3a. **Do not read a developer-jurisdiction effect off these
+model comparisons** — jurisdiction is entangled with the observed model roster,
+and `c13$jurisdiction_caveat` says so on every row.
+
+## ED6 · Moral foundations by model
+
+183 × 85 mm. Per-model prevalence for each of the six foundations, from `c15`,
+with **95% issue-cluster bootstrap intervals**. Six facets, eleven fixed model
+rows, common percentage scale. Colour is the model's developer jurisdiction. The
+equal-model aggregate (`c14`) is a thin dashed rule, deliberately subordinate to
+the model estimates.
+
+Six **non-exclusive** indicators; conditional on engagement. `c15` additionally
+carries the frozen-battery jackknife interval and the estimability flags. **Do
+not read a jurisdiction effect off these comparisons.**
+
+## ED7 · Measurement reliability
+
+183 × 85 mm. Every annotated construct against **four agreement statistics**,
 from `e23` (engagement), `e24` (refusal justification) and `e25` (ideology and
 moral foundations): raw agreement, Krippendorff's α, Gwet AC1 (nominal/binary) or
-AC2 (ordinal weights), and pairwise positive specific agreement.
+AC2 (ordinal weights), and pairwise positive specific agreement. One shared
+row-label column; no stems.
 
-**A single "agreement" axis would imply these are interchangeable, and this run
-shows plainly that they are not**: engagement has α = 0.51 and Gwet AC1 = 0.97
-on the same labels, because α's chance correction collapses when one category
-dominates — and refusal is 4.0% prevalent. Rare constructs are where the metrics
-diverge most, which is why they are shown side by side rather than one being
-chosen.
+**The statistics are not commensurable and are not put on a shared axis.**
+Engagement has α = 0.51 and Gwet AC1 = 0.97 on the same labels, because α's
+chance correction collapses when one category dominates and refusal is 4.0%
+prevalent. Rare constructs are where the metrics diverge most, which is why they
+are shown side by side rather than one being chosen.
 
 **PSA is defined only for binary constructs** — it is agreement on *positive*
-labels — so its column is empty for the ordinal ideology scales and for the
-nominal justification code. That is a property of the statistic and is marked as
-such rather than left blank.
+labels — so its column carries an em dash for the ordinal ideology scales and the
+nominal justification code. That is a property of the statistic.
 
-`all_rater_positive_unanimity` is reported in `e23`/`e25` alongside PSA and is a
-**different statistic**: among units any judge called positive, the share where
-all judges agreed. It falls mechanically as judges are added, so it is not
-comparable across constructs rated by different numbers of judges. It was once
-reported under the name `positive_specific_agreement`; it now carries a name
-that says what it is.
+`all_rater_positive_unanimity` in `e23`/`e25` is a **different statistic**: among
+units any judge called positive, the share where all judges agreed. It falls
+mechanically as judges are added and is not comparable across constructs rated by
+different numbers of judges.
 
-**Refusal-justification codes (A–G) carry no canonical estimand.** Their
-agreement is the weakest of any construct here (α = 0.32, raw agreement 0.20 on
-595 units), which is the reason.
+## ED8 · Prompt-semantic geometry
 
----
+183 × 125 mm. Six panels — all languages, then English, Chinese, Arabic, Russian
+and Hindi — over **one fixed set of prompt coordinates** (`c22`).
+
+*Unit*: the prompt (2,496), not the response.
+*Geometry*: a single 2-D UMAP fitted once on the English prompt text
+(`uwot`, seed 20260809, n_neighbors 25, min_dist 0.15, cosine metric) and
+**reused in every panel**. No facet refits the projection; separately fitted maps
+are not geometrically comparable.
+*Embedding*: `openai/text-embedding-3-small` at 512 dimensions, on the English
+prompt with the boundary directive prefix stripped — it opens all 1,248 boundary
+prompts identically and would otherwise separate tiers on template wording.
+Cached by `scripts/embed_prompts.py`; the release calls no API.
+*Colour*: refusal **propensity**, equal weight per jurisdiction with models
+nested equally within jurisdiction, on a shared perceptually-uniform scale across
+all six panels. Not a binary "ever refused": a prompt one of eleven models
+declined must not look like one all eleven declined.
+
+**Diagnostics, from `c22_prompt_umap_diagnostics.csv`.** Neighbourhood
+preservation at k = 15 is 0.395. Topic-domain neighbourhood purity is **0.649
+against a shuffled baseline of 0.117**, so the map does recover the topic
+structure. Across three alternative seeds, Procrustes RMSE is 0.37–0.42 while
+neighbour overlap is 0.65–0.67: **read neighbourhoods, not absolute positions or
+distances**. A 3 × 3 hyper-parameter grid gives preservation 0.30–0.44. No
+near-duplicate prompts and no missing embeddings.
+
+**Exploratory and descriptive.** It establishes no causal effect and validates no
+taxonomy. Representative regions and their medoid prompts are selected
+deterministically and tabulated in `c22_prompt_umap_regions.csv`; full prompt
+text is never printed on the point cloud.
+
+## ED9 · Prompt-semantic geometry by model
+
+183 × 125 mm. The **same fixed coordinates**, one panel per model in fixed order,
+English only. In one language a single model either refused a prompt or did not,
+so the encoding is **binary by construction** and is drawn as two levels rather
+than a continuous ramp that would imply a gradation that does not exist. The
+continuous cross-model propensity is ED8.
 
 ## Retired: the refusal-text projection
 

@@ -7,8 +7,8 @@
 > | range | role | scripts |
 > |---|---|---|
 > | `01`–`02` | inputs | `01_data_loading.R`, `02_judge_reliability.R` |
-> | `10`–`14` | estimation (canonical) | `10_canonical_common.R`, `11_canonical_home.R`, `12_canonical_language_framing.R`, `13_canonical_content.R`, `14_canonical_judge_uncertainty.R` |
-> | `20`–`21` | figures | `20_figures_main.R` (Fig 1–3), `21_figures_extended.R` (ED1–ED5) |
+> | `10`–`16` | estimation (canonical) | `10_canonical_common.R`, `11_canonical_home.R`, `12_canonical_language_framing.R`, `13_canonical_content.R`, `14_canonical_judge_uncertainty.R`, `15_subsample_stability.R`, `16_prompt_umap.R` |
+> | `20`–`21` | figures | `20_figures_main.R` (Fig 1–3), `21_figures_extended.R` (ED1–ED9) |
 > | `30` | tests | `30_acceptance.R` |
 > | `40` | appendix descriptives | `40_appendix_descriptives.R` (`a01`–`a04`) |
 >

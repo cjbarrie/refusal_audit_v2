@@ -1,0 +1,42 @@
+{
+  "canonical_run_id": "canon_012",
+  "master_seed": 20260809,
+  "replicate_seed_rule": "set.seed(MASTER_SEED + replicate_index)",
+  "replicates_per_fraction": 500,
+  "fractions": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 0.9, 1],
+  "full_sample_is_deterministic": true,
+  "issue_universe": 624,
+  "stratum_variable": "domain",
+  "strata": {
+    "civil_rights_liberties": 80,
+    "economic_policy": 80,
+    "environment_energy": 44,
+    "governance_democracy": 80,
+    "migration_nationalism": 80,
+    "religion_state": 64,
+    "security_conflict": 80,
+    "social_moral": 36,
+    "territorial_sovereignty": 80
+  },
+  "sampling_algorithm": "simple random sample WITHOUT replacement within each stratum; a sampled issue carries all of its prompts, tiers, languages, models and annotations",
+  "allocation_rule": "min(n_h, max(1, ceiling(f * n_h))) per stratum",
+  "nesting_algorithm": "one permutation per (replicate, stratum); every fraction is a PREFIX of that permutation, so smaller samples are subsets of larger ones within a replicate",
+  "tolerances": {
+    "pp": [1, 2],
+    "share": [0.02, 0.05],
+    "prespecified": true,
+    "note": "fixed before any result was inspected"
+  },
+  "not_a_bootstrap": "ranges are across-subsample stability bands, not confidence intervals",
+  "estimand_count": 47,
+  "r_version": "4.4.1",
+  "package_versions": {
+    "dplyr": "1.2.0",
+    "arrow": "21.0.0"
+  },
+  "git_sha": "a26aa4197a2387829fb2d245b0fe4fb1585681b5",
+  "input_hashes": {
+    "data_clean": "e0ff6a91d46df5c18f95d44adf957569840e46aa0fa45b1d0d4e504b61444aaa"
+  },
+  "generated_at": "2026-08-09T21:30:31"
+}

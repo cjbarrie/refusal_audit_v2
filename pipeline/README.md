@@ -21,7 +21,7 @@ Two partial drivers with a misleading name is worse than one honest one.
 | range | role | scripts |
 |---|---|---|
 | `01`–`02` | inputs | `01_data_loading.R` → `data_clean.RData`; `02_judge_reliability.R` → `e23`–`e28` |
-| `10`–`14` | estimation | `10_canonical_common.R` (shared), `11` home, `12` language + framing, `13` content, `14` judge sensitivity |
+| `10`–`16` | estimation | `10_canonical_common.R` (shared), `11` home, `12` language + framing, `13` content, `14` judge sensitivity, `15` subsample stability, `16` prompt UMAP |
 | `20`–`21` | figures | `20_figures_main.R` → Fig 1–3; `21_figures_extended.R` → ED1–ED9 (**PNG only**, 183 mm, 600 dpi, no titles) |
 | `30` | acceptance | `30_acceptance.R`, non-zero exit on failure |
 | `40` | appendix | `40_appendix_descriptives.R` → `a01`–`a04`, descriptive views only |

@@ -200,8 +200,10 @@ economic left↔right, social progressive↔traditional, authority
 authoritarian↔libertarian, populism populist↔elitist. Generic left/right labels
 are not used on the last three, because the codebook makes no such mapping.
 *Sample*: English engaged boundary responses in the slant subsample, n = 6,528,
-**156 of the 624 issues**. Other languages are excluded for incomplete coverage
-(`c12b`).
+**156 of the 624 issues**. The content estimators are English-only by
+construction (`13_canonical_content.R` fixes `lang == "en"`). Coverage is not the
+whole reason: it is complete for English *and Hindi*, 98.9% for Chinese, 95.4%
+for Arabic and 68.3% for Russian (`c12b`). See `CANONICAL_ANALYSES.md` §9.
 **Descriptive and exploratory.** Panel Krippendorff's α is read from `e25` for
 the run and written into `c12$reliability_warning`; for the current release it
 is economic 0.39, social 0.13, authority 0.23, populism 0.02. Social, authority

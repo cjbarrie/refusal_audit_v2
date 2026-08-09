@@ -299,8 +299,12 @@ output schema, check that contract for what fields/joins R depends on.
 - **Slant (passes 2/3) covers a 25% issue subsample, not the whole run.** Any
   new slant quantity must filter on `slant_eligible & has_slant` and is
   **conditional on engagement** (passes 2/3 skip refusals by design). Its
-  primary tables are **English-only** because the model roster differs by
-  language (11 models in en/zh/ar, 9 ru, 7 hi) — pooling languages would
+  primary tables are **English-only** because `13_canonical_content.R` fixes
+  `lang == "en"`. The roster argument that used to justify this is stale: in the
+  completed run all 11 models answer in all five languages, and slant coverage is
+  complete for English *and Hindi* (only Russian is genuinely short, at 68%).
+  `c12b` marks Hindi eligible on a coverage-only rule that the estimator does not
+  act on — see `docs/CANONICAL_ANALYSES.md` §9. Pooling languages would
   confound slant with roster composition. `docs/SLANT_SUBSAMPLE.md` is
   authoritative; `docs/ANNOTATION_TRIM_FULL_RUN.md` predates it and is
   superseded on anything touching passes 2/3.

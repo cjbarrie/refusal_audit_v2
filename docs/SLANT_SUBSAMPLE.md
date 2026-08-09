@@ -11,6 +11,15 @@
 > `pipeline/archive/README.md`, never by number alone. The analyses the paper
 > reports are specified in **`docs/CANONICAL_ANALYSES.md`**. This document is
 > kept as a dated record of what was true when it was written.
+>
+> **⚠ THE ROSTER TABLE BELOW IS ALSO OUT OF DATE.** "Language restriction in the
+> estimates" records `en/zh/ar 11 models, ru 9, hi 7`, which was true while
+> generation was still running. **In the completed run all 11 models answer in
+> all five languages**, and slant coverage is complete for English *and Hindi*
+> (Chinese 98.9%, Arabic 95.4%, Russian 68.3%). The content estimators remain
+> English-only because `13_canonical_content.R` fixes `lang == "en"`, not
+> because of the roster. Current figures and the unresolved eligibility
+> inconsistency: `docs/CANONICAL_ANALYSES.md` §9.
 
 **Status: APPLIED 2026-08-04; complete for the primary (English) sample, with a
 top-up pending in Russian and Hindi** — see the generation-status section below.

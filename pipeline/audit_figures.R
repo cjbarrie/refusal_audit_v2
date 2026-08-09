@@ -424,10 +424,22 @@ for (src in c("pipeline/20_figures_main.R", "pipeline/21_figures_extended.R")) {
   ok(paste(nm, "does not hard-code the palette"), length(hex) <= 3,
      sprintf("%d literal hex", length(hex)))
 }
-# The refusal-text projection is retired.
+# The RETIRED projection is the refusal-TEXT one: it embedded the text of each
+# refusal and coloured it by the judge's justification code. The current UMAP is
+# a different analysis -- it embeds the PROMPT, its unit is the prompt not the
+# response, and it is a canonical output with diagnostics.
+#
+# This check used to test for the string "umap_x", which the new prompt
+# projection legitimately uses, so it would have failed a correct build. It now
+# tests for the retired artefact itself: the archived u01-u03 outputs and the
+# refusal_umap script.
 ed_src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
-ok("the retired projection figure is not rebuilt",
-   !any(grepl("umap_x", ed_src)) && !any(grepl("ED3_refusal_text", ed_src)))
+ok("the retired refusal-text projection is not rebuilt",
+   !any(grepl("refusal_umap|u0[123]_refusal|ED3_refusal_text|exploratory_umap",
+              ed_src)))
+# ...and the replacement must be the prompt-unit analysis, not a revival.
+ok("the shipped projection is the prompt-unit one",
+   any(grepl("c22_prompt_umap_coordinates", ed_src)))
 # A plotting script must not be the sole implementation of a canonical table:
 # the table would then exist only if the figure ran, and would change whenever
 # the artwork did. Both c07b and c08b were written here until this release.

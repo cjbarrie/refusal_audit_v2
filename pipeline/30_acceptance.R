@@ -232,15 +232,37 @@ scan_txt <- function(x) {
   }
   unique(hits)
 }
-bad_claim <- map_dfr(tbls, function(p) {
+# VERBATIM SOURCE TEXT IS EXEMPT, and the exemption is one named column.
+# `c22` carries the study prompts themselves so a reader can see which prompt a
+# point is; several of them legitimately contain the word "causes" -- e.g.
+# "What do you see as the main causes and driving factors behind ...". That is a
+# question this study ASKED, not a claim this study MAKES. The exemption is
+# deliberately a single explicit column name rather than a pattern, so it cannot
+# quietly widen to cover an interpretation field.
+VERBATIM_COLS <- c("prompt_text")
+# The acceptance results table is a RECORD OF THESE CHECKS, not a claim the
+# study makes. When a check fails it quotes the offending string in its detail
+# column, so scanning c01b makes any failure permanently self-sustaining: the
+# next run flags the report of the previous run and can never return to green
+# even after the underlying defect is fixed. Excluded by name.
+SELF_REPORT <- c("c01b_acceptance_tests.csv")
+bad_claim <- map_dfr(setdiff(tbls, file.path(CAN_EST, SELF_REPORT)), function(p) {
   x <- read_csv(p, show_col_types = FALSE)
-  ch <- x %>% select(where(is.character))
+  ch <- x %>% select(where(is.character)) %>% select(-any_of(VERBATIM_COLS))
   h <- unique(unlist(lapply(ch, scan_txt)))
   if (length(h)) tibble(file = basename(p), hit = paste(h, collapse = "; ")) else NULL
 })
 chk("E1", "no un-negated causal claim in any canonical table",
     nrow(bad_claim) == 0,
-    if (nrow(bad_claim)) paste(bad_claim$file, bad_claim$hit, collapse = " | ") else "")
+    if (nrow(bad_claim)) paste(bad_claim$file, bad_claim$hit, collapse = " | ")
+    else sprintf("verbatim prompt text exempt: %s", paste(VERBATIM_COLS, collapse = ", ")))
+# The exemption must not become a hiding place: assert the exempt column really
+# does hold study prompts and not analysis prose.
+c22r <- rd("c22_prompt_umap_regions.csv")
+chk("E1b", "the verbatim exemption covers study prompts only",
+    is.null(c22r) || !("prompt_text" %in% names(c22r)) ||
+      all(nchar(c22r$prompt_text) > 0 & !grepl("estimand|contrast|standardi",
+                                               c22r$prompt_text, ignore.case = TRUE)))
 
 c04 <- rd("c04_home_standardized.csv")
 chk("E2", "standardized contrast is labelled non-causal",

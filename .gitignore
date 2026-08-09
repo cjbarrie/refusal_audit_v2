@@ -53,3 +53,6 @@ Rplots.pdf
 # plus the SHA-256 manifest inside them are the committed record, so keeping the
 # builds as well would duplicate every artefact for no added evidence.
 pipeline/releases/
+
+# Unpromoted figure previews. The canonical tree is pipeline/figures/.
+/preview/

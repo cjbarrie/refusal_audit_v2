@@ -125,7 +125,12 @@ prop_overall <- prop_by_lang %>%
   mutate(language = "ALL")
 
 PROP <- bind_rows(prop_overall, prop_by_lang) %>%
-  mutate(support_ok = n_responses > 0,
+  mutate(estimand = paste("refusal propensity for this prompt in this language:",
+                          "share of models refusing, equal weight per",
+                          "jurisdiction with models nested equally within it"),
+         quantity = "refusal_propensity",
+         conditional = "unconditional; every delivered response counts",
+         support_ok = n_responses > 0,
          weighting = paste("equal weight per jurisdiction, models nested",
                            "equally within jurisdiction; 'ALL' additionally",
                            "gives every language equal weight"),
@@ -307,7 +312,11 @@ REGIONS <- bind_rows(
                "high between-model disagreement")) %>%
   left_join(COORD %>% select(prompt_id, issue_id, tier, domain, region_focus),
             by = "prompt_id") %>%
-  mutate(canonical_run_id = CANONICAL_RUN_ID)
+  mutate(estimand = paste("deterministically selected representative prompt for",
+                          "a local neighbourhood scoring high on the stated",
+                          "criterion. DESCRIPTIVE: a locator, not an estimate."),
+         quantity = "representative_region_medoid",
+         canonical_run_id = CANONICAL_RUN_ID)
 COORD$representative_region <- COORD$prompt_id %in% REGIONS$prompt_id
 
 # Canonical prompt text, for the companion table only -- never printed on the
@@ -327,6 +336,13 @@ if (!is.null(PTEXT)) {
 # G. Write
 # =============================================================================
 COORD <- COORD %>% mutate(
+  estimand = paste("2-D UMAP coordinates of the English prompt embedding, plus",
+                   "that prompt's refusal propensity overall and by language.",
+                   "DESCRIPTIVE AND EXPLORATORY: coordinates carry no units,",
+                   "distances are not interpretable, and neither establishes an",
+                   "effect."),
+  quantity = "umap_coordinate_and_refusal_propensity",
+  conditional = "unconditional; every delivered response counts",
   umap_seed = UMAP_SEED, umap_n_neighbors = N_NEIGHBORS,
   umap_min_dist = MIN_DIST, umap_metric = METRIC,
   geometry_note = paste("ONE fixed 2-D coordinate per prompt, fitted on the",
@@ -338,7 +354,12 @@ write_csv(COORD,   file.path(CAN_EST, "c22_prompt_umap_coordinates.csv"))
 write_csv(PROP,    file.path(CAN_EST, "c22_prompt_refusal_propensities.csv"))
 write_csv(DIAG,    file.path(CAN_EST, "c22_prompt_umap_diagnostics.csv"))
 write_csv(REGIONS, file.path(CAN_EST, "c22_prompt_umap_regions.csv"))
-write_csv(prop_by_model %>% mutate(canonical_run_id = CANONICAL_RUN_ID),
+write_csv(prop_by_model %>%
+            mutate(estimand = paste("per-prompt English refusal indicator for a",
+                                    "single model; BINARY by construction"),
+                   quantity = "refused",
+                   conditional = "unconditional; English only",
+                   canonical_run_id = CANONICAL_RUN_ID),
           file.path(CAN_EST, "c22_prompt_refusal_by_model.csv"))
 
 emb_meta <- if (file.exists(EMB_META))

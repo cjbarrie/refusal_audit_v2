@@ -64,7 +64,7 @@ classified by how much of the analysis it touches.
 | Fig 1b unadjusted difference | **not plotted** | previously-unplotted table row | `c02 quantity == "home_minus_away"` already carried a bootstrap interval and never reached a figure. No new estimation. |
 | Fig 1c standardized | Fig 1c | graphical re-expression | Same row filter, more width. |
 | Fig 1 locator map | Fig 1a | **panel retirement** | Carried no estimate and took ≈35% of the area; its region coding was recoded in the plotting script from a hard-coded ISO-3 list rather than read from the analysis data. Region coding now documented in the legends. |
-| Fig 2a pooled language | Fig 2a | graphical re-expression | Rows ordered by magnitude, derived from the table. |
+| Fig 2a pooled language | Fig 2 (pooled row) | graphical re-expression | Rows ordered by magnitude, derived from the table. |
 | Fig 2b model distribution | **replaces** the heatmap | derived graphical summary | Plots `c09` cells as points on one shared axis. Deterministic transformation of an existing table; no new estimation, no new uncertainty. |
 | Fig 2b heatmap | Fig 2b | **panel relocation** → ED4a | Colour was scaled to max\|estimate\| = 61.4 pp, so 30 of 44 cells were indistinguishable; it showed an inferential quantity with no uncertainty at all. |
 | Fig 2c framing | Fig 2c | graphical re-expression | Pooled row made visually primary; structural zero separated from estimated nulls; row order made explicit rather than resting on a reversed factor. |
@@ -100,7 +100,8 @@ contain were added.
 | final figure | previous | classification | what changed |
 |---|---|---|---|
 | `Fig1_home_jurisdiction` | 3 panels (rates, unadjusted Δ, standardized Δ) | **panel retirement + graphical re-expression** | Rates removed from the figure — an absolute rate and a difference are different quantities and do not belong on one axis; they remain in `c02`. The two differences now share one forest. Descriptive weighting switched to `equal_model` to match the standardized target, and declared. EU is a structural zero, not a point at zero. |
-| `Fig2_language_framing` | 3 panels incl. a per-model language cloud | **panel relocation** | The model × language display is ED4 only. |
+| `Fig2_language` | `Fig2_language_framing` (a pooled language forest, b framing) | **panel relocation + graphical re-expression** | Framing left the figure entirely and became `ED10` at full width — it is a different exposure on a different block, and pairing it with language forced both into a half-height panel. The language contrast became four panels on one hierarchical spine, adding the jurisdiction and model levels from `c09` under the pooled `c08` estimate. Nothing about any estimand, weighting, block rule or bootstrap changed. |
+| `ED10_framing` | `Fig2_language_framing` panel b | **panel relocation** | Same estimand, same tables (`c10`, `c11`), drawn at full width so the eleven per-model rows are legible. |
 | `Fig3_content` | unchanged | — | Row order now comes from `_orders.R`. |
 | `ED1_judge_sensitivity` | 2×2 free-scale grid | graphical re-expression | One forest, common x-axis, jurisdiction row groups, no redundant canonical rule. |
 | `ED2_focused_sensitivity` | `ED2_inferential_robustness` (multiverse forest) | **renamed + scope reduced** | Four comparable specifications per jurisdiction; the classified grid moves to `c07c`. |

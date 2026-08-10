@@ -10,6 +10,7 @@
 #   ED7  measurement reliability           (e23, e24, e25)
 #   ED8  prompt-semantic UMAP              (c22)
 #   ED9  prompt-semantic UMAP by model     (c22)  -- optional
+#   ED10 prompt framing, boundary - regular (c10, c11)
 #
 # Read tables, fit nothing, write no canonical table. No titles, subtitles or
 # captions inside a panel. Orderings come from pipeline/_orders.R.
@@ -472,6 +473,67 @@ if (!is.null(c22) && nrow(c22)) {
              width = W2, height = H_STD)
     figs$ED9_prompt_semantic_umap_by_model <- ed9
   }
+}
+
+# =============================================================================
+# ED10 -- prompt framing: boundary minus regular
+# =============================================================================
+# MOVED OUT OF FIGURE 2, NOT DROPPED. Framing is a different exposure answered
+# by a different block from the language contrast, and pairing the two forced
+# both into a half-height panel. Nothing about the estimand changed.
+cat("ED10 framing\n")
+c10 <- rd("c10_framing_paired.csv"); c11 <- rd("c11_framing_by_model_domain.csv")
+if (!is.null(c10) && !is.null(c11)) {
+  fr_all <- c10 %>% filter(scope == "overall") %>%
+    transmute(g = "All models", estimate_pp, conf_low_pp, conf_high_pp)
+  fr_m <- c11 %>% filter(grouping == "model") %>%
+    transmute(g = group, estimate_pp, conf_low_pp, conf_high_pp)
+  # A model with an exactly zero point AND a zero-width interval never refused
+  # in either arm: structural, not a precisely estimated null.
+  fr_z <- fr_m %>% filter(estimate_pp == 0, conf_low_pp == 0, conf_high_pp == 0)
+  fr_m <- fr_m %>% anti_join(fr_z, by = "g")
+  # FIXED model order from _orders.R, not the observed effects.
+  mord <- intersect(ORDER_MODEL, c(fr_m$g, fr_z$g))
+  ypos <- tibble(g = c("All models", mord), y = seq_len(length(mord) + 1))
+  fr <- bind_rows(fr_all, fr_m) %>% left_join(ypos, by = "g") %>%
+    mutate(pooled = g == "All models")
+  fr_z <- fr_z %>% left_join(ypos, by = "g")
+
+  ed10 <- ggplot(fr, aes(x = estimate_pp, y = y)) +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    # A rule under the pooled row: it is the estimate; the rows below it are
+    # exploratory heterogeneity, not eleven separate findings.
+    geom_hline(yintercept = 1.5, colour = RULE, linewidth = 0.4) +
+    geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp,
+                       colour = pooled, linewidth = pooled)) +
+    geom_point(aes(fill = pooled, size = pooled, shape = pooled),
+               colour = "white", stroke = 0.3) +
+    { if (nrow(fr_z))
+        geom_point(data = fr_z, aes(x = 0, y = y), inherit.aes = FALSE,
+                   shape = SHAPE_NOT_ESTIMABLE, size = 1.5, colour = INK_FAINT,
+                   stroke = 0.4) } +
+    { if (nrow(fr_z))
+        geom_text(data = fr_z, aes(x = 0, y = y), inherit.aes = FALSE,
+                  label = NOT_ESTIMABLE_TEXT, hjust = -0.16, size = TXT,
+                  colour = INK_FAINT) } +
+    geom_text(data = filter(fr, pooled),
+              aes(x = conf_high_pp, label = fmt_pp(estimate_pp)), hjust = -0.32,
+              size = TXT, fontface = "bold", colour = INK) +
+    scale_colour_manual(values = c(`TRUE` = INK, `FALSE` = INK_SOFT), guide = "none") +
+    scale_fill_manual(values = c(`TRUE` = INK, `FALSE` = INK_SOFT), guide = "none") +
+    scale_size_manual(values = c(`TRUE` = 2.4, `FALSE` = 1.4), guide = "none") +
+    scale_shape_manual(values = c(`TRUE` = 23, `FALSE` = 21), guide = "none") +
+    scale_linewidth_manual(values = c(`TRUE` = 0.5, `FALSE` = 0.35), guide = "none") +
+    scale_y_reverse(breaks = ypos$y, labels = ypos$g,
+                    expand = expansion(add = c(0.7, 0.7))) +
+    scale_x_continuous(expand = expansion(mult = c(0.05, 0.12))) +
+    labs(x = "Boundary - regular (pp)", y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "x") +
+    theme(axis.text.y = element_text(size = PT_MIN),
+          axis.ticks.y = element_blank()) +
+    tag_only() + theme(plot.tag = element_blank())
+  save_fig(ed10, file.path(ED_FIG, "ED10_framing.png"), width = W2, height = H_SHORT)
+  figs$ED10_framing <- ed10
 }
 
 # A PREVIEW RENDER MUST NOT TOUCH THE PROMOTED TREE -- see 20_figures_main.R for

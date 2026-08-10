@@ -2,7 +2,7 @@
 # MAIN FIGURES -- Fig 1, Fig 2, Fig 3
 # =============================================================================
 #   Fig 1  home jurisdiction: unadjusted and standardized differences, one forest
-#   Fig 2  presentation: pooled language contrasts, and framing
+#   Fig 2  language: pooled, jurisdiction and model contrasts (framing is ED10)
 #   Fig 3  content of engaged responses: ideology, foundations, agreement
 #
 # These READ the canonical tables and fit nothing, which is what lets
@@ -204,84 +204,151 @@ save_fig(p1, file.path(CAN_FIG, "Fig1_home_jurisdiction.png"),
          width = W2, height = H_WIDE)
 
 # =============================================================================
-# FIGURE 2 -- language and framing
+# FIGURE 2 -- language: pooled, jurisdiction and model, on one shared scale
 # =============================================================================
+# FRAMING IS NOT IN THIS FIGURE. It is a different exposure answered by a
+# different block, and pairing it with language forced both into a half-height
+# panel. It is now ED10, at full size, with nothing removed from the analysis.
+#
+# THREE NESTED LEVELS, ALL CANONICAL. The overall pooled contrast (c08 primary,
+# equal_model), the five jurisdiction contrasts and the eleven model contrasts
+# (both c09). The jurisdiction rows are NOT an aesthetic addition: c09 applies
+# the SAME estimator as c08's primary -- wmean_blocks(., "equal_model") over the
+# paired blocks -- restricted to one jurisdiction's models, with its own paired
+# bootstrap. The nesting is exact and is checked in audit_figures.R: each
+# jurisdiction equals the equal-model mean of its models, and the overall equals
+# the equal-model mean of all eleven, to 1e-8.
+#
+# COLOUR MEANS JURISDICTION. The pooled row is ink, not a hue, because "all
+# models" is not a jurisdiction.
+#
+# ONE SHARED LINEAR SCALE, NOT FOUR FREE ONES. Cross-language magnitude is part
+# of the result: Hindi is not Chinese with a different axis. The cost is real --
+# five of the 44 model cells run past +15 pp and compress the rest -- and two
+# alternatives were tested and rejected. Clipping the axis pushed the MENA
+# aggregate for Hindi (+35 pp) off the panel, and a canonical aggregate must not
+# be an arrowhead. A second magnified band read well but doubled the figure to a
+# full page to re-draw the same spine, and the cell-level detail it showed is
+# already ED4. What the shared scale still delivers is the finding: the pooled
+# effects are small and the MENA spread around them is enormous.
 cat("Fig 2 ...\n")
-c08 <- rd("c08_language_paired.csv")
-c10 <- rd("c10_framing_paired.csv"); c11 <- rd("c11_framing_by_model_domain.csv")
+c08 <- rd("c08_language_paired.csv"); c09 <- rd("c09_language_by_model.csv")
 
-# --- a: pooled paired language contrasts --------------------------------------
-# The model x language matrix is ED4. Showing the per-model spread here as well
-# put the same 44 numbers in the main figure and in Extended Data, which is one
-# display too many for a quantity whose aggregate is the paper's claim.
-prim <- c08 %>% filter(sensitivity == "primary", weighting == "equal_model") %>%
-  transmute(language_label, estimate_pp, conf_low_pp, conf_high_pp) %>%
-  mutate(l = factor(language_label, levels = rev(ORDER_LANG_CONTRAST)))
+lv_all <- c08 %>% filter(sensitivity == "primary", weighting == "equal_model") %>%
+  transmute(language, key = "ALL", jurisdiction = NA_character_,
+            est = estimate_pp, lo = conf_low_pp, hi = conf_high_pp, lvl = "all")
+lv_jur <- c09 %>% filter(grouping == "jurisdiction") %>%
+  transmute(language, key = group, jurisdiction = group, est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, lvl = "juris")
+lv_mod <- c09 %>% filter(grouping == "model") %>%
+  transmute(language, key = group, jurisdiction, est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, lvl = "model")
+lv <- bind_rows(lv_all, lv_jur, lv_mod)
 
-p2a <- ggplot(prim, aes(x = estimate_pp, y = l)) +
-  geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
-  geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp), colour = INK,
-                 linewidth = LWC) +
-  geom_point(size = 2.1, shape = 21, fill = INK, colour = "white", stroke = 0.35) +
-  geom_text(aes(x = conf_high_pp, label = fmt_pp(estimate_pp)), hjust = -0.32,
-            size = TXT, colour = INK_SOFT) +
-  scale_y_discrete(limits = rev(ORDER_LANG_CONTRAST)) +
-  scale_x_continuous(expand = expansion(mult = c(0.10, 0.26))) +
-  labs(x = "Paired difference vs. English (pp)", y = NULL) +
-  theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(axis.text.y = element_text(colour = INK)) + tag_only()
+# A one-model jurisdiction has an aggregate equal to its model, so it gets one
+# row -- the same rule as Fig 1.
+lv_single <- lv_mod %>% distinct(jurisdiction, key) %>% count(jurisdiction) %>%
+  filter(n == 1) %>% pull(jurisdiction)
+lspine <- bind_rows(
+  tibble(jurisdiction = NA_character_, key = "ALL", lab = "All models", lvl = "all"),
+  map_dfr(ORDER_JURIS, function(j) {
+    ms <- intersect(ORDER_MODEL, lv_mod$key[lv_mod$jurisdiction == j])
+    r <- tibble(jurisdiction = j, key = j, lab = j, lvl = "juris")
+    if (!(j %in% lv_single) && length(ms))
+      r <- bind_rows(r, tibble(jurisdiction = j, key = ms,
+                               lab = paste0("   ", ms), lvl = "model"))
+    r
+  })) %>%
+  # Whitespace, not rules or shading, separates the groups.
+  mutate(gap = cumsum(lvl != "model" & row_number() > 1),
+         y = -(row_number() + 0.7 * gap))
 
-# --- b: framing, pooled primary + per-model heterogeneity ---------------------
-fr_all <- c10 %>% filter(scope == "overall") %>%
-  transmute(g = "All models", estimate_pp, conf_low_pp, conf_high_pp)
-fr_m <- c11 %>% filter(grouping == "model") %>%
-  transmute(g = group, estimate_pp, conf_low_pp, conf_high_pp)
-# A model with an exactly zero point AND a zero-width interval never refused in
-# either arm: structural, not a precisely estimated null.
-fr_z <- fr_m %>% filter(estimate_pp == 0, conf_low_pp == 0, conf_high_pp == 0)
-fr_m <- fr_m %>% anti_join(fr_z, by = "g")
-# FIXED model order from _orders.R, not the observed effects.
-mord <- intersect(ORDER_MODEL, c(fr_m$g, fr_z$g))
-ford <- c("All models", mord)
-ypos <- tibble(g = ford, y = seq_along(ford))
-fr <- bind_rows(fr_all, fr_m) %>% left_join(ypos, by = "g") %>%
-  mutate(pooled = g == "All models")
-fr_z <- fr_z %>% left_join(ypos, by = "g")
+LANG_XLIM <- c(-9, 72)
 
-p2b <- ggplot(fr, aes(x = estimate_pp, y = y)) +
-  geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
-  # A rule under the pooled row: it is the estimate; the rows below it are
-  # exploratory heterogeneity, not eleven separate findings.
-  geom_hline(yintercept = 1.5, colour = RULE, linewidth = 0.4) +
-  geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp,
-                     colour = pooled, linewidth = pooled)) +
-  geom_point(aes(fill = pooled, size = pooled, shape = pooled),
-             colour = "white", stroke = 0.3) +
-  { if (nrow(fr_z))
-      geom_point(data = fr_z, aes(x = 0, y = y), inherit.aes = FALSE,
-                 shape = SHAPE_NOT_ESTIMABLE, size = 1.5, colour = INK_FAINT,
-                 stroke = 0.4) } +
-  { if (nrow(fr_z))
-      geom_text(data = fr_z, aes(x = 0, y = y), inherit.aes = FALSE,
-                label = NOT_ESTIMABLE_TEXT, hjust = -0.16, size = TXT,
-                colour = INK_FAINT) } +
-  scale_colour_manual(values = c(`TRUE` = INK, `FALSE` = INK_SOFT), guide = "none") +
-  scale_fill_manual(values = c(`TRUE` = INK, `FALSE` = INK_SOFT), guide = "none") +
-  scale_size_manual(values = c(`TRUE` = 2.4, `FALSE` = 1.4), guide = "none") +
-  scale_shape_manual(values = c(`TRUE` = 23, `FALSE` = 21), guide = "none") +
-  scale_linewidth_manual(values = c(`TRUE` = LWC, `FALSE` = 0.35), guide = "none") +
-  scale_y_reverse(breaks = ypos$y, labels = ypos$g,
-                  expand = expansion(add = c(0.7, 0.7))) +
-  scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
-  labs(x = "Boundary - regular (pp)", y = NULL) +
-  theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(axis.text.y = element_text(size = PT_MIN),
-        axis.ticks.y = element_blank()) + tag_only()
+lang_panel <- function(L) {
+  d <- lspine %>% left_join(filter(lv, language == L),
+                            by = c("jurisdiction", "key", "lvl"))
+  A <- filter(d, lvl == "all"); J <- filter(d, lvl == "juris")
+  M <- filter(d, lvl == "model")
+  span <- diff(LANG_XLIM)
+  # A label goes left of its interval when the interval runs near the panel
+  # edge, so no direct label is ever clipped.
+  place <- function(x) x %>% mutate(
+    lx = if_else(hi > LANG_XLIM[2] - 0.22 * span, lo, hi),
+    hj = if_else(hi > LANG_XLIM[2] - 0.22 * span, 1.22, -0.28))
+  # Only genuinely extreme model cells are labelled; labelling all 11 per panel
+  # would bury the aggregate the panel exists to show.
+  EXT <- place(filter(M, abs(est) >= 15))
+  ggplot() +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    geom_linerange(data = M, aes(y = y, xmin = lo, xmax = hi,
+                                 colour = jurisdiction),
+                   linewidth = 0.3, alpha = 0.5) +
+    geom_point(data = M, aes(x = est, y = y, colour = jurisdiction),
+               size = 0.95, alpha = 0.62, shape = 16) +
+    geom_linerange(data = J, aes(y = y, xmin = lo, xmax = hi,
+                                 colour = jurisdiction), linewidth = 0.62) +
+    geom_point(data = J, aes(x = est, y = y, fill = jurisdiction),
+               shape = 23, size = 1.8, colour = "white", stroke = 0.3) +
+    geom_linerange(data = A, aes(y = y, xmin = lo, xmax = hi), colour = INK,
+                   linewidth = 0.8) +
+    geom_point(data = A, aes(x = est, y = y), shape = 23, size = 2.5,
+               fill = INK, colour = "white", stroke = 0.35) +
+    geom_text(data = place(A), aes(x = lx, y = y, label = fmt_pp(est), hjust = hj),
+              size = TXT, fontface = "bold", colour = INK) +
+    { if (nrow(EXT))
+        geom_text(data = EXT, aes(x = lx, y = y, label = fmt_pp0(est),
+                                  colour = jurisdiction, hjust = hj), size = TXT) } +
+    scale_colour_manual(values = PAL_JURIS, guide = "none", na.value = INK) +
+    scale_fill_manual(values = PAL_JURIS, guide = "none", na.value = INK) +
+    scale_y_continuous(breaks = lspine$y, labels = lspine$lab,
+                       limits = range(lspine$y) + c(-0.9, 0.9)) +
+    scale_x_continuous(limits = LANG_XLIM,
+                       expand = expansion(mult = c(0.02, 0.02))) +
+    labs(x = NULL, y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "x") +
+    theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
+}
 
-fig2 <- (p2a / p2b) + plot_layout(heights = c(0.55, 1.45)) +
-  plot_annotation(tag_levels = "a")
-save_fig(fig2, file.path(CAN_FIG, "Fig2_language_framing.png"),
-         width = W2, height = H_WIDE)
+# THE ROW LABELS ARE THEIR OWN COLUMN. Reserving the label strip inside all four
+# panels is the only way to force equal panel widths when one carries axis text,
+# but with four panels that spends a quarter of the figure on three invisible
+# strips. As a column the labels are drawn as data, so the jurisdiction/model
+# hierarchy is mapped rather than styled per tick, and the four panels are
+# identical in width by construction.
+lang_labels <- function() {
+  ggplot(lspine, aes(x = 0, y = y, label = lab)) +
+    geom_text(aes(colour = lvl == "model",
+                  fontface = if_else(lvl == "model", "plain", "bold")),
+              hjust = 0, size = TXT, show.legend = FALSE) +
+    scale_colour_manual(values = c(`TRUE` = INK_SOFT, `FALSE` = INK)) +
+    scale_y_continuous(limits = range(lspine$y) + c(-0.9, 0.9)) +
+    scale_x_continuous(limits = c(0, 1), expand = expansion(0)) +
+    coord_cartesian(clip = "off") +
+    labs(x = NULL, y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "none") +
+    # The x axis is kept but invisible: its height is what holds these rows in
+    # register with the four panels, which do carry one.
+    theme(axis.text.y = element_blank(), axis.ticks = element_blank(),
+          axis.ticks.x.bottom = element_blank(),
+          axis.text.x = element_text(colour = NA),
+          axis.line = element_blank(), axis.line.x.bottom = element_blank(),
+          panel.grid = element_blank(), plot.margin = margin(1, 0, 1, 1))
+}
+
+lang_ps <- imap(LANG_LABEL[ORDER_LANG_CONTRAST_CODE], function(lab, L)
+  lang_panel(L) + labs(tag = lab) +
+    theme(plot.tag = element_text(size = PT_BODY, face = "bold", hjust = 0),
+          plot.tag.position = c(0.02, 0.995)))
+
+fig2 <- wrap_elements(
+  wrap_plots(c(list(lang_labels()), lang_ps), nrow = 1,
+             widths = c(0.40, 1, 1, 1, 1))) /
+  grid::textGrob("Difference from English (percentage points)",
+                 gp = grid::gpar(fontsize = PT_AXIS, col = INK)) +
+  plot_layout(heights = c(1, 0.04))
+fig2 <- quiet_vec_text(fig2)
+save_fig(fig2, file.path(CAN_FIG, "Fig2_language.png"), width = W2, height = H_STD)
 
 # =============================================================================
 # FIGURE 3 -- content of engaged responses
@@ -370,7 +437,7 @@ save_fig(fig3, file.path(CAN_FIG, "Fig3_content.png"),
 # Assembled objects are saved so audit_figures.R can MEASURE the rendered layout
 # rather than grep the source for font sizes. AUDIT ARTEFACTS, not artwork.
 save_layout(list(Fig1_home_jurisdiction = p1,
-            Fig2_language_framing = fig2,
+            Fig2_language = fig2,
             Fig3_content = fig3),
             "c20_figure_layout_main.rds")
 

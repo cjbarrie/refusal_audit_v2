@@ -2595,7 +2595,7 @@ hi & 2 & 0 & $\phantom{+}0$ \\
 \noindent This block contributes $d = +1$ to Chinese and to Russian and $0$ to
 Arabic and Hindi. Averaging within model and then across the eleven models over
 the $27{,}440$ complete Chinese blocks gives
-$\hat\delta_{\mathrm{zh}} = +1.320$ pp --- the Chinese mark of \textbf{Fig 2a}.
+$\hat\delta_{\mathrm{zh}} = +1.320$ pp --- the pooled Chinese mark of \textbf{Fig 2}.
 The same estimator applied within \code{deepseek-chat-v3.1} alone gives
 $+11.34$ pp (\code{c09}), one row of \textbf{ED4}.
 
@@ -2645,7 +2645,7 @@ in English:
 $d_b = +0.5$. Across the $6{,}857$ complete English blocks the mean regular rate
 is $0.05104$ and the mean boundary rate $0.05184$; averaging within model and
 then across models gives $+0.0867$ pp with interval $[-0.698,\ 0.841]$ --- the
-accent diamond of \textbf{Fig 2b}.
+ink diamond of \textbf{ED10}.
 
 That pooled near-zero \textbf{conceals complete sign reversal}: \code{sarvam-30b}
 is $+8.25$ pp $[6.43,\ 10.03]$ and \code{falcon3-10b} is $-5.61$ pp
@@ -3140,12 +3140,13 @@ Fig 1 right, diamonds & \code{c04} & covariate-standardized home$-$away
   $B{=}2000$ & \textbf{primary} \\
 Fig 1 right, points & \code{c05} & the same contrast per model &
   \textbf{none drawn}; in \code{c05} & exploratory \\
-Fig 2a & \code{c08} & pooled paired language difference, equal per model &
-  95\% issue-cluster bootstrap & \textbf{primary}, but see
+Fig 2, ink diamonds & \code{c08} & pooled paired language difference, equal
+  per model & 95\% issue-cluster bootstrap & \textbf{primary}, but see
   \S\ref{sec:validity} \\
-Fig 2b & \code{c10}, \code{c11} & paired boundary$-$regular difference,
-  complete 2+2 blocks & 95\% issue-cluster bootstrap & primary (pooled);
-  per-model exploratory \\
+Fig 2, hue diamonds & \code{c09} & the same estimator restricted to one
+  jurisdiction's models & 95\% paired issue-cluster bootstrap & exploratory \\
+Fig 2, circles & \code{c09} & the same estimator per model &
+  95\% paired issue-cluster bootstrap & exploratory \\
 Fig 3a & \code{c12} & equal-model share in each of five ideology bins &
   none (composition; intervals in \code{c12}) & descriptive, exploratory \\
 Fig 3b & \code{c14} & equal-model prevalence of six non-exclusive foundations &
@@ -3170,6 +3171,9 @@ ED8 & \code{c22} & prompt refusal propensity over a fixed geometry &
   none (descriptive map) & exploratory \\
 ED9 & \code{c22} & per-model refusal over the same geometry &
   none (binary indicator) & exploratory \\
+ED10 & \code{c10}, \code{c11} & paired boundary$-$regular difference,
+  complete 2+2 blocks & 95\% issue-cluster bootstrap & primary (pooled);
+  per-model exploratory \\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -3179,11 +3183,13 @@ ED9 & \code{c22} & per-model refusal over the same geometry &
 \code{conf\_high\_pp} are the interval endpoints. Row order comes from
 \file{\_orders.R}. A non-estimable value is a hollow square plus the words
 \code{not estimable}, never a point at zero. Facets share a scale wherever the
-intended comparison is magnitude across facets (ED4, ED8, ED9); ED1 uses one
-common axis across jurisdictions for the same reason. Fig 1 and Fig 2 use no
-hue at all --- position, shape and fill carry the distinction, which survives
-greyscale and every form of colour-vision deficiency. Colour, where used,
-carries exactly one meaning per figure: jurisdiction (ED4, ED6), ideology bin
+intended comparison is magnitude across facets (Fig 2, ED4, ED8, ED9); ED1 uses
+one common axis across jurisdictions for the same reason. Fig 1 and Fig 2 encode
+jurisdiction in hue and separate the levels of their hierarchy by mark, size and
+opacity --- an aggregate is a full-opacity diamond with an interval, a model a
+smaller lighter circle --- so the hierarchy survives greyscale and every form of
+colour-vision deficiency even where the hue does not. Colour carries exactly one
+meaning per figure: jurisdiction (Fig 1, Fig 2, ED4, ED6), ideology bin
 (Fig 3a, ED5), refusal propensity on a perceptually-uniform sequential scale
 (ED8), or construct group (ED7).
 
@@ -3807,10 +3813,10 @@ CN observed rates $\to$ unadjusted difference $\to$ Fig 1 &
   Part I; $0.195914 - 0.035757 = +16.02$ pp $[11.89,\,20.25]$ \\
 CN standardized contrast $\to$ Fig 1 &
   Part I; $+16.48$ pp $[9.95,\,24.84]$, $520$ issues, failure rate $0$ \\
-One paired language block $\to$ Fig 2a &
+One paired language block $\to$ Fig 2 &
   Part II; DeepSeek $\times$ Kashmir reg1, $d_{\mathrm{zh}} = +1$, pooled
   $+1.320$ pp \\
-One complete 2+2 framing block $\to$ Fig 2b &
+One complete 2+2 framing block $\to$ ED10 &
   Part II; gpt-5.1, $d_b = +0.5$, pooled $+0.0867$ pp \\
 Five ideology shares $\to$ Fig 3a and ED5 &
   Part III; Economic $\hat\pi_0 = 0.923999$; DeepSeek row $0.927973$ \\

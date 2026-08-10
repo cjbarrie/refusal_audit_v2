@@ -557,8 +557,8 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 
 | figure | content | tables |
 |---|---|---|
-| `Fig1_home_jurisdiction` | **one forest**: the unadjusted (equal-model) difference and the standardized full-target contrast, overlaid on a shared axis, one row per jurisdiction. Absolute rates are **not** plotted — they are a different quantity and live in `c02` | `c02`, `c04` |
-| `Fig2_language_framing` | a pooled paired language contrasts · b framing, pooled estimate plus per-model heterogeneity | `c08`, `c10`, `c11` |
+| `Fig1_home_jurisdiction` | **two aligned columns on one hierarchical spine**: unadjusted (equal-model) difference and standardized full-target contrast, sharing one x scale. Each jurisdiction is an aggregate diamond with its interval; its models are points beneath it. Absolute rates are **not** plotted — a different quantity, in `c02` | `c02`, `c04`, `c05` |
+| `Fig2_language` | **four language panels, one hierarchical spine, one shared x scale**: pooled contrast (ink), each jurisdiction (hue), each model beneath it. Framing is no longer here — it is `ED10` | `c08`, `c09` |
 | `Fig3_content` | a **all five** ideology bins as a distribution · b foundation prevalence · c agreement, aligned to b on its own 0–1 axis | `c12`, `c14` |
 | `ED1_judge_sensitivity` | **paired** difference from the canonical judge, one compact forest, common axis | `c17d` (`c17b`, `c17c` for absolutes and support) |
 | `ED2_focused_sensitivity` | **four** specifications per jurisdiction: primary ML, Firth (estimator), common support (target), `refused_any` (outcome). The full grid is `c07c` | `c04`, `c07` |
@@ -569,6 +569,7 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 | `ED7_measurement_reliability` | construct × metric: raw agreement, α, Gwet AC1/AC2, PSA | `e23`, `e24`, `e25` |
 | `ED8_prompt_semantic_umap` | one fixed prompt geometry; overall and per-language refusal propensity | `c22` |
 | `ED9_prompt_semantic_umap_by_model` | the same geometry, refusal by model | `c22` |
+| `ED10_framing` | paired boundary − regular difference, pooled estimate plus per-model heterogeneity, at full width | `c10`, `c11` |
 
 **Moved to tables rather than forced into figures**: the full specification grid
 and leave-one-model-out (`c07c`), response-length thresholds (`c07c`, class E),

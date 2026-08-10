@@ -138,58 +138,94 @@ estimands are ED2.
 
 ---
 
-## Figure 2 · Language and prompt framing
+## Figure 2 · Language
 
-183 × 85 mm. Two panels; both estimands are **paired within-block differences**,
-which is what makes them the strongest designs in the paper — prompt content is
-held fixed by construction rather than adjusted for.
+183 × 125 mm. **Four language panels, one hierarchical row spine, one shared x
+scale.** Each panel is one non-English language contrasted with English. Within
+a panel the rows are, top to bottom: the **pooled estimate** (large ink
+diamond), then each **jurisdiction** (filled diamond in the jurisdiction hue)
+with the **models** inside it beneath (smaller lighter circles of the same hue).
+All four panels use the same rows in the same order, so a model can be tracked
+horizontally across languages.
 
-**a**, Pooled paired difference in refusal between each tested language and
-English, from `c08` (`sensitivity == "primary"`, `weighting == "equal_model"`).
-*Block*: model × prompt_id — the same prompt reaches the same model in both
-languages, so **prompt identity is held fixed**. Model is held fixed within the
-block as well; framing is not held fixed but is balanced by construction, since
-every block appears in both tiers. Nothing else is adjusted for.
-*Estimand*: mean paired difference, **equal weight per model** — the predeclared
-primary weighting. Pooled and equal-per-model×issue are in `c08b`; the three
-agree to within 0.03 pp.
+*Estimand*: paired within-block difference in refusal between the tested
+language and English. **Block**: model × prompt_id — the same prompt reaches the
+same model in both languages, so **prompt identity is held fixed**. Model is
+held fixed within the block; framing is not held fixed but is balanced by
+construction, since every block appears in both tiers. Nothing else is adjusted
+for.
 *Sample*: all four non-English languages, including those whose intervals cover
 zero. Of an intended 27,456 blocks (11 models × 2,496 prompts), 16 are missing
 for Chinese, 19 Arabic, 26 Russian, 54 Hindi (`c08$n_missing_blocks`).
 *Interval*: 95% issue-cluster bootstrap, percentile, bootstrap unit `issue_id`.
+
+**The three levels are one estimator, not three.** The pooled row is `c08`
+(`sensitivity == "primary"`, `weighting == "equal_model"`) — the predeclared
+primary weighting; pooled and equal-per-model×issue are in `c08b` and the three
+agree to within 0.03 pp. The jurisdiction and model rows are both `c09`. The
+jurisdiction rows apply the **same** estimator as the pooled row —
+`wmean_blocks(., "equal_model")` over the paired blocks — restricted to one
+jurisdiction's models, each with its own paired bootstrap. They are therefore
+exact analogues, not an aesthetic addition. The nesting is arithmetic and is
+checked mechanically in `audit_figures.R`: every jurisdiction row equals the
+equal-model mean of its model rows (max |diff| 7.1e-15 over 20 cells) and the
+pooled row equals the equal-model mean of all eleven (max |diff| 8.9e-16).
+
+**Colour encodes jurisdiction and nothing else.** The pooled row is ink rather
+than a hue because "all models" is not a jurisdiction. Aggregates take the full
+jurisdiction colour, their models the same hue at reduced opacity; rank within a
+group is never encoded. Groups are separated by whitespace, not rules or
+shading. India and EU are one-model jurisdictions, so their aggregate is
+arithmetically the model estimate and each occupies a single row.
+
+**Model rows carry intervals here, unlike Figure 1.** In Figure 1 the model
+points answer a spread question and intervals obscured it. Here the model cells
+span −6 to +61 pp, precision varies by an order of magnitude across them, and
+the reader needs to see that allam-7b's +61.4 is tightly estimated rather than
+noise. They remain **exploratory** — not multiplicity-adjusted, and a cell whose
+interval excludes zero is not a confirmatory test.
+
+**One shared linear scale, deliberately, and two rejected alternatives.**
+Cross-language magnitude is part of the result: Hindi is not Chinese with a
+different axis, so free per-language scales are not an option. The cost is real
+— five of the 44 model cells run past +15 pp and compress the near-zero region.
+Clipping the axis was tested and rejected because it pushed the MENA aggregate
+for Hindi (+35 pp) off the panel, and a canonical aggregate must not become an
+arrowhead. A second magnified band was tested and rejected because it doubled
+the figure to a full page in order to re-draw the same spine, and the cell-level
+detail it recovered is already ED4. `audit_figures.R` fails if any canonical
+estimate falls outside the shared range.
+
+**Labels**: only the pooled estimate per language, plus model cells at or beyond
+±15 pp. A label is placed left of its interval when the interval runs near the
+panel edge, so no direct label is ever clipped. No confidence-interval strings,
+no significance stars.
+
 **Not the causal effect of a user's language**: it is the effect of delivering
 the tested translation, and it assumes translation equivalence and no
 language-specific provider, run-time or annotation drift. **No judge-sensitivity
 estimate exists** — the panel is English-only, and re-labelling one arm of a
 paired difference compares two instruments rather than perturbing one.
 
-**This panel carries the study's most serious limitation and must not be shown
+**This figure carries the study's most serious limitation and must not be shown
 without it.** The outcome records "did not engage", which conflates a refusal
 with a model that cannot write coherently in the prompt language; 33.3% of all
 refusals carry a judge rationale explicitly calling the text incoherent, and
 they concentrate in exactly these non-English cells (Russian 56.3%, English
-3.0%). Under three alternative outcome definitions all four contrasts here
+3.0%). Under three alternative outcome definitions all four pooled contrasts
 vanish or reverse sign — under the strictest, all four sit within ±1.7 pp of
-zero. See `docs/RESPONSE_VALIDITY.md`.
+zero. The MENA spread that dominates the Hindi and Russian panels is largely
+this artefact: 53.9% of allam-7b's Hindi refusals and 78.7% of its Russian ones
+are judge-flagged incoherent. See `docs/RESPONSE_VALIDITY.md`.
 
-**b**, Paired boundary-minus-regular framing difference. The pooled estimate
-(`c10`, `scope == "overall"`) is the larger accent diamond above a rule; the
-eleven per-model estimates (`c11`, `grouping == "model"`) are below it in a fixed
-model order and are **exploratory heterogeneity, not eleven findings**.
-*Block*: issue × model × language, **complete 2 regular + 2 boundary only**
-(6,857 English blocks). Seven incomplete English blocks are listed by key in
-`c10b`; the looser rule is a labelled sensitivity row in `c10`.
-*The block holds the issue and the model fixed; it does NOT hold prompt content
-fixed* — the regular and boundary variants are different realized prompts about
-the same issue, which is the exposure being varied. A causal reading requires
-the generated variants to be exchangeable given the issue: an assumption about
-the generation template, not a randomisation.
-The pooled +0.09 pp **conceals complete sign reversal**: sarvam-30b +8.3 pp
-[6.4, 10.0] against falcon3-10b −5.6 pp [−7.3, −3.6]. `mistral-large-2512`
-refused nothing in either arm and is a structural zero.
-
-**The model × language display is ED4 and appears nowhere here.** Showing the
-same 44 numbers in the main figure and in Extended Data was one display too many.
+**The pattern to report**: the pooled effects are ordered Chinese +1.3, Arabic
++2.3, Russian +3.9, Hindi +8.5 — all small — and they **conceal enormous and
+highly model-specific heterogeneity**. Every pooled effect is driven by MENA
+models: allam-7b alone moves +15.1 (zh), +51.7 (ru) and +61.4 (hi), with
+falcon3-10b +24.1 (ar) and +25.3 (hi) and jais-8b +17.3 (hi). The US, EU, CN and
+India rows sit within a few points of zero in every language. The pooled
+estimate is therefore **not representative of the roster**, which is the reason
+this figure shows the models and not only the aggregate.
 
 ---
 
@@ -372,6 +408,12 @@ cells with equal values do not carry equal precision.
 interval excludes zero is not a confirmatory test. The weighting comparison is
 `c08b`.
 
+**Fig 2 now shows these same cells hierarchically; this is the flat, complete
+view.** Figure 2 groups the 44 cells under their jurisdiction and pooled
+aggregates on one shared scale, which necessarily compresses the near-zero
+region. ED4 keeps every cell in a per-language facet at full precision, which is
+where to read the small contrasts Figure 2 cannot separate.
+
 **The largest cells are the least interpretable.** allam-7b's Hindi and Russian
 contrasts are the extremes of this display, and 53.9% and 78.7% of that model's
 refusals in those languages are ones the judge itself calls incoherent. They
@@ -473,6 +515,39 @@ English only. In one language a single model either refused a prompt or did not,
 so the encoding is **binary by construction** and is drawn as two levels rather
 than a continuous ramp that would imply a gradation that does not exist. The
 continuous cross-model propensity is ED8.
+
+## ED10 · Prompt framing
+
+183 × 62 mm. Paired boundary-minus-regular difference in refusal. The pooled
+estimate (`c10`, `scope == "overall"`) is the larger ink diamond above a rule;
+the eleven per-model estimates (`c11`, `grouping == "model"`) are below it in a
+fixed model order and are **exploratory heterogeneity, not eleven findings**.
+
+*Block*: issue × model × language, **complete 2 regular + 2 boundary only**
+(6,857 English blocks). Seven incomplete English blocks are listed by key in
+`c10b`; the looser rule is a labelled sensitivity row in `c10`.
+*Interval*: 95% issue-cluster bootstrap, percentile, bootstrap unit `issue_id`.
+
+*The block holds the issue and the model fixed; it does NOT hold prompt content
+fixed* — the regular and boundary variants are different realized prompts about
+the same issue, which is the exposure being varied.
+
+**mistral-large-2512 is marked `not estimable`**, not drawn at zero: it refused
+in neither arm, so the difference is structural rather than a precise null.
+
+**Moved here from Figure 2, with nothing changed about the estimand.** Framing
+is a different exposure answered by a different block from the language
+contrast, and pairing the two forced both into a half-height panel. At full
+width the per-model rows are legible, which they were not before.
+
+**The pattern to report**: the pooled framing effect is +0.09 pp — effectively
+nil, with an interval of [−0.70, +0.84] — while individual models range from
+−5.61 (falcon3-10b) to +8.25 (sarvam-30b), and seven of the ten
+estimable models have intervals excluding zero in one direction or the other. As with language, the
+aggregate conceals the models, and the near-zero pooled estimate is a
+cancellation rather than an absence of framing effects.
+
+---
 
 ## Retired: the refusal-text projection
 

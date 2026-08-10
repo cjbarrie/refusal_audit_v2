@@ -34,17 +34,18 @@ rdc <- function(f) { p <- file.path(CAN_EST, f)
   if (file.exists(p)) suppressMessages(read_csv(p, show_col_types = FALSE)) else NULL }
 cat(strrep("=", 78), "\nFIGURE AUDIT\n", strrep("=", 78), "\n", sep = "")
 
-MAIN <- c("Fig1_home_jurisdiction", "Fig2_language_framing", "Fig3_content")
+MAIN <- c("Fig1_home_jurisdiction", "Fig2_language", "Fig3_content")
 # PNG ONLY. One raster per expected figure and nothing else, anywhere under the
 # active figure directories.
 ED   <- c("ED1_judge_sensitivity", "ED2_focused_sensitivity",
           "ED3_sample_size_stability", "ED4_language_heterogeneity",
           "ED5_slant_by_model", "ED6_foundations_by_model",
           "ED7_measurement_reliability", "ED8_prompt_semantic_umap",
-          "ED9_prompt_semantic_umap_by_model")
+          "ED9_prompt_semantic_umap_by_model", "ED10_framing")
 # Filenames retired in the restructure. Their presence means a stale raster
 # survived, which is exactly the failure the inventory check exists to catch.
-RETIRED_FIG <- c("ED2_inferential_robustness", "ED2_sensitivity_panels",
+RETIRED_FIG <- c("Fig2_language_framing",
+                 "ED2_inferential_robustness", "ED2_sensitivity_panels",
                  "ED3_postoutcome_diagnostics", "ED3_language_detail",
                  "ED5_measurement_reliability", "S1_home_descriptive",
                  "S2_judge_multiverse", "S3_specification_curve",
@@ -177,6 +178,19 @@ lay <- c(
            error = function(e) list()))
 ok("assembled figure objects available for measurement", length(lay) > 0,
    sprintf("%d figures", length(lay)))
+# THE LAYOUT ARTEFACT MUST DESCRIBE THE FIGURES ACTUALLY EXPECTED. It is written
+# to CANON_EST_DIR, so a preview render pointed at a scratch figure directory
+# deliberately leaves the promoted copy alone -- which means these measurements
+# would silently be taken on the PREVIOUS design. Names are compared against the
+# inventory so a stale artefact is reported instead of quietly measured.
+stale <- setdiff(names(lay), c(MAIN, ED))
+missing_lay <- setdiff(c(MAIN, ED), names(lay))
+ok("the measured layout matches the expected figure inventory",
+   length(stale) == 0 && length(missing_lay) == 0,
+   if (length(stale) || length(missing_lay))
+     paste0("stale: ", paste(stale, collapse = ", "),
+            " | not measured: ", paste(missing_lay, collapse = ", "))
+   else "", warn_only = TRUE)
 
 FIG_W_IN <- W2
 if (length(lay)) {
@@ -315,16 +329,61 @@ if (!is.null(c02)) {
   ok("Fig1: both columns share one x range",
      sum(grepl("^XLIM <-", f1)) == 1 && sum(grepl("limits = XLIM", f1)) == 1)
 }
-ok("Fig2a: the primary weighting is the one plotted",
+ok("Fig2: the primary weighting is the one plotted",
    !is.null(c08) && "primary_weighting" %in% names(c08) &&
      n_distinct(c08$primary_weighting) == 1 &&
      c08$primary_weighting[1] %in% c08$weighting)
-ok("Fig2b: every model x language cell has a value",
+ok("Fig2: every model x language cell has a value",
    !is.null(c09) && nrow(filter(c09, grouping == "model")) ==
      n_distinct(c09$group[c09$grouping == "model"]) * n_distinct(c09$language))
-ok("Fig2c: framing uses complete 2+2 blocks",
+# THE THREE LEVELS FIG 2 STACKS MUST NEST EXACTLY, or the hierarchy asserts a
+# containment the estimator does not deliver. c09's jurisdiction rows apply the
+# same equal-model estimator as c08's primary to one jurisdiction's blocks, so
+# each must equal the mean of its model rows and the pooled row must equal the
+# mean of all eleven. A switch to any other weighting breaks both and fails here.
+if (!is.null(c08) && !is.null(c09)) {
+  jm <- c09 %>% filter(grouping == "model") %>%
+    group_by(language, jurisdiction) %>%
+    summarise(mm = mean(estimate_pp), .groups = "drop") %>%
+    inner_join(c09 %>% filter(grouping == "jurisdiction") %>%
+                 transmute(language, jurisdiction = group, jj = estimate_pp),
+               by = c("language", "jurisdiction"))
+  ok("Fig2: each jurisdiction row is the mean of its model rows",
+     nrow(jm) > 0 && max(abs(jm$mm - jm$jj)) < 1e-8,
+     sprintf("max |diff| = %.2e over %d cells", max(abs(jm$mm - jm$jj)), nrow(jm)))
+  om <- c09 %>% filter(grouping == "model") %>%
+    group_by(language) %>% summarise(mm = mean(estimate_pp), .groups = "drop") %>%
+    inner_join(c08 %>% filter(sensitivity == "primary",
+                              weighting == "equal_model") %>%
+                 transmute(language, oo = estimate_pp), by = "language")
+  ok("Fig2: the pooled row is the mean of all eleven model rows",
+     nrow(om) > 0 && max(abs(om$mm - om$oo)) < 1e-8,
+     sprintf("max |diff| = %.2e over %d languages", max(abs(om$mm - om$oo)), nrow(om)))
+}
+# ONE SHARED LINEAR SCALE. Free per-language scales would delete the
+# cross-language magnitude comparison the figure exists to support, and a
+# clipped axis would push the MENA aggregate for Hindi off the panel.
+{
+  f2 <- readLines("pipeline/20_figures_main.R", warn = FALSE)
+  ok("Fig2: one shared x range across the four language panels",
+     sum(grepl("^LANG_XLIM <-", f2)) == 1 &&
+       sum(grepl("limits = LANG_XLIM", f2)) == 1)
+  lx <- as.numeric(str_match(grep("^LANG_XLIM <-", f2, value = TRUE),
+                             "c\\(([-0-9.]+), *([-0-9.]+)\\)")[, 2:3])
+  hi <- suppressWarnings(max(c(c08$conf_high_pp, c09$conf_high_pp,
+                               c08$estimate_pp, c09$estimate_pp), na.rm = TRUE))
+  ok("Fig2: no canonical estimate falls outside the shared range",
+     all(is.finite(lx)) && hi <= lx[2],
+     sprintf("largest plotted value %.1f, axis top %.1f", hi, lx[2]))
+}
+ok("ED10: framing uses complete 2+2 blocks",
    !is.null(c10) && any(grepl("complete 2", c10$block_rule %||% "")),
    if (is.null(c10)) "" else unique(c10$block_rule)[1])
+ok("ED10: framing left Fig 2 and is still drawn",
+   any(grepl("ED10_framing.png",
+             readLines("pipeline/21_figures_extended.R", warn = FALSE))) &&
+     !any(grepl("c10_framing|c11_framing",
+                readLines("pipeline/20_figures_main.R", warn = FALSE))))
 ok("Fig3a: exactly five ideology bins per dimension",
    !is.null(c12) && {
      k <- c12 %>% filter(role == "PRIMARY") %>% count(dimension)

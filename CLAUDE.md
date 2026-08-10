@@ -282,7 +282,7 @@ output schema, check that contract for what fields/joins R depends on.
     in non-English cells (Russian 56.3%, English 3.0%). All four language
     contrasts vanish or reverse sign under alternative outcome definitions.
     Part 1 is English-only and survives. `docs/RESPONSE_VALIDITY.md` is
-    authoritative and must be read before quoting `c08`–`c11` or Fig 2a / ED4.
+    authoritative and must be read before quoting `c08`–`c11` or Fig 2 / ED4.
     The multi-judge panel does not address this — every judge sees the same
     degenerate text and can agree it does not engage; agreement is not validity.
   * ~2 h runtime; built by `pipeline/make_release.R`, which is the only driver.

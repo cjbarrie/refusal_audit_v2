@@ -58,8 +58,13 @@ MODEL_JURIS <- c(
 ORDER_LANG       <- c("en", "zh", "ar", "ru", "hi")
 LANG_LABEL       <- c(en = "English", zh = "Chinese", ar = "Arabic",
                       ru = "Russian", hi = "Hindi")
-# The four contrast rows, i.e. everything except the reference.
-ORDER_LANG_CONTRAST <- c("Chinese", "Arabic", "Russian", "Hindi")
+# The four contrast rows, i.e. everything except the reference. The label form
+# is what a display shows; the code form is what the tables key on, and the two
+# are kept in the same order so a panel's heading can never drift off its data.
+ORDER_LANG_CONTRAST      <- c("Chinese", "Arabic", "Russian", "Hindi")
+ORDER_LANG_CONTRAST_CODE <- setdiff(ORDER_LANG, "en")
+stopifnot(identical(unname(LANG_LABEL[ORDER_LANG_CONTRAST_CODE]),
+                    ORDER_LANG_CONTRAST))
 
 # --- content categories ------------------------------------------------------
 ORDER_IDEO_DIM <- c("Economic", "Social", "Authority", "Populism")

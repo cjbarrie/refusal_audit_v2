@@ -29,6 +29,14 @@
 #   --skip-data      do not rebuild data_clean.RData (it is an input, not output)
 #   --allow-dirty    permit a release from a dirty working tree (recorded)
 #   --no-promote     build and check, but leave the live directories untouched
+#   --figures-only --from <run_id>
+#                    inherit <run_id>'s estimates instead of recomputing them and
+#                    rebuild ONLY the figures. Refuses unless every file on the
+#                    estimation path is byte-identical to its state in <run_id>,
+#                    and unless the seed, bootstrap sizes and annotation input
+#                    also match. A full release is ~93 min, of which the figure
+#                    scripts are 8 seconds; this makes a plotting change a
+#                    30-second loop without weakening what a release asserts.
 
 t0 <- Sys.time()
 suppressPackageStartupMessages({ library(tidyverse); library(digest) })
@@ -36,6 +44,27 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 
 args <- commandArgs(trailingOnly = TRUE)
 has <- function(f) f %in% args
+arg_val <- function(f, default = "") {
+  i <- match(f, args)
+  if (is.na(i) || i == length(args)) default else args[i + 1]
+}
+sha256 <- function(p) if (file.exists(p)) digest(p, algo = "sha256", file = TRUE) else NA_character_
+
+# --- figures-only mode -------------------------------------------------------
+# WHY THIS EXISTS. A full release is ~93 minutes, of which the two figure
+# scripts are 8 seconds; the rest regenerates seeded bootstraps that come out
+# bit-for-bit identical. Redrawing a panel should not cost 93 minutes.
+#
+# WHAT IT MUST NOT BREAK. The point of an end-to-end release is that the figures
+# in a tree cannot have been drawn against different estimates than the tables
+# beside them. Inheriting estimates keeps that guarantee ONLY if the inherited
+# ones provably still correspond to the current estimation code -- so this mode
+# verifies, before it does anything, that every file on the estimation path is
+# byte-identical to its state in the source release, and refuses otherwise. That
+# is a stronger guarantee than "always rebuild and trust nobody took a
+# shortcut", because it is mechanical.
+FIGS_ONLY <- has("--figures-only")
+FROM_ID   <- arg_val("--from")
 
 RUN_ID <- Sys.getenv("CANONICAL_RUN_ID", "")
 if (!nzchar(RUN_ID)) {
@@ -69,6 +98,81 @@ if (DIRTY && !has("--allow-dirty")) {
 }
 cat(sprintf("git: %s @ %s%s\n", GIT_BRANCH, GIT_SHORT, if (DIRTY) "  [DIRTY]" else ""))
 
+# --- figures-only pre-flight -------------------------------------------------
+# Runs BEFORE any directory is created, for the same reason the git gate does: a
+# build that refuses should not leave a release directory behind for the retry
+# to trip over.
+#
+# THE ESTIMATION PATH. Everything whose output the estimates depend on. _orders.R
+# is on this list because 10_canonical_common.R sources it, so a reordering can
+# in principle move an estimate -- _theme.R is not, because only the figures read
+# it. 30_acceptance.R and audit_figures.R are not on it either: they are gates
+# that re-run every time, so changing them is safe and in fact desirable.
+EST_PATH <- c("pipeline/_orders.R", "pipeline/01_data_loading.R",
+              "pipeline/02_judge_reliability.R", "pipeline/10_canonical_common.R",
+              "pipeline/11_canonical_home.R",
+              "pipeline/12_canonical_language_framing.R",
+              "pipeline/13_canonical_content.R",
+              "pipeline/14_canonical_judge_uncertainty.R",
+              "pipeline/15_subsample_stability.R", "pipeline/16_prompt_umap.R",
+              "pipeline/40_appendix_descriptives.R")
+SRC_MAN <- NULL
+if (FIGS_ONLY) {
+  if (!nzchar(FROM_ID)) {
+    cat("ERROR: --figures-only requires --from <run_id>, the release whose\n",
+        "       estimates are to be inherited.\n", sep = "")
+    quit(save = "no", status = 5)
+  }
+  SRC     <- file.path("pipeline/releases", FROM_ID)
+  SRC_EST <- file.path(SRC, "estimates")
+  SRC_MAN_P <- file.path(SRC_EST, "c00_manifest.csv")
+  if (!dir.exists(SRC_EST) || !file.exists(SRC_MAN_P)) {
+    cat("ERROR: source release ", SRC, " has no manifest to inherit from.\n", sep = "")
+    quit(save = "no", status = 5)
+  }
+  SRC_MAN <- suppressMessages(read_csv(SRC_MAN_P, show_col_types = FALSE))
+  if (identical(FROM_ID, RUN_ID)) {
+    cat("ERROR: --from must name a DIFFERENT release than CANONICAL_RUN_ID.\n")
+    quit(save = "no", status = 5)
+  }
+
+  # 1. the estimation path must be byte-identical to the source release
+  srcsrc <- SRC_MAN %>% filter(kind == "source") %>% select(path, sha256)
+  now <- tibble(path = EST_PATH, now_sha = map_chr(EST_PATH, sha256))
+  cmp <- now %>% left_join(srcsrc, by = "path")
+  drift <- cmp %>% filter(is.na(sha256) | is.na(now_sha) | sha256 != now_sha)
+  if (nrow(drift)) {
+    cat("\nERROR: --figures-only refused. These estimation-path files differ from\n")
+    cat("       release ", FROM_ID, ", so its estimates no longer describe the\n", sep = "")
+    cat("       current code and inheriting them would ship a mismatched tree:\n")
+    for (f in drift$path) cat("         ", f, "\n", sep = "")
+    cat("       Run a full release instead (drop --figures-only).\n")
+    quit(save = "no", status = 6)
+  }
+
+  # 2. the estimates must have been built from the same data and settings
+  env_of <- function(m, k) { v <- m$detail[m$kind == "environment" & m$path == k]
+                             if (length(v)) as.character(v[1]) else NA_character_ }
+  want <- c(seed = Sys.getenv("CAN_SEED", "20260807"),
+            B_head = Sys.getenv("CANON_B_HEAD", "2000"),
+            B_sens = Sys.getenv("CANON_B_SENS", "500"),
+            B_judge = Sys.getenv("CANON_B_JUDGE", "600"))
+  bad <- names(want)[map_chr(names(want), function(k) env_of(SRC_MAN, k)) != want]
+  ann_now <- c(file.path(RUN_DIR, "annotations_all.jsonl"))
+  ann_src <- SRC_MAN %>% filter(kind == "input_annotations",
+                                basename(path) == "annotations_all.jsonl")
+  if (nrow(ann_src) && !identical(sha256(ann_now), ann_src$sha256[1]))
+    bad <- c(bad, "annotations_all.jsonl")
+  if (length(bad)) {
+    cat("\nERROR: --figures-only refused. These differ from release ", FROM_ID,
+        ":\n", sep = "")
+    for (b in bad) cat("         ", b, "\n", sep = "")
+    quit(save = "no", status = 6)
+  }
+  cat("figures-only: inheriting estimates from ", FROM_ID,
+      " (estimation path verified, ", length(EST_PATH), " files)\n", sep = "")
+}
+
 REL   <- file.path("pipeline/releases", RUN_ID)
 B_EST <- file.path(REL, "estimates")
 B_FIG <- file.path(REL, "figures", "main")
@@ -97,8 +201,6 @@ rule(); cat("RELEASE BUILD: ", RUN_ID, "\n", sep = ""); rule()
 cat("run dir   : ", RUN_DIR, "\n", sep = "")
 cat("build dir : ", REL, "\n\n", sep = "")
 
-sha256 <- function(p) if (file.exists(p)) digest(p, algo = "sha256", file = TRUE) else NA_character_
-
 # --- the plan ----------------------------------------------------------------
 # needs_data marks stages that read data_clean.RData.
 PLAN <- tribble(
@@ -118,6 +220,36 @@ PLAN <- tribble(
   "20", "pipeline/20_figures_main.R",               "main figures",                     TRUE,
   "21", "pipeline/21_figures_extended.R",           "Extended Data figures",            TRUE)
 if (has("--skip-data")) PLAN <- PLAN %>% filter(id != "01")
+
+# INHERIT THE ESTIMATES. Copied file by file with its hash re-verified against
+# the source manifest, so a corrupted or hand-edited source release cannot be
+# laundered into a new one. The manifest and timings are NOT copied: they
+# describe the source build and are regenerated for this one.
+INHERITED <- character()
+if (FIGS_ONLY) {
+  src_out <- SRC_MAN %>% filter(kind == "output",
+                                dirname(path) == file.path(SRC, "estimates"),
+                                !basename(path) %in% c("c00_manifest.csv",
+                                                       "c00_timings.csv"))
+  bad <- character()
+  for (i in seq_len(nrow(src_out))) {
+    f <- src_out$path[i]
+    if (!file.exists(f) || !identical(sha256(f), src_out$sha256[i])) {
+      bad <- c(bad, f); next
+    }
+    file.copy(f, file.path(B_EST, basename(f)), overwrite = TRUE)
+    INHERITED <- c(INHERITED, basename(f))
+  }
+  if (length(bad)) {
+    cat("\nERROR: source release estimates do not match their own manifest:\n")
+    for (b in bad) cat("         ", b, "\n", sep = "")
+    quit(save = "no", status = 6)
+  }
+  cat("figures-only: inherited ", length(INHERITED),
+      " estimate files, all hashes verified\n", sep = "")
+  # Only the figures are rebuilt. 16 is dropped too: it writes c22, an estimate.
+  PLAN <- PLAN %>% filter(id %in% c("20", "21"))
+}
 
 CAN_SEED_VALUE <- Sys.getenv("CAN_SEED", "20260807")
 ENVV <- c(paste0("CANONICAL_RUN_ID=", RUN_ID),
@@ -150,6 +282,12 @@ for (i in seq_len(nrow(PLAN))) {
 # --- timings (second) --------------------------------------------------------
 tim <- bind_rows(timings)
 stopifnot(nrow(tim) > 0, all(is.finite(tim$minutes)))
+# A figures-only build has no estimation rows. Record the inheritance in the
+# timings too, so the missing 90 minutes is explained where someone looking at
+# durations would notice it.
+if (FIGS_ONLY) tim <- bind_rows(tim, tibble(
+  step = "--", script = paste0("estimates inherited from ", FROM_ID),
+  minutes = NA_real_, status = 0L, canonical_run_id = RUN_ID))
 write_csv(tim, file.path(B_EST, "c00_timings.csv"))
 
 # --- manifest (third) --------------------------------------------------------
@@ -226,7 +364,13 @@ man <- bind_rows(
                     Sys.getenv("CANON_B_JUDGE", "600")))) %>%
   mutate(canonical_run_id = RUN_ID, git_sha = GIT_SHA, git_branch = GIT_BRANCH,
          git_dirty = DIRTY,
-         generated_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"))
+         generated_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"),
+         # Where the estimates came from. NA on a full build; on a figures-only
+         # build this names the release they were inherited from and the commit
+         # that produced them, so no reader has to infer it from timings.
+         estimates_inherited_from = if (FIGS_ONLY) FROM_ID else NA_character_,
+         estimates_source_git_sha = if (FIGS_ONLY)
+           (SRC_MAN$git_sha_at_end[1] %||% SRC_MAN$git_sha[1]) else NA_character_)
 
 # --- did the tree move under us? ---------------------------------------------
 # The cleanliness gate runs before the build; the build then takes over an hour,

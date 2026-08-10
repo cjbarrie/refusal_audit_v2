@@ -45,62 +45,96 @@ the layout implies a finding.
 
 ## Figure 1 · Home-jurisdiction asymmetry
 
-183 × 62 mm. **One forest, two estimands, one axis.** For each jurisdiction, the
-unadjusted home−away difference (hollow circle, grey) and the
-covariate-standardized full-target contrast (filled diamond, black), with 95%
-issue-cluster bootstrap intervals.
+183 × 85 mm. **Two columns, one hierarchical row spine.** Left: the unadjusted
+home−away difference. Right: the covariate-standardized full-target contrast.
+Within each column, every jurisdiction is a **large filled diamond with a 95%
+issue-cluster bootstrap interval**, and directly beneath it the **individual
+models** in that jurisdiction as smaller points in the same hue at reduced
+opacity. The two columns share one x scale with aligned zero lines, so a mark at
+the same horizontal position means the same number in either half.
 
 *Sample*: English only, home and away arms, `General` excluded — 520 issues per
 jurisdiction.
 *Outcome*: `refused_strict`, the judge's engagement code 4 or 5.
 
-**Unadjusted difference**, from `c02` (`quantity == "home_minus_away"`,
-`weighting == "equal_model"`). The observed home rate minus the observed away
-rate, with every model given equal weight. It is a **description of the
-corpus**: home and away issue sets differ in topic domain, prompt tier and seed
-route, so the gap mixes model behaviour with issue composition.
+**Unadjusted column**, from `c02`. Jurisdiction aggregates are
+`grouping == "jurisdiction"`, `quantity == "home_minus_away"`,
+`weighting == "equal_model"`; the model points are `grouping == "model"`, same
+quantity. The observed home rate minus the observed away rate. It is a
+**description of the corpus**: home and away issue sets differ in topic domain,
+prompt tier and seed route, so the gap mixes model behaviour with issue
+composition.
 
-**Standardized contrast**, from `c04` (`weighting == "nested"`,
-`estimator == "maximum likelihood"`, `support == "full target"`). Per
-jurisdiction, `refused_strict ~ home * model + tier + topic_domain + route`
-fitted by maximum likelihood, then g-computation on the probability scale.
-Weights are nested — equal per model, then per issue within model, then per
-prompt within model × issue. 95% issue-cluster bootstrap, 2,000 draws,
-percentile; each replicate resamples whole issues, labels each draw, and refits
-and re-standardizes inside the replicate. Region fixed effects are excluded:
-within a jurisdiction, region determines home status.
+**Standardized column**: aggregates from `c04` (`weighting == "nested"`,
+`estimator == "maximum likelihood"`, `support == "full target"`), model points
+from `c05` (excluding its `EQUAL-MODEL AVERAGE` row). Per jurisdiction,
+`refused_strict ~ home * model + tier + topic_domain + route` fitted by maximum
+likelihood, then g-computation on the probability scale. Weights are nested —
+equal per model, then per issue within model, then per prompt within
+model × issue. 95% issue-cluster bootstrap, 2,000 draws, percentile; each
+replicate resamples whole issues, labels each draw, and refits and
+re-standardizes inside the replicate. Region fixed effects are excluded: within
+a jurisdiction, region determines home status.
 
-**The equal-model weighting of the descriptive point is deliberate.** The
-standardized contrast targets a population in which every model carries equal
-weight, so the descriptive point overlaid against it is weighted the same way;
-otherwise the two marks would differ in adjustment *and* in target at once. The
-response-weighted version is in `c02` and differs by at most 0.001 pp.
+**The equal-model weighting of the descriptive column is deliberate, and it is
+what makes the hierarchy honest.** The standardized contrast targets a
+population in which every model carries equal weight, so the descriptive column
+is weighted the same way; otherwise the two columns would differ in adjustment
+*and* in target at once. It also makes each unadjusted aggregate exactly the
+mean of the model points drawn beneath it — checked mechanically in
+`audit_figures.R` to 1e-8. The response-weighted version is in `c02` and differs
+by at most 0.001 pp.
+
+**Model rows carry points, not intervals.** The question the lower rows answer
+is whether a jurisdiction result is consistent across the models inside it, and
+that is a question about the *spread* of the model points. Drawn with intervals,
+four overlapping pale bars in the US block obscure exactly that spread and
+compete with the aggregate. The per-model intervals are in `c02` and `c05` and
+are reported there; they are exploratory — not multiplicity-adjusted — so
+interval-level prominence here would overstate them.
 
 **These are not two estimates of one effect, and neither is causal.** Home is a
 fixed property of an issue's region; nothing randomises it. The standardized
-mark is a **covariate-standardized predictive contrast** — not a causal effect,
-not a difference-in-differences, not a within-issue contrast. Standardization
-adjusts for measured composition only.
+column is a **covariate-standardized predictive contrast** — not a causal
+effect, not a difference-in-differences, not a within-issue contrast.
+Standardization adjusts for measured composition only.
 
 **Absolute home and away rates are not plotted.** A rate and a difference are
 different quantities and do not belong on one axis; the rates are in `c02`
 (CN 19.6% home / 3.6% away, MENA 13.6/7.8, India 7.5/6.5, US 2.6/3.5, EU 0/0).
 
-**EU is marked `not estimable`, not drawn at zero.** Mistral produced zero
-refusals in both arms, so the standardized contrast does not exist and the
-descriptive difference is a structural 0 − 0 rather than a measured null.
+**India and EU occupy a single row each.** Both are one-model jurisdictions, so
+the aggregate is arithmetically that model's estimate (India: sarvam-30b, +0.95
+and −3.07 in the two columns). Plotting an aggregate and a model point on top of
+each other would imply two estimators where there is one.
 
-**Colour is not used.** Jurisdiction is a direct y-axis label, so hue would be
-redundant, and the accent hues available are close to the CN and India
-jurisdiction colours used elsewhere — the same red would mean "China" in one
-figure and "adjusted" in another. Ink, fill and shape separate the two series,
-which survives greyscale and every form of colour-vision deficiency.
+**EU is marked `not estimable` in BOTH columns, never drawn at zero.** Mistral
+produced zero refusals in both arms across all 2,080 English home and away
+responses, so the standardized contrast does not exist and the descriptive
+difference is a structural 0 − 0 rather than a measured null. `c02` reports that
+row as estimable with a value of 0 — true of the arithmetic, false of the
+quantity — so the figure overrides it **from the refusal counts**, not from a
+hardcoded jurisdiction name.
+
+**Colour encodes jurisdiction and nothing else**, in the same hues used
+throughout the set. Full opacity for the aggregate, the same hue at reduced
+opacity for its models; rank within a group is never encoded. The two series in
+each row block are separated by mark and size (diamond with interval vs. point),
+which survives greyscale and every form of colour-vision deficiency; the
+jurisdiction palette is checked for CVD separability in `audit_figures.R`.
+Groups are separated by whitespace, not rules or shading, and model names are
+indented, smaller and lighter than the jurisdiction labels.
 
 **The pattern to report**: CN is large and barely moves under adjustment
-(+16.0 → +16.5); MENA shrinks (+5.9 → +3.8); India and US **change sign**
-(+0.9 → −3.1 and −0.9 → +1.9) and both standardized intervals are close to zero,
-so neither should be presented as a directional headline. The common-support and
-Firth estimands are ED2.
+(+16.0 → +16.5) and both its models sit high (deepseek +14.7, qwen +17.3), so
+the result is not carried by one model. MENA shrinks (+5.9 → +3.8) and is the
+**heterogeneous arm** — allam-7b +10.9, falcon3-10b +4.5, jais-8b +2.2
+unadjusted — so the aggregate should not be read as a uniform MENA effect; see
+also the response-validity limitation on allam-7b in
+`docs/RESPONSE_VALIDITY.md`. India and US **change sign** (+0.9 → −3.1 and
+−0.9 → +1.9) and both standardized intervals are close to zero, so neither
+should be presented as a directional headline. The common-support and Firth
+estimands are ED2.
 
 ---
 
@@ -128,6 +162,15 @@ the tested translation, and it assumes translation equivalence and no
 language-specific provider, run-time or annotation drift. **No judge-sensitivity
 estimate exists** — the panel is English-only, and re-labelling one arm of a
 paired difference compares two instruments rather than perturbing one.
+
+**This panel carries the study's most serious limitation and must not be shown
+without it.** The outcome records "did not engage", which conflates a refusal
+with a model that cannot write coherently in the prompt language; 33.3% of all
+refusals carry a judge rationale explicitly calling the text incoherent, and
+they concentrate in exactly these non-English cells (Russian 56.3%, English
+3.0%). Under three alternative outcome definitions all four contrasts here
+vanish or reverse sign — under the strictest, all four sit within ±1.7 pp of
+zero. See `docs/RESPONSE_VALIDITY.md`.
 
 **b**, Paired boundary-minus-regular framing difference. The pooled estimate
 (`c10`, `scope == "overall"`) is the larger accent diamond above a rule; the
@@ -328,6 +371,12 @@ cells with equal values do not carry equal precision.
 **Exploratory**: these cells are not multiplicity-adjusted, and a cell whose
 interval excludes zero is not a confirmatory test. The weighting comparison is
 `c08b`.
+
+**The largest cells are the least interpretable.** allam-7b's Hindi and Russian
+contrasts are the extremes of this display, and 53.9% and 78.7% of that model's
+refusals in those languages are ones the judge itself calls incoherent. They
+measure a capability failure, not a refusal behaviour. See
+`docs/RESPONSE_VALIDITY.md` before reading any row of this figure.
 
 ## ED5 · Ideological slant by model
 

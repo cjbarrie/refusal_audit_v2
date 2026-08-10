@@ -179,6 +179,15 @@ Both are answered by **paired within-block differences**, which is what makes
 them the strongest designs in the paper: prompt content is held fixed by
 construction rather than adjusted for.
 
+> **The language contrast does not survive a response-validity check, and must
+> not be reported as a refusal-behaviour finding without the caveat.** 33.3% of
+> all refusals are ones the judge itself describes as incoherent or nonsensical,
+> and they concentrate in non-English cells (Russian 56.3%, English 3.0%). Under
+> any of three alternative outcome definitions, all four language contrasts
+> vanish or reverse sign. Part 1 is unaffected because it is English-only.
+> **`docs/RESPONSE_VALIDITY.md` is authoritative here** — read it before quoting
+> `c08`–`c11`.
+
 ### 3a. Language (`c08`, `c09`)
 
 Block = model × prompt_id. Within a block, the same prompt in the same model is
@@ -715,6 +724,17 @@ nulls.
 
 ## 9. Known gaps
 
+- **The refusal outcome conflates declining to answer with failing to produce an
+  answer.** This is the most serious limitation in the study and it is
+  documented in full, with examples, scope and candidate fixes, in
+  `docs/RESPONSE_VALIDITY.md`. In short: `engagement_code >= 4` records "did not
+  engage", which captures both a genuine refusal and a model that cannot write
+  coherently in the prompt language. 3,819 of 11,475 refusals (33.3%) carry a
+  judge rationale explicitly calling the text incoherent — 57.7% of allam-7b's
+  refusals, and 3.0% of English ones. Part 2 does not survive this; Part 1,
+  being English-only, does (CN +16.02 → +11.96 worst case, MENA +5.87 → +3.34).
+  **The multi-judge panel does not address it**: all judges see the same
+  degenerate text and can agree it does not engage. Agreement is not validity.
 - **The judge panel covers English only.** No judge-sensitivity estimate exists
   for the language estimand, and none is fabricated.
 - **The content results are English-only, and the stated reason has gone stale.**

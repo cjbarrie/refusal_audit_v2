@@ -36,6 +36,21 @@ rd <- function(f) { p <- file.path(CAN_EST, f)
   if (file.exists(p)) read_csv(p, show_col_types = FALSE) else
     stop("missing canonical table: ", f) }
 
+PROMOTED_FIG <- "pipeline/figures/main"
+
+# A PREVIEW RENDER MUST NOT TOUCH THE PROMOTED TREE. The layout artefact goes to
+# CAN_EST, which defaults to the promoted estimates directory -- so rendering a
+# draft to a scratch CANON_FIG_DIR without also redirecting CANON_EST_DIR used to
+# overwrite a promoted file. Figures somewhere else plus estimates in the
+# promoted tree means this is a preview, and the write is skipped.
+save_layout <- function(obj, fname) {
+  same <- function(a, b) identical(normalizePath(a, mustWork = FALSE),
+                                   normalizePath(b, mustWork = FALSE))
+  if (same(CAN_EST, "pipeline/estimates/canonical") &&
+      !same(CAN_FIG, PROMOTED_FIG)) {
+    cat("  preview render: layout artefact NOT written to the promoted tree\n")
+  } else saveRDS(obj, file.path(CAN_EST, fname))
+}
 theme_set(theme_nature(base_size = PT_BODY))
 TXT <- pt_to_mm(PT_MIN)
 LWC <- 0.5
@@ -43,102 +58,150 @@ LWC <- 0.5
 cat(strrep("=", 78), "\nMAIN FIGURES\n", strrep("=", 78), "\n", sep = "")
 
 # =============================================================================
-# FIGURE 1 -- home jurisdiction: ONE forest, two estimands
+# FIGURE 1 -- home jurisdiction: hierarchical forest, two aligned columns
 # =============================================================================
-# The three-panel version (rates | unadjusted difference | standardized
-# difference) said the same thing three times. The rates are a different
-# quantity from the differences and do not belong on a difference axis, so they
-# are now a table (c02) and are not plotted at all; the two DIFFERENCES share
-# one axis, which is what makes the comparison the figure exists for.
+# TWO COLUMNS, ONE ROW SPINE. The unadjusted difference and the standardized
+# contrast share a hierarchical y axis -- jurisdiction aggregate, then the models
+# inside it -- and ONE x scale, so a mark at the same horizontal position means
+# the same number in either column.
 #
-# COLOUR IS NOT USED HERE. Jurisdiction is on the y-axis with a direct label, so
-# hue would be redundant; and the two accent hues available are close to the CN
-# and India jurisdiction colours used elsewhere, which would make the same red
-# mean "China" in one figure and "adjusted" in another. Ink, fill and shape
-# separate the two series, which also survives greyscale and every form of
-# colour-vision deficiency without a caveat.
+# THE TWO COLUMNS ARE DIFFERENT ESTIMANDS, not two goes at one number. Both are
+# equal-model weighted so the only thing that differs between them is the
+# adjustment; the standardized column remains a covariate-standardized
+# predictive contrast, not a causal effect.
 #
-# THE TWO POINTS ARE NOT TWO ESTIMATES OF ONE EFFECT. They differ in adjustment
-# AND in weighting target, and the legend says so. Overlaying them shows how the
-# descriptive gap moves once measured composition is held fixed; it does not
-# make either a causal effect.
+# WHY THE MODEL ROWS CARRY NO INTERVALS. The panel's job is to show whether a
+# jurisdiction result is consistent across the models inside it, and that is a
+# question about the SPREAD of the model points. Drawn with intervals, four
+# overlapping pale bars in the US block obscure the spread and compete with the
+# aggregate; drawn as points, the spread reads instantly. The model intervals
+# are in c02 and c05, and they are exploratory in any case -- not
+# multiplicity-adjusted -- so giving them interval-level prominence here would
+# overstate them.
+#
+# COLOUR MEANS JURISDICTION AND NOTHING ELSE. The aggregate takes the full
+# jurisdiction colour, the models the same hue at reduced opacity. Rank within a
+# group is never encoded.
 cat("Fig 1 ...\n")
 c02 <- rd("c02_home_descriptive_english.csv")
 c04 <- rd("c04_home_standardized.csv")
+c05 <- rd("c05_home_by_model.csv")
 
 # EQUAL-MODEL descriptive weighting, chosen deliberately: the standardized
 # contrast standardizes to a target in which every model carries equal weight,
-# so the descriptive point it is compared against must weight models the same
-# way. The response-weighted version is in c02 and differs by at most 0.001 pp
-# here, but the two are conceptually different targets and the figure states
-# which one it draws.
-DESC_W <- "equal_model"
+# so the descriptive column must weight models the same way. It is also what
+# makes the hierarchy honest -- the aggregate is exactly the mean of the model
+# points shown beneath it.
+u_agg <- c02 %>% filter(grouping == "jurisdiction", quantity == "home_minus_away",
+                        weighting == "equal_model") %>%
+  transmute(jurisdiction, key = "AGG", est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, estimable)
+u_mod <- c02 %>% filter(grouping == "model", quantity == "home_minus_away") %>%
+  transmute(jurisdiction, key = stratum_value, est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, estimable)
+s_agg <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
+                        support == "full target") %>%
+  transmute(jurisdiction, key = "AGG", est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, estimable)
+s_mod <- c05 %>% filter(model != "EQUAL-MODEL AVERAGE") %>%
+  transmute(jurisdiction, key = model, est = estimate_pp,
+            lo = conf_low_pp, hi = conf_high_pp, estimable)
 
-desc <- c02 %>%
-  filter(grouping == "jurisdiction", quantity == "home_minus_away",
-         weighting == DESC_W) %>%
-  transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp,
-            series = "Unadjusted difference")
-# EU observed zero refusals in BOTH arms. 0 - 0 = 0 is arithmetically defined
-# but it is a structural zero, not a measured null, and drawing it as a point at
-# zero with a zero-width interval claims a precision the design cannot deliver.
+# STRUCTURAL ZEROS ARE NOT ESTIMATES. EU recorded no refusals in either arm, so
+# the standardized contrast is undefined and the descriptive difference is an
+# arithmetic 0 - 0 rather than a measured null. c02 reports it as estimable with
+# a value of 0; that is true of the arithmetic and false of the quantity, so the
+# jurisdiction is marked not estimable in BOTH columns here.
 zero_arm <- c02 %>%
   filter(grouping == "jurisdiction", quantity == "observed_rate",
          weighting == "response", home_status %in% c("home", "away")) %>%
   group_by(jurisdiction) %>%
   summarise(structural = sum(refusals_strict) == 0, .groups = "drop") %>%
-  filter(structural)
+  filter(structural) %>% pull(jurisdiction)
+blank_zero <- function(d) d %>%
+  mutate(estimable = estimable & !(jurisdiction %in% zero_arm))
+u_agg <- blank_zero(u_agg); u_mod <- blank_zero(u_mod)
+s_agg <- blank_zero(s_agg); s_mod <- blank_zero(s_mod)
 
-std <- c04 %>%
-  filter(weighting == "nested", estimator == "maximum likelihood",
-         support == "full target") %>%
-  transmute(jurisdiction, estimate_pp, conf_low_pp, conf_high_pp, estimable,
-            series = "Standardized contrast")
+# A jurisdiction with ONE model has an aggregate that is arithmetically that
+# model's estimate, in both columns. Two marks for one number is not a
+# hierarchy, so those arms get a single row.
+n_models <- s_mod %>% count(jurisdiction)
+single <- n_models$jurisdiction[n_models$n == 1]
 
-SER <- c("Unadjusted difference", "Standardized contrast")
-fig1_dat <- bind_rows(desc %>% mutate(estimable = TRUE), std) %>%
-  filter(!jurisdiction %in% zero_arm$jurisdiction, estimable) %>%
-  mutate(j = factor(jurisdiction, levels = rev(ORDER_JURIS)),
-         s = factor(series, levels = SER),
-         dodge = ifelse(series == SER[1], 0.19, -0.19))
-ne1 <- bind_rows(
-  std %>% filter(!estimable) %>% transmute(jurisdiction, why = "not estimable"),
-  zero_arm %>% transmute(jurisdiction, why = "no refusals in either arm")) %>%
-  distinct(jurisdiction, .keep_all = TRUE) %>%
-  mutate(j = factor(jurisdiction, levels = rev(ORDER_JURIS)))
+spine <- map_dfr(ORDER_JURIS, function(j) {
+  ms <- intersect(ORDER_MODEL, s_mod$key[s_mod$jurisdiction == j])
+  rows <- tibble(jurisdiction = j, key = "AGG", lab = j, is_agg = TRUE)
+  if (!(j %in% single) && length(ms))
+    rows <- bind_rows(rows, tibble(jurisdiction = j, key = ms,
+                                   lab = paste0("   ", ms), is_agg = FALSE))
+  rows
+}) %>%
+  # Whitespace, not rules or shading, separates the groups.
+  mutate(gap = cumsum(is_agg & row_number() > 1), y = -(row_number() + 0.6 * gap))
 
-p1 <- ggplot(fig1_dat, aes(x = estimate_pp,
-                           y = as.numeric(j) + dodge)) +
-  geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
-  geom_linerange(aes(xmin = conf_low_pp, xmax = conf_high_pp, colour = s),
-                 linewidth = LWC) +
-  geom_point(aes(shape = s, fill = s, colour = s), size = 2.2, stroke = 0.6) +
-  geom_text(aes(x = conf_high_pp, label = fmt_pp(estimate_pp), colour = s),
-            hjust = -0.3, size = TXT) +
-  { if (nrow(ne1))
-      geom_point(data = ne1, aes(x = 0, y = as.numeric(j)), inherit.aes = FALSE,
-                 shape = SHAPE_NOT_ESTIMABLE, size = 1.7, colour = INK_FAINT,
-                 stroke = 0.4) } +
-  { if (nrow(ne1))
-      geom_text(data = ne1, aes(x = 0, y = as.numeric(j), label = why),
-                inherit.aes = FALSE, hjust = -0.13, size = TXT,
-                colour = INK_FAINT) } +
-  scale_shape_manual(values = c(21, 23), breaks = SER, name = NULL) +
-  scale_fill_manual(values = c("white", INK), breaks = SER, name = NULL) +
-  scale_colour_manual(values = c(INK_SOFT, INK), breaks = SER, name = NULL) +
-  scale_y_continuous(breaks = seq_along(ORDER_JURIS),
-                     labels = rev(ORDER_JURIS),
-                     limits = c(0.4, length(ORDER_JURIS) + 0.6)) +
-  scale_x_continuous(expand = expansion(mult = c(0.06, 0.20))) +
-  labs(x = "Home - away difference (percentage points)", y = NULL) +
-  theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_text(colour = INK, size = PT_BODY),
-        legend.position = "top", legend.text = element_text(size = PT_MIN),
-        legend.key.size = unit(7, "pt"), legend.margin = margin(0, 0, 0, 0)) +
-  tag_only() + theme(plot.tag = element_blank())   # single panel: no letter
+# One shared x range across both columns.
+XL <- bind_rows(u_agg, u_mod, s_agg, s_mod) %>% filter(estimable)
+XLIM <- c(min(XL$lo, min(XL$est), na.rm = TRUE) - 1.0,
+          max(XL$hi, max(XL$est), na.rm = TRUE) + 3.5)
+
+# EQUAL PANEL WIDTHS, so 1 pp is the same physical distance in both columns.
+# The row labels sit in the left panel's y-axis strip and consume width the
+# right panel would otherwise give to data. The right panel therefore carries
+# the SAME labels drawn in no colour: the strip is measured and reserved
+# identically, nothing is drawn, and the two panel regions come out the same
+# width. Setting widths = c(1, 1) alone would not do it.
+mk_col <- function(dat, xlab, show_y) {
+  d   <- spine %>% left_join(dat, by = c("jurisdiction", "key"))
+  agg <- d %>% filter(is_agg, estimable %in% TRUE)
+  mod <- d %>% filter(!is_agg, estimable %in% TRUE)
+  ne  <- d %>% filter(is_agg, !(estimable %in% TRUE))
+  ggplot() +
+    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
+    geom_point(data = mod, aes(x = est, y = y, colour = jurisdiction),
+               size = 1.4, alpha = 0.5, shape = 16) +
+    geom_linerange(data = agg, aes(y = y, xmin = lo, xmax = hi,
+                                   colour = jurisdiction), linewidth = 0.85) +
+    geom_point(data = agg, aes(x = est, y = y, fill = jurisdiction),
+               shape = 23, size = 2.5, colour = "white", stroke = 0.4) +
+    geom_text(data = agg, aes(x = hi, y = y, label = fmt_pp(est),
+                              colour = jurisdiction),
+              hjust = -0.30, size = TXT, fontface = "bold") +
+    { if (nrow(ne))
+        geom_point(data = ne, aes(x = 0, y = y), shape = SHAPE_NOT_ESTIMABLE,
+                   size = 1.7, colour = INK_FAINT, stroke = 0.4) } +
+    { if (nrow(ne))
+        geom_text(data = ne, aes(x = 0, y = y), label = NOT_ESTIMABLE_TEXT,
+                  hjust = -0.14, size = TXT, colour = INK_FAINT) } +
+    scale_colour_manual(values = PAL_JURIS, guide = "none") +
+    scale_fill_manual(values = PAL_JURIS, guide = "none") +
+    scale_y_continuous(breaks = spine$y, labels = spine$lab,
+                       limits = range(spine$y) + c(-0.9, 0.9)) +
+    scale_x_continuous(limits = XLIM, expand = expansion(mult = c(0.01, 0.01))) +
+    labs(x = xlab, y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "x") +
+    theme(axis.ticks.y = element_blank(),
+          # Jurisdiction rows are ink and bold; model rows are indented, softer
+          # and lighter, so the hierarchy reads without boxes or shading. The
+          # per-tick vectors are the standard idiom for this and ggplot2 warns
+          # that it is not formally supported; the warning is muted at the call
+          # site rather than the styling being dropped.
+          axis.text.y = element_text(
+            hjust = 0, size = PT_MIN,
+            colour = if (show_y) ifelse(spine$is_agg, INK, INK_SOFT) else NA,
+            face = ifelse(spine$is_agg, "bold", "plain"))) +
+    tag_only() + theme(plot.tag = element_blank())
+}
+quiet_vec_text <- function(expr) withCallingHandlers(expr, warning = function(w) {
+  if (grepl("Vectorized input to `element_text", conditionMessage(w)))
+    invokeRestart("muffleWarning") })
+
+p1 <- quiet_vec_text(
+  (mk_col(bind_rows(u_agg, u_mod), "Unadjusted home - away (pp)", TRUE) |
+   mk_col(bind_rows(s_agg, s_mod), "Standardized home - away (pp)", FALSE)) +
+    plot_layout(widths = c(1, 1)))
 save_fig(p1, file.path(CAN_FIG, "Fig1_home_jurisdiction.png"),
-         width = W2, height = H_SHORT)
+         width = W2, height = H_WIDE)
 
 # =============================================================================
 # FIGURE 2 -- language and framing
@@ -306,10 +369,10 @@ save_fig(fig3, file.path(CAN_FIG, "Fig3_content.png"),
 
 # Assembled objects are saved so audit_figures.R can MEASURE the rendered layout
 # rather than grep the source for font sizes. AUDIT ARTEFACTS, not artwork.
-saveRDS(list(Fig1_home_jurisdiction = p1,
-             Fig2_language_framing = fig2,
-             Fig3_content = fig3),
-        file.path(CAN_EST, "c20_figure_layout_main.rds"))
+save_layout(list(Fig1_home_jurisdiction = p1,
+            Fig2_language_framing = fig2,
+            Fig3_content = fig3),
+            "c20_figure_layout_main.rds")
 
 cat("\nwrote:\n"); print(list.files(CAN_FIG))
 cat("\n", strrep("=", 78), "\nMAIN FIGURES DONE\n", strrep("=", 78), "\n", sep = "")

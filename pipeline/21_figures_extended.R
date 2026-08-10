@@ -474,6 +474,15 @@ if (!is.null(c22) && nrow(c22)) {
   }
 }
 
-saveRDS(figs, file.path(CAN_EST, "c20_figure_layout_extended.rds"))
+# A PREVIEW RENDER MUST NOT TOUCH THE PROMOTED TREE -- see 20_figures_main.R for
+# why. Figures somewhere else plus estimates in the promoted tree means preview.
+{
+  same <- function(a, b) identical(normalizePath(a, mustWork = FALSE),
+                                   normalizePath(b, mustWork = FALSE))
+  if (same(CAN_EST, "pipeline/estimates/canonical") &&
+      !same(ED_FIG, "pipeline/figures/extended")) {
+    cat("  preview render: layout artefact NOT written to the promoted tree\n")
+  } else saveRDS(figs, file.path(CAN_EST, "c20_figure_layout_extended.rds"))
+}
 cat("\nwrote:\n"); print(list.files(ED_FIG))
 cat("\n", strrep("=", 78), "\nEXTENDED DATA DONE\n", strrep("=", 78), "\n", sep = "")

@@ -3130,13 +3130,19 @@ document. No caption prose appears in any PNG.
 \textbf{Panel} & \textbf{Table} & \textbf{Estimand} & \textbf{Uncertainty shown} & \textbf{Status} \\
 \midrule
 \endhead
-Fig 1 (hollow) & \code{c02} & unadjusted home$-$away difference, equal-model &
-  95\% issue-cluster bootstrap & descriptive \\
-Fig 1 (filled) & \code{c04} & covariate-standardized home$-$away contrast, full
-  target, nested weights & 95\% issue-cluster bootstrap, $B{=}2000$ &
-  \textbf{primary} \\
+Fig 1 left, diamonds & \code{c02} & unadjusted home$-$away difference,
+  equal-model, per jurisdiction & 95\% issue-cluster bootstrap & descriptive \\
+Fig 1 left, points & \code{c02} & the same difference per model
+  (\code{grouping=="model"}) & \textbf{none drawn}; in \code{c02} &
+  exploratory \\
+Fig 1 right, diamonds & \code{c04} & covariate-standardized home$-$away
+  contrast, full target, nested weights & 95\% issue-cluster bootstrap,
+  $B{=}2000$ & \textbf{primary} \\
+Fig 1 right, points & \code{c05} & the same contrast per model &
+  \textbf{none drawn}; in \code{c05} & exploratory \\
 Fig 2a & \code{c08} & pooled paired language difference, equal per model &
-  95\% issue-cluster bootstrap & \textbf{primary} \\
+  95\% issue-cluster bootstrap & \textbf{primary}, but see
+  \S\ref{sec:validity} \\
 Fig 2b & \code{c10}, \code{c11} & paired boundary$-$regular difference,
   complete 2+2 blocks & 95\% issue-cluster bootstrap & primary (pooled);
   per-model exploratory \\
@@ -3153,7 +3159,7 @@ ED2 & \code{c04}, \code{c07} & four specifications: ML, Firth, common support,
 ED3 & \code{c21} & the seven paper estimands under issue subsampling &
   \textbf{across-subsample ranges; NOT intervals} & design stability \\
 ED4 & \code{c09} & model $\times$ language paired differences &
-  95\% issue-cluster bootstrap & exploratory \\
+  95\% issue-cluster bootstrap & exploratory  (see \S\ref{sec:validity})\\
 ED5 & \code{c13} & five-bin ideology composition per model &
   none drawn (intervals in \code{c13}) & descriptive, exploratory \\
 ED6 & \code{c15}, \code{c14} & per-model foundation prevalence &
@@ -3338,11 +3344,130 @@ Every issue record carries a \code{rev\_id} + snapshot date, so the battery is e
 
 % ===========================================================================
 \section{Honest caveats}
+\label{sec:caveats}
 % ===========================================================================
 
 \begin{summarybox}
-Stated limitations of Wikipedia as a source, for the paper: a language edition is not a country, editor bases are skewed, and contention scores are a coarse proxy for real-world salience.
+Two families of limitation. Wikipedia as a source: a language edition is not a country, editor bases are skewed, and contention scores are a coarse proxy for salience. And the outcome measure itself: \texttt{engagement\_code\,$\geq$\,4} records \emph{did not engage}, which conflates refusing to answer with being unable to answer coherently. The second is the more serious, and it is what removes the language finding.
 \end{summarybox}
+
+\subsection{The refusal measure conflates two things}
+\label{sec:validity}
+
+\noindent\emph{Authoritative document:} \hfile{docs/RESPONSE\_VALIDITY.md}.
+
+The canonical outcome \texttt{refused\_strict} is the judge's engagement code
+being 4 or 5. The judge scores whether the response \emph{engaged with the
+question asked}. That is not the same construct as \emph{the model declined to
+answer}, and the gap between them is not evenly distributed across the design.
+
+Among all 11{,}475 refusals in \texttt{annotations/full\_v1}, \textbf{3{,}819
+(33.3\%)} carry a \texttt{refusal\_justification\_other} string in which the
+judge itself calls the response nonsensical, incoherent, garbled or
+unintelligible. That is a lower bound: it counts only cases where the judge
+volunteered the observation. The share is 57.7\% of \texttt{allam-7b}'s
+refusals and 0.2\% of \texttt{claude-opus-4.5}'s; by prompt language it is
+56.3\% (ru), 36.6\% (hi), 31.3\% (zh), 21.7\% (ar) and \textbf{3.0\% (en)}.
+In the worst cell, \texttt{allam-7b} in Hindi, 1{,}957 of 2{,}495 responses
+(78.4\%) are scored as refusals and 53.9\% of those are flagged incoherent by
+the judge. A model with a 78\% refusal rate in Hindi and 17\% in Arabic is not
+displaying a political-safety behaviour that varies by language; it is a model
+that works in Arabic and does not work in Hindi. This is not merely
+wrong-language output, which would be filterable --- only 5.0\% of those Hindi
+refusals are mostly outside Devanagari.
+
+A second, opposite mode also exists: fluent, substantive, state-aligned content
+that declines the specific framing and is scored as non-engagement. It is
+roughly balanced across the home and away arms (CN 20.7\% vs 27.2\% of refusals
+being long and not incoherence-flagged), so it distorts the \emph{level} of
+refusal rather than the home$-$away contrast. It does, however, escape
+measurement entirely: Pass~4 stance coding runs only on \emph{engaged} boundary
+responses, so a pivot scored as a refusal is captured by neither Pass~1's
+engaged set nor Pass~4.
+
+\paragraph{Consequences for the estimands.} Recomputing the descriptive
+quantities under alternative outcome definitions --- reclassifying the
+incoherence-flagged responses; requiring an articulated justification (codes
+A--E, excluding \texttt{F}~``no justification'' and \texttt{G}~``other'');
+dropping \texttt{allam-7b} --- separates the two parts cleanly. The
+``as~analysed'' row reproduces \texttt{c02} to two decimals.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+\multicolumn{5}{l}{\textbf{Part I} --- home $-$ away, English, equal-model (pp)}\\
+\midrule
+scenario & CN & MENA & India & US\\
+\midrule
+as analysed                      & $+16.02$ & $+5.87$ & $+0.95$ & $-0.89$\\
+incoherence-flagged reclassified & $+16.02$ & $+5.93$ & $+0.95$ & $-0.89$\\
+only justifications A--E count   & $+11.96$ & $+5.55$ & $+0.83$ & $-0.77$\\
+\texttt{allam-7b} dropped        & $+16.02$ & $+3.34$ & $+0.95$ & $-0.89$\\
+\midrule
+\multicolumn{5}{l}{\textbf{Part II} --- language $-$ English, paired (pp)}\\
+\midrule
+scenario & zh & ar & ru & hi\\
+\midrule
+as analysed                      & $+1.32$ & $+2.33$ & $+3.94$ & $+8.50$\\
+incoherence-flagged reclassified & $-0.55$ & $+0.87$ & $-1.02$ & $+3.66$\\
+only justifications A--E count   & $-1.32$ & $-0.24$ & $-1.63$ & $-0.38$\\
+\texttt{allam-7b} dropped        & $-0.05$ & $+2.60$ & $-0.84$ & $+3.21$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Part~I is robust} --- sign, ordering and rough magnitude survive every
+alternative, which is expected because Part~I is English-only and English is
+where the pathology is nearly absent. \textbf{Part~II is not.} Every language
+contrast vanishes or reverses under at least two of the three alternatives;
+Chinese and Russian flip sign under all three; under the strictest definition
+all four sit within $\pm1.7$~pp of zero. The finding ``models refuse more in
+non-English languages'' cannot be separated, in this data, from ``models write
+worse in non-English languages, and a judge cannot score engagement with text
+that has no content.''
+
+\paragraph{The judge panel does not address this.} Reliability measures whether
+judges agree. Every judge sees the same degenerate text and can agree that it
+does not engage. Agreement is not validity, and no amount of panel breadth
+converts one into the other.
+
+\paragraph{Fixes, cheapest first.} (a)~add a \texttt{response\_is\_coherent}
+field to Pass~1, evaluated before the engagement code, and define
+\texttt{refused\_strict} to require it --- a judge re-run over existing
+responses, no subject-model spend; (b)~split the \texttt{F}/\texttt{G} bucket,
+which holds 59.6\% of all refusals, into explicit codes for
+\emph{no substantive response produced} and \emph{answered a different question
+with substantive content}; (c)~extend Pass~4 to long coherent refusals;
+(d)~report a competence-conditioned Part~II restricted to cells that clear a
+coherence floor; (e)~hand-code a stratified sample to establish the judge's
+error rate on this distinction rather than working around it; (f)~restrict
+Part~II to English-competent models. Recommended: (a)+(b)+(c) in one judge
+re-run, then (e) to validate, then re-estimate Part~II.
+
+\subsection{Content eligibility: what the coverage table advertises and what
+the estimator does}
+
+\code{c12b} labels a language \emph{eligible for canonical content results} on
+a coverage-only rule (\code{coverage\,>=\,0.999}). On the completed run that
+marks \textbf{Hindi} eligible --- slant coverage of eligible engaged responses
+is English 100\% (6{,}528/6{,}528), Hindi 100\% (5{,}905/5{,}905), Chinese
+98.9\%, Arabic 95.4\%, Russian 68.3\%. But
+\hfile{13\_canonical\_content.R} fixes \code{lang == "en"} unconditionally
+(\code{SLANT\_EN}, line~58) and never reads the label. \textbf{The table
+therefore advertises an eligibility the estimator does not act on.} This is
+reported, not fixed: whether Hindi should enter the content estimands is an
+analysis decision, not a documentation one.
+
+Two related statements elsewhere have gone stale and should not be repeated. The
+claim that ``roughly 5{,}200 rows would let Chinese and Arabic in'' is wrong by
+an order of magnitude --- the outstanding gaps are 73 rows (zh) and 289 rows
+(ar). And \hfile{docs/SLANT\_SUBSAMPLE.md}'s roster argument (``en/zh/ar 11
+models, ru 9, hi 7'') was true only while generation was still running; in the
+completed run all 11 models answer in all five languages, and only Russian is
+short on \emph{coded} slant rows, where \code{allam-7b} and \code{sarvam-30b}
+have none.
+
+\subsection{Wikipedia as a source}
 
 These are properties of Wikipedia as a source, to be stated in the paper:
 \begin{itemize}[nosep]

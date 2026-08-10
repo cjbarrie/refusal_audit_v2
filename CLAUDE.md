@@ -275,6 +275,16 @@ output schema, check that contract for what fields/joins R depends on.
     inside the replicate.
   * Ideology and moral-foundation tables are **conditional on engagement** and
     must say so; ideology additionally carries a weak-reliability warning.
+  * **Part 2 does not survive a response-validity check.** The outcome
+    `engagement_code >= 4` records "did not engage", which conflates refusing
+    with being unable to write coherently in the prompt language; 33.3% of all
+    refusals carry a judge rationale calling the text incoherent, concentrated
+    in non-English cells (Russian 56.3%, English 3.0%). All four language
+    contrasts vanish or reverse sign under alternative outcome definitions.
+    Part 1 is English-only and survives. `docs/RESPONSE_VALIDITY.md` is
+    authoritative and must be read before quoting `c08`–`c11` or Fig 2a / ED4.
+    The multi-judge panel does not address this — every judge sees the same
+    degenerate text and can agree it does not engage; agreement is not validity.
   * ~2 h runtime; built by `pipeline/make_release.R`, which is the only driver.
 - **Multi-judge reliability panel** (`docs/MULTI_JUDGE_PLAN.md`). Every
   annotation record carries `judge_model` / `judge_prompt_version` /

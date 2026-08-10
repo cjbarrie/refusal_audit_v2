@@ -272,10 +272,49 @@ c08 <- rdc("c08_language_paired.csv"); c09 <- rdc("c09_language_by_model.csv")
 c10 <- rdc("c10_framing_paired.csv"); c12 <- rdc("c12_ideology_distribution.csv")
 c14 <- rdc("c14_moral_prevalence_equal_model.csv"); c17b <- rdc("c17b_judge_envelope.csv")
 
-ok("Fig1c: both standardized estimands present",
+c05 <- rdc("c05_home_by_model.csv")
+ok("Fig1: both standardized estimands present in the table",
    !is.null(c04) && all(c("full target", "common support") %in% c04$support))
-ok("Fig1c: EU carried as flagged, not as zero",
+ok("Fig1: EU carried as flagged, not as zero",
    !is.null(c04) && any(!c04$estimable))
+# THE HIERARCHY MUST BE ARITHMETICALLY HONEST. Fig 1 draws a jurisdiction
+# aggregate above the models inside it, which only reads correctly if the
+# aggregate really is the equal-model mean of those model points. It is the
+# equal_model weighting that makes that true, so a switch to response weighting
+# would silently turn the figure into a claim it cannot support.
+if (!is.null(c02)) {
+  agg <- c02 %>% filter(grouping == "jurisdiction", quantity == "home_minus_away",
+                        weighting == "equal_model") %>%
+    select(jurisdiction, agg = estimate_pp)
+  mod <- c02 %>% filter(grouping == "model", quantity == "home_minus_away") %>%
+    group_by(jurisdiction) %>% summarise(mean_mod = mean(estimate_pp), .groups = "drop")
+  cmp <- inner_join(agg, mod, by = "jurisdiction")
+  ok("Fig1: each unadjusted aggregate is the mean of its model points",
+     nrow(cmp) > 0 && max(abs(cmp$agg - cmp$mean_mod)) < 1e-8,
+     sprintf("max |diff| = %.2e over %d jurisdictions",
+             max(abs(cmp$agg - cmp$mean_mod)), nrow(cmp)))
+}
+# A STRUCTURAL ZERO IS NOT A NULL RESULT. EU logged no refusals in either arm,
+# so 0 - 0 is arithmetic rather than a measured difference and c02 reports it
+# as estimable. Fig 1 must override that from the counts; this check fails if
+# the override is removed from the script or if the counts stop supporting it.
+if (!is.null(c02)) {
+  zsrc <- c02 %>% filter(grouping == "jurisdiction", quantity == "observed_rate",
+                         weighting == "response", home_status %in% c("home", "away")) %>%
+    group_by(jurisdiction) %>%
+    summarise(structural = sum(refusals_strict) == 0, .groups = "drop")
+  f1 <- readLines("pipeline/20_figures_main.R", warn = FALSE)
+  ok("Fig1: the structural zero is derived from counts, not hardcoded",
+     any(grepl("sum\\(refusals_strict\\) == 0", f1)) && !any(grepl('"EU"', f1)),
+     sprintf("%d structural-zero jurisdiction(s)", sum(zsrc$structural)))
+}
+# ONE X SCALE ACROSS BOTH COLUMNS, or a mark at the same horizontal position
+# means two different numbers in the two halves of the figure.
+{
+  f1 <- readLines("pipeline/20_figures_main.R", warn = FALSE)
+  ok("Fig1: both columns share one x range",
+     sum(grepl("^XLIM <-", f1)) == 1 && sum(grepl("limits = XLIM", f1)) == 1)
+}
 ok("Fig2a: the primary weighting is the one plotted",
    !is.null(c08) && "primary_weighting" %in% names(c08) &&
      n_distinct(c08$primary_weighting) == 1 &&
@@ -388,14 +427,22 @@ ok("Fig3a: the neutral bin is drawn, not annotated",
      !any(grepl('filter\\(bin != "0"\\)', src)) &&
        any(grepl("geom_col", src)) })
 
-# Plot-data equality: the labels drawn in Fig1c are re-derived from c04 here, so
-# a figure that formats a different number than its source row fails.
+# Plot-data equality: Fig 1 direct-labels only the jurisdiction aggregates, one
+# per column, so both label sets are re-derived from their source tables here.
+# A figure that formats a different number than its source row fails.
 if (!is.null(c04)) {
-  lab_src <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
-                            estimable) %>%
+  lab_s <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
+                          support == "full target", estimable) %>%
     mutate(lab = sprintf("%+.1f", estimate_pp))
-  ok("Fig1c: printed labels are derivable from c04", nrow(lab_src) > 0 &&
-       all(!is.na(lab_src$lab)), sprintf("%d labels", nrow(lab_src)))
+  ok("Fig1 standardized column: printed labels are derivable from c04",
+     nrow(lab_s) > 0 && all(!is.na(lab_s$lab)), sprintf("%d labels", nrow(lab_s)))
+}
+if (!is.null(c02)) {
+  lab_u <- c02 %>% filter(grouping == "jurisdiction", quantity == "home_minus_away",
+                          weighting == "equal_model", estimable) %>%
+    mutate(lab = sprintf("%+.1f", estimate_pp))
+  ok("Fig1 unadjusted column: printed labels are derivable from c02",
+     nrow(lab_u) > 0 && all(!is.na(lab_u$lab)), sprintf("%d labels", nrow(lab_u)))
 }
 
 # --- 5. figure scripts plot, they do not estimate ----------------------------

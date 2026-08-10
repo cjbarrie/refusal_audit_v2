@@ -271,8 +271,11 @@ required is not run for those rows.
 **Response-length filters are post-outcome** — they condition on a realized
 property of the response — and are class E in `c07c`, not a robustness check and
 not a figure. **The hierarchical marginal estimate** is class F, a different
-estimand that integrates over the issue random effect; it is in `c07b`, and four
-of five jurisdictions did not converge.
+estimand that integrates over the issue random effect; it is in `c07b`, and in
+release `canon_012` **none of the five fits converged** (EU is separated, the
+other four report `did not converge`). MENA converged in the previous release at
++3.79 pp with no change to the data in between, so the specification is unstable
+across runs as well as being a different target.
 
 ## ED3 · Issue-subsample stability
 

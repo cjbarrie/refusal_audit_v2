@@ -640,7 +640,7 @@ row-level bootstraps ignoring issue clustering, unclustered GLMs,
 | `c05` | model-specific contrasts + jointly bootstrapped equal-model average |
 | `c06`, `c06b` | overlap and common-support diagnostics |
 | `c07` | sensitivities |
-| `c07b` | hierarchical marginal — a **different estimand**, tabulated because it has no comparable interval |
+| `c07b` | hierarchical marginal — a **different estimand**, tabulated because it has no comparable interval. In `canon_012` none of the five fits converged; MENA converged in the previous release at +3.79 pp on identical data, so the specification is unstable across runs |
 | `c07c` | the sensitivity **catalogue**, every row classified by what it changes: A estimator / B target population / C outcome definition / D model roster / E post-outcome diagnostic / F different estimand, with the difference from the primary point |
 | `c08b` | weighting comparison for the paired language effect |
 | `c08`, `c09` | paired language effects |

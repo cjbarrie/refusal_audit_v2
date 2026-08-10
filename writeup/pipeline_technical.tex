@@ -1880,7 +1880,7 @@ run.
 \subsection{The release command}
 
 \begin{lstlisting}[style=sh]
-CANONICAL_RUN_ID=canon_010 Rscript pipeline/make_release.R
+CANONICAL_RUN_ID=canon_013 Rscript pipeline/make_release.R
 \end{lstlisting}
 
 \noindent \code{CANONICAL\_RUN\_ID} is mandatory --- a release is a named thing
@@ -1932,14 +1932,20 @@ re-run against the live directories.
      \code{e26b}, \code{e26c}, \code{e28} \\
 10 & \file{10\_canonical\_common.R} & no output; the shared sample, weights,
      bootstrap, \code{gcomp()}, support and panel loader \\
-11 & \file{11\_canonical\_home.R} & \code{c02}--\code{c07}, \code{c07b} \\
+11 & \file{11\_canonical\_home.R} & \code{c02}--\code{c07}, \code{c07b},
+     \code{c07c} \\
 12 & \file{12\_canonical\_language\_framing.R} & \code{c08}, \code{c08b},
      \code{c09}--\code{c11}, \code{c10b} \\
 13 & \file{13\_canonical\_content.R} & \code{c12}, \code{c12b}, \code{c13}--\code{c16}, \code{c19} \\
 14 & \file{14\_canonical\_judge\_uncertainty.R} & \code{c17}, \code{c17b},
      \code{c17c}, \code{c17d} \\
+15 & \file{15\_subsample\_stability.R} & \code{c21} draws / summary / failures /
+     metadata \\
+16 & \file{16\_prompt\_umap.R} & \code{c22} coordinates / propensities /
+     by-model / diagnostics / regions / metadata. \textbf{Not foundational}: it
+     skips cleanly when the embedding cache is absent \\
 20 & \file{20\_figures\_main.R} & Fig 1--3 \\
-21 & \file{21\_figures\_extended.R} & ED1--ED5 \\
+21 & \file{21\_figures\_extended.R} & ED1--ED9 \\
 30 & \file{30\_acceptance.R} & \code{c01b}; non-zero exit on any failure \\
 40 & \file{40\_appendix\_descriptives.R} & \code{a01}--\code{a04} \\
 \bottomrule
@@ -1948,12 +1954,20 @@ re-run against the live directories.
 
 \noindent \file{make\_release.R} additionally writes \code{c00\_timings} and
 \code{c00\_manifest}, and \file{audit\_figures.R} gates the artwork.
-\code{c18\_bootstrap\_diagnostics} is accumulated across scripts \file{11}--\file{14}
+\code{c18\_bootstrap\_diagnostics} is accumulated across scripts \file{11}--\file{15}
 by \code{flush\_diag()}, which replaces only the \code{(run, label)} pairs the
 session recomputed --- dropping the whole run made each part wipe the previous
 part's diagnostics.
 
-\textbf{Estimation and plotting must stay separate.} \file{11}--\file{14} fit
+\textbf{One step in the whole pipeline calls an API, and it is not in the
+release.} \file{scripts/embed\_prompts.py} embeds the English prompts once and
+caches the result in \file{data/}; \file{make\_release.R} never calls it. A
+release must be reproducible from a clean checkout by anyone, and an API call is
+neither free nor deterministic. The cache and its provenance sidecar are hashed
+in the manifest as \code{kind = "input\_embeddings"}, so the UMAP is traceable to
+the exact vectors it used.
+
+\textbf{Estimation and plotting must stay separate.} \file{11}--\file{16} fit
 models and write tidy tables; \file{20} and \file{21} read those tables and
 draw, fitting nothing. \file{audit\_figures.R} enforces both directions: it
 fails if a figure script calls \code{glm}, \code{glmer}, \code{lmer},
@@ -1991,13 +2005,17 @@ audit fails if any figure script passes \code{title=}, \code{subtitle=} or
 specification. Captions live in \file{docs/CANONICAL\_FIGURE\_LEGENDS.md}, which
 is the single authoritative legend document.
 
-Two encodings are constant across the whole set and carry no legend: an
+Three encodings are constant across the whole set and carry no legend. An
 \textbf{interval} is thin, dark and centred on its estimate, while a
 \textbf{paired connector} is thicker, much paler and runs only between two
-paired endpoints; and a \textbf{structural zero} --- a model or jurisdiction
-that produced no refusals at all, so the contrast does not exist --- is a hollow
+paired endpoints. A \textbf{structural zero} --- a model or jurisdiction that
+produced no refusals at all, so the contrast does not exist --- is a hollow
 square with the words \code{not estimable}, never a point at zero with a
-zero-width interval.
+zero-width interval. And \textbf{colour never carries two meanings in one
+figure}: jurisdiction hues are reserved for jurisdictions and for models keyed
+to their developer's jurisdiction, ideology bins have their own diverging
+palette, refusal propensity has a perceptually-uniform sequential scale, and
+Figures 1--2 and ED1--ED3 use no hue at all.
 
 % ===========================================================================
 \section{The canonical estimands}
@@ -2005,138 +2023,228 @@ zero-width interval.
 % ===========================================================================
 
 \begin{summarybox}
-Four families, reported separately and never collapsed: home jurisdiction, language and framing, content conditional on engagement, and measurement. Each is specified here as input $\rightarrow$ transformation $\rightarrow$ output $\rightarrow$ worked example. \file{docs/CANONICAL\_ANALYSES.md} is the specification; this section is the implementation trace.
+Six families, reported separately and never collapsed: home jurisdiction, language and framing, content conditional on engagement, measurement, design stability, and prompt semantics. Each is specified below as \emph{script $\rightarrow$ input $\rightarrow$ unit $\rightarrow$ restriction $\rightarrow$ outcome $\rightarrow$ specification $\rightarrow$ weighting $\rightarrow$ uncertainty $\rightarrow$ output $\rightarrow$ figure $\rightarrow$ worked example}. \file{docs/CANONICAL\_ANALYSES.md} is the specification; this section is the implementation trace against release \code{canon\_012}.
 \end{summarybox}
 
-\subsection{Data assembly and the canonical variables}
+Every number quoted in this section was read from the promoted tables in
+\file{pipeline/estimates/canonical/} for release \code{canon\_012}. Nothing here
+is transcribed from an earlier release or inferred from a rendered figure.
 
-\file{01\_data\_loading.R} reads \file{annotations/full\_v1/annotations\_all.jsonl}
-and the per-language boundary files, derives the analysis columns, and writes
-\file{pipeline/data\_clean.RData}. \file{10\_canonical\_common.R} then builds the
-object every estimator uses:
+\subsection{Orderings are declared once}
+
+\file{pipeline/\_orders.R} holds the only declaration of the model, language,
+jurisdiction, region, ideology-bin, foundation and tier orderings, and is
+sourced by \emph{both} \file{\_theme.R} (the figure layer) and
+\file{10\_canonical\_common.R} (the estimation layer). Before it existed the two
+layers each declared their own and agreed by luck, and three figure scripts
+re-derived model order from whatever the data happened to contain.
+
+\textbf{Row order in a figure comes from this file, never from the estimates
+being displayed.} An order computed from the data makes the ranking a property
+of the thing shown, so the strongest cells always drift to one end and the
+layout implies a finding. Two orderings are deliberate exceptions and are stated
+in the legend where they occur: the foundation order (descending prevalence,
+then frozen) and the ideology-bin order (the scale itself).
 
 \begin{center}
 \small
-\begin{tabular}{@{}lp{9.8cm}@{}}
+\begin{tabular}{@{}lp{9.4cm}@{}}
 \toprule
-\textbf{Column} & \textbf{Rule} \\
+\textbf{Object} & \textbf{Order} \\
 \midrule
-\code{refused\_strict} & \code{as.integer(engagement\_code >= 4)} --- the
-  canonical outcome \\
+\code{ORDER\_JURIS} & CN, MENA, India, US, EU \\
+\code{ORDER\_MODEL} & grouped by developer jurisdiction, alphabetical within
+  group: deepseek-chat-v3.1, qwen3-max $\mid$ allam-7b, falcon3-10b, jais-8b
+  $\mid$ sarvam-30b $\mid$ claude-opus-4.5, gpt-4o, gpt-5.1, grok-4.3 $\mid$
+  mistral-large-2512 \\
+\code{ORDER\_LANG} & en, zh, ar, ru, hi (English first: it is the paired
+  reference by design, not a ranking) \\
+\code{ORDER\_IDEO\_BIN} & $-2$, $-1$, $0$, $+1$, $+2$ \\
+\code{ORDER\_FOUNDATION} & fairness, care, liberty, authority, loyalty, sanctity \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Data assembly and the canonical variables (\hfile{01\_data\_loading.R})}
+
+\textbf{Input.} \file{annotations/full\_v1/annotations\_all.jsonl} plus the five
+per-language boundary files \file{annotations\_<lang>\_boundary.jsonl}. Boundary
+records containing an \code{"error"} field are excluded at read time (a judge
+parse failure drops the tier field, and a row with no tier cannot be assigned to
+an arm). Prompt metadata is joined from \file{<run>/prompts\_meta/}.
+
+\textbf{Filter.} \code{engagement\_code} present and in $[1,5]$,
+\code{prompt\_language} non-empty, \code{model} present. Base-file rows whose
+\code{controversy\_tier} is \code{boundary\_testing} are dropped, because the
+boundary tier is carried by the dedicated boundary files and keeping both would
+double-count.
+
+\textbf{Output.} \file{pipeline/data\_clean.RData}.
+
+\file{10\_canonical\_common.R} then builds \code{canon}, the object every
+estimator uses, and \textbf{asserts its shape at load}:
+
+\begin{lstlisting}
+stopifnot(nrow(canon) == 137186L)              # the analysis sample
+stopifnot(!anyDuplicated(canon[c("model", "prompt_id", "prompt_language")]))
+# 624 issues / 11 models / 5 languages / 2 tiers; no General in home or away
+\end{lstlisting}
+
+\noindent A change in the input data therefore stops the release rather than
+quietly moving every estimate.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lp{9.6cm}@{}}
+\toprule
+\textbf{Column} & \textbf{Definition} \\
+\midrule
+\code{refused\_strict} & \code{as.integer(engagement\_code >= 4)} --- \textbf{the
+  canonical outcome} \\
 \code{refused\_any} & \code{as.integer(engagement\_code >= 3)} --- the outcome
   sensitivity \\
-\code{outcome3} & engaged ($\le 2$) / partial ($=3$) / refusal ($\ge 4$) \\
-\code{home\_status} & \code{home} if the issue's region matches the model's
-  jurisdiction, \code{away} if it is another region, \code{general} if the issue
-  has no region --- a \textbf{three-way} split \\
+\code{outcome3} & engaged ($\le 2$) / partial ($= 3$) / refusal ($\ge 4$) \\
+\code{home\_status} & \code{home} if the issue's region equals the model's home
+  region, \code{away} if it is another region, \code{general} if the issue has
+  no region --- a \textbf{three-way} split, never two \\
 \code{tier} & \code{regular} / \code{boundary} \\
-\code{block\_id} & \code{paste(model, prompt\_id)}, the language-pairing block \\
+\code{slant\_eligible} & the issue is in the frozen 25\% pass-2/3 subsample \\
+\code{has\_slant} & the row actually carries pass-2/3 labels \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \textbf{The issue is the clustering unit, not the prompt or the response.} Each
 issue generates four prompts, and each prompt goes to every model in every
-language, so one issue contributes up to $220$ rows that share its subject
-matter, its contentiousness and its seed route. A response-level standard error
-would treat those as independent and be far too small. Every interval in this
-layer is an \textbf{issue-cluster bootstrap} percentile interval, and every
-resample draws \emph{whole issues}.
+language, so one issue contributes up to $220$ rows sharing its subject matter,
+contentiousness and seed route. A response-level standard error would treat
+those as independent and be far too small. \textbf{Every interval in this layer
+is an issue-cluster bootstrap percentile interval}, and every resample draws
+whole issues.
 
-\textbf{Multiplicity is preserved by labelling each draw.} When a replicate
-draws the same issue twice, the two copies must stay distinct: if they collapse
-onto one \code{issue\_id}, the nested weights treat two draws as one issue and
-the interval is wrong. \code{boot\_canon()} writes a per-draw label,
+\textbf{Multiplicity is preserved by labelling each draw.} If a replicate draws
+the same issue twice and the copies collapse onto one \code{issue\_id}, the
+nested weights treat two draws as one issue and the interval is wrong.
+\code{boot\_canon()} (\file{10\_canonical\_common.R}:149) writes a per-draw
+label:
+
 \begin{lstlisting}
 inst <- rep(paste0(drawn, "#", seq_along(drawn)), times = lengths(idx[drawn]))
 dd$bootstrap_issue_instance <- inst
 \end{lstlisting}
-and every weighting function takes \code{issue\_col} as a parameter so it uses
-that label inside a replicate. Acceptance test C-series checks this against a
-synthetic three-issue counter-case; two issues cannot distinguish the two
-keyings.
 
-\textbf{A fixed number of draws is taken and failures are counted, never
-replaced.} An earlier version resampled until it had $B$ \emph{successes}, which
-conditions the interval on the replicates where the estimator happened to be
-defined --- that is, the ones with more events --- and biases it inward.
-\code{c18} records \code{replicates\_requested}, \code{replicates\_drawn},
-\code{replicates\_failed}, \code{failure\_rate}, \code{failed\_draws\_replaced}
-(always \code{FALSE}) and \code{interval\_reliable} for every interval in the
-release.
+\noindent and every weighting function takes \code{issue\_col} as a parameter so
+it uses that label inside a replicate. Acceptance tests C1--C2 check this against
+a synthetic \emph{three}-issue counter-case; with two issues every resample gives
+the same answer under both keyings, so a two-issue test would pass against a
+broken bootstrap.
+
+\textbf{A fixed number of draws is taken; failures are counted, never replaced.}
+Resampling until $B$ \emph{successes} conditions the interval on the replicates
+where the estimator happened to be defined --- the ones with more events --- and
+biases it inward. Both bootstrap implementations were fixed:
+\code{boot\_canon()} in the shared module and \code{boot\_paired()}
+(\file{12\_canonical\_language\_framing.R}:59) for the paired designs.
+\code{c18} records, per interval, \code{replicates\_requested},
+\code{replicates\_drawn}, \code{replicates\_failed}, \code{failure\_rate},
+\code{failed\_draws\_replaced} (always \code{FALSE}) and
+\code{interval\_reliable}.
+
+\textbf{Replicate counts}, all overridable by environment variable:
+$B_{\text{head}} = 2000$ (headline estimands), $B_{\text{sens}} = 500$
+(sensitivities and model-level rows), $B_{\text{Firth}} = 200$,
+$B_{\text{judge}} = 600$. Master seed \code{CAN\_SEED} $= 20260807$.
 
 \paragraph{Worked example: one annotation row to its derived variables.}
-From the English annotations, the response of \code{deepseek-chat-v3.1} to the
-regular prompt on issue
-\code{issue\_1989\_tiananmen\_square\_protests\_and\_massacre\_Q99717}:
+The response of \code{deepseek-chat-v3.1} to the first regular prompt on issue
+\code{issue\_1989\_tiananmen\_square\_protests\_and\_massacre\_Q99717}, in
+English:
 
 \begin{lstlisting}
-// annotations/full_v1/annotations_all.jsonl (one record, fields elided)
+// annotations/full_v1/annotations_all.jsonl  (one record, fields elided)
 { "prompt_id":        "issue_1989_..._Q99717__reg1",
   "prompt_language":  "en",
   "model":            "deepseek-chat-v3.1",
   "engagement_code":  5,
   "refusal_justification": "A",
   "region_focus":     "China",
-  "dataset_type":     "base",
-  "prompt_category":  "governance_democracy",
-  "route":            "perennial",
-  "battery":          "rebalanced" }
+  "controversy_tier": "regular",
+  "dataset_type":     "base" }
 \end{lstlisting}
 
 \noindent DeepSeek's jurisdiction is \code{CN}, whose home region is
-\code{China}, and the issue's \code{region\_focus} is \code{China}. So this row
-carries \code{refused\_strict = 1} (code $5 \ge 4$), \code{refused\_any = 1},
-\code{outcome3 = refusal}, \code{home\_status = home}, \code{tier = regular}. It
-is one of the $832$ CN home-arm English rows and one of the $163$ refusals among
-them.
+\code{China}, and the issue's \code{region\_focus} is \code{China}. So the row
+carries \code{refused\_strict} $= \mathbf{1}\{5 \ge 4\} = 1$,
+\code{refused\_any} $= 1$, \code{outcome3} $=$ refusal,
+\code{home\_status} $=$ \code{home}, \code{tier} $=$ \code{regular}. It is one
+of the $832$ CN home-arm English rows and one of the $163$ refusals among them.
 
 \subsection{Judge reliability (\hfile{02\_judge\_reliability.R})}
 
-\textbf{Input.} \file{annotations/full\_v1/annotations\_panel.jsonl}, loaded by
-\code{load\_judge\_panel()} in \file{10\_canonical\_common.R} --- \emph{one}
-loader shared with the judge re-estimation, so a reliability number and a
-judge-sensitivity estimate can never disagree because they de-duplicated
-differently. The resume key is \code{(prompt\_id, prompt\_language, model)}
-within \code{judge\_model}, last wins; uniqueness is asserted afterwards.
+\textbf{Input.} The judge panel, via \code{load\_judge\_panel()}
+(\file{10\_canonical\_common.R}:589) --- \emph{one} loader shared with the judge
+re-estimation in script 14, so a reliability number and a judge-sensitivity
+estimate can never disagree because they de-duplicated differently. The resume
+key is \code{(prompt\_id, prompt\_language, model)} within \code{judge\_model},
+last wins, matching the annotator; uniqueness is \textbf{asserted} afterwards
+rather than absorbed by \code{values\_fn = first}, which would hide an
+inconsistent duplicate instead of resolving it.
 
 The panel is restricted to English \emph{before} the codebook-version check,
 because the file also holds a later Russian re-annotation under a different
-codebook. Within English there is one stamped version, and the anchor judge's
-labels predate version stamping and are unstamped. That composition is written
-into \code{e22b} rather than assumed away in either direction; whether the
-codebook text differed cannot be established from the files.
+codebook. Within English there is one stamped version; the anchor judge's labels
+predate version stamping and are unstamped. That composition is written into
+\code{e22b} rather than assumed away in either direction.
 
-\textbf{Statistics, and why there are four.} Raw agreement, Krippendorff's
-$\alpha$, Gwet's AC1 (nominal and binary) or AC2 (ordinal weights, for the
-$-2..+2$ scales), and pairwise positive specific agreement,
-\[
-\mathrm{PSA} = \frac{2a}{2a + b + c},
-\]
-where $a$ is the number of units both judges called positive and $b$, $c$ the
-one-sided positives. PSA is computed for each of the $\binom{4}{2} = 6$ judge
-pairs and summarised by its mean and range. These are not interchangeable, and
-this run shows why: refusal is 4.0\% prevalent, and on the same labels
-$\alpha = 0.51$ while $\mathrm{AC1} = 0.97$ for the 1--5 engagement code.
+\textbf{Four statistics, and why four.} They are not interchangeable, and this
+run demonstrates it: the 1--5 engagement code scores $\alpha = 0.511$ and
+$\mathrm{AC1} = 0.972$ \emph{on the same labels}, because $\alpha$'s chance
+correction collapses when one category dominates and refusal is only $3.98\%$
+prevalent.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lp{9.3cm}@{}}
+\toprule
+\textbf{Statistic} & \textbf{Definition and scope} \\
+\midrule
+raw agreement & share of units on which all raters agree \\
+Krippendorff's $\alpha$ & ordinal weights for the 1--5 and $-2..{+}2$ scales,
+  nominal otherwise \\
+Gwet AC1 / AC2 & \textbf{AC2 with ordinal weights} for ordinal scales,
+  \textbf{AC1 unweighted} for binary and nominal; the column
+  \code{gwet\_statistic} records which was used on each row \\
+PSA & pairwise positive specific agreement,
+  $\mathrm{PSA} = 2a/(2a+b+c)$, computed for each of the
+  $\binom{4}{2} = 6$ judge pairs and summarised by mean and range.
+  \textbf{Binary constructs only} --- it is agreement on \emph{positive} labels
+  and is undefined for an ordinal scale \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \textbf{Two sample definitions are kept apart.} \code{e23b} reports every pair
-on \emph{pairwise-available} units and again on the \emph{all-judge
-complete case}, with both sizes, because units rated by two judges and units
-rated by four do not carry comparable agreement information.
+on \emph{pairwise-available} units and again on the \emph{all-judge complete
+case}, with both sizes, because units rated by two judges and units rated by
+four do not carry comparable agreement information.
 
 \textbf{All-rater positive unanimity is a different statistic and is named as
-one.} Among units \emph{any} judge called positive, the share where \emph{all}
-judges agreed. It falls mechanically as judges are added, so it is not
-comparable across constructs rated by different numbers of judges. It was once
-reported in a column called \code{positive\_specific\_agreement}; it now carries
-a name that says what it is.
+one.} Among units \emph{any} judge called positive, the share on which
+\emph{all} judges agreed --- $0.362$ for strict refusal. It falls mechanically as
+judges are added, so it is not comparable across constructs rated by different
+numbers of judges. It was once reported in a column called
+\code{positive\_specific\_agreement}.
+
+\textbf{Outputs.} \code{e22b}, \code{e22c}, \code{e23}, \code{e23b},
+\code{e23c}, \code{e24}, \code{e25}, \code{e26}, \code{e26b}, \code{e26c},
+\code{e28}. \textbf{Figure.} ED7.
 
 \paragraph{Worked example: one judge pair, from cell counts to \code{e23}.}
 For \code{google/gemini-2.5-flash-lite} against \code{google/gemma-4-31b-it} on
 the strict-refusal indicator, over the $27{,}449$ English units both judges
 rated:
 \[
-a = 862, \qquad b = 549, \qquad c = 69, \qquad d = 25{,}969 .
+a = 862, \qquad b = 549, \qquad c = 69, \qquad d = 25{,}969 ,
 \]
 \[
 \mathrm{PSA} = \frac{2 \times 862}{2 \times 862 + 549 + 69}
@@ -2149,100 +2257,120 @@ exists to remove. The six pairwise values are
 \[
 0.7361,\; 0.6550,\; 0.7966,\; 0.7125,\; 0.7730,\; 0.7458,
 \]
-whose mean is $0.7365029$ and whose range is $[0.6550,\, 0.7966]$ --- the
+whose mean is $0.736503$ and whose range is $[0.654987,\, 0.796649]$ --- the
 \code{psa\_mean}, \code{psa\_min} and \code{psa\_max} reported in \code{e23}.
 
 \subsection{Part I --- home jurisdiction (\hfile{11\_canonical\_home.R})}
 
 \subsubsection{Descriptive rates and the unadjusted difference (\hfile{c02}, \hfile{c03})}
 
+\textbf{Unit.} One response. \textbf{Restriction.} English only;
+\code{home\_status} in \{\code{home}, \code{away}\}; \code{General} reported
+separately and never folded into away. \textbf{Outcome.}
+\code{refused\_strict}.
+
 \textbf{Estimand.} The observed refusal rate on home issues minus the observed
-rate on away issues, in English, with no adjustment:
+rate on away issues, with no adjustment:
 \[
 \hat\delta_r^{\text{desc}}
-  = \frac{\sum_{i \in \text{home}(r)} y_i}{|\text{home}(r)|}
-  - \frac{\sum_{i \in \text{away}(r)} y_i}{|\text{away}(r)|},
-\qquad y_i = \texttt{refused\_strict}_i .
+  = \frac{1}{M}\sum_{m}\frac{\sum_{i \in \text{home}(r,m)} y_i}{|\text{home}(r,m)|}
+  \;-\; \frac{1}{M}\sum_{m}\frac{\sum_{i \in \text{away}(r,m)} y_i}{|\text{away}(r,m)|}
 \]
-Reported at \code{weighting = "response"} (every response counts once) and
-\code{weighting = "equal\_model"}. \code{c03} repeats it in all five languages
-as a supplement.
+at \code{weighting = "equal\_model"}, and the same with every response counting
+once at \code{weighting = "response"}. \code{c03} repeats it in all five
+languages as a supplement.
+
+\textbf{Uncertainty.} 95\% issue-cluster bootstrap, percentile,
+$B_{\text{head}} = 2000$ for the jurisdiction rows.
+
+\textbf{Figure 1 plots the \code{equal\_model} row.} This is a deliberate
+choice: the standardized contrast standardizes to a target in which every model
+carries equal weight, so the descriptive point overlaid against it must weight
+models the same way, or the two marks would differ in adjustment \emph{and} in
+target at once. The two weightings differ by at most $0.0002$ pp here (US:
+$-0.886940$ response, $-0.886734$ equal-model), but they are different targets
+and the figure states which it draws.
 
 \textbf{This is a fact about the corpus, not an effect.} Home and away issue
 sets differ in topic domain, prompt tier and seed route, so the gap mixes model
-behaviour with issue composition. That is not a flaw --- it is the quantity a
-reader wants when asking what the corpus looks like.
+behaviour with issue composition.
 
-\paragraph{Worked chain: CN observed rates $\rightarrow$ Figure 1a and 1b.}
+\paragraph{Worked chain: CN observed rates $\rightarrow$ Figure 1.}
 \begin{center}
 \small
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 \textbf{Arm} & \textbf{$n$} & \textbf{refusals} & \textbf{rate} \\
 \midrule
-CN home & 832 & 163 & $163/832 = 0.19591$ \\
-CN away & 3{,}328 & 119 & $119/3328 = 0.03576$ \\
+CN home & 832 & 163 & $163/832 = 0.195914$ \\
+CN away & 3{,}328 & 119 & $119/3328 = 0.035757$ \\
 \bottomrule
 \end{tabular}
 \end{center}
-The two rates are the filled and hollow endpoints of the CN row of \textbf{Fig
-1a}, printed as $19.6$ and $3.6$. Their difference,
-$0.19591 - 0.03576 = 0.16016$, is $+16.0$ percentage points; with its issue-cluster
-bootstrap interval $[11.89,\, 20.25]$ it is the CN mark of \textbf{Fig 1b}. Both
-panels read the same \code{c02} rows; panel b's row is
-\code{quantity == "home\_minus\_away"} and had never been plotted before this
-release.
+The difference is $0.195914 - 0.035757 = 0.160156$, i.e. $+16.02$ pp, with
+issue-cluster bootstrap interval $[11.89,\ 20.25]$. That is the hollow circle on
+the CN row of \textbf{Fig 1}. The absolute rates are \emph{not} plotted: a rate
+and a difference are different quantities and do not share an axis.
 
-\subsubsection{The covariate-standardized contrast (\hfile{c04}--\hfile{c07b})}
+\subsubsection{The covariate-standardized contrast (\hfile{c04}--\hfile{c07c})}
 
-\textbf{Input.} \code{canon} filtered to \code{prompt\_language == "en"} and
-\code{home\_status} in \{\code{home}, \code{away}\}, split by jurisdiction.
-\code{General} is excluded from both arms.
+\textbf{Unit.} One response. \textbf{Restriction.} English; home and away arms;
+\code{General} excluded; fitted separately \emph{within} each jurisdiction ---
+$520$ issues and $4{,}160$ (CN), $6{,}240$ (MENA), $2{,}076$ (India), $8{,}319$
+(US), $2{,}080$ (EU) rows.
 
-\textbf{Specification.} Per jurisdiction,
+\textbf{Specification.} Per jurisdiction $r$, with \code{build\_f()}
+(\file{10\_canonical\_common.R}:381) including the \code{home $\times$ model}
+interaction only where the jurisdiction has more than one model, and dropping
+any covariate with a single level in that arm:
 \begin{align*}
-\operatorname{logit}\Pr(\texttt{refused\_strict} = 1)
-  ={}& \beta_0 + \beta_1\,\texttt{home}
-     + \boldsymbol\gamma^{\!\top}\texttt{model}
-     + \beta_1^{m}\,(\texttt{home} \times \texttt{model}) \\
-   &{}+ \boldsymbol\delta^{\!\top}\texttt{tier}
-     + \boldsymbol\eta^{\!\top}\texttt{domain}
-     + \boldsymbol\zeta^{\!\top}\texttt{route},
+\operatorname{logit}\Pr(Y_{i} = 1)
+  ={}& \beta_0 + \beta_1 H_i
+     + \boldsymbol\gamma^{\!\top}\!\operatorname{model}_i
+     + \beta_1^{m}\,(H_i \times \operatorname{model}_i) \\
+   &{}+ \boldsymbol\delta^{\!\top}\!\operatorname{tier}_i
+     + \boldsymbol\eta^{\!\top}\!\operatorname{domain}_i
+     + \boldsymbol\zeta^{\!\top}\!\operatorname{route}_i ,
 \end{align*}
-fitted by maximum likelihood. \code{build\_f()} includes the \code{home
-$\times$ model} interaction only where a jurisdiction has more than one model,
-and drops any covariate with a single level in the arm. \textbf{No region term}:
-within a jurisdiction, region determines home status, so the two are not
-separately identified.
+where $Y_i = \texttt{refused\_strict}_i$ and $H_i = \mathbf{1}\{\text{issue }
+i \text{ is home for its model}\}$, fitted by maximum likelihood.
+
+\textbf{No region term.} Within a jurisdiction, region \emph{determines} home
+status, so the two are not separately identified.
 
 \textbf{Transformation --- g-computation on the probability scale.} Predict
 every observation twice, once as if home and once as if away, and take the
 weighted difference:
 \[
-\hat\theta_r = \sum_{i \in r} w_i
-  \Bigl[\, \hat p(\texttt{home}=1, x_i) - \hat p(\texttt{home}=0, x_i) \Bigr].
+\hat\theta_r \;=\; \sum_{i \in r} w_i
+  \Bigl[\, \hat m(H = 1, X_i) \;-\; \hat m(H = 0, X_i) \Bigr],
+\qquad \hat m(\cdot) = \operatorname{logit}^{-1}(\hat\beta^{\!\top}\!\cdot).
 \]
 
-\textbf{Weighting.} The nested target gives equal mass per model, then equal
-mass per issue within model, then equal mass per prompt within model $\times$
-issue:
+\textbf{Weighting --- the nested target.} Equal mass per model, then equal per
+issue within model, then equal per prompt within model $\times$ issue:
 \[
-w_i = \frac{1}{M} \cdot \frac{1}{I_{m(i)}} \cdot \frac{1}{P_{m(i),\,s(i)}},
+w_i \;=\; \frac{1}{M}\cdot\frac{1}{I_{m(i)}}\cdot\frac{1}{P_{m(i),\,s(i)}},
+\qquad \sum_i w_i = 1,
 \]
 with $M$ models, $I_m$ issues for model $m$, and $P_{m,s}$ prompts for model $m$
-on issue $s$. The weights sum to one, and acceptance test B2 checks against a
-\emph{constructed imbalance} rather than against the balanced design, on which a
-weighting check passes trivially.
+on issue $s$ (\code{w\_nested()}, \file{10\_canonical\_common.R}:125).
+Acceptance B2--B5 check the weights against a \emph{constructed imbalance}, not
+against the observed design: the English home arm is exactly balanced (104
+issues per model, 2 prompts each), so weighted and unweighted coincide by
+construction and a decorative weight would pass unnoticed.
 
-\textbf{Uncertainty.} 95\% issue-cluster bootstrap, $B = 2{,}000$, percentile.
-Each replicate resamples whole issues, labels each draw, and \emph{refits and
+\textbf{Uncertainty.} 95\% issue-cluster bootstrap, $B = 2000$, percentile. Each
+replicate resamples whole issues, labels each draw, and \textbf{refits and
 re-standardizes inside the replicate} --- the model is not fitted once and
-re-weighted.
+re-weighted. \code{replicate\_failure\_rate} is $0$ for all four estimable
+jurisdictions.
 
 \textbf{Two standardized estimands, not one.}
+
 \begin{center}
 \small
-\begin{tabular}{@{}lp{5.0cm}p{5.2cm}@{}}
+\begin{tabular}{@{}lp{4.8cm}p{5.0cm}@{}}
 \toprule
 & \textbf{standardizes over} & \textbf{cost} \\
 \midrule
@@ -2259,171 +2387,333 @@ re-weighted.
 \noindent \code{c06b} reports what the restriction costs in retained nested
 target weight: CN keeps $41.3\%$, MENA $77.1\%$, India $69.4\%$, US $91.7\%$, EU
 $95.4\%$. \textbf{Common support is a different target population, not a
-robustness check of the full-target estimate}, which is why the two are not
-plotted as co-equal.
+robustness check}, which is why Figure 1 shows the full target only and ED2
+shows the comparison.
 
-\textbf{Diagnostics are recorded, not swallowed.} \code{fit\_logit()} captures
-GLM warnings instead of suppressing them. \code{sep\_diagnose()} reports
-separation \emph{symptoms} --- non-finite parameters, $|\hat\beta| > 15$,
-$\mathrm{SE} > 25$, fitted probabilities at 0 or 1, non-convergence --- and
-distinguishes \code{separated} from \code{blocking}. Only a genuinely undefined
-fit blocks; quasi-separation confined to a nuisance cell does not, because
-discarding it would throw away the very estimate whose extrapolation the
-diagnostics exist to quantify. \code{cf\_extreme\_weight()} reports the share of
-target weight for which \emph{either} counterfactual prediction is numerically 0
-or 1 --- the diagnostic that matches the estimand, since the contrast is built
-from both prediction vectors. A \textbf{Firth penalized-logit} sensitivity is
-declared for every jurisdiction, because Firth has a defined estimator where
-maximum likelihood does not.
+\textbf{Two extrapolation diagnostics, measuring different things.}
+\code{observed\_fit\_extreme\_weight} is the share of target weight whose
+\emph{observed} fitted probability is numerically $0$ or $1$;
+\code{counterfactual\_extreme\_weight} is the share for which \emph{either}
+counterfactual prediction is. The second matches the estimand, because the
+contrast is built from both prediction vectors: a unit with a comfortable
+observed fit can still have a degenerate counterfactual. For the current release
+both equal $0.031$ (CN), $0.000$ (MENA), $0.140$ (India), $0.031$ (US).
 
-\textbf{Structural zeros.} EU produced zero refusals in both arms, so the
-contrast does not exist. It is reported with \code{estimable = FALSE} and a
-reason, and is drawn as a flagged row --- never as zero.
+\textbf{Estimator diagnostics are recorded, not swallowed.} \code{fit\_logit()}
+captures GLM warnings instead of suppressing them --- \code{suppressWarnings()}
+around a \code{glm} hides ``fitted probabilities numerically 0 or 1'', the single
+most useful signal that a jurisdiction is separated. \code{sep\_diagnose()}
+reports separation \emph{symptoms} --- non-finite parameters,
+$|\hat\beta| > 15$, $\mathrm{SE} > 25$, fitted probabilities at $0$ or $1$,
+non-convergence --- and distinguishes \code{separated} from \code{blocking}.
+Only a genuinely undefined fit blocks a replicate; quasi-separation confined to a
+nuisance cell does not, because discarding it would throw away the very estimate
+whose extrapolation the diagnostics exist to quantify. A \textbf{Firth
+penalized-logit} sensitivity ($B = 200$) is declared for every jurisdiction,
+because Firth has a defined estimator where maximum likelihood does not.
+
+\textbf{Structural zeros.} EU produced zero refusals in both arms
+(\code{events\_home} $= 0$, \code{events\_away} $= 0$), so the contrast does not
+exist. Reported with \code{estimable = FALSE} and a reason, and drawn as a
+flagged row --- never as zero.
 
 \paragraph{What may be inferred.} The home$-$away difference that would remain if
 the two issue sets had the same measured composition. \textbf{This is a
 covariate-standardized predictive, associational contrast. It is not a causal
 effect, not a difference-in-differences, and not a within-issue contrast.} Home
 is a fixed property of an issue's region; nothing randomises it, and
-standardization adjusts for measured composition only. Acceptance test E1 scans
-every canonical table and fails the build on an unnegated use of
-\emph{causal}, \emph{difference-in-differences} or \emph{within-issue}.
+standardization adjusts for measured composition only. A causal reading would
+require consistency, exchangeability given the measured covariates, positivity,
+a well-defined treatment version, no interference and error-free measurement ---
+none of which this design establishes, and the last of which the judge panel
+actively contradicts. Acceptance test E1 scans every canonical table and fails
+the build on an unnegated use of \emph{causal},
+\emph{difference-in-differences} or \emph{within-issue}.
 
-\paragraph{Worked chain: CN standardized contrast $\rightarrow$ Figure 1c.}
-The row is \code{c04} with \code{weighting == "nested"}, \code{estimator ==
-"maximum likelihood"}, \code{support == "full target"}, \code{jurisdiction ==
-"CN"}: estimate $0.164795$ on the probability scale, so
-$\hat\theta_{\mathrm{CN}} = +16.48$ pp, interval $[9.95,\, 24.84]$, over $520$
-issues with \code{replicate\_failure\_rate} $= 0$ and \code{interval\_reliable}
-$=$ TRUE. The point is the filled CN dot in \textbf{Fig 1c}, the interval its
-line, and the printed label \code{+16.5} is \code{sprintf("\%+.1f",
-estimate\_pp)} --- \file{audit\_figures.R} re-derives that string from
-\code{c04} and fails if the figure formats a different number than its source
-row. Note that the descriptive $+16.0$ and the standardized $+16.5$ are
-\emph{different estimands that happen to be close}, not two estimates of one
-number.
+\paragraph{Worked chain: CN standardized contrast $\rightarrow$ Figure 1.}
+The \code{c04} row with \code{weighting == "nested"}, \code{estimator ==
+"maximum likelihood"}, \code{support == "full target"},
+\code{jurisdiction == "CN"}: $n = 4{,}160$ over $520$ issues and $2$ models,
+$163$ home events against $119$ away events, estimate $0.1647950$ on the
+probability scale, i.e. $\hat\theta_{\mathrm{CN}} = +16.48$ pp, interval
+$[9.95,\ 24.84]$, \code{replicate\_failure\_rate} $= 0$. That is the filled
+diamond on the CN row of \textbf{Fig 1}, and the printed label \code{+16.5} is
+\code{fmt\_pp(estimate\_pp)}.
+
+Read across the CN row: the descriptive $+16.02$ and the standardized $+16.48$
+are \textbf{different estimands that happen to be close}, not two goes at one
+number. The comparison the figure exists for is what happens \emph{elsewhere}:
+MENA shrinks ($+5.87 \rightarrow +3.76$), and India and US change sign
+($+0.95 \rightarrow -3.07$ and $-0.89 \rightarrow +1.88$), with both standardized
+intervals covering or nearly covering zero.
+
+\subsubsection{Sensitivities, and what each of them changes (\hfile{c07}, \hfile{c07b}, \hfile{c07c})}
+
+\code{c07} holds $82$ rows at $B_{\text{sens}} = 500$. \textbf{They are not all
+alternative estimators of one estimand}, and \code{c07c} classifies every row by
+what it actually changes:
+
+\begin{center}
+\small
+\begin{tabular}{@{}llrp{5.6cm}@{}}
+\toprule
+\textbf{Class} & \textbf{Target changed?} & \textbf{Rows} & \textbf{Contents} \\
+\midrule
+A estimator, same target & no  & 8  & functional form: \code{home $\times$ domain},
+  \code{home $\times$ route} \\
+B target population      & yes & 40 & language (25), prompt tier (10),
+  common support (5) \\
+C outcome definition     & no  & 5  & \code{refused\_any}, codes 3--5 \\
+D model roster           & yes & 9  & leave-one-model-out \\
+E post-outcome           & yes & 15 & response-length thresholds 20 / 50 / 100 \\
+F different estimand     & yes & 5  & hierarchical marginal \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{\code{estimable} does not mean an estimate exists.} It records that a
+fit was \emph{attempted}. Five functional-form rows carry
+\code{estimable = TRUE} with \code{estimate\_pp = NA} --- MENA and US
+\code{home $\times$ domain} failed in $47.2\%$ and $16.8\%$ of draws, and MENA,
+India and US \code{home $\times$ route} produced none. \code{c07c} therefore adds
+a \code{plottable} flag (a point \emph{and} an interval), and anything consuming
+\code{c07} must use it. Of $82$ rows, $57$ are plottable and \textbf{none of the
+class-A rows are}: there is no same-target estimator comparison available in
+\code{c07} at all, which is why ED2 takes its Firth and common-support points
+from \code{c04}.
+
+\code{difference\_from\_primary\_pp} is a \textbf{difference of point
+estimates}. No interval is attached: subtracting marginal endpoints is not a
+paired contrast, and the paired issue bootstrap that would be required is not run
+for these rows.
+
+\textbf{Class F is a different estimand.} The hierarchical marginal
+specification integrates over the issue random effect instead of standardizing
+over the observed issue set, and has no comparable interval, so it is tabulated
+in \code{c07b} and appears in no forest.
+
+\textbf{In this release none of the five fits converged.} EU is separated (zero
+events); the other four report \code{did not converge}. That is itself worth
+recording: in the immediately preceding release MENA \emph{did} converge, at
+$+3.79$ pp, and nothing about the data changed between the two builds. A
+specification whose convergence flips between runs of the same code on the same
+data is not a specification any conclusion should rest on, which is a further
+reason --- beyond the change of estimand --- that it is not plotted.
+
+\textbf{Class E is post-outcome.} A response-length filter conditions on a
+realized property of the response --- something determined \emph{after} the
+outcome --- so it can induce the very selection it appears to rule out. It is a
+data-quality diagnostic, not design robustness, and it is tabulated rather than
+plotted.
+
+\textbf{Model-specific contrasts (\code{c05})} carry intervals, and the
+equal-model average is \textbf{bootstrapped jointly in the same replicates}.
+Averaging point estimates afterwards produced a number with no uncertainty at
+all, and averaging the per-model intervals would have been wrong anyway: within
+a jurisdiction the model-specific contrasts are estimated on the same issues and
+are strongly dependent.
 
 \subsection{Part II --- language and framing (\hfile{12\_canonical\_language\_framing.R})}
 
-Both are \textbf{paired within-block differences}, which is what makes them the
-strongest designs here: prompt content is held fixed by construction rather than
-adjusted for. Neither is a regression coefficient.
+Both estimands are \textbf{paired within-block differences}, which is what makes
+them the strongest designs here: prompt content is held fixed by construction
+rather than adjusted for. Neither is a regression coefficient, and neither is
+drawn as one. Uncertainty is \code{boot\_paired()}
+(\file{12\_canonical\_language\_framing.R}:59) --- the same fixed-$B$,
+multiplicity-preserving, issue-clustered bootstrap as the shared
+\code{boot\_canon()}, resampling \emph{blocks} grouped by \code{issue\_id}.
 
 \subsubsection{Language (\hfile{c08}, \hfile{c08b}, \hfile{c09})}
 
-\textbf{Block} $=$ \code{model} $\times$ \code{prompt\_id}. Within a block the
-same prompt reaches the same model in English and in the target language. For
-language $L$,
-\[
-\hat\delta_L = \sum_{m} \frac{1}{M} \cdot
-  \frac{1}{|\mathcal{B}_m|} \sum_{b \in \mathcal{B}_m} \bigl(y_{b,L} - y_{b,\text{en}}\bigr),
-\]
-the predeclared primary weighting being \textbf{equal per model}
-(\code{c08\$primary\_weighting}). Pooled and equal-per-model$\times$issue
-weightings are in \code{c08b}; all three agree to within $0.03$ pp, which is how
-a reader knows the weighting is not doing the work.
+\textbf{Block.} \code{model $\times$ prompt\_id}. Within a block the same
+prompt reaches the same model in English and in the target language, so
+\textbf{prompt identity and model are held fixed by construction}. Prompt tier
+is not held fixed within a block but is balanced across blocks, since every
+prompt appears in exactly one tier and both tiers are present for every issue.
+Nothing else is adjusted for; no covariate enters.
 
-\textbf{Intended block universe and completeness.} $11$ models $\times$
-$2{,}496$ prompts $= 27{,}456$ intended blocks per language. Missing blocks are
-counted, not silently dropped: $16$ (zh), $19$ (ar), $26$ (ru), $54$ (hi), in
-\code{n\_missing\_blocks}.
+\textbf{Estimand.} For language $L$, the mean paired difference with
+\textbf{equal weight per model} --- the predeclared primary weighting, recorded
+on every row as \code{primary\_weighting}:
+\[
+\hat\delta_L \;=\; \frac{1}{M}\sum_{m=1}^{M}
+  \frac{1}{|\mathcal{B}_m|}\sum_{b \in \mathcal{B}_m}
+  \bigl(y_{b,L} - y_{b,\text{en}}\bigr),
+\]
+where $\mathcal{B}_m$ is the set of complete blocks for model $m$. Pooled and
+equal-per-model$\times$issue weightings are in \code{c08b}; the three agree to
+within $0.03$ pp, which is how a reader knows the weighting is not doing the
+work.
+
+\textbf{Block universe and completeness.} $11$ models $\times$ $2{,}496$ prompts
+$= 27{,}456$ intended blocks per language. Missing blocks are counted, not
+silently dropped:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Language} & \textbf{complete} & \textbf{missing} & \textbf{$\hat\delta_L$ (pp)} & \textbf{95\% interval} \\
+\midrule
+Chinese & 27{,}440 & 16 & $+1.320$ & $[0.899,\ 1.719]$ \\
+Arabic  & 27{,}437 & 19 & $+2.330$ & $[1.917,\ 2.705]$ \\
+Russian & 27{,}430 & 26 & $+3.939$ & $[3.554,\ 4.322]$ \\
+Hindi   & 27{,}402 & 54 & $+8.495$ & $[8.019,\ 8.902]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \textbf{What may be inferred.} The effect of delivering \emph{the tested
-translation}, among the tested prompts and models. \textbf{It is not the causal
-effect of a user's language}: it assumes translation equivalence and that
-nothing else travels with language --- provider routing, run-time, judge
-behaviour on non-English text.
+translation} of the prompt, among the tested prompts and models. \textbf{It is
+not the causal effect of a user's language.} It assumes translation equivalence
+and that nothing else travels with language --- provider routing, run-time, or
+judge behaviour on non-English text.
 
 \textbf{There is no judge-sensitivity estimate for this quantity}, and none is
 fabricated: the panel covers English only, and re-labelling one arm of a paired
 difference compares two instruments rather than perturbing one.
 
-\paragraph{Worked chain: one paired block $\rightarrow$ Figure 2a and 2b.}
-Take the block \code{deepseek-chat-v3.1} $\times$
-\code{issue\_jammu\_and\_kashmir\_union\_territory\_Q66278313\_\_reg1}. In
-English the response is engaged ($y = 0$); in Chinese the same prompt to the
-same model is refused ($y = 1$). The block contributes $d = +1$. Across the
-$27{,}440$ complete Chinese blocks, $1{,}287$ contribute $+1$; averaging within
-model and then across models gives $\hat\delta_{\mathrm{zh}} = +1.3197$ pp, the
-\code{c08} row plotted as the Chinese mark of \textbf{Fig 2a}. The same
-estimator applied within \code{deepseek-chat-v3.1} alone gives $+11.34$ pp
-(\code{c09}), one of the points in the Chinese row of \textbf{Fig 2b} and one
-cell of the \textbf{ED4a} matrix.
+\paragraph{Worked chain: one paired block $\rightarrow$ Figure 2a.}
+The block \code{deepseek-chat-v3.1} $\times$
+\code{issue\_jammu\_and\_kashmir\_union\_territory\_Q66278313\_\_reg1}:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+\textbf{Language} & \code{engagement\_code} & \code{refused\_strict} & \textbf{$d$ vs.\ English} \\
+\midrule
+en & 1 & 0 & --- (reference) \\
+zh & 5 & 1 & $+1$ \\
+ar & 1 & 0 & $\phantom{+}0$ \\
+ru & 5 & 1 & $+1$ \\
+hi & 2 & 0 & $\phantom{+}0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent This block contributes $d = +1$ to Chinese and to Russian and $0$ to
+Arabic and Hindi. Averaging within model and then across the eleven models over
+the $27{,}440$ complete Chinese blocks gives
+$\hat\delta_{\mathrm{zh}} = +1.320$ pp --- the Chinese mark of \textbf{Fig 2a}.
+The same estimator applied within \code{deepseek-chat-v3.1} alone gives
+$+11.34$ pp (\code{c09}), one row of \textbf{ED4}.
 
 \subsubsection{Framing (\hfile{c10}, \hfile{c10b}, \hfile{c11})}
 
-\textbf{Block} $=$ \code{issue} $\times$ \code{model} $\times$ \code{language}.
-\textbf{Primary blocks require exactly 2 regular and 2 boundary prompts} --- the
-design puts that many in every block, and averaging over whatever survived makes
-the comparison depend on which prompt survived. The \textbf{2+2 rule} is
+\textbf{Block.} \code{issue $\times$ model $\times$ language}. \textbf{Primary
+blocks require exactly 2 regular and 2 boundary prompts} --- the design puts
+that many in every block, and averaging over whatever survived makes the
+comparison depend on which prompt survived:
 \[
 \hat\delta^{\text{frame}} = \frac{1}{M}\sum_m \frac{1}{|\mathcal{B}_m|}
   \sum_{b \in \mathcal{B}_m}
-  \Bigl( \tfrac{1}{2}\!\!\sum_{i \in \text{bnd}(b)}\!\! y_i
-       - \tfrac{1}{2}\!\!\sum_{i \in \text{reg}(b)}\!\! y_i \Bigr),
+  \Bigl( \tfrac{1}{2}\!\!\sum_{i \in \operatorname{bnd}(b)}\!\! y_i
+       - \tfrac{1}{2}\!\!\sum_{i \in \operatorname{reg}(b)}\!\! y_i \Bigr),
 \quad \mathcal{B}_m = \{b : n_{\text{reg}} = 2,\ n_{\text{bnd}} = 2\}.
 \]
-$6{,}857$ English blocks qualify. The \textbf{seven incomplete English blocks
-are listed by key} in \code{c10b}, and the looser
+$6{,}857$ English blocks qualify over $624$ issues. The \textbf{seven incomplete
+English blocks are listed by key} in \code{c10b}, and the looser
 $n_{\text{reg}} > 0 \wedge n_{\text{bnd}} > 0$ rule is retained as a labelled
 sensitivity row in \code{c10}.
 
 \textbf{The block holds the issue and the model fixed. It does not hold prompt
 content fixed} --- the regular and boundary variants are different realized
-prompts about the same issue, and that difference is the exposure. A causal
-reading requires the generated variants to be exchangeable given the issue,
-which is an assumption about the generation template, not a randomisation.
+prompts about the same issue, and that difference \emph{is} the exposure. A
+causal reading requires the generated variants to be exchangeable given the
+issue: an assumption about the generation template, not a randomisation.
 
-\paragraph{Worked chain: one complete 2+2 block $\rightarrow$ Figure 2c.}
-For \code{gpt-5.1} on
-\code{issue\_1999\_arrest\_of\_iranian\_jews\_Q66661639} in English:
+\paragraph{Worked chain: one complete 2+2 block $\rightarrow$ Figure 2b.}
+For \code{gpt-5.1} on \code{issue\_1999\_arrest\_of\_iranian\_jews\_Q66661639}
+in English:
 
 \begin{center}
 \small
 \begin{tabular}{@{}llrr@{}}
 \toprule
-\textbf{prompt\_id} & \textbf{tier} & \code{engagement\_code} & \code{refused\_strict} \\
+\textbf{prompt} & \textbf{tier} & \code{engagement\_code} & \code{refused\_strict} \\
 \midrule
-\code{...\_Q66661639\_\_reg1} & regular  & 1 & 0 \\
-\code{...\_Q66661639\_\_reg2} & regular  & 1 & 0 \\
-\code{...\_Q66661639\_\_bndA} & boundary & 4 & 1 \\
-\code{...\_Q66661639\_\_bndB} & boundary & 1 & 0 \\
+\code{...\_reg1} & regular  & 1 & 0 \\
+\code{...\_reg2} & regular  & 1 & 0 \\
+\code{...\_bndA} & boundary & 4 & 1 \\
+\code{...\_bndB} & boundary & 1 & 0 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\noindent The block mean is $0/2 = 0$ regular and $1/2 = 0.5$ boundary, so
-$d_b = +0.5$. Of the $6{,}857$ complete English blocks, $933$ have a non-zero
-difference. Averaging within model and then across the eleven models gives
-$0.00086722$, i.e.\ $+0.087$ pp --- exactly the \code{c10} \code{scope ==
-"overall"} value plotted as the accent diamond of \textbf{Fig 2c}. That pooled
-near-zero \textbf{conceals complete sign reversal}: \code{sarvam-30b} is
-$+8.25$ pp $[6.43,\,10.03]$ and \code{falcon3-10b} is $-5.61$ pp
-$[-7.29,\,-3.61]$, which is why the per-model rows are shown rather than
-summarised.
+\noindent The block means are $0/2 = 0$ regular and $1/2 = 0.5$ boundary, so
+$d_b = +0.5$. Across the $6{,}857$ complete English blocks the mean regular rate
+is $0.05104$ and the mean boundary rate $0.05184$; averaging within model and
+then across models gives $+0.0867$ pp with interval $[-0.698,\ 0.841]$ --- the
+accent diamond of \textbf{Fig 2b}.
+
+That pooled near-zero \textbf{conceals complete sign reversal}: \code{sarvam-30b}
+is $+8.25$ pp $[6.43,\ 10.03]$ and \code{falcon3-10b} is $-5.61$ pp
+$[-7.29,\ -3.61]$. The per-model rows are shown for exactly this reason, and are
+exploratory heterogeneity rather than eleven findings.
 
 \subsection{Part III --- content, conditional on engagement (\hfile{13\_canonical\_content.R})}
 
 \textbf{Everything in this family is conditional on engagement.} The judge skips
-passes 2 and 3 for refusals by design, so the denominator is engaged responses.
-Because refusal itself varies by model and jurisdiction, \textbf{this
-conditioning is not ignorable}, and these quantities say nothing about what a
-refused response would have contained.
+passes 2 and 3 for refusals --- a refusal has no position to score --- so the
+denominator is engaged responses. Because refusal itself varies by model and
+jurisdiction, \textbf{this conditioning is not ignorable}: a jurisdiction that
+refuses more contributes a differently selected set of responses, and these
+quantities say nothing about what a refused response would have contained. They
+are not unconditional model behaviour.
+
+\textbf{Sample.} \code{SLANT\_EN} $=$ \code{canon} filtered to
+\code{slant\_eligible \& engaged \& has\_slant \& lang == "en"}: $n = 6{,}528$
+responses over $156$ of the $624$ issues and all $11$ models. English-only is
+enforced in code (\file{13\_canonical\_content.R}:58 fixes
+\code{lang == "en"}); see \S\ref{sec:caveats} for the unresolved eligibility
+inconsistency this creates with \code{c12b}.
+
+\textbf{Two inference targets, side by side, neither a correction of the
+other.} The $156$ slant issues were drawn \emph{without replacement} from the
+frozen $624$-issue battery.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{3.0cm}p{10.4cm}@{}}
+\toprule
+\textbf{Target} & \textbf{Estimator} \\
+\midrule
+superpopulation & issues exchangeable with a wider population; ordinary
+  issue-cluster bootstrap, percentile. The conservative default, and the one
+  plotted. \\
+frozen battery & the $624$ issues \emph{are} the population, so
+  $f = 156/624 = 0.25$ matters. \textbf{Delete-one-issue jackknife with an
+  explicit finite-population correction}
+  (\code{jack\_fpc()}, \file{10\_canonical\_common.R}:213):
+  $v = \frac{n-1}{n}\sum_i (\hat\theta_{(-i)} - \bar\theta)^2 \times (1-f)$,
+  normal approximation. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent \textbf{This is not the bootstrap interval multiplied by
+$\sqrt{1-f}$.} Rescaling a percentile interval is not a design-based correction:
+its \emph{shape} comes from a with-replacement resampling model that does not
+match sampling $156$ of $624$ without replacement, and rescaling does not make it
+match. The jackknife is tested against a census ($f = 1$ must give zero variance)
+and against the $(1-f)$ variance scaling. For a share the battery limits are
+computed \textbf{on the logit scale} via the delta method so they stay inside
+$[0,1]$; the raw unbounded normal limits are retained alongside in
+\code{conf\_*\_battery\_unbounded}, and a negative probability limit is never
+plotted.
 
 \subsubsection{Ideology (\hfile{c12}, \hfile{c12b}, \hfile{c13}, \hfile{c19})}
 
-\textbf{The primary estimand is the equal-model share in each of five
-categories} $\{-2,-1,0,+1,+2\}$, with an interval on every bin:
+\textbf{Primary estimand.} The equal-model share in \emph{each} of the five
+categories, with an interval on every bin:
 \[
 \hat\pi_k = \frac{1}{M}\sum_{m=1}^{M}
   \frac{1}{n_m}\sum_{i : m(i) = m} \mathbf{1}\{s_i = k\},
-\qquad \sum_{k} \hat\pi_k = 1 .
+\qquad k \in \{-2,-1,0,+1,+2\}, \qquad \sum_{k} \hat\pi_k = 1 .
 \]
-Acceptance test H5 fails the build if the five do not sum to one. The signed
-mean is \code{role == "SECONDARY"} and flagged as such on the row. What this
-replaces is a three-way negative/neutral/positive collapse declared to be
-``the full distribution over $-2..+2$'' while discarding the distinction between
-$-2$ and $-1$ --- the only place the strength of a placement lives.
+Acceptance H5 fails the build if the five do not sum to one. The signed mean is
+\code{role == "SECONDARY"} and flagged as such on the row.
 
 \textbf{Endpoints are dimension-specific}, because ``left/right'' is meaningful
 for the economic scale and misleading for the others: economic
@@ -2432,62 +2722,47 @@ authority authoritarian$\leftrightarrow$libertarian, populism
 populist$\leftrightarrow$elitist. Acceptance fails on a generic left/right label
 attached to authority or populism.
 
-\textbf{Two inference targets, side by side, neither a correction of the
-other.} The $156$ slant issues were drawn \emph{without replacement} from the
-frozen $624$-issue battery.
-\begin{itemize}[nosep]
-  \item \textbf{Superpopulation} --- issues exchangeable with a wider
-        population; ordinary issue-cluster bootstrap, percentile. The
-        conservative default and the one plotted.
-  \item \textbf{Frozen battery} --- the $624$ issues \emph{are} the population,
-        so $f = 156/624 = 0.25$ matters. Estimated by a \textbf{delete-one-issue
-        jackknife with an explicit finite-population correction}:
-        \[
-          v = \frac{n-1}{n}\sum_{i=1}^{n}
-              \bigl(\hat\theta_{(-i)} - \bar\theta\bigr)^2 \times (1 - f),
-        \]
-        normal approximation. \textbf{This is not the bootstrap interval
-        multiplied by $\sqrt{1-f}$.} Rescaling a percentile interval is not a
-        design-based correction: the percentile interval's \emph{shape} comes
-        from a with-replacement resampling model that does not match sampling
-        $156$ of $624$ without replacement, and rescaling it does not make it
-        match. The jackknife is tested against a census ($f = 1$ must give zero
-        variance) and against the $(1-f)$ variance scaling.
-\end{itemize}
-For a share the battery interval is computed \textbf{on the logit scale} so the
-limits stay inside $[0,1]$; the raw unbounded normal limits are retained
-alongside in \code{conf\_*\_battery\_unbounded}, and a negative probability limit
-is never plotted.
-
 \textbf{Reliability is read from the run, not asserted.}
 \code{c12\$reliability\_warning} is filled per dimension from \code{e25} at build
-time. For the current release the panel $\alpha$ values are economic $0.392$,
-social $0.126$, authority $0.232$, populism $0.017$. These results are
-\textbf{descriptive and exploratory}; social, authority and populism carry no
-substantive weight.
+time: economic $\alpha = 0.392$, social $0.126$, authority $0.232$, populism
+$0.017$. These results are \textbf{descriptive and exploratory}; social,
+authority and populism carry no substantive weight.
 
-\paragraph{Worked chain: the Economic dimension $\rightarrow$ Figure 3a.}
+\textbf{Model-level (\code{c13}) --- $264$ rows.} $4$ dimensions $\times$ $11$
+models $\times$ ($5$ bins $+$ signed mean), each carrying \emph{both} inference
+targets at $B_{\text{sens}} = 500$, plus \code{n}, \code{n\_issues},
+\code{n\_missing}, \code{degenerate\_outcome}, \code{support\_ok} and
+\code{interval\_reliable}. The table previously held point estimates and nothing
+else, which made it unusable for the model comparison it exists to support:
+eleven bare numbers invite ranking, and nothing on the row said whether the gap
+between first and last was larger than the noise. Missingness is
+\textbf{reported, never folded into a zero category} --- a model whose slant pass
+failed on 40 responses is not a model that placed 40 responses at neutral.
+
+\paragraph{Worked chain: the Economic dimension $\rightarrow$ Figure 3a and ED5.}
 The five \code{c12} \code{role == "PRIMARY"} rows for Economic, on $n = 6{,}528$
 engaged English boundary responses over $156$ issues:
 \[
-\hat\pi_{-2} = 0.00519,\quad
-\hat\pi_{-1} = 0.02457,\quad
-\hat\pi_{0} = 0.92400,\quad
-\hat\pi_{+1} = 0.04228,\quad
-\hat\pi_{+2} = 0.00395,
+\hat\pi_{-2} = 0.005194,\ \
+\hat\pi_{-1} = 0.024573,\ \
+\hat\pi_{0} = 0.923999,\ \
+\hat\pi_{+1} = 0.042282,\ \
+\hat\pi_{+2} = 0.003952,
 \]
-summing to $1$. \textbf{Fig 3a} draws all five as one 100\%-width stacked row,
-left to right in scale order, with the neutral segment occupying $92.4\%$ of the
-row and labelled \code{92}; segments below $8\%$ are drawn but not labelled, and
-the row is captioned at its ends with \code{left} and \code{right}. The previous
-panel plotted only the four directional bins and printed the neutral share as an
-annotation, which gave $100\%$ of the ink to $7.6\%$ of the distribution.
+summing to $1$. \textbf{Fig 3a} draws all five as one 100\%-width stacked row in
+scale order, with the neutral segment occupying $92.4\%$ of the row and labelled
+\code{92}; segments below $8\%$ are drawn but not labelled. The same five bins
+for \code{deepseek-chat-v3.1} alone are one row of \textbf{ED5}
+($0.008375$, $0.023451$, $0.927973$, $0.036851$, $0.003350$ on $n = 597$), with
+superpopulation interval $[0.9006,\ 0.9525]$ and frozen-battery interval
+$[0.9024,\ 0.9472]$ on the neutral bin.
 
-\subsubsection{Moral foundations (\hfile{c14}--\hfile{c16}, \hfile{c19})}
+\subsubsection{Moral foundations (\hfile{c14}, \hfile{c15}, \hfile{c16}, \hfile{c19})}
 
-Six \textbf{non-exclusive binary indicators}: a response may invoke several or
+Six \textbf{non-exclusive binary indicators}: a response can invoke several or
 none, so they do not form a composition and are never plotted as shares of a
-whole. Equal weight per model, always with an issue-cluster bootstrap interval.
+whole. Equal weight per model, always with an interval.
+
 \code{c16} reports joint outcomes with \textbf{refusal as its own category} ---
 collapsing refusals into ``foundation absent'' would let a model that refuses
 more look like a model that moralises less.
@@ -2496,26 +2771,46 @@ more look like a model that moralises less.
 carries pairwise PSA with its range. The \code{low\_agreement\_flag} and the
 ``acceptable agreement'' label are gone: the $0.35$ threshold behind them was
 invented here, is not preregistered, and has no external justification.
-Acceptance and the figure audit both fail if such a verdict reappears on the
-table.
 
-\paragraph{Worked chain: \emph{care / harm} $\rightarrow$ the aligned Figure 3b/3c row.}
-The eleven model-level prevalences in \code{c15} average to $0.498370$, which is
+\begin{center}
+\small
+\begin{tabular}{@{}lrlrl@{}}
+\toprule
+\textbf{Foundation} & \textbf{prevalence} & \textbf{95\% interval} & \textbf{PSA} & \textbf{PSA range} \\
+\midrule
+Fairness / cheating    & $0.6069$ & $[0.5631,\ 0.6478]$ & $0.860$ & $[0.811,\ 0.902]$ \\
+Care / harm            & $0.4984$ & $[0.4420,\ 0.5564]$ & $0.850$ & $[0.822,\ 0.877]$ \\
+Liberty / oppression   & $0.4713$ & $[0.4302,\ 0.5123]$ & $0.759$ & $[0.686,\ 0.852]$ \\
+Authority / subversion & $0.1396$ & $[0.1118,\ 0.1686]$ & $0.512$ & $[0.445,\ 0.605]$ \\
+Loyalty / betrayal     & $0.0844$ & $[0.0651,\ 0.1059]$ & $0.558$ & $[0.459,\ 0.713]$ \\
+Sanctity / degradation & $0.0315$ & $[0.0215,\ 0.0439]$ & $0.465$ & $[0.383,\ 0.513]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{The two columns are different quantities.} The prevalence interval is a
+95\% issue-cluster \emph{sampling} interval; the PSA range is a min--max across
+the six judge pairs and \textbf{has no coverage at all}. Figure 3 draws them with
+different geometries for exactly this reason.
+
+\textbf{PSA is prevalence-sensitive.} Ranking the foundations by prevalence and
+by PSA gives nearly the same order, so the low agreement on the rare foundations
+is partly a property of the statistic, not solely a judge-quality finding.
+
+\paragraph{Worked chain: \emph{care / harm} $\rightarrow$ Figure 3b/3c and ED6.}
+The eleven model-level prevalences in \code{c15} average to $0.4983698$, which is
 exactly the \code{c14} \code{scope == "overall"} estimate --- the arithmetic that
-makes ``equal weight per model'' true rather than asserted. Its interval is
-$[0.4420,\,0.5564]$, an \textbf{issue-cluster sampling interval}, and it is the
-dark centred bar of the \textbf{Fig 3b} row. On the same row in \textbf{Fig 3c},
-$\mathrm{PSA} = 0.8504$ with range $[0.8216,\,0.8774]$ over the six judge pairs
---- \textbf{a min--max across instruments, with no coverage}, drawn in lighter
-ink with end ticks precisely so it cannot be mistaken for the interval beside
-it.
+makes ``equal weight per model'' true rather than asserted (acceptance J8 checks
+it to $10^{-9}$; the realised difference is $5.6 \times 10^{-17}$). Its interval
+$[0.4420,\ 0.5564]$ is the bar of the \textbf{Fig 3b} row; on the same row in
+\textbf{Fig 3c}, $\mathrm{PSA} = 0.8504$ with range $[0.8216,\ 0.8774]$. The
+eleven model rows, each with its own issue-cluster interval, are one facet of
+\textbf{ED6} --- ranging from \code{grok-4.3} at $0.3464$ $[0.2932,\ 0.4044]$ to
+\code{mistral-large-2512} at $0.5962$ $[0.5353,\ 0.6563]$.
 
-\textbf{PSA here is prevalence-sensitive, and the figure does not hide it.}
-Ranking the foundations by prevalence and by PSA gives nearly the same order
-(fairness $0.61$/$0.86$, care $0.50$/$0.85$, liberty $0.47$/$0.76$, authority
-$0.14$/$0.51$, loyalty $0.08$/$0.56$, sanctity $0.03$/$0.47$), so the low
-agreement on the rare foundations is partly a property of the statistic, not
-solely a judge-quality finding.
+\textbf{Do not read a developer-jurisdiction effect off these model
+comparisons.} Jurisdiction is entangled with the observed model roster, and
+\code{c13} and \code{c15} carry that caveat on every row.
 
 \subsection{Part IV --- measurement and multiple judges}
 \noindent\emph{Script:} \file{14\_canonical\_judge\_uncertainty.R}.
@@ -2524,56 +2819,75 @@ The canonical outcome is one named judge,
 \code{google/gemini-2.5-flash-lite}; every other judge is a sensitivity
 dimension. \textbf{No majority vote is computed}: with no human-validated labels
 there is no basis for calling a majority correct, and a consensus label would
-conceal the disagreement these tables exist to expose.
+conceal the disagreement these tables exist to expose. The judge panel
+\textbf{does not supply human ground truth} and is not treated as validation.
 
 \textbf{Common support is the point of this file.} An earlier version compared
 the canonical judge on the \emph{full} English sample against each alternative
-judge on \emph{whatever that judge had labelled} --- and nemotron-3-super covers
-$16{,}576$ of the English responses, so part of the apparent instrument
-difference was composition. Now every comparison is computed on an explicit
-common-support sample with \textbf{both judges recomputed on it}: pairwise (the
-intersection of the canonical judge and that one judge) and all-judge (the
-four-judge intersection, $27{,}429$ of $27{,}449$ English responses). \code{c17c}
-reports rows, issues, models, events by arm, response coverage and retained
-nested target weight for every comparison.
+judge on \emph{whatever that judge had labelled} --- nemotron-3-super covers
+$16{,}576$ of the English responses --- and attributed the whole difference to
+the instrument. Part of it was composition. Every comparison is now computed on
+an explicit common-support sample with \textbf{both judges recomputed on it}:
 
-\textbf{Four quantities, kept strictly apart.}
 \begin{center}
 \small
-\begin{tabular}{@{}p{4.3cm}p{9.5cm}@{}}
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-\textbf{Quantity} & \textbf{Definition and status} \\
+\textbf{Comparison} & \textbf{rows} & \textbf{issues} & \textbf{coverage} & \textbf{target weight} \\
 \midrule
-Per-judge point estimate & $\hat\theta_j$, the Fig 1c contrast recomputed under
-  judge $j$ on the shared sample (\code{c17b}). \\
-Per-judge interval & Judge $j$'s own 95\% issue-cluster bootstrap, instrument
-  held fixed (\code{c17b} \code{conf\_low}/\code{conf\_high}). \\
-Observed judge point envelope & $[\min_j \hat\theta_j,\ \max_j \hat\theta_j]$.
-  \textbf{Instrument variation; contains no sampling uncertainty}
-  (\code{point\_envelope\_low}/\code{\_high}). \\
-Union of judge intervals & $[\min_j \hat\theta_j^{\text{lo}},\
-  \max_j \hat\theta_j^{\text{hi}}]$ (\code{union\_low}/\code{union\_high}).
-  \textbf{Reported under exactly that name and never called an envelope}, and
-  never treated as an interval with coverage for judge uncertainty. \\
+pairwise vs.\ gemma-4-31b-it        & 27{,}449 & 624 & $1.000$ & $1.000$ \\
+pairwise vs.\ nemotron-3-nano       & 27{,}449 & 624 & $1.000$ & $1.000$ \\
+pairwise vs.\ nemotron-3-super      & 27{,}429 & 624 & $0.9993$ & $0.9993$ \\
+all-judge intersection              & 27{,}429 & 624 & $0.9993$ & $0.9993$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\noindent \code{c17b} carries \code{point\_sign\_stable},
-\code{point\_envelope\_excludes\_zero} and \code{union\_excludes\_zero} as three
-separate columns, because the second and third are different and strictly
-ordered claims. Neither the envelope nor the union is a confidence interval,
-neither has a coverage guarantee, and the full-sample \code{c04} interval is
-\textbf{not} inserted into either --- it comes from a different, larger sample,
-and mixing it in would produce a range no single comparison supports.
+\subsubsection{Four quantities, kept strictly apart (\hfile{c17b})}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.1cm}p{9.5cm}@{}}
+\toprule
+\textbf{Quantity} & \textbf{Definition and status} \\
+\midrule
+per-judge point estimate & $\hat\theta_j$, the Fig 1 contrast recomputed under
+  judge $j$ on the shared sample \\
+per-judge interval & judge $j$'s own 95\% issue-cluster bootstrap,
+  \textbf{instrument held fixed} \\
+\textbf{observed judge point envelope} & $[\min_j \hat\theta_j,\
+  \max_j \hat\theta_j]$ --- pure instrument variation, containing
+  \textbf{no sampling uncertainty} \\
+union of judge intervals & $[\min_j \hat\theta_j^{\text{lo}},\
+  \max_j \hat\theta_j^{\text{hi}}]$ --- reported under exactly that name and
+  \textbf{never called an envelope} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent \textbf{The envelope is the range of the point estimates, not the
+union of the intervals.} An earlier version called the union ``the observed
+judge sensitivity envelope''; that conflated two things, because the union mixes
+sampling uncertainty into a quantity meant to describe instrument variation and
+is always wider than the judge disagreement it purports to show. On the envelope
+row of \code{c17b}, \code{conf\_low}/\code{conf\_high} hold the \emph{point}
+envelope, so anything plotting that row draws instrument variation and not a
+mixture.
+
+Three claims are reported as three separate columns, strictly ordered in
+strength: \code{point\_sign\_stable} and \code{point\_envelope\_excludes\_zero}
+hold for CN, MENA and India; \code{union\_excludes\_zero} holds for CN alone.
+Neither the envelope nor the union is a confidence interval, and the full-sample
+\code{c04} interval is \textbf{not} inserted into either --- it comes from a
+different, larger sample.
 
 \subsubsection{The paired judge difference (\hfile{c17d})}
 
-\code{c17b} answers \emph{what does each judge produce}. The sensitivity
-question is \emph{how far does the estimate move when the judge changes}, and
-\code{c17d} estimates that directly:
+\code{c17b} answers \emph{what does each judge produce}. The sensitivity question
+is \emph{how far does the estimate move when the judge changes}, and \code{c17d}
+estimates that directly:
 \[
-\hat\Delta_{j,r} = \hat\theta_{j,r} - \hat\theta_{\text{canonical},\,r}.
+\hat\Delta_{j,r} \;=\; \hat\theta_{j,r} - \hat\theta_{\text{canonical},\,r}.
 \]
 
 \textbf{It cannot be obtained by subtracting two rows of \code{c17b}.} On the
@@ -2584,128 +2898,288 @@ gives an interval far too wide. The difference is therefore formed \emph{inside}
 each replicate: one issue set is resampled, every judge's contrast is recomputed
 on that same draw with the identical \code{gcomp()}, and the difference is taken
 within the draw. Same bootstrap unit (\code{issue\_id}), same
-\code{bootstrap\_issue\_instance} labelling, $B = 600$, failures counted and
-never replaced; a replicate in which any judge is undefined fails for all of
-them, since it is not a valid paired replicate for any comparison.
+\code{bootstrap\_issue\_instance} labelling, $B_{\text{judge}} = 600$, failures
+counted and never replaced; a replicate in which \emph{any} judge is undefined
+fails for all of them, since it is not a valid paired replicate for any
+comparison. Zero replicates failed.
 
 Three acceptance tests guard it. \textbf{H7}: the canonical judge's own
-difference must be exactly zero by construction. \textbf{H8}: the point
-estimates must reproduce \code{c17b} to machine precision --- both must come
-from the identical estimator on the identical sample. \textbf{H9}: the paired
-interval must be narrower than the naive combination of the two marginal
-intervals; a paired interval that is not narrower has not used the pairing.
+difference must be exactly zero by construction. \textbf{H8}: the point estimates
+must reproduce \code{c17b} to machine precision. \textbf{H9}: the paired interval
+must be narrower than the naive combination of the two marginal intervals --- a
+paired interval that is not narrower has not used the pairing.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Jurisdiction} & \textbf{gemma-4-31b-it} & \textbf{nemotron-3-nano} & \textbf{nemotron-3-super} \\
+\midrule
+CN    & $-5.16$ $[-10.84,\ 2.76]$ & $-3.62$ $[-8.35,\ 1.92]$ & $-2.12$ $[-5.77,\ 1.90]$ \\
+MENA  & $-1.54$ $[-2.91,\ -0.24]$ & $-2.58$ $[-4.53,\ -0.77]$ & $-1.38$ $[-2.83,\ -0.11]$ \\
+India & $+0.05$ $[-0.82,\ 0.99]$  & $+0.35$ $[-0.90,\ 1.49]$ & $+0.44$ $[-0.46,\ 1.56]$ \\
+US    & $-0.67$ $[-1.95,\ 0.56]$  & $-1.75$ $[-3.17,\ -0.22]$ & $-1.96$ $[-3.35,\ -0.65]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \textbf{Zero means the alternative judge reproduces the canonical judge on the
 same sample. It does not mean either is correct.} The canonical judge is a
-\textbf{reference instrument, not ground truth} --- no human-validated labels
-exist, no judge is known to be correct, and this is the same reason no majority
-vote is computed. The judge panel \textbf{does not supply human ground truth}
-and is not treated as validation.
+\textbf{reference instrument, not ground truth}.
 
 \paragraph{Worked chain: one judge comparison $\rightarrow$ ED1.}
 For MENA under \code{google/gemma-4-31b-it}: the canonical judge gives
-$\hat\theta = +3.711$ pp with interval $[1.352,\,6.150]$, and gemma gives
-$+2.173$ pp with interval $[0.402,\,4.040]$ (both \code{c17b}, both on
-$n = 6{,}233$). The paired difference is
-$2.173 - 3.711 = -1.538$ pp with interval $[-2.913,\,-0.242]$ --- and that is the
-mark plotted in the MENA facet of \textbf{ED1}. The two marginal intervals have
-widths $4.80$ and $3.64$ pp, so a naive difference would carry something like
-$8.44$ pp of width; the paired interval is $2.67$ pp, $32\%$ of it. The
-substantive consequence is visible only in the paired form: all three
-alternative judges give a \emph{lower} MENA estimate than the canonical judge,
-and all three of those differences exclude zero --- a pattern that overlapping
-absolute intervals cannot show.
+$+3.711$ pp $[1.352,\ 6.150]$ and gemma gives $+2.173$ pp $[0.402,\ 4.040]$, both
+on $n = 6{,}233$ (\code{c17b}). The paired difference is
+$2.173 - 3.711 = -1.538$ pp with interval $[-2.913,\ -0.242]$ --- the MENA/gemma
+mark of \textbf{ED1}. The two marginal intervals have widths $4.80$ and $3.64$
+pp, so a naive difference would carry roughly $8.44$ pp of width; the paired
+interval is $2.67$ pp, $32\%$ of it. The substantive consequence is visible only
+in the paired form: all three alternative judges give a \emph{lower} MENA
+estimate, and all three of those differences exclude zero --- a pattern
+overlapping absolute intervals cannot show.
 
-\subsection{Sensitivities and post-outcome diagnostics (\hfile{c07}, \hfile{c07b})}
+\textbf{The disabled annotation-error layer.} \code{draw\_latent\_labels()}
+(\file{10\_canonical\_common.R}:342) implements the standard misclassification
+correction and is \textbf{disabled by a \code{stop()}}. It requires
+stratum-specific sensitivity, specificity and prevalence; none exist.
 
-\code{c07} holds alternative but comparable estimators of the same target ---
-leave-one-model-out, prompt tier, language, outcome definition, functional form
-and the support restriction --- each with a 95\% issue-cluster bootstrap at
-$B = 500$. They are drawn in \textbf{ED2}, grouped by family within a facet per
-jurisdiction.
+\subsection{Part V --- issue-subsample stability (\hfile{15\_subsample\_stability.R})}
 
-\textbf{A row is plotted only if it has a point \emph{and} an interval.}
-\code{c07\$estimable} records that a fit was attempted, not that an estimate
-exists: five functional-form rows carry \code{estimable = TRUE} with
-\code{estimate\_pp = NA} (MENA and US \code{home $\times$ domain} failed in
-$47.2\%$ and $16.8\%$ of draws; MENA, India and US \code{home $\times$ route}
-produced none). Filtering on that flag reserved a whole empty facet for them.
-They are now omitted and counted in a terse per-family marker.
+\textbf{This is not a bootstrap and its ranges are not confidence intervals.}
+A bootstrap resamples \emph{with} replacement at full size to approximate
+sampling uncertainty at the observed $n$. This resamples \emph{without}
+replacement at \emph{reduced} size to answer a design question: how much of the
+full-sample conclusion is already recovered when the issue battery is smaller?
+The summaries are called \textbf{across-subsample ranges} and
+\textbf{sampling-stability bands}; acceptance J11 fails the build on the word
+``confidence''.
 
-\textbf{The hierarchical marginal estimate is in no forest.} It is a different
-estimand --- it integrates over the issue random effect instead of standardizing
-over the observed issue set --- and it has no comparable interval, so it is
-tabulated in \code{c07b}. Four of five jurisdictions did not converge; only MENA
-has a value ($+3.79$ pp, point only).
+\textbf{Unit.} The issue. A sampled issue carries all of its prompts, tiers,
+languages, models and annotations, so every within-prompt and within-issue
+pairing the design rests on stays intact. Resampling response rows would break
+the paired language and framing blocks of Part II and would describe a study
+nobody ran (acceptance J10).
 
-\textbf{Response-length filters are post-outcome and are not robustness
-checks.} They condition on a realized property of the response --- something
-determined \emph{after} the outcome --- so they can induce exactly the kind of
-selection they appear to rule out. They have their own figure, \textbf{ED3},
-because sharing a figure number with the inferential forest is itself a claim of
-kinship.
+\textbf{Design.} Simple random sampling without replacement within each of the
+nine \textbf{topic-domain strata} --- civil rights 80, economic policy 80,
+environment 44, governance 80, migration 80, religion/state 64, security 80,
+social/moral 36, territorial 80 --- with allocation
+$n_h(f) = \min\!\bigl(n_h,\ \max(1,\ \lceil f\,n_h\rceil)\bigr)$.
+
+\textbf{Nesting.} Within a replicate each stratum is permuted \emph{once} and
+every fraction is a \textbf{prefix} of that permutation, so the 20\% sample
+contains the 10\% sample and a trajectory across fractions reads as the effect
+of \emph{adding} issues rather than as nine unrelated draws. Acceptance J15
+re-derives the nesting from the recorded rule rather than trusting it.
+
+\textbf{Seeds.} Master seed $20260809$; replicate seeds
+\code{set.seed(MASTER\_SEED + r)}, so any single replicate is reproducible
+without replaying the others.
+
+\textbf{Fractions and replication.} $10, 20, 30, 40, 50, 60, 75, 90\%$ at
+$500$ replicates each, plus a \textbf{deterministic 100\% endpoint} which is the
+observed sample, not a draw. $188{,}047$ replicate-estimand rows.
+
+\textbf{Estimands refitted inside each sampled issue set} --- the full canonical
+model is refitted; no full-sample coefficient is held fixed. Seven families, $47$
+estimands: descriptive home$-$away and standardized home contrast (5
+jurisdictions each), the four pooled language contrasts, the framing contrast,
+the five-bin ideology composition on four dimensions, six foundation
+prevalences, and six pairwise PSA values. \textbf{Model-level heterogeneity is
+not refitted} --- too expensive, and the restriction is stated rather than
+hidden.
+
+\textbf{Prespecified tolerances}, fixed before any result was inspected: $1$ pp
+and $2$ pp for percentage-point contrasts, $0.02$ and $0.05$ for shares.
+
+\textbf{Diagnostics per fraction and estimand}, in
+\code{c21\_subsample\_summary.csv}: median, p10--p90 and p2.5--p97.5 ranges,
+median absolute and RMS deviation from the full sample, sign-agreement rate,
+within-tolerance rates, convergence rate, estimability rate, mean sampled issues
+and rows. Overall estimability $97.8\%$; convergence $99.99\%$.
+
+\textbf{Outputs.} \code{c21\_subsample\_draws.parquet} (every replicate-level
+estimate), \code{c21\_subsample\_summary.csv},
+\code{c21\_subsample\_failures.csv}, \code{c21\_subsample\_metadata.json}
+(seed, fractions, strata, sampling and nesting algorithms, tolerances, package
+versions, git SHA, input hashes). \textbf{Figure.} ED3.
+
+\paragraph{Worked chain: the CN standardized contrast $\rightarrow$ ED3.}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+\textbf{Fraction} & \textbf{median} & \textbf{p10} & \textbf{p90} & \textbf{sign agree} & \textbf{within 1 pp} & \textbf{MAD} \\
+\midrule
+10\%  & $18.73$ & $4.31$  & $53.38$ & $0.970$ & $0.048$ & $9.49$ \\
+50\%  & $16.34$ & $11.68$ & $21.97$ & $1.000$ & $0.194$ & $2.71$ \\
+90\%  & $16.51$ & $14.69$ & $18.47$ & $1.000$ & $0.550$ & $0.90$ \\
+100\% & $16.48$ & $16.48$ & $16.48$ & $1.000$ & $1.000$ & $0.00$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The full-sample value is $16.48$ pp. The median tracks it at every
+fraction; the band narrows monotonically; sign agreement reaches $1.00$ by 20\%
+of the battery. MENA reaches sign agreement $1.00$ by 40\%. \textbf{Read this as
+design guidance, not as uncertainty}: the p10--p90 band at 50\% is what a
+half-sized battery would have produced, not a confidence statement about the
+full-sample estimate.
+
+\subsection{Part VI --- prompt-semantic geometry (\hfile{16\_prompt\_umap.R})}
+
+\textbf{The question} is not whether the prompts form clusters --- a projection
+always shows clusters. It is which regions of prompt-meaning space attract
+refusal, and whether that pattern moves with the language the prompt is
+delivered in.
+
+\textbf{Unit.} The \emph{prompt} ($2{,}496$), not the response. \textbf{One
+geometry, reused everywhere}: exactly one 2-D coordinate pair per prompt, fitted
+once, and reused in every panel of ED8 and ED9. Fitting a separate projection
+per language or per model would make the axes mean different things in each
+facet, so a point that appeared to move would be an artefact of the fit.
+Acceptance J20--J21 assert one coordinate pair per prompt and one seed;
+\file{audit\_figures.R} asserts that no figure script calls \code{uwot}.
+
+\textbf{Embedding.} \code{openai/text-embedding-3-small} at $512$ of its $1{,}536$
+dimensions --- the model is Matryoshka-trained, so a truncated prefix is a valid
+embedding rather than an arbitrary projection. Input is the English prompt as
+delivered, with two preprocessing steps, both recorded: the boundary directive
+prefix \emph{``Write a persuasive argument defending the following position:''}
+is \textbf{stripped}, because it opens all $1{,}248$ boundary prompts identically
+and would make the map separate tiers on template wording rather than subject
+matter; and whitespace is collapsed. Produced once by
+\file{scripts/embed\_prompts.py} and cached in \file{data/}. \textbf{The release
+itself never calls an API}: \file{16\_prompt\_umap.R} reads the cache and skips
+cleanly when it is absent, so a machine that has never run the embedding step
+still builds a complete release, minus the two UMAP figures. The cache and its
+provenance sidecar are hashed in the release manifest as
+\code{kind = "input\_embeddings"}.
+
+\textbf{Projection.} \code{uwot::umap}, seed $20260809$, \code{n\_neighbors} 25,
+\code{min\_dist} $0.15$, cosine metric, 2 components, on the L2-normalised
+embedding matrix.
+
+\textbf{Refusal propensity.} For each (prompt, language), the share of models
+refusing, with \textbf{equal weight per jurisdiction and models nested equally
+within jurisdiction} --- a plain response mean would let the four-model US arm
+speak twice as loudly as the two-model CN arm, so a ``high refusal'' region could
+just be a region the larger arm happens to dislike. The \code{ALL} row
+additionally weights every language equally. Numerator and denominator are
+carried alongside, and boundedness in $[0,1]$ is asserted (acceptance J22).
+
+\textbf{Diagnostics, computed and reported \emph{before} any semantic claim.}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrp{6.7cm}@{}}
+\toprule
+\textbf{Diagnostic} & \textbf{Value} & \textbf{Reading} \\
+\midrule
+neighbourhood preservation @$k{=}15$ & $0.395$ & share of embedding
+  neighbours retained in 2-D \\
+topic-domain purity @$k{=}15$ & $\mathbf{0.649}$ & against a shuffled baseline of
+  $\mathbf{0.117}$: the map does recover the topic structure \\
+hyper-parameter grid ($3 \times 3$) & $0.296$--$0.436$ & preservation is not an
+  artefact of the chosen settings \\
+seed stability, Procrustes RMSE & $0.374$--$0.419$ & positions move between
+  seeds \\
+seed stability, neighbour overlap & $0.652$--$0.674$ & neighbourhoods do not \\
+near-duplicate prompts & $0$ & cosine $\ge 0.995$ to another prompt \\
+missing embeddings & $0$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The last two rows together give the reading rule: \textbf{read
+neighbourhoods, not absolute positions or distances.} Purity is computed in the
+\emph{embedding} space for the preservation statistic and in the 2-D map for the
+topic statistic, deliberately --- using the projection to assess itself would be
+circular.
+
+\textbf{Representative regions are selected deterministically}, not by eye:
+highest local refusal, highest between-language disagreement, highest
+between-model disagreement, each taking the top-scoring neighbourhood that does
+not overlap one already chosen, and then that neighbourhood's \emph{medoid} as
+the representative. Full prompt text is exported to the companion table and
+\textbf{never printed on the point cloud}.
+
+\textbf{Outputs.} \code{c22\_prompt\_umap\_coordinates.csv},
+\code{c22\_prompt\_refusal\_propensities.csv},
+\code{c22\_prompt\_refusal\_by\_model.csv},
+\code{c22\_prompt\_umap\_diagnostics.csv},
+\code{c22\_prompt\_umap\_regions.csv},
+\code{c22\_prompt\_umap\_metadata.json}. \textbf{Figures.} ED8, ED9.
+
+\textbf{Exploratory and descriptive.} It establishes no causal effect and
+validates no topic taxonomy.
 
 \subsection{Figure--estimand crosswalk}
 
-Every panel, its source table, and what its uncertainty is. Full legends,
-including every $n$, exclusion and encoding, are in
-\file{docs/CANONICAL\_FIGURE\_LEGENDS.md} --- the single authoritative caption
+Every panel, its source table, and what its uncertainty is. Full legends ---
+every $n$, exclusion, weighting, block definition and encoding --- are in
+\file{docs/CANONICAL\_FIGURE\_LEGENDS.md}, the single authoritative caption
 document. No caption prose appears in any PNG.
 
 \begin{center}
 \scriptsize
-\begin{longtable}{@{}llp{4.4cm}p{3.1cm}p{1.9cm}@{}}
+\begin{longtable}{@{}llp{4.3cm}p{3.0cm}p{1.9cm}@{}}
 \toprule
 \textbf{Panel} & \textbf{Table} & \textbf{Estimand} & \textbf{Uncertainty shown} & \textbf{Status} \\
 \midrule
 \endhead
-Fig 1a & \code{c02} & observed home / away refusal rate, response-weighted, English &
-  none & descriptive \\
-Fig 1b & \code{c02} & unadjusted home$-$away difference, response-weighted &
+Fig 1 (hollow) & \code{c02} & unadjusted home$-$away difference, equal-model &
   95\% issue-cluster bootstrap & descriptive \\
-Fig 1c & \code{c04} & covariate-standardized home$-$away contrast, full target,
-  nested weights & 95\% issue-cluster bootstrap, $B{=}2000$ & \textbf{primary} \\
+Fig 1 (filled) & \code{c04} & covariate-standardized home$-$away contrast, full
+  target, nested weights & 95\% issue-cluster bootstrap, $B{=}2000$ &
+  \textbf{primary} \\
 Fig 2a & \code{c08} & pooled paired language difference, equal per model &
   95\% issue-cluster bootstrap & \textbf{primary} \\
-Fig 2b & \code{c09} & the same estimator within each model & none (intervals in ED4b) &
-  exploratory \\
-Fig 2c & \code{c10}, \code{c11} & paired boundary$-$regular difference, complete
-  2+2 blocks & 95\% issue-cluster bootstrap & primary (pooled); per-model
-  exploratory \\
+Fig 2b & \code{c10}, \code{c11} & paired boundary$-$regular difference,
+  complete 2+2 blocks & 95\% issue-cluster bootstrap & primary (pooled);
+  per-model exploratory \\
 Fig 3a & \code{c12} & equal-model share in each of five ideology bins &
   none (composition; intervals in \code{c12}) & descriptive, exploratory \\
 Fig 3b & \code{c14} & equal-model prevalence of six non-exclusive foundations &
   95\% issue-cluster bootstrap & descriptive \\
-Fig 3c & \code{c14}$\leftarrow$\code{e25} & pairwise PSA, mean over six judge pairs &
-  \textbf{min--max over pairs; not an interval} & measurement \\
+Fig 3c & \code{c14}$\leftarrow$\code{e25} & pairwise PSA, mean over six judge
+  pairs & \textbf{min--max over pairs; not an interval} & measurement \\
 ED1 & \code{c17d} & paired judge$-$canonical difference &
-  95\% \textbf{paired} issue-cluster bootstrap & sensitivity \\
-ED2 & \code{c07}, \code{c04} & the standardized contrast under alternative
-  comparable specifications & 95\% issue-cluster bootstrap, $B{=}500$ &
-  sensitivity \\
-ED3 & \code{c07}, \code{c04} & the same contrast on response-length-filtered
-  subsets & 95\% issue-cluster bootstrap & \textbf{post-outcome diagnostic} \\
-ED4a & \code{c09} & model $\times$ language paired differences & none & exploratory \\
-ED4b & \code{c09} & the same cells with their intervals &
+  95\% \textbf{paired} issue-cluster bootstrap, $B{=}600$ & sensitivity \\
+ED2 & \code{c04}, \code{c07} & four specifications: ML, Firth, common support,
+  \code{refused\_any} & 95\% issue-cluster bootstrap & sensitivity \\
+ED3 & \code{c21} & the seven paper estimands under issue subsampling &
+  \textbf{across-subsample ranges; NOT intervals} & design stability \\
+ED4 & \code{c09} & model $\times$ language paired differences &
   95\% issue-cluster bootstrap & exploratory \\
-ED5 & \code{e23}, \code{e24}, \code{e25} & four agreement statistics per construct &
-  none (point statistics) & measurement \\
+ED5 & \code{c13} & five-bin ideology composition per model &
+  none drawn (intervals in \code{c13}) & descriptive, exploratory \\
+ED6 & \code{c15}, \code{c14} & per-model foundation prevalence &
+  95\% issue-cluster bootstrap & descriptive \\
+ED7 & \code{e23}, \code{e24}, \code{e25} & four agreement statistics per
+  construct & none (point statistics) & measurement \\
+ED8 & \code{c22} & prompt refusal propensity over a fixed geometry &
+  none (descriptive map) & exploratory \\
+ED9 & \code{c22} & per-model refusal over the same geometry &
+  none (binary indicator) & exploratory \\
 \bottomrule
 \end{longtable}
 \end{center}
 
-\noindent \textbf{How a table row becomes a mark.} \code{estimate\_pp} is the
-point location; \code{conf\_low\_pp}/\code{conf\_high\_pp} are the interval
-endpoints. Row order is fixed by the table, never by the estimates being
-displayed, except where the legend says otherwise (Fig 2a by pooled magnitude,
-Fig 2c per-model rows by their own estimate, Fig 3b by descending prevalence).
-A non-estimable value is a hollow square plus the words \code{not estimable}.
-Facets share a scale where the intended comparison is magnitude across facets
-(Fig 2b) and use free scales where the task is within-facet comparison (ED4b,
-ED2); the legend states which in each case. The envelope on ED1 is a paired
-sampling interval, not a point range. The neutral ideology mass is drawn
-directly as part of the five-bin distribution. Non-exclusive moral outcomes are
-drawn as six independent prevalences, never as a composition.
+\noindent \textbf{How a table row becomes a mark.} \code{estimate\_pp} (or
+\code{estimate}) is the point location; \code{conf\_low\_pp} and
+\code{conf\_high\_pp} are the interval endpoints. Row order comes from
+\file{\_orders.R}. A non-estimable value is a hollow square plus the words
+\code{not estimable}, never a point at zero. Facets share a scale wherever the
+intended comparison is magnitude across facets (ED4, ED8, ED9); ED1 uses one
+common axis across jurisdictions for the same reason. Fig 1 and Fig 2 use no
+hue at all --- position, shape and fill carry the distinction, which survives
+greyscale and every form of colour-vision deficiency. Colour, where used,
+carries exactly one meaning per figure: jurisdiction (ED4, ED6), ideology bin
+(Fig 3a, ED5), refusal propensity on a perceptually-uniform sequential scale
+(ED8), or construct group (ED7).
 
 \subsection{Not artwork}
 
@@ -2719,10 +3193,11 @@ estimates directory because the figure tree holds PNGs and nothing else.
 A caution recorded because it cost a release: a panel's width is a \code{null}
 grid unit, and \code{convertWidth()} cannot resolve it outside a drawing context
 --- it returns $0$. An earlier audit summed the panel columns, converted, got
-zero for every panel, dropped the zeros with a \code{> 0} filter, and reported
-OK while measuring nothing. The check now resolves the allocation the way grid
-does: absolute widths first, then the remainder shared among the null units in
+zero for every panel, dropped the zeros with a \code{> 0} filter, and reported OK
+while measuring nothing. The check now resolves the allocation the way grid does:
+absolute widths first, then the remainder shared among the null units in
 proportion to their null values.
+
 
 % ===========================================================================
 \section{Orchestration --- \hfile{run\_pilot.py}}
@@ -3189,36 +3664,45 @@ weighted aggregate: \code{estimate\_pp} becomes a point location and
 in the crosswalk of \S\ref{sec:estimands}.
 
 \medskip
-\noindent The seven remaining chains, each on real records from the current
-release and each stated at the point where its estimator is specified:
+\noindent The nine remaining chains, each on real records from release
+\code{canon\_012} and each stated at the point where its estimator is specified:
 
 \begin{center}
 \small
-\begin{tabular}{@{}p{5.3cm}p{8.6cm}@{}}
+\begin{tabular}{@{}p{5.4cm}p{8.5cm}@{}}
 \toprule
-\textbf{Chain} & \textbf{Where} \\
+\textbf{Chain} & \textbf{Where, and the number it lands on} \\
 \midrule
 Annotation row $\to$ derived variables &
-  \S\ref{sec:estimands}, ``Data assembly''; DeepSeek on Tiananmen, code 5 \\
-Judge pair $\to$ $a$, $b$, $c$ $\to$ \code{e23b} $\to$ \code{e23} &
-  \S\ref{sec:estimands}, ``Judge reliability''; $1724/2342 = 0.7361$ \\
-CN observed rates $\to$ descriptive difference $\to$ Fig 1a, 1b &
-  \S\ref{sec:estimands}, Part I; $19.59 - 3.58 = +16.02$ \\
-CN standardized contrast $\to$ interval $\to$ Fig 1c &
-  \S\ref{sec:estimands}, Part I; $+16.48$ $[9.95,\,24.84]$ \\
-One paired language block $\to$ Fig 2a, 2b &
-  \S\ref{sec:estimands}, Part II; DeepSeek, Kashmir, $d = +1$ \\
-One complete 2+2 framing block $\to$ Fig 2c &
-  \S\ref{sec:estimands}, Part II; gpt-5.1, $d_b = +0.5$, pooled $+0.087$ \\
-Five ideology shares $\to$ Fig 3a &
-  \S\ref{sec:estimands}, Part III; Economic, $\hat\pi_0 = 0.924$ \\
-Foundation prevalence and PSA $\to$ Fig 3b/3c &
-  \S\ref{sec:estimands}, Part III; care/harm, $0.4984$ and $0.8504$ \\
+  \S\ref{sec:estimands}, ``Data assembly''; DeepSeek on Tiananmen, code 5
+  $\to$ \code{refused\_strict} $= 1$, \code{home\_status} $=$ home \\
+Judge pair $\to$ $a,b,c$ $\to$ \code{e23b} $\to$ \code{e23} &
+  ``Judge reliability''; $1724/2342 = 0.7361230$, six pairs mean $0.736503$ \\
+CN observed rates $\to$ unadjusted difference $\to$ Fig 1 &
+  Part I; $0.195914 - 0.035757 = +16.02$ pp $[11.89,\,20.25]$ \\
+CN standardized contrast $\to$ Fig 1 &
+  Part I; $+16.48$ pp $[9.95,\,24.84]$, $520$ issues, failure rate $0$ \\
+One paired language block $\to$ Fig 2a &
+  Part II; DeepSeek $\times$ Kashmir reg1, $d_{\mathrm{zh}} = +1$, pooled
+  $+1.320$ pp \\
+One complete 2+2 framing block $\to$ Fig 2b &
+  Part II; gpt-5.1, $d_b = +0.5$, pooled $+0.0867$ pp \\
+Five ideology shares $\to$ Fig 3a and ED5 &
+  Part III; Economic $\hat\pi_0 = 0.923999$; DeepSeek row $0.927973$ \\
+Foundation prevalence and PSA $\to$ Fig 3b/3c and ED6 &
+  Part III; care/harm $0.4984$ $[0.4420,\,0.5564]$ and PSA $0.8504$
+  $[0.8216,\,0.8774]$ \\
 Judge comparison $\to$ paired difference $\to$ ED1 &
-  \S\ref{sec:estimands}, Part IV; MENA/gemma, $-1.54$ $[-2.91,\,-0.24]$ \\
+  Part IV; MENA/gemma $-1.538$ pp $[-2.913,\,-0.242]$, $32\%$ of the naive width \\
+Subsampled battery $\to$ stability band $\to$ ED3 &
+  Part V; CN at 50\% of the battery, median $16.34$, p10--p90
+  $[11.68,\,21.97]$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\noindent Every value in that table was read from the promoted tables of
+\code{canon\_012}. None is transcribed from a rendered figure.
 
 \section*{Appendix: key files and their roles}
 \addcontentsline{toc}{section}{Appendix: key files and their roles}
@@ -3288,38 +3772,46 @@ Judge comparison $\to$ paired difference $\to$ ED1 &
 \addcontentsline{toc}{section}{Appendix: canonical output inventory}
 % ===========================================================================
 
-\noindent Everything the release promotes, as it stands on disk. \textbf{The
-publication artwork is PNG only}: eight rasters, all 183\,mm wide at 600\,dpi
-with \code{pHYs} metadata, and no PDF, SVG, EPS, TIFF or one-column variant
+\noindent Everything release \code{canon\_012} promotes, as it stands on disk:
+\textbf{52 CSV tables, one Parquet file, two JSON metadata sidecars, two layout
+RDS files, and twelve PNGs}. The publication artwork is \textbf{PNG only} --- all
+twelve are 183\,mm wide at 600\,dpi with valid \code{pHYs} metadata, on four
+approved canvases, and there is no PDF, SVG, EPS, TIFF or one-column variant
 anywhere in the tree. \textbf{Captions live outside the PNGs}, in
 \file{docs/CANONICAL\_FIGURE\_LEGENDS.md}. \textbf{The layout \code{.rds} files
 are audit artefacts, not figures.} The plotting scripts consume tables and fit
-nothing.
+nothing, and write no table.
 
 \footnotesize
-\begin{longtable}{@{}p{4.6cm}p{9.0cm}@{}}
+\begin{longtable}{@{}p{5.0cm}p{8.6cm}@{}}
 \toprule
 \textbf{Output} & \textbf{Contents} \\
 \midrule
 \endhead
 \multicolumn{2}{@{}l}{\textbf{Provenance and tests}} \\
 \code{c00\_manifest.csv} & Every output, source, documentation file and input
-  with SHA-256; git SHA, branch and dirty state; package and language versions;
-  seeds; replicate counts. Built last and never lists itself. \\
+  with SHA-256; \code{git\_sha\_at\_start}, \code{git\_sha\_at\_end} and
+  \code{tree\_moved\_during\_build}; package and language versions; seeds;
+  replicate counts. Built last and never lists itself. \\
 \code{c00\_timings.csv} & Per-stage wall clock \\
-\code{c01b\_acceptance\_tests.csv} & Every acceptance test and its result \\
+\code{c01b\_acceptance\_tests.csv} & Every acceptance test and its result
+  (108 for this release) \\
 \code{c18\_bootstrap\_diagnostics.csv} & Per-interval bootstrap and jackknife
-  diagnostics: unit, multiplicity flag, seed, draws requested/drawn/failed,
+  diagnostics: unit, multiplicity flag, seed, draws requested / drawn / failed,
   failure rate, whether failures were replaced, interval method \\
 \midrule
 \multicolumn{2}{@{}l}{\textbf{Part I --- home jurisdiction}} \\
 \code{c02}, \code{c03} & Unadjusted home/away rates and differences (English;
   all five languages as a supplement) \\
 \code{c04} & Standardized contrast: full target, common support, Firth \\
-\code{c05} & Model-specific contrasts $+$ jointly bootstrapped equal-model average \\
+\code{c05} & Model-specific contrasts $+$ jointly bootstrapped equal-model
+  average \\
 \code{c06}, \code{c06b} & Overlap and common-support diagnostics \\
-\code{c07} & Sensitivities \\
-\code{c07b} & Hierarchical marginal --- a \emph{different} estimand, tabulated \\
+\code{c07} & Sensitivities (82 rows) \\
+\code{c07b} & Hierarchical marginal --- a \emph{different} estimand \\
+\code{c07c} & The sensitivity \textbf{catalogue}: every row classified A--F by
+  what it changes, with \code{difference\_from\_primary\_pp} and a
+  \code{plottable} flag distinct from \code{estimable} \\
 \midrule
 \multicolumn{2}{@{}l}{\textbf{Part II --- language and framing}} \\
 \code{c08}, \code{c08b}, \code{c09} & Paired language effects; weighting
@@ -3327,9 +3819,11 @@ nothing.
 \code{c10}, \code{c10b}, \code{c11} & Framing; the seven incomplete blocks by
   key; by model and domain \\
 \midrule
-\multicolumn{2}{@{}l}{\textbf{Part III --- content}} \\
-\code{c12}, \code{c12b}, \code{c13} & Five-bin ideology, slant coverage, by model \\
-\code{c14}, \code{c15} & Foundation prevalence with agreement statistics; by model \\
+\multicolumn{2}{@{}l}{\textbf{Part III --- content, conditional on engagement}} \\
+\code{c12}, \code{c12b} & Five-bin ideology; slant coverage \\
+\code{c13} & Ideology by model --- 264 rows with both inference targets \\
+\code{c14}, \code{c15} & Foundation prevalence with agreement statistics; by
+  model (66 rows, both targets) \\
 \code{c16} & Joint outcomes, refusal as its own category \\
 \code{c19} & Content outcomes under each judge \\
 \midrule
@@ -3337,29 +3831,65 @@ nothing.
 \code{c17}, \code{c17b}, \code{c17c} & Judge sensitivity; per-judge estimates,
   point envelope and interval union; common-support description \\
 \code{c17d} & \textbf{Paired} judge$-$canonical difference \\
-\code{e22b}, \code{e22c} & Panel codebook-version composition; out-of-universe keys \\
+\code{e22b}, \code{e22c} & Panel codebook-version composition; out-of-universe
+  keys \\
 \code{e23}, \code{e23b}, \code{e23c} & Pass-1 reliability; pairwise agreement;
   reliability bootstrap diagnostics \\
 \code{e24}, \code{e25} & Justification and slant reliability \\
 \code{e26}, \code{e26b}, \code{e26c} & Judge marginals; pairwise vs anchor;
   leave-one-judge-out \\
-\code{e28} & Consensus labels (reported, not used as an outcome) \\
+\code{e28} & Consensus labels (reported, never used as an outcome) \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Part V --- design stability}} \\
+\code{c21\_subsample\_draws.parquet} & Every replicate-level estimate
+  (188,047 rows) \\
+\code{c21\_subsample\_summary.csv} & Per fraction and estimand: median,
+  p10--p90 and p2.5--p97.5 \textbf{across-subsample ranges}, deviation from the
+  full sample, sign agreement, within-tolerance rates, estimability,
+  convergence \\
+\code{c21\_subsample\_failures.csv} & Non-estimable replicate cells by fraction \\
+\code{c21\_subsample\_metadata.json} & Seed, fractions, strata, sampling and
+  nesting algorithms, tolerances, versions, git SHA, input hashes \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Part VI --- prompt semantics}} \\
+\code{c22\_prompt\_umap\_coordinates.csv} & One fixed 2-D coordinate pair per
+  prompt, plus per-language propensities and neighbourhood diagnostics \\
+\code{c22\_prompt\_refusal\_propensities.csv} & Prompt $\times$ language
+  propensity with numerator and denominator \\
+\code{c22\_prompt\_refusal\_by\_model.csv} & Per-prompt English refusal
+  indicator by model \\
+\code{c22\_prompt\_umap\_diagnostics.csv} & Neighbourhood preservation, topic
+  purity against a shuffled baseline, hyper-parameter grid, seed stability \\
+\code{c22\_prompt\_umap\_regions.csv} & Deterministically selected
+  representative regions and their medoid prompts \\
+\code{c22\_prompt\_umap\_metadata.json} & Embedding model and preprocessing,
+  UMAP implementation and parameters, hashes \\
 \midrule
 \multicolumn{2}{@{}l}{\textbf{Appendix descriptives}} \\
 \code{a01}--\code{a04} & Engagement composition; refusal rates by cell;
   justification composition; DeepSeek language pairing \\
 \midrule
-\multicolumn{2}{@{}l}{\textbf{Main figures} --- \file{pipeline/figures/main/}, 600\,dpi PNG} \\
-\file{Fig1\_home\_jurisdiction.png} & $183 \times 85$\,mm \\
-\file{Fig2\_language\_framing.png} & $183 \times 125$\,mm \\
+\multicolumn{2}{@{}l}{\textbf{Main figures} --- \file{pipeline/figures/main/}} \\
+\file{Fig1\_home\_jurisdiction.png} & $183 \times 62$\,mm \\
+\file{Fig2\_language\_framing.png} & $183 \times 85$\,mm \\
 \file{Fig3\_content.png} & $183 \times 85$\,mm \\
 \midrule
-\multicolumn{2}{@{}l}{\textbf{Extended Data} --- \file{pipeline/figures/extended/}, 600\,dpi PNG} \\
-\file{ED1\_judge\_sensitivity.png} & $183 \times 85$\,mm \\
-\file{ED2\_inferential\_robustness.png} & $183 \times 165$\,mm \\
-\file{ED3\_postoutcome\_diagnostics.png} & $183 \times 62$\,mm \\
-\file{ED4\_language\_heterogeneity.png} & $183 \times 125$\,mm \\
-\file{ED5\_measurement\_reliability.png} & $183 \times 165$\,mm \\
+\multicolumn{2}{@{}l}{\textbf{Extended Data} --- \file{pipeline/figures/extended/}} \\
+\file{ED1\_judge\_sensitivity.png} & $183 \times 62$\,mm \\
+\file{ED2\_focused\_sensitivity.png} & $183 \times 62$\,mm \\
+\file{ED3\_sample\_size\_stability.png} & $183 \times 165$\,mm \\
+\file{ED4\_language\_heterogeneity.png} & $183 \times 85$\,mm \\
+\file{ED5\_slant\_by\_model.png} & $183 \times 85$\,mm \\
+\file{ED6\_foundations\_by\_model.png} & $183 \times 85$\,mm \\
+\file{ED7\_measurement\_reliability.png} & $183 \times 85$\,mm \\
+\file{ED8\_prompt\_semantic\_umap.png} & $183 \times 125$\,mm \\
+\file{ED9\_prompt\_semantic\_umap\_by\_model.png} & $183 \times 125$\,mm \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Cached input, produced outside the release}} \\
+\file{data/prompt\_embeddings\_en.csv.gz} & 2,496 $\times$ 512 prompt
+  embeddings; hashed in the manifest \\
+\file{data/prompt\_embeddings\_en.json} & Embedding model, preprocessing, token
+  count, cost, source and output hashes \\
 \midrule
 \multicolumn{2}{@{}l}{\textbf{Not figures}} \\
 \code{c20\_figure\_layout\_main.rds} & Assembled plot objects, for layout

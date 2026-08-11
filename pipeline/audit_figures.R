@@ -476,9 +476,14 @@ ok("ED8: refusal propensities are bounded in [0,1]",
    is.null(c22p) || all(c22p$refusal_propensity >= 0 & c22p$refusal_propensity <= 1,
                         na.rm = TRUE),
    "", warn_only = is.null(c22p))
+# CODE, NOT PROSE. This grepped the raw file, so a COMMENT explaining that the
+# script must never refit the projection was itself enough to fail the check.
+# Parsing and deparsing drops comments, leaving only what actually executes.
+code_only <- function(f) tryCatch(
+  paste(deparse(parse(f, keep.source = FALSE)), collapse = "\n"),
+  error = function(e) paste(readLines(f, warn = FALSE), collapse = "\n"))
 ok("ED8/ED9: no facet refits the projection",
-   { src <- readLines("pipeline/21_figures_extended.R", warn = FALSE)
-     !any(grepl("uwot::|umap\\(", src)) })
+   !grepl("uwot::|umap\\(", code_only("pipeline/21_figures_extended.R")))
 # A distribution estimand must be shown as a distribution: the neutral bin holds
 # 80-92% of the mass and an earlier Fig3a plotted only the four directional bins.
 ok("Fig3a: the neutral bin is drawn, not annotated",

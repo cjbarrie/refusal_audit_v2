@@ -567,7 +567,7 @@ weighting, interval and encoding: **`docs/CANONICAL_FIGURE_LEGENDS.md`**.
 | `ED5_slant_by_model` | five-bin ideology composition per model × dimension | `c13` |
 | `ED6_foundations_by_model` | per-model foundation prevalence with issue-clustered intervals | `c15`, `c14` |
 | `ED7_measurement_reliability` | construct × metric: raw agreement, α, Gwet AC1/AC2, PSA | `e23`, `e24`, `e25` |
-| `ED8_prompt_semantic_umap` | one fixed prompt geometry; overall and per-language refusal propensity | `c22` |
+| `ED8_prompt_semantic_umap` | one fixed prompt geometry, **five language panels**; grey = every prompt, red disc area = refusal propensity, no red where propensity is zero | `c22` |
 | `ED9_prompt_semantic_umap_by_model` | the same geometry, refusal by model | `c22` |
 | `ED10_framing` | paired boundary − regular difference, pooled estimate plus per-model heterogeneity, at full width | `c10`, `c11` |
 

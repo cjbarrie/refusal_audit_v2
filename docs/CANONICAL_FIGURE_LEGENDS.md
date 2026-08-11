@@ -478,22 +478,53 @@ different numbers of judges.
 
 ## ED8 · Prompt-semantic geometry
 
-183 × 125 mm. Six panels — all languages, then English, Chinese, Arabic, Russian
-and Hindi — over **one fixed set of prompt coordinates** (`c22`).
+183 × 125 mm. **Five panels, one per delivered language**, over **one fixed set
+of prompt coordinates** (`c22`) — the same construction as ED9, which panels the
+same geometry by model.
 
 *Unit*: the prompt (2,496), not the response.
 *Geometry*: a single 2-D UMAP fitted once on the English prompt text
 (`uwot`, seed 20260809, n_neighbors 25, min_dist 0.15, cosine metric) and
 **reused in every panel**. No facet refits the projection; separately fitted maps
-are not geometrically comparable.
+are not geometrically comparable. `audit_figures.R` enforces this by parsing the
+figure script and refusing to find a projection call in it.
 *Embedding*: `openai/text-embedding-3-small` at 512 dimensions, on the English
 prompt with the boundary directive prefix stripped — it opens all 1,248 boundary
 prompts identically and would otherwise separate tiers on template wording.
 Cached by `scripts/embed_prompts.py`; the release calls no API.
-*Colour*: refusal **propensity**, equal weight per jurisdiction with models
-nested equally within jurisdiction, on a shared perceptually-uniform scale across
-all six panels. Not a binary "ever refused": a prompt one of eleven models
-declined must not look like one all eleven declined.
+
+**Encoding: grey is the semantic universe, red is refusal.** Every prompt is a
+tiny light-grey point. A prompt with **non-zero** refusal propensity carries a
+red disc on top whose **area** is proportional to that propensity; a prompt no
+model refused in that language gets no red disc at all. The red is additionally
+darkened with propensity — a **redundant** second channel on the same number,
+which is why it has no key of its own.
+
+*What is plotted*: refusal **propensity**, equal weight per jurisdiction with
+models nested equally within jurisdiction. Not a binary "ever refused": a prompt
+one of eleven models declined must not look like one all eleven declined.
+
+**The magnitude is never binned.** Area is a continuous function of propensity;
+the legend prints four reference sizes (5%, 10%, 25%, 50%) purely so a reader can
+calibrate. Cutting propensity into high/low would invent a threshold the
+estimand does not have.
+
+**Why this replaced a continuous fill ramp.** The previous version coloured the
+entire cloud on a magma scale, which required reading a colour value off every
+point and made "no refusal at all" and "a little refusal" nearly indistinguishable.
+Under the grey/red split, the absence of refusal is legible at a glance — and in
+English that is most of the map.
+
+**Why the pooled map is not a panel.** Only 1.8% of prompts have zero pooled
+propensity, so a grey/red contrast over the pooled quantity would be red almost
+everywhere and would carry no information. The pooled values remain in `c22`
+(`refusal_propensity_all`).
+
+**The zero share is itself the cross-language result**: 68.0% of prompts have
+zero refusal propensity in English, 52.4% in Chinese, 44.9% in Arabic, 26.3% in
+Russian and **11.9% in Hindi**. The grey visible in each panel is that number.
+Read it with `docs/RESPONSE_VALIDITY.md`: much of the non-English red is
+incoherent output scored as refusal, not refusal behaviour.
 
 **Diagnostics, from `c22_prompt_umap_diagnostics.csv`.** Neighbourhood
 preservation at k = 15 is 0.395. Topic-domain neighbourhood purity is **0.649

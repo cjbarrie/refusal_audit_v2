@@ -398,41 +398,68 @@ if (!is.null(e23) && !is.null(e25)) {
 }
 
 # =============================================================================
-# ED8 -- prompt-semantic UMAP
+# ED8 -- prompt-semantic UMAP, by language
 # =============================================================================
-# ONE fixed geometry, reused in every panel. Colour is a refusal PROPENSITY
-# across models, on a shared perceptually-uniform scale -- never a binary "ever
-# refused", which would make a prompt one model declined look identical to one
-# that all eleven declined.
+# ONE fixed geometry, reused in every panel and shared with ED9. Nothing here
+# refits the projection, which audit_figures.R enforces by refusing to find a
+# umap() call in this file at all.
+#
+# GREY IS THE SEMANTIC UNIVERSE, RED IS REFUSAL. Every prompt is drawn as a tiny
+# light-grey point; a prompt with NON-ZERO refusal propensity gets a red disc on
+# top, whose AREA carries the magnitude. This replaces a continuous fill ramp
+# over the whole cloud, which asked the reader to read a colour value off every
+# point and made "no refusal at all" and "a little refusal" nearly identical.
+# Under the grey/red split, where refusal is absent is legible at a glance --
+# and that is most of English.
+#
+# THE MAGNITUDE IS NEVER BINNED. Area is a continuous function of propensity;
+# the legend just prints four reference sizes so the reader can calibrate.
+# Thresholding into high/low would invent a cutoff the estimand does not have.
+# Darkening the red is a REDUNDANT second channel on the same number, so it
+# carries no key of its own: one quantity, one legend.
+#
+# THE PANELS ARE THE FIVE DELIVERED LANGUAGES, matching ED9's one-panel-per-model
+# construction. The pooled map is deliberately not a panel: only 1.8% of prompts
+# have zero pooled propensity, so a grey/red contrast would be red everywhere and
+# would say nothing. The pooled values remain in c22.
 c22 <- rd("c22_prompt_umap_coordinates.csv")
 if (!is.null(c22) && nrow(c22)) {
-  cat("ED8 prompt-semantic UMAP\n")
-  panels <- c(ALL = "All languages", en = "English", zh = "Chinese",
-              ar = "Arabic", ru = "Russian", hi = "Hindi")
-  long8 <- map_dfr(names(panels), function(k) {
-    col <- if (k == "ALL") "refusal_propensity_all" else paste0("refusal_", k)
+  cat("ED8 prompt-semantic UMAP by language\n")
+  LANG8 <- LANG_LABEL[ORDER_LANG]
+  long8 <- map_dfr(names(LANG8), function(k) {
+    col <- paste0("refusal_", k)
     if (!col %in% names(c22)) return(NULL)
     c22 %>% transmute(umap_x, umap_y, p = .data[[col]],
-                      panel = factor(unname(panels[k]), levels = unname(panels)))
+                      panel = factor(unname(LANG8[k]), levels = unname(LANG8)))
   })
-  LIMP <- c(0, max(long8$p, na.rm = TRUE))
-  ed8 <- ggplot(long8 %>% arrange(p), aes(umap_x, umap_y, colour = p)) +
-    geom_point(size = 0.22, alpha = 0.85, shape = 16) +
+  # Fixed reference sizes, so one red disc means one propensity in every panel
+  # and in every future rebuild.
+  BRK8 <- c(0.05, 0.10, 0.25, 0.50)
+  PMAX8 <- max(long8$p, na.rm = TRUE)
+  ed8 <- ggplot() +
+    geom_point(data = long8, aes(umap_x, umap_y),
+               colour = "#DCDCDC", size = 0.20, shape = 16) +
+    geom_point(data = long8 %>% filter(p > 0) %>% arrange(p),
+               aes(umap_x, umap_y, size = p, colour = p),
+               shape = 16, alpha = 0.62) +
     facet_wrap(~ panel, nrow = 2) +
-    scale_colour_viridis_c(option = "magma", direction = -1, limits = LIMP,
-                           breaks = c(0, 0.25, 0.50),
-                           labels = label_percent(accuracy = 1), name = NULL,
-                           guide = guide_colourbar(barwidth = unit(70, "pt"),
-                                                   barheight = unit(4, "pt"),
-                                                   ticks = FALSE)) +
-    coord_fixed() +
-    labs(x = NULL, y = NULL) +
+    scale_size_area(max_size = 2.5, breaks = BRK8, limits = c(0, PMAX8),
+                    labels = label_percent(accuracy = 1), name = NULL) +
+    scale_colour_gradient(low = ACCENT_SOFT, high = ACCENT, limits = c(0, PMAX8),
+                          guide = "none") +
+    coord_fixed() + labs(x = NULL, y = NULL) +
+    guides(size = guide_legend(ncol = 1, override.aes = list(colour = ACCENT,
+                                                             alpha = 0.85))) +
     theme_nature(base_size = PT_BODY, grid = "none") +
     theme(axis.text = element_blank(), axis.ticks = element_blank(),
           axis.ticks.length = unit(0, "pt"),
           axis.line = element_blank(), axis.line.x = element_blank(),
           strip.text = element_text(size = PT_BODY),
-          legend.position = "top", legend.text = element_text(size = PT_MIN),
+          # Five panels leave the sixth cell of the 3x2 grid empty; the size key
+          # goes there instead of stealing a band of canvas from the maps.
+          legend.position = c(0.84, 0.24), legend.direction = "vertical",
+          legend.text = element_text(size = PT_MIN),
+          legend.key.size = unit(9, "pt"),
           panel.spacing = unit(3, "pt")) +
     tag_only() + theme(plot.tag = element_blank())
   save_fig(ed8, file.path(ED_FIG, "ED8_prompt_semantic_umap.png"),

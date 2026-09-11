@@ -11,6 +11,8 @@ set -euo pipefail
 module purge
 REFUSAL_PROJECT_ROOT="${REFUSAL_PROJECT_ROOT:-${SLURM_SUBMIT_DIR}}"
 export REFUSAL_HPC_ROOT="${REFUSAL_HPC_ROOT:-/scratch/${USER}/refusal_audit_hpc}"
+export HF_HOME="${REFUSAL_HPC_ROOT}/hf_cache"
+source "${REFUSAL_HPC_ROOT}/venv/bin/activate"
 cd "${REFUSAL_PROJECT_ROOT}"
 python hpc/download_models.py \
   --config config/model_rosters/fanar_experiments_v1.json \

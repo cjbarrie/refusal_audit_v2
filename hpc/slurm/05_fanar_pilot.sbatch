@@ -15,5 +15,6 @@ module purge
 command -v apptainer >/dev/null
 REFUSAL_PROJECT_ROOT="${REFUSAL_PROJECT_ROOT:-${SLURM_SUBMIT_DIR}}"
 export REFUSAL_HPC_ROOT="${REFUSAL_HPC_ROOT:-/scratch/${USER}/refusal_audit_hpc}"
+source "${REFUSAL_HPC_ROOT}/venv/bin/activate"
 cd "${REFUSAL_PROJECT_ROOT}"
 python hpc/run_fanar_local_pilot.py --task-id "${SLURM_ARRAY_TASK_ID}"

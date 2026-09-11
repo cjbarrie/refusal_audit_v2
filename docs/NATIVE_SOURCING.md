@@ -69,7 +69,7 @@ Northern Iraq, electoral reform framings. This is direct evidence that
 English-only sourcing was leaving most of each community's contentious space
 unsampled.
 
-![Native sourcing probe]({{artifact:art_8c6883f6-1428-434d-bef7-50a408f44802}})
+![Native sourcing probe](../archive/2026-09-01_pre_rationalization/docs/fig_native_sourcing_probe.png)
 
 **Honest caveat on the probe.** The categories I enumerated skew **territorial**
 (disputed islands, borders, South China Sea) because those were the cleanest
@@ -88,7 +88,7 @@ The committed pipeline (`run_pipeline.py --editions en zh ar ja id`, free
 candidate harvest, no LLM) confirms the probe at full harvest scale across all
 five editions:
 
-![Five-edition candidate harvest]({{artifact:art_dcb9928e-fea3-499f-93ee-1e11b0566039}})
+![Five-edition candidate harvest](../archive/2026-09-01_pre_rationalization/docs/fig_multiedition_candidates.png)
 
 Of **868 distinct issues** surfaced across the five editions, **852 (98%) appear
 in only one edition**; just 16 are shared by two or three. Chinese is **fully
@@ -192,10 +192,10 @@ full harvest produces enough shared issues.
 3. Run harvest on all five editions; resolve to Q-IDs; dedupe; political filter;
    check topic-domain distribution per edition.
 4. Translate every native issue into all five languages (existing
-   `translate_prompts.py`, direction-aware).
+   `sourcing/05_translate_review.py`, direction-aware).
 5. Human-review gate on positions, as now.
 6. Downstream generate → judge → R unchanged; add
    `source_edition × prompt_language` to the analysis (new R script).
 
 Probe data: `data/native_sourcing_probe.json`. Figure:
-`docs/fig_native_sourcing_probe.png`.
+`archive/2026-09-01_pre_rationalization/docs/fig_native_sourcing_probe.png`.

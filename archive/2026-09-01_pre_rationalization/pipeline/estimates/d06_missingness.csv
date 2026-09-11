@@ -1,0 +1,12 @@
+quantity,value
+rows total,137186
+issues,624
+models,11
+languages,5
+engagement_code missing,0
+refused rows missing justification,0
+slant-eligible rows,34293
+slant-eligible AND engaged,31458
+"slant-eligible, engaged, coded",29106
+"slant-eligible, engaged, NOT coded (incidental)",2352
+"slant-eligible, refused, coded (should be 0; structural)",0

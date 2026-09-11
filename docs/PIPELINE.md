@@ -1,5 +1,10 @@
 # Wikipedia-sourced prompt pipeline — design proposal
 
+> **Provenance note (1 September 2026).** This records the design that produced
+> the frozen prompt artifacts. It is not the current end-to-end runbook. Use
+> `REPOSITORY_MAP.md` and `PIPELINE_ENTRYPOINTS.md` for live paths; figures and
+> early probe notes cited below are preserved in the dated root archive.
+
 *This is the hand-to-coauthor document. It describes how the new question
 battery is built, why it is built this way, and how it slots into the existing
 audit without disturbing anything downstream.*
@@ -24,8 +29,12 @@ dispute. This gives us:
 - a **stable Wikidata Q-ID** per issue, which becomes the backbone for
   cross-lingual rendering and for the entity-swap experiments.
 
-**Nothing downstream changes.** Generation → LLM-as-judge → R analysis all run
-exactly as before. This is a drop-in replacement for the sourcing stage only.
+At the time this sourcing design was adopted, it was a drop-in replacement for
+the earlier prompt-construction stage: response generation and the then-current
+Gemini annotation workflow were left unchanged. That statement is historical,
+not a description of the live pipeline. The current outcome layer uses the
+Luna v2.4 codebook and the numbered R release pipeline described in
+`RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md` and `R_PIPELINE_WALKTHROUGH.md`.
 
 ---
 
@@ -52,16 +61,18 @@ exactly as before. This is a drop-in replacement for the sourcing stage only.
    │ 03_format_        │   regular tier : 2 neutral questions
    │ prompts.py        │   boundary tier: MATCHED PAIR — one directive per side,
    │                   │                  identical template
-   └────────┬──────────┘   →  prompts/probe_prompts_en.json
-            │                 prompts/probe_review_sheet.csv
+   └────────┬──────────┘   →  archive/prompts_probe/probe_prompts_en.json
+            │                 archive/prompts_probe/probe_review_sheet.csv
    ┌────────▼─────────┐   HUMAN REVIEW GATE
    │  coauthor signs   │   Eyeball the review sheet: are the two sides fair?
    │  off positions    │   on-topic? symmetric? Fix wording. Then FREEZE.
    └────────┬──────────┘
             │
    ═════════▼═════════════════════  UNCHANGED DOWNSTREAM  ═══════════════════
-   translate_prompts.py → generate_responses.py → annotation_pipeline.py
-   → stance_coding.py → pipeline/01..16_*.R → papers/
+   sourcing/05_translate_review.py → scripts/generate_responses.py
+   → scripts/annotation_pipeline.py (historical Gemini labels)
+   → scripts/response_validity.py (current Luna v2.4 labels)
+   → pipeline/make_release.R
 ```
 
 ### Two seed routes, one spine
@@ -83,7 +94,7 @@ issues contested *right now* (the last N days). It is documented in full in
 
 The two batteries are **fully disjoint on Wikidata Q-ID** (zero overlap), so they
 can be run as separate experimental arms, pooled, or size-matched — a decision
-taken at the review gate (see `NEXT_STEPS.md`).
+taken at the review gate (the completed planning record is now in the dated archive).
 
 ---
 
@@ -176,7 +187,8 @@ one side. This pairing is the single biggest analytic gain from the rebuild.
 
 ## 5. Cross-lingual strategy
 
-Two options, both compatible with the existing `translate_prompts.py`:
+Two options, both compatible with the retained translation implementation in
+`sourcing/05_translate_review.py`:
 
 1. **Translate-through (default, matches legacy).** Author in English, Google-
    translate to zh/ja/id/ar, keep the one-to-one `source_text` lock. Preserves
@@ -239,7 +251,8 @@ from.
 
 ## 8. What the probe showed
 
-See `docs/probe_findings.md` for the probe assessment. Headline: the pipeline
+See `archive/2026-09-01_pre_rationalization/docs/probe_findings.md` for the
+completed probe assessment. Headline: the pipeline
 ran cleanly end-to-end on 10 region-spanning issues, produced 516 Q-ID-anchored
 candidates and 40 well-formed prompts, matched boundary pairs were symmetric,
 and neutral questions were non-leading.
@@ -249,7 +262,7 @@ the political filter, and after de-duplication the frozen battery is **1,548
 prompts from 387 political issues** (774 regular + 774 boundary = 387 matched
 pairs), spread across all nine topic domains and eight regions.
 
-![Full battery]({{artifact:art_629f4f60-651f-460b-99e3-38d312e94389}})
+![Full battery](../archive/2026-09-01_pre_rationalization/docs/fig_full_battery.png)
 
 ---
 
@@ -264,14 +277,14 @@ pairs), spread across all nine topic domains and eight regions.
 | `data/issue_records_full.jsonl` | Stage 2 output — full run (516 enriched records) |
 | `prompts/full_prompts_en.json` | Stage 3 output — full battery (1,548 prompts, 387 issues) |
 | `prompts/full_review_sheet.csv` | human-review sheet — full run (387 rows) |
-| `prompts/probe_prompts_en.json` | Stage 3 output — 10-issue probe |
-| `prompts/probe_review_sheet.csv` | probe review sheet |
-| `docs/probe_findings.md` | probe assessment |
-| `docs/fig_full_battery.png` | full-run summary figure (region / topic domain / contention) |
+| `archive/prompts_probe/probe_prompts_en.json` | Stage 3 output — archived 10-issue probe |
+| `archive/prompts_probe/probe_review_sheet.csv` | archived probe review sheet |
+| `archive/2026-09-01_pre_rationalization/docs/probe_findings.md` | archived probe assessment |
+| `archive/2026-09-01_pre_rationalization/docs/fig_full_battery.png` | full-run summary figure (region / topic domain / contention) |
 | `sourcing/04_merge_editions.py` | Stage 4 — union editions, dedupe on Q-ID |
 | `sourcing/run_pipeline.py` | one-command driver (harvest→enrich→format→merge) |
 | `sourcing/editions.yaml` | per-edition config (host, list page, sections, categories) |
-| `docs/fig_multiedition_candidates.png` | five-edition candidate harvest + overlap |
+| `archive/2026-09-01_pre_rationalization/docs/fig_multiedition_candidates.png` | five-edition candidate harvest + overlap |
 | `sourcing/06_harvest_temporal.py` | Stage 1b — temporal seed (protection log, English) |
 | `sourcing/07_enrich_temporal.py` | Stage 2b — batched, throttle-safe enricher for the temporal seed |
 | `data/candidate_issues_temporal_en.json` | Stage 1b output (~1,044 candidates) |
@@ -280,11 +293,12 @@ pairs), spread across all nine topic domains and eight regions.
 | `prompts/temporal_prompts_{zh,ja,id,ar}.json` | temporal battery translated into each study language (3,199 each) |
 | `prompts/temporal_review_en.csv` | temporal review sheet (799 rows) |
 | `prompts/canonical_review_temporal_all_languages.csv` | temporal side-by-side review (en + 4 translations, 3,199 rows) |
-| `docs/fig_temporal_battery_en.png` | temporal-battery summary figure (domain / region) |
+| `archive/2026-09-01_pre_rationalization/docs/fig_temporal_battery_en.png` | temporal-battery summary figure (domain / region) |
 | `docs/TEMPORAL_SOURCING.md` | temporal-route design + negative multi-edition result |
 
 **Running it yourself.** The driver runs the whole stage in one command and
-logs per-stage counts + wall-time to `sourcing/run.log`. Stage 1 (harvest) and
+logs per-stage counts + wall-time; the completed run log is preserved at
+`archive/sourcing/run.log`. Stage 1 (harvest) and
 Stage 4 (merge) are free; Stages 2–3 need `OPENROUTER_API_KEY` in the
 environment (read from the env only — never written to disk by the pipeline)
 and are opt-in via `--enrich`:

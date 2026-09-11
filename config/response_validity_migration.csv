@@ -1,0 +1,16 @@
+pattern,status,replacement,rationale
+pipeline/archive/**/*.R,tracked_legacy,git history,Precanonical or retired R implementations must not remain executable in the active tree
+scripts/archive/response_validity/audit_response_validity.py,superseded,scripts/response_validity.py,Historical dual-machine validity audit
+scripts/archive/response_validity/pilot_response_validity_v11.py,completed_provenance,scripts/response_validity.py,Completed GPT-5.6 pilot runner
+scripts/archive/response_validity/render_response_validity_report.py,superseded,scripts/response_validity.py,Renderer for the superseded dual-machine report
+scripts/archive/response_validity/render_response_validity_v11_pilot.py,completed_provenance,scripts/response_validity.py,Completed pilot renderer
+scripts/archive/response_validity/response_validity_dsl.py,completed_provenance,scripts/response_validity.py,Completed Sol DSL design and cross-fitting implementation
+scripts/archive/response_validity/run_response_validity_dsl_reference.py,completed_provenance,scripts/response_validity.py,Completed paid Sol v1.0 runner and assembler
+scripts/archive/response_validity/augment_response_validity_dsl_reference.py,completed_provenance,scripts/response_validity.py,Completed singleton-stratum repair runner
+scripts/archive/response_validity/simulate_response_validity_dsl_design.py,completed_provenance,scripts/response_validity.py,Completed Sol design simulation implementation
+archive/2026-09-01_pre_rationalization/docs/pilot_v1_annotations_tidy.csv,superseded_generated,git history,Old generated pilot table archived outside current documentation
+archive/2026-09-01_pre_rationalization/docs/pilot_v1_combined.csv,superseded_generated,git history,Old generated pilot table archived outside current documentation
+archive/2026-09-01_pre_rationalization/docs/fig_pilot_refusal.png,superseded_generated,git history,Old generated pilot figure archived outside current documentation
+archive/2026-09-01_pre_rationalization/docs/RESPONSE_VALIDITY_V11_PILOT.md,completed_provenance,docs/RESPONSE_VALIDITY_DECISION_LOG.md,Historical pilot specification
+archive/2026-09-01_pre_rationalization/docs/RESPONSE_VALIDITY_V11_RESULTS.md,completed_provenance,docs/RESPONSE_VALIDITY_DECISION_LOG.md,Historical pilot results
+docs/archive/RESPONSE_VALIDITY_RESULTS_DUAL_JUDGE.md,completed_provenance,docs/RESPONSE_VALIDITY_DECISION_LOG.md,Historical dual-machine result report

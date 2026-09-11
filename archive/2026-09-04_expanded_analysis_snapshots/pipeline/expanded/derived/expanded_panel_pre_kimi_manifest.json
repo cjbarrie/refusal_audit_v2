@@ -1,0 +1,39 @@
+{
+  "version": "expanded-panel-pre-kimi-v1",
+  "created_at": "2026-09-03 17:53:11 UTC",
+  "scientific_status": "provisional expansion analysis; original canonical release unchanged; Kimi excluded because generation/annotation incomplete",
+  "rows": 212065,
+  "models": 17,
+  "original_rows": 137186,
+  "expansion_rows": 74879,
+  "model_counts": {
+    "allam-7b": 12479,
+    "claude-opus-4.5": 12480,
+    "deepseek-chat-v3.1": 12478,
+    "falcon3-10b": 12472,
+    "gemini-2.5-flash-lite": 12479,
+    "glm-4.7-flash": 12480,
+    "gpt-4o": 12479,
+    "gpt-5.1": 12480,
+    "grok-4.3": 12480,
+    "hunyuan-a13b": 12480,
+    "jais-8b": 12479,
+    "llama-4-scout": 12480,
+    "ministral-14b": 12480,
+    "mistral-large-2512": 12479,
+    "nova-lite": 12480,
+    "qwen3-max": 12479,
+    "sarvam-30b": 12401
+  },
+  "outcome_counts": {
+    "genuine_refusal": 4799,
+    "capability_failure": 51245
+  },
+  "input_sha256": {
+    "batch1_index": "e25577f0f8742027a462acc7e5941e6ab9e40d94a05d071e6bee543ffac28cf5",
+    "batch1_results": "3f14019c3aa6b5ec0890a69b61591a113b6fef81f750c5a6cc55f5cc04cfb80b",
+    "batch2_index": "3e58fb75fc6421b2fbe8452d9efeee2d1eb8f8b8cfdbc4c290985aef7d9d7931",
+    "batch2_results": "2837700936afb5ccdae77080c5e43faf6abc60a290d3ed4153825258715e7832"
+  },
+  "output_sha256": "b5595f8769f237b85dcca7532914759a11824aa56702a305e113233553879239"
+}

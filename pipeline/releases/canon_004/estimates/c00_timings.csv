@@ -1,0 +1,9 @@
+step,script,minutes,status,canonical_run_id
+02,pipeline/02_judge_reliability.R,6.956827700138092,0,canon_004
+11,pipeline/11_canonical_home.R,52.00096216599147,0,canon_004
+12,pipeline/12_canonical_language_framing.R,3.8110493342081706,0,canon_004
+13,pipeline/13_canonical_content.R,1.5934159835179647,0,canon_004
+14,pipeline/14_canonical_judge_uncertainty.R,7.244539896647136,0,canon_004
+40,pipeline/40_appendix_descriptives.R,0.3492125153541565,0,canon_004
+20,pipeline/20_figures_main.R,0.10779631535212199,0,canon_004
+21,pipeline/21_figures_extended.R,0.07768274943033854,0,canon_004

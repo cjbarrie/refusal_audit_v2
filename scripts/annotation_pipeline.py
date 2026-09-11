@@ -9,8 +9,10 @@ Multi-pass annotation system for political behavior in LLM responses.
 
 import json
 import os
+import random
 import sys
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from typing import Optional, List
@@ -471,6 +473,14 @@ class AnnotationOutput:
     liberty_oppression: Optional[int]
     dominant_foundation: Optional[str]
     provenance: dict = field(default_factory=dict)
+    # Judge identity. Without these a multi-judge panel is unreadable: `model`
+    # above is the SUBJECT model, so nothing distinguished two judges' verdicts
+    # on the same response. judge_prompt_version guards against comparing
+    # verdicts produced under different codebooks -- otherwise a reliability
+    # statistic measures template drift rather than rater disagreement.
+    judge_model: Optional[str] = None
+    judge_prompt_version: Optional[str] = None
+    annotation_run_id: Optional[str] = None
     
     def to_dict(self) -> dict:
         d = {
@@ -493,6 +503,9 @@ class AnnotationOutput:
             "sanctity_degradation": self.sanctity_degradation,
             "liberty_oppression": self.liberty_oppression,
             "dominant_foundation": self.dominant_foundation,
+            "judge_model": self.judge_model,
+            "judge_prompt_version": self.judge_prompt_version,
+            "annotation_run_id": self.annotation_run_id,
         }
         # Merge provenance (battery, controversy_tier, qid, issue_id, region_focus,
         # position_side, contention_score, topic_domain) so the R pipeline can split
@@ -537,10 +550,21 @@ class LLMClient:
                 "variable or pass api_key parameter."
             )
 
+        self.total_prompt_tokens = 0
+        self.total_completion_tokens = 0
+        self.n_calls = 0
+        self._usage_lock = threading.Lock()
         # Initialize OpenAI client pointing to OpenRouter
+        # Explicit timeout. Without one the OpenAI client waits on the default
+        # (10 min) and, if a provider stalls mid-read, workers can block far
+        # longer -- a Tier-1 run sat dead for 2h19m with all 16 workers hung on
+        # a provider that had started returning null payloads. A bounded timeout
+        # turns that into a retryable error instead of an indefinite hang.
         self.client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=self.api_key,
+            timeout=90.0,
+            max_retries=0,   # retries are handled in complete(), with backoff
         )
 
     def complete(self, prompt: str) -> str:
@@ -553,18 +577,108 @@ class LLMClient:
         Returns:
             The model's response text
         """
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,  # Use 0 for consistency in research annotations
-            max_tokens=self.max_tokens,
-        )
-        return response.choices[0].message.content
+        # Reasoning is explicitly DISABLED. Several candidate judges
+        # (nvidia/nemotron-3-super, google/gemma-4-*, qwen3.x-flash,
+        # deepseek-v4-flash) enable it by default, and reasoning tokens bill as
+        # OUTPUT. This task emits a ~60-120 token JSON verdict; left on, a judge
+        # emits hundreds to thousands of extra tokens, which multiplies both cost
+        # and latency for no gain on a fixed-schema classification. Sent as an
+        # extra_body key so it is a no-op for judges that do not support it.
+        #
+        # NOTE: openai/gpt-oss-* have reasoning `mandatory: true` and IGNORE this.
+        # Do not use them as panel judges; see the archived multi-judge plan.
+        # Retry transient upstream failures. The panel judges are served from
+        # SHARED provider pools and rate-limit at modest concurrency: a pilot at
+        # 16 workers saw 64-73% failures for two of them, all of them 429s or
+        # error payloads -- not model-quality problems. Without a retry the
+        # panel silently loses most of its verdicts.
+        last = None
+        for attempt in range(5):
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0,  # Use 0 for consistency in research annotations
+                    max_tokens=self.max_tokens,
+                    extra_body={"reasoning": {"enabled": False}},
+                )
+                # An upstream error can come back shaped like a success with
+                # choices=None. Bare `response.choices[0]` then raises
+                # "'NoneType' object is not subscriptable", which is unactionable
+                # after the fact; name it and retry it instead.
+                if not getattr(response, "choices", None):
+                    raise RuntimeError(
+                        f"upstream returned no choices: "
+                        f"{str(getattr(response, 'error', ''))[:200]}")
+                break
+            except Exception as e:
+                last = e
+                msg_l = str(e).lower()
+                transient = any(t in msg_l for t in (
+                    "429", "rate", "timeout", "timed out", "502", "503", "504",
+                    "overloaded", "no choices", "connection"))
+                if not transient or attempt == 4:
+                    raise
+                time.sleep(min(2 ** attempt, 8) + random.random())
+        else:
+            raise last
+        msg = response.choices[0].message
+        # Record actual token usage so the panel budget can be re-calibrated from
+        # observed spend rather than from the assumed token model.
+        u = getattr(response, "usage", None)
+        self.last_usage = {
+            "prompt_tokens": getattr(u, "prompt_tokens", None),
+            "completion_tokens": getattr(u, "completion_tokens", None),
+        } if u else None
+        # Running totals, so a run can be priced from MEASURED tokens rather than
+        # from the assumed token model. Guarded by a lock because judging is
+        # concurrent. Printed at the end of the run.
+        if u:
+            with self._usage_lock:
+                self.total_prompt_tokens += getattr(u, "prompt_tokens", 0) or 0
+                self.total_completion_tokens += getattr(u, "completion_tokens", 0) or 0
+                self.n_calls += 1
+        return msg.content
+
+
+# =============================================================================
+# JUDGE PROMPT VERSION
+# =============================================================================
+# Reliability statistics are only meaningful when every judge saw the SAME
+# codebook. Rather than a hand-maintained version string that silently goes
+# stale, this is a short hash of the actual Pass 1-3 template text: edit a
+# template and the version changes automatically, and 24_measurement.R refuses
+# to pool verdicts produced under different versions.
+def _judge_prompt_version() -> str:
+    import hashlib, re
+    try:
+        src = open(__file__, encoding="utf-8").read()
+    except Exception:
+        return "unknown"
+    blocks = re.findall(r'("""|\'\'\')(.*?)\1', src, re.S)
+    tmpl = "".join(b[1] for b in blocks if len(b[1]) > 400)
+    return hashlib.sha256(tmpl.encode("utf-8")).hexdigest()[:12]
+
+
+JUDGE_PROMPT_VERSION = _judge_prompt_version()
 
 
 # =============================================================================
 # ANNOTATION PIPELINE
 # =============================================================================
+
+def _repair_judge_json(raw: str) -> str:
+    """Repair the small, model-specific JSON deviations seen in practice.
+
+    inclusionai/ling-2.6-flash emits a leading plus on positive integers --
+    `"populist_elitist": +1` -- which is valid in the codebook's -2..+2 notation
+    but is NOT valid JSON, so json.loads rejects the whole verdict. Rather than
+    lose the annotation, strip the sign. Kept deliberately narrow: only a `+`
+    immediately before a digit in value position.
+    """
+    import re as _re
+    return _re.sub(r'(:\s*)\+(\d)', r'\1\2', raw)
+
 
 def _judge_parse_error(exc, raw, keep=500):
     """Build a parse-error message that carries the judge's raw output.
@@ -614,11 +728,20 @@ class AnnotationPipeline:
             # already does.
             a, b = response.find("{"), response.rfind("}")
             if a >= 0 and b > a:
+                blob = response[a:b + 1]
                 try:
-                    return json.loads(response[a:b + 1])
-                except json.JSONDecodeError as e2:
-                    raise ValueError(_judge_parse_error(e2, response)) from e2
-            raise
+                    return json.loads(blob)
+                except json.JSONDecodeError:
+                    # Last resort: repair known model-specific deviations
+                    # (a leading "+" on positive integers) and retry once.
+                    try:
+                        return json.loads(_repair_judge_json(blob))
+                    except json.JSONDecodeError as e3:
+                        raise ValueError(_judge_parse_error(e3, response)) from e3
+            try:
+                return json.loads(_repair_judge_json(response))
+            except json.JSONDecodeError:
+                raise
     
     def run_pass_1(self, input_data: AnnotationInput) -> Pass1Output:
         """Run Pass 1: Engagement & Refusal."""
@@ -855,7 +978,10 @@ def load_existing_annotations(output_file: str) -> dict:
             except json.JSONDecodeError:
                 continue
             key = (r.get("prompt_id"), r.get("prompt_language"), r.get("model"))
-            out[key] = r
+            # Preserve the last VALID annotation. A later error must not erase a
+            # completed label and cause unnecessary paid re-annotation on resume.
+            if all(v is not None for v in key) and r.get("engagement_code") is not None and not r.get("error"):
+                out[key] = r
     return out
 
 
@@ -868,6 +994,11 @@ def annotate_responses_file(
     max_workers: int = 8,
     max_tokens: int = 1000,
     pass1_only: bool = False,
+    subsample_frac: float = 1.0,
+    subsample_seed: int = 20260803,
+    subsample_manifest: Optional[str] = None,
+    annotation_run_id: Optional[str] = None,
+    limit_issues: Optional[int] = None,
 ) -> List[AnnotationOutput]:
     """
     Load responses from JSONL and annotate them using the pipeline.
@@ -912,12 +1043,99 @@ def annotate_responses_file(
     if limit:
         valid_responses = valid_responses[:limit]
 
+    # Pilot scoping by ISSUE, not by row position. `--limit` takes the head of
+    # the file, which is prompt-major: 400 rows is ~9 issues, so an
+    # issue-clustered bootstrap would have ~9 clusters and the intervals would be
+    # meaningless. Sampling whole issues instead keeps every model x tier cell
+    # inside a sampled issue complete (the same principle as the pass-2/3
+    # subsample) and gives the bootstrap real clusters to resample.
+    if limit_issues:
+        all_issues = sorted({r.get("issue_id") for r in valid_responses
+                             if r.get("issue_id")})
+        k = min(limit_issues, len(all_issues))
+        keep = set(random.Random(subsample_seed).sample(all_issues, k))
+        valid_responses = [r for r in valid_responses if r.get("issue_id") in keep]
+        if verbose:
+            print(f"Pilot: {k} of {len(all_issues)} issues "
+                  f"-> {len(valid_responses)} responses (seed {subsample_seed})")
+
+    # ---------------------------------------------------------------------
+    # Subsampling for passes 2/3.
+    #
+    # SAMPLE ISSUES, NOT RESPONSES. A random subset of responses would break the
+    # within-issue structure every mixed model in this project relies on: the
+    # identifying comparisons hold the issue fixed and vary model, language or
+    # tier. Drawing whole issues keeps all eleven models, five languages, both
+    # tiers, all regions and all domains balanced by construction, and keeps the
+    # issue-level clustering intact.
+    #
+    # Pass 1 still runs on EVERYTHING. Only the deep passes are subsampled, so
+    # refusal rates remain full-sample and only the slant measures are on the
+    # subsample.
+    deep_issues = None
+    if not pass1_only and subsample_frac < 1.0:
+        issues = sorted({r.get("issue_id") for r in valid_responses
+                         if r.get("issue_id")})
+        # An EXISTING manifest is authoritative. Re-drawing per language would
+        # give a different set whenever a language file covers a different issue
+        # set (generation is incomplete, so it does), and unioning those draws
+        # would inflate the subsample past the requested fraction and unbalance
+        # it. Draw once, reuse everywhere.
+        if subsample_manifest and os.path.exists(subsample_manifest):
+            with open(subsample_manifest) as f:
+                deep_issues = set(json.load(f).get("issue_ids", []))
+            if verbose:
+                print(f"Deep-pass subsample: reusing manifest "
+                      f"({len(deep_issues)} issues) from {subsample_manifest}")
+        else:
+            k = max(1, int(round(len(issues) * subsample_frac)))
+            rng = random.Random(subsample_seed)
+            deep_issues = set(rng.sample(issues, k))
+            if verbose:
+                print(f"Deep-pass subsample: drew {k}/{len(issues)} issues "
+                      f"({100*k/max(len(issues),1):.1f}%), seed {subsample_seed}")
+            if subsample_manifest:
+                d = os.path.dirname(os.path.abspath(subsample_manifest))
+                if d:
+                    os.makedirs(d, exist_ok=True)
+                with open(subsample_manifest, "w") as f:
+                    json.dump({"subsample_frac": subsample_frac,
+                               "seed": subsample_seed,
+                               "unit": "issue_id",
+                               "n_issues": len(deep_issues),
+                               "issue_ids": sorted(deep_issues)}, f, indent=2)
+
     # Resume support: keep clean rows from any prior run, retry errored/missing.
+    #
+    # "Clean" is MODE-DEPENDENT. Under --all-passes a row that carries only a
+    # Pass-1 verdict is NOT complete: it still needs ideology and moral
+    # foundations. Treating any row with an engagement_code as done -- which is
+    # correct for pass1-only -- made re-running with --all-passes a silent no-op
+    # on an already-annotated file, so the only way to add passes 2/3 was to
+    # rewrite from scratch and pay for Pass 1 twice.
+    #
+    # Passes 2/3 are skipped by design when engagement_code >= 4 (a refusal has
+    # no position to score), so such a row is complete without them.
     existing = load_existing_annotations(output_file)
-    clean_keys = {
-        k for k, r in existing.items()
-        if r.get("engagement_code") is not None and not r.get("error")
-    }
+
+    def _wants_deep(rec):
+        """Does THIS response get passes 2/3?"""
+        if pass1_only:
+            return False
+        return deep_issues is None or rec.get("issue_id") in deep_issues
+
+    def _is_clean(r, deep):
+        if r.get("engagement_code") is None or r.get("error"):
+            return False
+        if not deep:
+            return True
+        if r.get("engagement_code") >= 4:
+            return True          # passes 2/3 legitimately skipped
+        return r.get("economic_left_right") is not None
+
+    # Whether a stored row counts as complete depends on whether ITS issue is in
+    # the deep-pass subsample, so the check is made per response below.
+    existing_by_key = existing
 
     if verbose:
         print(f"Loaded {len(responses)} total records")
@@ -925,18 +1143,22 @@ def annotate_responses_file(
         print(f"Mode: {'PASS 1 ONLY (refusal + nature; no ideology/MFT)' if pass1_only else 'full (Pass 1 + ideology/MFT on engaged)'}")
         print(f"Judge model: {judge_model}")
         print(f"Output: {output_file}")
-        if clean_keys:
-            print(f"Resume: {len(clean_keys)} annotations already present; "
-                  f"skipping those and (re)annotating the rest.")
+        if existing_by_key:
+            print(f"Resume: {len(existing_by_key)} annotations on file; "
+                  f"completeness is judged per row against the mode.")
         print()
 
     # Build the todo list: responses not already cleanly annotated.
     todo = []
     skipped = 0
+    deep_flags = {}
     for record in valid_responses:
         key = (record['prompt_id'], record.get('prompt_language', 'en'),
                record['model'])
-        if key in clean_keys:
+        deep = _wants_deep(record)
+        deep_flags[key] = deep
+        prior = existing_by_key.get(key)
+        if prior is not None and _is_clean(prior, deep):
             skipped += 1
             continue
         todo.append(record)
@@ -971,7 +1193,13 @@ def annotate_responses_file(
                     ) if k in record
                 },
             )
-            result = pipeline.annotate(annotation_input, pass1_only=pass1_only)
+            row_key = (prompt_id, record_language, model)
+            result = pipeline.annotate(
+                annotation_input,
+                pass1_only=not deep_flags.get(row_key, not pass1_only))
+            result.judge_model = judge_model
+            result.judge_prompt_version = JUDGE_PROMPT_VERSION
+            result.annotation_run_id = annotation_run_id
             return result.to_dict(), False
         except Exception as e:
             # Error record carries the resume key (incl. language) so a rerun
@@ -980,6 +1208,9 @@ def annotate_responses_file(
                 "prompt_id": prompt_id,
                 "prompt_language": record_language,
                 "model": model,
+                "judge_model": judge_model,
+                "judge_prompt_version": JUDGE_PROMPT_VERSION,
+                "annotation_run_id": annotation_run_id,
                 "error": str(e),
             }, True
 
@@ -1005,6 +1236,15 @@ def annotate_responses_file(
                           f"✓ engagement_code={row.get('engagement_code')}"
                     print(f"[{done}/{len(todo)}] {row['prompt_id']} "
                           f"({row['model']}): {tag}")
+
+    if verbose and getattr(client, "n_calls", 0):
+        pt, ct, nc = (client.total_prompt_tokens, client.total_completion_tokens,
+                      client.n_calls)
+        print()
+        print(f"MEASURED USAGE  judge={judge_model}  calls={nc:,}")
+        print(f"  prompt tokens     {pt:>12,}  ({pt/max(nc,1):.0f}/call)")
+        print(f"  completion tokens {ct:>12,}  ({ct/max(nc,1):.0f}/call)")
+        print(f"  -> price this run: prompt_tokens*rate_in + completion_tokens*rate_out")
 
     if verbose:
         print()
@@ -1068,7 +1308,8 @@ if __name__ == "__main__":
         help="Max tokens per judge verdict (default: 1000). OpenRouter reserves "
              "credits against this ceiling; the judge emits short JSON."
     )
-    # Pass 1 alone is the canonical annotation (docs/ANNOTATION_TRIM_FULL_RUN.md):
+    # Pass 1 alone was the original production annotation (see the archived
+    # ANNOTATION_TRIM_FULL_RUN.md); Luna v2.4 is the current outcome measure:
     # the study measures refusal and the nature of refusal, both of which come
     # from Pass 1. Passes 2-3 measure the slant of answers that were given, a
     # different question. Defaulting to Pass 1 means the documented design is
@@ -1083,6 +1324,32 @@ if __name__ == "__main__":
              "+ nature of refusal, which is Pass 1 alone. Slant columns are "
              "always emitted (null when the passes are skipped), so the record "
              "schema is identical either way."
+    )
+    parser.add_argument(
+        "--subsample-frac", type=float, default=1.0,
+        help="Fraction of ISSUES whose responses receive passes 2/3 (default 1.0 "
+             "= all). Pass 1 always runs on everything. Issues, not responses, "
+             "are sampled so every model/language/tier cell stays balanced and "
+             "issue-level clustering is preserved. Ignored under --pass1-only."
+    )
+    parser.add_argument(
+        "--subsample-seed", type=int, default=20260803,
+        help="Seed for the deep-pass issue subsample (default 20260803)."
+    )
+    parser.add_argument(
+        "--limit-issues", type=int, default=None,
+        help="Pilot scoping: annotate a random sample of N ISSUES (all their "
+             "responses), rather than the first N rows. Seeded by "
+             "--subsample-seed."
+    )
+    parser.add_argument(
+        "--annotation-run-id", default=None,
+        help="Label stamped on every record; used to tie a panel run together."
+    )
+    parser.add_argument(
+        "--subsample-manifest", default=None,
+        help="Path to write/merge the selected issue_ids, so every language file "
+             "uses the SAME issue set and the draw is reproducible."
     )
     parser.add_argument(
         "--pass1-only",
@@ -1103,4 +1370,9 @@ if __name__ == "__main__":
         max_workers=args.workers,
         max_tokens=args.max_tokens,
         pass1_only=args.pass1_only,
+        subsample_frac=args.subsample_frac,
+        subsample_seed=args.subsample_seed,
+        subsample_manifest=args.subsample_manifest,
+        annotation_run_id=args.annotation_run_id,
+        limit_issues=args.limit_issues,
     )

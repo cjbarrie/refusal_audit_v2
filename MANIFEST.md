@@ -1,75 +1,86 @@
-# MANIFEST — provenance of every file in refusal_audit_v2
+# Current artifact manifest
 
-Legacy repo referenced: `../refusal_audit` (reference-only, not modified).
+This is a human-readable index, not a substitute for the row-level hashes in
+`docs/ARTIFACT_REGISTRY.csv` or the immutable release manifests.
 
-## Downstream machinery (carried from legacy, adapted for v2)
+## Scientific inputs and evidence
 
-These are the parts of the pipeline downstream of sourcing. The core judge
-logic is carried over so audit results stay comparable across the two repos;
-several scripts were adapted to the v2 prompt schema (`topic_domain`,
-`battery`, provenance passthrough).
+- Frozen prompt batteries: `prompts/`
+- Prompt-sourcing records and embedding cache: `data/`
+- Canonical response and original Gemini annotation run: `annotations/full_v1/`
+- Human reviews and model-validation runs: `annotations/response_validity_*/`
+- Final Luna v2.4 table:
+  `annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations.parquet`
+- Final Luna v2.4 manifest:
+  `annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations_manifest.json`
 
-### `scripts/` (Python)
-| file | role | status |
-|---|---|---|
-| `generate_responses.py` | query subject models (temp 1.0); reads v2 `topic_domain`, loops the up-to-10-model roster, **dispatches per-model by provider** (OpenRouter vs per-model HF Inference Endpoint), carries provenance | adapted for v2 |
-| `annotation_pipeline.py` | 4-pass LLM-as-judge (engagement, ideology, moral; Pass 4 stance separate); provenance passthrough to output records | adapted for v2 |
-| `stance_coding.py` | Pass 4 stance coding on engaged boundary responses | carried |
-| `config.py` | up-to-10-model jurisdiction panel (US 4/CN 2/EU 1/MENA 3) — 7 serverless 4-tuples + 3 HF-endpoint MENA models (`ENDPOINT_MODELS`, joined when `*_ENDPOINT_URL` set); 6 languages (`en/zh/ja/id/ar/ru`); OpenRouter + HF-endpoint config | rewritten for v2 |
-| `sample_prompts.py` | issue-level stratified subsampler (by `topic_domain`, seeded, keeps matched boundary pairs intact) | **new (v2)** |
-| `run_pilot.py` | end-to-end pilot driver: sample → generate → annotate → assemble, run-dir keyed, `--dry-run` budget | **new (v2)** |
-| `study_a_jurisdiction_panel.py` | 15-model jurisdiction panel runner (roster not yet refreshed) | carried |
-| `study_b_runner.py` | entity-swap + native-vs-MT mechanism experiments | carried |
-| `translate_prompts.py` | legacy Google-translate EN → zh/ja/id/ar — **superseded by `sourcing/05_translate_review.py`** (sonnet-5); kept for reference only | superseded |
-| `sample_for_second_judge.py` | IRR: sample for a second judge model | carried |
-| `validate_data.py` | data integrity checks | carried |
-| `env_utils.py` | .env / API-key loader | carried |
+The original-panel v2.4 table is expected to contain 137,186 unique
+`(prompt_id, prompt_language, model)` keys and to hash to
+`ce1b6c07de09e96912b034195c2c5ab6f2ef7762fbb103143e02913f1383cf75`.
 
-> Note: this environment sets `PYTHONSAFEPATH=1`, so entry scripts
-> (`generate_responses.py`, `annotation_pipeline.py`, `run_pilot.py`) bootstrap
-> their own directory onto `sys.path` (two lines near the top) for sibling
-> imports.
+Accepted v3 expansion response and Luna v2.4 inputs are under
+`annotations/model_expansion_v3/`. The three accepted annotation batches are
+`luna_v2_4_completed_batch1`, `luna_v2_4_completed_batch2` and
+`luna_v2_4_kimi_batch3`. Their manifests and hashes are enforced by
+`pipeline/_expansion_input.R`. Together with the original panel they produce
+224,544 observed response keys across 18 models, with 6,127 genuine refusals
+and 52,563 capability failures.
 
-### `pipeline/` (R)
-All 23 R scripts `01_data_loading.R` … `archive/pipeline_study_ab/16_engaged_state_alignment.R`.
-`01_data_loading.R` has been **patched for v2 and validated** (portable
-`here::here()`, run-dir env-var inputs, 7-model factor levels, provenance
-join-collision fix — see `docs/ANNOTATION_RUNBOOK.md`). Scripts **02–16 still
-carry the hardcoded `setwd("/Users/solomonmessing/...")`** and must be fixed the
-same way before the full analysis runs (open task).
+Two completed v4 batches add Sarvam-105B and Bielik 11B v3.0. The live R code
+verifies these batches and produces a 249,201-response, 20-model candidate with
+6,794 genuine refusals and 60,968 capability failures. `canon_029` is the latest
+checked candidate, but it is not the promoted pointer. T-pro-it-2.0, the four
+NYU Torch local-model full runs and the local Fanar experiment remain excluded.
 
-## Built fresh in this repo (the new sourcing stage)
-| file | role | status |
-|---|---|---|
-| `sourcing/01_harvest_controversial.py` | Stage 1: harvest a Wikipedia edition (`--lang`) -> candidate issues | built |
-| `sourcing/02_enrich_issues.py` | Stage 2: enrich each issue into a structured record (concurrent, per-edition, carries provenance) | built |
-| `sourcing/03_format_prompts.py` | Stage 3: format issue records into matched regular + boundary prompts | built |
-| `sourcing/04_merge_editions.py` | Stage 4: union per-edition records, dedupe on Wikidata Q-ID | built |
-| `sourcing/05_translate_review.py` | Stage 5: LLM-translate either battery (perennial or temporal) into zh/ja/id/ar + canonical side-by-side review CSV; output prefix derived from input stem so batteries never collide (replaces legacy Google-Translate) | built |
-| `sourcing/06_harvest_temporal.py` | Stage 1b (alt seed): harvest *contemporary* contested issues from the protection log (CT-coded areas), schema-compatible with Stage 1 | built |
-| `sourcing/07_enrich_temporal.py` | Stage 2b (temporal enrich): batch-fetch lead extracts (20 titles/call) then concurrent LLM extraction — the throttle-safe enricher for the ~1,000-article temporal seed (Stage 2's inline per-article re-fetch 429-storms at that scale) | built + run |
-| `sourcing/run_pipeline.py` | one-command driver: harvest→enrich→format→merge, logs to `run.log`; LLM stages opt-in via `--enrich` | built |
-| `sourcing/editions.yaml` | per-edition config (API host, list page, sections, dispute categories) | built |
-| `docs/PIPELINE.md` | full design document | built |
-| `docs/TEMPORAL_SOURCING.md` | temporal (protection-log) route rationale, method, 90-day run | built |
-| `docs/NATIVE_SOURCING.md` | multi-edition (native-language) sourcing rationale + probe | built |
-| `docs/REPRODUCIBILITY.md` | operational runbook to reproduce the whole sourcing stage | built |
-| `docs/repro_check.md` | verification: committed pipeline vs. frozen English battery | built |
-| `docs/NEXT_STEPS.md` | downstream runbook (translate → generate → judge → R) | built |
-| `docs/probe_findings.md` | 10-issue probe assessment | built |
-| `docs/ANNOTATION_CONTRACT.md` | the R pipeline's input contract (fields, join keys, file layout) the annotation stage must satisfy | built |
-| `docs/ANNOTATION_RUNBOOK.md` | how to run the annotation pipeline (sample → generate → annotate → assemble), roster, R-loader changes | built |
-| `docs/R_PIPELINE_WALKTHROUGH.md` | walkthrough of the 23-script R analysis layer | built |
+## Code and configuration
 
-## Deliberately NOT copied from legacy
-- **All prompt/response/annotation data** (`prompts/*.json`, `responses/*.jsonl`,
-  `annotations/*.jsonl`) — this repo generates its own battery from scratch.
-- **One-off / maintenance scripts** — the many `fix_*`, `merge_*`, `retry_*`,
-  `retranslate_*`, `redesign_*`, `add_*`, `extract_*`, `clean_*`, `verify_*`,
-  `download_me2.py`, `gen_me_arm.py` (+ SLURM) scripts. These patched the
-  legacy battery's history and are not part of a clean build. Pull
-  individually from `../refusal_audit/scripts/` only if a specific need arises.
-- **`create_new_prompts.py`** — the legacy GPT-4o free-drafting sourcer. This
-  is precisely the component the new sourcing pipeline replaces.
-- **`papers/`, `plots/`, `tables/`** — regenerated downstream once the new
-  battery is run.
+- Sourcing: `sourcing/`
+- Generation and original annotation: `scripts/generate_responses.py`,
+  `scripts/annotation_pipeline.py`, `scripts/run_pilot.py`
+- Response-validity orchestration: `scripts/response_validity.py`
+- Response-validity implementation: `src/refusal_audit/response_validity/`
+- Frozen codebooks and experiment specifications: `config/`
+- Analysis and release machinery: `pipeline/`
+- Active R script registry: `pipeline/PIPELINE_REGISTRY.csv`
+- Active Python command registry: `scripts/SCRIPT_REGISTRY.csv`
+- Ordered replication contract: `config/replication_contract.json` and
+  `config/REPLICATION_STAGES.csv`
+- Reproducible environments: `requirements-lock.txt`, `renv.lock` and
+  `interactive/web/package-lock.json`
+- Large binary Git policy: `.gitattributes` (Git LFS)
+- Sourcing/HPC/interactive registries: `sourcing/SOURCING_REGISTRY.csv`,
+  `hpc/HPC_REGISTRY.csv`, `interactive/INTERACTIVE_REGISTRY.csv`
+- Per-script R technical references: `docs/r_pipeline/`
+- Unsupported slant/moral and pre-v2.4 analyses: `pipeline/pending/`
+- Interactive explorer: `interactive/`
+
+## Analysis outputs
+
+- Promoted release pointer: `pipeline/estimates/canonical/c00_manifest.csv`
+- Promoted estimates: `pipeline/estimates/canonical/`
+- Promoted figures: `pipeline/figures/`
+- Immutable builds: `pipeline/releases/`
+
+The promoted working release is `canon_024`. It inherits the complete,
+hash-verified 18-model estimates from `canon_021`, contains the accepted two
+main figures and 14 Extended Data figures, and passes 29/29 analysis and 16/16
+figure gates. Its manifest records the explicitly allowed dirty tree. A new
+clean-tree release is still required for the final archival paper freeze.
+The present R source targets the unpromoted 20-model candidate, so a bare
+`Rscript pipeline/tests_synthetic.R` against the promoted 18-model data is an
+invalid cross-profile test. Use `make r-candidate-test` instead.
+
+## Forensic records
+
+- Complete registry: `docs/ARTIFACT_REGISTRY.csv`
+- Cleanup manifest: `docs/ARCHIVE_MANIFEST.csv`
+- Repository map: `docs/REPOSITORY_MAP.md`
+- Supported commands: `docs/PIPELINE_ENTRYPOINTS.md`
+- Repository replication audit: `docs/REPOSITORY_AUDIT_2026-09-11.md`
+- Current R analysis audit: `docs/CODE_ANALYSIS_AUDIT.md`
+- Private commit boundary: `docs/PRIVATE_REPOSITORY_HANDOFF.md`
+- Dated pre-cleanup archive: `archive/2026-09-01_pre_rationalization/`
+- Post-v2.4 cleanup archive: `archive/2026-09-04_post_v24_rationalization/`
+
+Frozen historical manifests keep their original paths and hashes. The cleanup
+manifest records any corresponding archived location.

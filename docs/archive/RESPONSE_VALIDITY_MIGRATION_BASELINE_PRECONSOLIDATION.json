@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-08-19T13:26:34.507207+00:00",
+  "git_head": "41543ade5334a36b6e9a33219cd5004e04507ac6",
+  "git_branch": "audit/inference-pipeline-review",
+  "git_dirty": true,
+  "spec_path": "config/response_validity_migration.csv",
+  "spec_sha256": "fcc8800a7c4ec0e8763c8ec412293abfb3be27c8565d18b81cff25fd089746d1",
+  "inventory_csv": "docs/archive/RESPONSE_VALIDITY_MIGRATION_MANIFEST.csv",
+  "inventory_sha256": "808fc43e78803272fb12115146ef6224bec1fa6aaafbc819cf96c5405783ab08",
+  "n_files": 35,
+  "n_untracked": 11,
+  "status_counts": {
+    "completed_provenance": 7,
+    "consolidate": 2,
+    "superseded": 2,
+    "superseded_generated": 3,
+    "tracked_legacy": 21
+  }
+}

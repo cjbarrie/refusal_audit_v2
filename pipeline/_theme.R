@@ -1,194 +1,471 @@
 # =============================================================================
-# Shared publication theme + validated palettes
+# Technical reference: docs/r_pipeline/_theme.md
+# Design system for publication figures
 # =============================================================================
-# Sourced by every plotting script. Before this existed, the 46 figures split
-# between theme_bw() and theme_minimal() with ad-hoc hex codes assigned per
-# script, so the same model could carry a different colour in two figures of the
-# same paper. One theme, one palette, defined once.
+# Sourced by every plotting script. One theme, one palette, one export path.
 #
-# Design follows Tufte's data-ink principle: every mark that is not data is a
-# candidate for deletion. Concretely -- no panel background, no panel border, no
-# vertical gridlines, no legend box, no facet-strip box, ticks only where they
-# disambiguate. What survives is the data and the minimum scaffolding needed to
-# read it.
+# TARGET: a leading general-science journal. Concretely that means figures are
+# designed at final printed size (Nature single column 89 mm, double 183 mm),
+# not designed large and shrunk -- shrinking is what produces the 5 pt axis text
+# and colliding labels that make a figure look amateur on the page.
 #
-# Colours are NOT chosen by eye. The categorical palette was selected by search
-# over a documented 8-hue set and validated for colour-vision deficiency with
-# the all-pairs check (scatter/small-multiple safe, which matters because most
-# figures here facet by language):
+# PRINCIPLES APPLIED (Tufte, data-ink)
+#   * No panel background, no border, no vertical grid, no tick marks on the
+#     categorical axis. The page is the background.
+#   * Colour is not decoration. Default is ink; ACCENT is spent on the ONE
+#     series or estimate the figure exists to show. A figure with every category
+#     in its own hue has used colour to avoid deciding what it is about.
+#   * Direct labels over legends. A legend is a lookup table the reader must
+#     hold in memory; a label at the end of the series is not.
+#   * Redundant encoding is removed: if facets already name the groups, colour
+#     must not name them again.
 #
-#   #2a78d6 blue · #1baf7a aqua · #eda100 yellow · #4a3aa7 violet · #e34948 red
-#   worst all-pairs normal-vision dE 16.3 (>=15 floor)  PASS
-#   worst all-pairs CVD dE 6.9 deutan / 9.6 tritan      floor band
-#   contrast vs surface <3:1 for aqua and yellow        relief required
+# TYPOGRAPHY
+#   ONE sans family throughout, including model names. Monospaced model labels
+#   were tried and dropped: at 7 pt Courier is wide and pale next to the sans
+#   axis text, so the labels read as a different kind of object from the rest of
+#   the figure. FONT_MONO is retained only for any future code listing.
 #
-# Two consequences are load-bearing and must not be undone:
-#   * The CVD figure sits in the 6-8 floor band, which is legal ONLY alongside a
-#     secondary encoding. Every categorical figure here also separates series by
-#     facet or position, which satisfies that -- do not produce a chart where
-#     colour is the sole distinction between series.
-#   * Aqua and yellow fall below 3:1 against the page, so any figure relying on
-#     them for a thin mark needs a direct label or an accompanying table.
-#
-# Model colour follows JURISDICTION, not the model. Eleven models exceed any
-# validated categorical palette (8 hues is the documented ceiling, and a 9th is
-# never a generated hue), and jurisdiction is the analytic variable anyway --
-# the paper asks whether US/CN/EU/MENA/India models behave differently. Models
-# are separated within a jurisdiction by facet or position, which doubles as the
-# secondary encoding the CVD band requires.
+# EXPORT -- PNG ONLY. THIS IS A PROJECT RULE, NOT A DEFAULT.
+#   Every figure is written as a 600 dpi PNG and NOTHING ELSE. No PDF, no SVG,
+#   no EPS. Do not add a vector branch to save_fig(), do not call ggsave()
+#   directly, and do not add a `device =` argument anywhere in pipeline/.
+#   Rationale: multi-format export repeatedly drifted out of sync here (formats
+#   rendered with different fonts and different metrics, and stale files from a
+#   previous design lingered in the directory). One writer, one format, one
+#   source of truth. pipeline/audit_figures.R FAILS if any non-PNG appears in
+#   pipeline/figures/.
+#   Rendering is via ragg, which has better hinting and more accurate text
+#   metrics than grDevices.
 
-suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(grid)
+})
 
-# --- ink -------------------------------------------------------------------
-INK_PRIMARY   <- "#0b0b0b"
-INK_SECONDARY <- "#52514e"
-INK_MUTED     <- "#8a8985"
-RULE          <- "#d8d7d2"   # gridlines / axis rules: present but recessive
+# ONE declaration of every canonical ordering, shared with the estimation layer.
+# The names below are kept as aliases so existing call sites keep working.
+# Every script in this repo is run from the repository root, which is how
+# `_theme.R` itself is sourced.
+if (!exists("ORDER_JURIS")) source("pipeline/_orders.R")
 
-# --- categorical: jurisdiction (validated all-pairs, light surface) --------
-PAL_JURISDICTION <- c(
-  "US"    = "#2a78d6",
-  "CN"    = "#1baf7a",
-  "EU"    = "#eda100",
-  "MENA"  = "#4a3aa7",
-  "India" = "#e34948"
+# --- fonts -----------------------------------------------------------------
+# Resolve once, with fallbacks, so the file is portable off this machine.
+.pick_font <- function(candidates, fallback) {
+  if (!requireNamespace("systemfonts", quietly = TRUE)) return(fallback)
+  fams <- unique(systemfonts::system_fonts()$family)
+  hit <- candidates[candidates %in% fams]
+  if (length(hit)) hit[1] else fallback
+}
+# Helvetica and Courier are kept (rather than Helvetica Neue / Menlo) so the
+# design does not depend on macOS-only faces and renders identically on another
+# machine. Output is PNG only, so there is no second device to keep in sync.
+FONT_SANS <- .pick_font(c("Helvetica", "Arial"), "sans")
+FONT_MONO <- "Courier"
+
+# --- ink and rules ---------------------------------------------------------
+INK        <- "#111111"   # primary text, data marks
+INK_SOFT   <- "#59595B"   # axis text, secondary labels
+INK_FAINT  <- "#9B9B9E"   # de-emphasised series, annotation
+RULE       <- "#DEDEDE"   # gridlines, axis rules
+PANEL_FILL <- "#F4F4F2"   # only for shaded reference bands
+
+# --- accent ----------------------------------------------------------------
+# ONE accent. Deep red reads as the marked case in print, holds up in grayscale
+# (L* 39 against INK_FAINT L* 64 -- a 25-point lightness gap survives a
+# black-and-white photocopy), and is distinguishable under deuteranopia and
+# protanopia because the contrast carried is lightness, not hue.
+ACCENT      <- "#A11226"
+ACCENT_SOFT <- "#D98C99"
+# Second accent only where two marked series are genuinely required.
+ACCENT_2    <- "#1B4F8A"
+
+# --- semantic colour: jurisdiction and region ------------------------------
+# ONE identity-based mapping. A model inherits its developer jurisdiction's
+# colour, and an issue inherits its region's colour -- so the locator map, the
+# home-region estimates, the region matrix and the model plots all speak the
+# same language, and the map can act as the palette key.
+#
+# Identity-based, NOT effect-based: if an estimate moves, the colours stay put.
+# An earlier version keyed lightness to effect size, which would have silently
+# recoloured the whole system the first time a number changed.
+#
+# Constructed in LCH at controlled lightness (L* 35/47/58/68/81/92), not picked
+# by eye. Minimum pairwise L* gap is 10 under normal vision and 6-7 under
+# simulated protan/deutan vision, so the ordering survives grayscale and CVD.
+# Colour is nevertheless a SECONDARY encoding throughout -- position and direct
+# labels carry the information.
+PAL_JURIS <- c(
+  "CN"    = "#8C363C",   # deep muted red      L* 35
+  "India" = "#4F748F",   # slate blue          L* 47
+  "MENA"  = "#B88047",   # burnt ochre         L* 58
+  "US"    = "#96A8B6",   # cool grey-blue      L* 68
+  "EU"    = "#C0CBD3"    # light cool slate    L* 81
 )
 
-# Languages reuse the same validated five in fixed order. Colour follows the
-# entity, so a figure that drops a language must not repaint the survivors.
-PAL_LANGUAGE <- c(
-  "English" = "#2a78d6", "Chinese" = "#1baf7a", "Arabic" = "#eda100",
-  "Russian" = "#4a3aa7", "Hindi"   = "#e34948"
+# Model identity inside a jurisdiction block. These palettes are deliberately
+# local: no semantic map asks a reader to distinguish all 20 models at once.
+# The same colour is reused for the model's standardized estimate beside that
+# map. Values are drawn from Paul Tol's colour-vision-safe muted palette; the
+# grey semantic background is not reused for a model.
+MODEL_PALETTE_BASE <- c(
+  "#332288", "#117733", "#44AA99", "#88CCEE",
+  "#999933", "#CC6677", "#882255"
 )
-PAL_LANGUAGE_CODE <- setNames(unname(PAL_LANGUAGE), c("en", "zh", "ar", "ru", "hi"))
-
-# --- categorical: prompt tier (regular vs boundary) ------------------------
-# Two levels only, and the contrast is "baseline vs the probe" -- so the
-# baseline recedes to muted ink and only the boundary tier takes a hue. The
-# lightness gap (L* 57 vs 43) carries the distinction independently of hue,
-# which is what keeps it readable under deutan/protan.
-PAL_TIER <- c("Regular Prompts" = INK_MUTED, "Boundary Prompts" = "#c0392b")
-
-# --- sequential: engagement 1-5 is ORDERED, so one hue, light -> dark ------
-# Not a categorical palette: 1 (full engagement) .. 5 (hard refusal) is a scale,
-# and giving it five unrelated hues would encode order as identity.
-PAL_ENGAGEMENT <- c(
-  "Full engagement"        = "#cfe0f5",
-  "Engagement with caveats"= "#9dc0e8",
-  "Partial engagement"     = "#6b9fda",
-  "Soft refusal"           = "#3d7fc9",
-  "Hard refusal"           = "#1c5da8"
+PAL_MODEL_BLOCK <- lapply(ORDER_JURIS, function(j) {
+  models <- ORDER_MODEL[unname(MODEL_JURIS[ORDER_MODEL]) == j]
+  setNames(MODEL_PALETTE_BASE[seq_along(models)], models)
+})
+names(PAL_MODEL_BLOCK) <- ORDER_JURIS
+# Issue regions carry the colour of the jurisdiction whose home they are;
+# "General" has no jurisdiction and is a neutral near-white.
+PAL_REGION <- c(
+  "China"   = "#8C363C", "India" = "#4F748F", "Arab" = "#B88047",
+  "US"      = "#96A8B6", "Europe" = "#C0CBD3", "General" = "#E5E9EC"
 )
 
-# --- diverging: stance / ideology, two poles + NEUTRAL GREY midpoint -------
-# A hue at the midpoint would imply the middle is a category; it is the absence
-# of lean, so it is grey.
-PAL_DIVERGING <- c("#c0392b", "#e08b7f", "#cfcec9", "#7fa8dd", "#2a78d6")
+JURIS_LEVELS  <- ORDER_JURIS      # alias -> _orders.R
+REGION_LEVELS <- ORDER_REGION     # alias -> _orders.R
+
+# DISPLAY labels for issue regions. The stored level is "Arab" (the 22 Arab
+# League states, as harvested), but every figure shows "MENA" so the issue
+# region reads against the MENA jurisdiction it is the home region of. Keeping
+# the data value and the display label separate avoids a rename that would touch
+# HOME_REGION, PAL_REGION and every stored estimate table.
+REGION_DISPLAY <- c("China" = "China", "Arab" = "MENA", "India" = "India",
+                    "US" = "US", "Europe" = "Europe", "General" = "General")
+region_label <- function(x) unname(REGION_DISPLAY[as.character(x)])
+HOME_REGION   <- HOME_REGION_OF   # alias -> _orders.R
+
+scale_colour_juris <- function(...)
+  scale_colour_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
+scale_color_juris <- scale_colour_juris
+scale_fill_juris <- function(...)
+  scale_fill_manual(values = PAL_JURIS, na.value = INK_FAINT, ...)
+
+# --- ENCODING RULES (enforced by audit_figures.R) --------------------------
+# A visual variable must never carry two meanings. Jurisdiction colour is
+# reserved for jurisdiction / home-region / the locator map. Everything else
+# gets its own channel:
+#
+#   language        -> shape + linetype (NOT the China red)
+#   prompt tier     -> shape: circle = regular, triangle = boundary
+#   refusal reason  -> its own qualitative palette, below
+#   increase/decr.  -> sign and direction, never a second colour scheme
+#   not estimable   -> grey cross; defined in the external legend, never a zero
+#
+# Refusal reasons are response types, not model origins, so they must not borrow
+# jurisdiction hues. Four qualitative colours, lightness-separated for grayscale.
+# Refusal reasons are NOMINAL categories, so they get four distinct hues, not
+# four shades of one. Built in LCH at controlled lightness (L* 38/52/64/76;
+# min pairwise gap 12 normal, 8 protan) and verified disjoint from PAL_JURIS,
+# because a reason must never be mistaken for a model origin.
+# FIVE categories, not four. The judge's code G ("other") is 15.7% of English
+# refusals and its free text shows it is heterogeneous -- degenerate output,
+# explicit task refusals, and epistemic statements all land there. Folding it
+# into F ("no reason given") produced a single "unstated" bar that meant two
+# incompatible things and silently absorbed a measurement failure mode. The two
+# are now separate and G is named honestly.
+#
+# Order here is the FACTOR order (neutrality first). geom_col stacks in reverse
+# factor order, so on the drawn bar this reads right-to-left: neutrality sits at
+# the right edge. The legend must be given breaks = rev(levels) to match the
+# drawn order -- audit_figures.R checks that they agree.
+PAL_REASON <- c(
+  "neutrality"  = "#325D83",  # slate blue   L* 38  -- the modal reason
+  "harm"        = "#AD6C48",  # muted rust   L* 52
+  "epistemic"   = "#A994B4",  # muted violet L* 64
+  "other"       = "#B0B6BA",  # mid grey     L* 73  -- judge code G
+  "none given"  = "#DDE1E4"   # pale grey    L* 89  -- judge code F
+)
+
+SHAPE_TIER <- c("regular" = 21, "boundary" = 24)   # circle / triangle, fillable
+SHAPE_ESTIMAND <- c(primary = 21, descriptive = 1)  # filled vs hollow
+# Prompt language. Circle filled/hollow for the en-vs-zh pair, plus a diamond
+# for Arabic in the three-language roster comparison. Triangle (24) stays
+# reserved for the boundary tier and square for "not estimable", so these never
+# collide with the tier or estimand encodings -- audit_figures.R enforces it.
+SHAPE_LANG <- c("en" = 21, "zh" = 1, "ar" = 23)
+LTY_LANG   <- c("en" = "solid", "zh" = "22")
+
+# Sequential ramp for ordered quantities (engagement 1-5, rates in a heatmap).
+# Single hue, light -> dark: order is encoded by lightness, so it survives
+# grayscale and CVD without any hue discrimination at all.
+SEQ_5 <- c("#E8EDF3", "#C2D0E0", "#8FA8C6", "#5A7CA5", "#2A5183")
+
+# Sequential ramp for the raw jurisdiction x region rate matrix. Lives here, not
+# in the figure script, so figures stay free of literal colour values.
+SEQ_MATRIX <- c("#FAFBFB", "#C9D3DA", "#7F929F", "#3E5568")
+
+# Regular vs boundary: the baseline recedes, the probe is marked.
+PAL_TIER <- c("Regular Prompts" = INK_FAINT, "Boundary Prompts" = ACCENT)
+
+# Diverging, centred at zero: for the excess-refusal (interaction residual)
+# matrix, where the sign is the whole point. Neutral grey at the midpoint so
+# "no excess" reads as absence rather than as a category.
+PAL_DIVERGE <- c("#2C5F7C", "#8FAFC2", "#EFEFEF", "#D69B7A", "#8C363C")
+
+# Ideology: its OWN diverging palette, five ordered bins. It must not borrow the
+# jurisdiction reds -- a colour carries one meaning at a time, and CN red
+# already means CN. The neutral bin is deliberately the palest thing in the
+# whole system: it holds 80-92% of the mass, and if it were saturated it would
+# be the only thing on the page.
+# Pending-content compatibility only; no live figure uses this palette.
+PAL_IDEO <- c("-2" = "#2C5F7C", "-1" = "#93B0C4", "0" = "#EDEDEA",
+              "+1" = "#DCA982", "+2" = "#A2603A")
+
+# Judge sensitivity: greys, with ONE accent for the canonical reference
+# instrument. Judges are not jurisdictions and must not wear their colours.
+PAL_JUDGE <- c(reference = ACCENT, other = INK_SOFT)
+
+# Neutral land on the locator map, and the fill for a cell whose value is not
+# estimable. Defined here so no colour literal appears in a figure script.
+MAP_LAND   <- "#F4F5F6"
+CELL_EMPTY <- "#FBFBFC"
+
+# Languages: ink by default; scripts that must distinguish all five use this
+# ordered ramp, which is again lightness-ordered rather than hue-coded.
+# Ordered by LIGHTNESS, not hue: with all five languages in one panel, English
+# and Chinese previously sat at the same L* (34) and were indistinguishable in
+# grayscale or for a colour-vision-deficient reader. Chinese keeps the accent
+# hue but is darkened; Russian is lightened. audit_figures.R enforces a minimum
+# L* gap of 5 across this palette.
+PAL_LANGUAGE <- c("Chinese" = "#6E0C18", "English" = "#2A5183",
+                  "Arabic"  = "#5A7CA5", "Hindi"   = "#9B9B9E",
+                  "Russian" = "#A9BBD0")
+
+# --- figure geometry -------------------------------------------------------
+# Journal column widths in inches. Design to these; never scale afterwards.
+W1 <- 89  / 25.4   # single column, 3.50 in
+W15 <- 120 / 25.4  # 1.5 column,   4.72 in
+W2 <- 183 / 25.4   # double column, 7.20 in
+
+# APPROVED CANVASES. Every figure is TWO-COLUMN (183 mm) and picks one of three
+# heights. No script invents its own dimensions: letting each choose produced a
+# set whose aspect ratios ran from 183x81 mm to 183x208 mm, so type that was
+# 6 pt in one figure read as a different size beside another on the page.
+# Content decides WHICH template; it does not decide the numbers.
+H_SHORT <- 62  / 25.4  # 183 x  62 mm -- 2-4 rows; a single band of facets
+H_WIDE  <- 85  / 25.4  # 183 x  85 mm -- few rows, wide value axes
+H_STD   <- 125 / 25.4  # 183 x 125 mm -- the default multi-panel canvas
+H_TALL  <- 165 / 25.4  # 183 x 165 mm -- many stacked rows
+H_PAGE  <- 225 / 25.4  # 183 x 225 mm -- full-page semantic atlas
+CANVASES <- c(short = H_SHORT, wide = H_WIDE, standard = H_STD,
+              tall = H_TALL, page = H_PAGE)
 
 # =============================================================================
-# theme_refusal() -- the publication theme
+# theme_nature()
 # =============================================================================
-theme_refusal <- function(base_size = 10, base_family = "", grid = "y") {
-  th <- theme_minimal(base_size = base_size, base_family = base_family) +
+# grid: "x" puts the grid perpendicular to a horizontal value axis (dot plots
+# with categories on y), "y" for vertical value axes, "none" when the figure is
+# directly labelled and the grid would be pure ink.
+# mono_y / mono_x: set the categorical axis in monospace, for model identifiers.
+theme_nature <- function(base_size = 7, grid = "x",
+                         mono_y = FALSE, mono_x = FALSE,
+                         md_subtitle = FALSE) {
+  th <- theme_minimal(base_size = base_size, base_family = FONT_SANS) +
     theme(
-      # Panel: no background, no border. The page is the background.
-      panel.background  = element_blank(),
-      panel.border      = element_blank(),
-      plot.background   = element_blank(),
+      panel.background = element_blank(),
+      panel.border     = element_blank(),
+      plot.background  = element_rect(fill = "white", colour = NA),
 
-      # Gridlines: one direction only, and recessive. A grid perpendicular to
-      # the value axis helps read magnitude; the other direction is decoration.
-      panel.grid.major  = element_line(colour = RULE, linewidth = 0.25),
-      panel.grid.minor  = element_blank(),
+      panel.grid.major = element_line(colour = RULE, linewidth = 0.2),
+      panel.grid.minor = element_blank(),
 
-      # Axes: a thin rule on the categorical axis only; ticks short and muted.
-      axis.line.x       = element_line(colour = RULE, linewidth = 0.3),
-      axis.line.y       = element_blank(),
-      axis.ticks        = element_line(colour = RULE, linewidth = 0.25),
-      axis.ticks.length = unit(2, "pt"),
-      axis.text         = element_text(colour = INK_SECONDARY, size = rel(0.9)),
-      axis.title        = element_text(colour = INK_SECONDARY, size = rel(0.95)),
+      axis.line.x  = element_line(colour = INK_SOFT, linewidth = 0.3),
+      axis.line.y  = element_blank(),
+      axis.ticks.x = element_line(colour = INK_SOFT, linewidth = 0.3),
+      axis.ticks.y = element_blank(),
+      axis.ticks.length = unit(1.6, "pt"),
 
-      # Legend: no box, no key background, sat at the top where it reads as a
-      # caption rather than a panel competing with the data.
+      axis.text  = element_text(colour = INK_SOFT, size = rel(1.0)),
+      axis.title = element_text(colour = INK_SOFT, size = rel(1.0)),
+      axis.title.x = element_text(margin = margin(t = 4)),
+      axis.title.y = element_text(margin = margin(r = 4)),
+
+      legend.position   = "none",          # direct labels are the default
       legend.background = element_blank(),
       legend.key        = element_blank(),
-      legend.position   = "top",
-      legend.justification = "left",
-      legend.title      = element_text(colour = INK_SECONDARY, size = rel(0.9)),
-      legend.text       = element_text(colour = INK_SECONDARY, size = rel(0.9)),
-      legend.margin     = margin(b = 2),
+      legend.title      = element_blank(),
+      legend.text       = element_text(colour = INK_SOFT, size = rel(0.95)),
+      legend.margin     = margin(0, 0, 0, 0),
+      legend.box.spacing = unit(3, "pt"),
 
-      # Facet strips: text, not boxes. Left-aligned so the eye tracks one edge.
-      strip.background  = element_blank(),
-      strip.text        = element_text(colour = INK_PRIMARY, face = "bold",
-                                       size = rel(0.9), hjust = 0,
-                                       margin = margin(b = 3)),
+      strip.background = element_blank(),
+      strip.text = element_text(colour = INK, face = "bold", size = rel(1.0),
+                                hjust = 0, margin = margin(b = 2.5, t = 1)),
 
-      # Titles: left-aligned, minimal weight contrast.
-      plot.title        = element_text(colour = INK_PRIMARY, face = "bold",
-                                       size = rel(1.15), hjust = 0,
-                                       margin = margin(b = 3)),
-      plot.subtitle     = element_text(colour = INK_SECONDARY, size = rel(0.95),
-                                       hjust = 0, margin = margin(b = 8)),
-      plot.caption      = element_text(colour = INK_MUTED, size = rel(0.8),
-                                       hjust = 0, margin = margin(t = 8)),
-      plot.title.position    = "plot",
-      plot.caption.position  = "plot",
-      plot.margin       = margin(6, 10, 6, 6)
+      plot.title = element_text(colour = INK, face = "bold", size = rel(1.25),
+                                hjust = 0, margin = margin(b = 1.5)),
+      plot.subtitle = element_text(colour = INK_SOFT, size = rel(1.05),
+                                   hjust = 0, margin = margin(b = 6)),
+      plot.caption = element_text(colour = INK_FAINT, size = rel(0.9), hjust = 0),
+      plot.title.position   = "plot",
+      plot.caption.position = "plot",
+      plot.margin = margin(5, 8, 4, 4),
+      panel.spacing = unit(7, "pt")
     )
-  # Value-axis grid only, per `grid`.
-  if (identical(grid, "y")) {
-    th <- th + theme(panel.grid.major.x = element_blank())
-  } else if (identical(grid, "x")) {
-    th <- th + theme(panel.grid.major.y = element_blank(),
-                     axis.line.x = element_blank(),
-                     axis.line.y = element_line(colour = RULE, linewidth = 0.3))
-  } else if (identical(grid, "none")) {
-    th <- th + theme(panel.grid.major = element_blank())
+
+  if (identical(grid, "x")) th <- th + theme(panel.grid.major.y = element_blank())
+  if (identical(grid, "y")) th <- th + theme(panel.grid.major.x = element_blank(),
+                                             axis.line.x = element_blank(),
+                                             axis.ticks.x = element_blank())
+  if (identical(grid, "none")) th <- th + theme(panel.grid.major = element_blank())
+
+  if (mono_y) th <- th + theme(axis.text.y = element_text(family = FONT_MONO,
+                                                          colour = INK,
+                                                          size = rel(0.95)))
+  if (mono_x) th <- th + theme(axis.text.x = element_text(family = FONT_MONO,
+                                                          colour = INK,
+                                                          size = rel(0.95)))
+  # Render the subtitle as markdown so a key can be carried inside the sentence
+  # (see key_sentence). Needs ggtext; degrades to a plain subtitle without it.
+  if (md_subtitle && requireNamespace("ggtext", quietly = TRUE)) {
+    th <- th + theme(plot.subtitle = ggtext::element_markdown(
+      colour = INK_SOFT, size = rel(1.05), hjust = 0,
+      margin = margin(b = 6), lineheight = 1.25))
   }
   th
 }
 
-# Make it the default for any plot drawn after sourcing this file, so a script
-# that forgets to add theme_refusal() still gets it.
-theme_set(theme_refusal())
+# Build a subtitle in which the series names ARE the key: each name is set in
+# its own series colour and bolded, inline in the sentence. This removes the
+# legend without spending panel space on floating labels, which collide whenever
+# two series happen to sit close together.
+key_sentence <- function(prefix, named_colours, suffix = "") {
+  parts <- vapply(names(named_colours), function(nm)
+    sprintf("<span style='color:%s'>**%s**</span>", named_colours[[nm]], nm),
+    character(1))
+  joined <- if (length(parts) > 1)
+    paste(paste(head(parts, -1), collapse = ", "), "to", tail(parts, 1))
+  else parts
+  trimws(paste(prefix, joined, suffix))
+}
 
-# --- scale helpers ---------------------------------------------------------
-scale_fill_jurisdiction <- function(...)
-  scale_fill_manual(values = PAL_JURISDICTION, na.value = INK_MUTED, ...)
-scale_colour_jurisdiction <- function(...)
-  scale_colour_manual(values = PAL_JURISDICTION, na.value = INK_MUTED, ...)
-scale_color_jurisdiction <- scale_colour_jurisdiction
+theme_set(theme_nature())
 
-scale_fill_language <- function(...)
-  scale_fill_manual(values = PAL_LANGUAGE, na.value = INK_MUTED, ...)
-scale_colour_language <- function(...)
-  scale_colour_manual(values = PAL_LANGUAGE, na.value = INK_MUTED, ...)
-scale_color_language <- scale_colour_language
+# =============================================================================
+# Export -- one writer, ONE format
+# =============================================================================
+# PNG ONLY. This is a project rule, not a default. Every figure is a 600 dpi RGB
+# PNG through ragg and nothing else: no PDF, no SVG, no EPS, no TIFF.
+#
+# Multi-format export was tried and removed twice. The formats drifted (different
+# fonts, different metrics), stale siblings from superseded designs accumulated,
+# and the header of this file ended up asserting PNG-only while the exporter
+# below wrote three formats and the audit *required* all three. One writer, one
+# format, one source of truth.
+#
+# Do not add a vector branch here, do not add a `device =` argument, and do not
+# call ggsave() anywhere else in pipeline/. audit_figures.R fails if any
+# non-PNG file appears anywhere under the active figure directories.
+save_fig <- function(plot, file, width = W2, height = 4.2, dpi = 600) {
+  if (!grepl("[.]png$", file))
+    stop("save_fig() writes PNG only; destination must end in .png: ", file)
+  dir.create(dirname(file), showWarnings = FALSE, recursive = TRUE)
+  stem <- sub("[.]png$", "", file)
+  # Remove any sibling left by an earlier multi-format design, so a stale vector
+  # file cannot sit next to the current raster looking current.
+  for (ext in c("pdf", "svg", "eps", "tif", "tiff"))
+    unlink(paste0(stem, ".", ext))
 
-scale_fill_engagement <- function(...)
-  scale_fill_manual(values = PAL_ENGAGEMENT, na.value = INK_MUTED, ...)
+  dev <- if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png else NULL
+  if (is.null(dev))
+    ggsave(file, plot, width = width, height = height, units = "in",
+           dpi = dpi, bg = "white")
+  else
+    ggsave(file, plot, width = width, height = height, units = "in",
+           dpi = dpi, device = dev, bg = "white")
+  cat(sprintf("  saved %-40s %5.1f x %5.1f mm @ %d dpi\n",
+              basename(stem), width * 25.4, height * 25.4, dpi))
+  invisible(file)
+}
 
-scale_fill_tier <- function(...)
-  scale_fill_manual(values = PAL_TIER, na.value = INK_MUTED, ...)
-scale_colour_tier <- function(...)
-  scale_colour_manual(values = PAL_TIER, na.value = INK_MUTED, ...)
-scale_color_tier <- scale_colour_tier
+# Type sizes, in points at FINAL size. Nothing may fall below 5 pt: below that
+# a journal will reject the artwork and a reader cannot read it.
+PT_MIN     <- 5.0
+PT_BODY    <- 6.0
+PT_AXIS    <- 6.0
+PT_TITLE   <- 7.0
+PT_TAG     <- 8.0    # panel labels, bold
+# ggplot's `size` for geom_text is in millimetres, not points.
+pt_to_mm <- function(pt) pt / .pt
 
-# Diverging scales take a midpoint of 0 by default (no lean).
-scale_fill_stance <- function(midpoint = 0, ...)
-  scale_fill_gradient2(low = PAL_DIVERGING[1], mid = PAL_DIVERGING[3],
-                       high = PAL_DIVERGING[5], midpoint = midpoint, ...)
-scale_colour_stance <- function(midpoint = 0, ...)
-  scale_colour_gradient2(low = PAL_DIVERGING[1], mid = PAL_DIVERGING[3],
-                         high = PAL_DIVERGING[5], midpoint = midpoint, ...)
+# =============================================================================
+# NO TITLES, SUBTITLES OR CAPTIONS INSIDE A PLOT
+# =============================================================================
+# Every figure carries panel letters, axis labels, tick labels, category names,
+# concise facet headings, compact legends and direct numeric labels -- and
+# nothing else. Titles, subtitles and methodological prose live in
+# docs/CANONICAL_FIGURE_LEGENDS.md, where a reader can see them next to the n,
+# the weighting and the interval definition.
+#
+# This is enforced two ways: tag_only() BLANKS the title and subtitle slots so a
+# stray labs(title=) cannot render, and audit_figures.R fails the build if any
+# figure script passes title= or subtitle= at all.
+tag_only <- function() {
+  theme(plot.tag = element_text(family = FONT_SANS, face = "bold",
+                                size = PT_TAG, colour = INK),
+        plot.tag.position = c(0, 1),
+        plot.title = element_blank(),
+        plot.subtitle = element_blank(),
+        plot.caption = element_blank(),
+        # The tag sits at the panel's top-left; reserve the strip it needs so it
+        # cannot overprint the first row label or a facet heading.
+        plot.margin = margin(11, 5, 3, 3))
+}
 
-# Single-series default: one colour, no legend needed (the title names it).
-SERIES_ONE <- "#2a78d6"
+# Signed percentage points, with the precision the uncertainty supports and no
+# signed zero. "%+.1f" prints "-0.0" for anything in (-0.05, 0), and a diverging
+# fill then shows a minus sign on a cell that is exactly nothing.
+fmt_pp <- function(x, digits = 1) {
+  r <- round(x, digits)
+  ifelse(abs(r) < 10^(-digits) / 2, "0", sprintf(paste0("%+.", digits, "f"), r))
+}
+fmt_pp0 <- function(x) fmt_pp(x, 0)
 
-# ggsave defaults for the paper: vector for print, no device-specific raster.
-save_fig <- function(plot, file, width = 6.5, height = 4.0, ...) {
-  ggsave(file, plot, width = width, height = height, units = "in",
-         device = grDevices::cairo_pdf, ...)
+# A STRUCTURAL ZERO is not an estimate of no effect. Where a model or a
+# jurisdiction produced no refusals at all, the contrast does not exist, and
+# drawing it at 0 with a zero-width interval claims a precisely estimated null.
+# One encoding everywhere: hollow square, plus words.
+SHAPE_NOT_ESTIMABLE <- 22
+NOT_ESTIMABLE_TEXT  <- "not estimable"
+
+# Height that keeps row pitch constant in a dot plot: n rows at ~0.16 in each
+# plus fixed chrome for title/axis.
+h_rows <- function(n, per = 0.155, chrome = 1.05) chrome + per * n
+
+# =============================================================================
+# Small helpers
+# =============================================================================
+# Wilson score interval -- correct at the small cell counts and near-zero rates
+# this study produces, where a Wald interval would run below 0.
+wilson_ci <- function(k, n, z = 1.96) {
+  p <- k / n
+  d <- 1 + z^2 / n
+  c0 <- (p + z^2 / (2 * n)) / d
+  hw <- z * sqrt((p * (1 - p) + z^2 / (4 * n)) / n) / d
+  data.frame(lo = pmax(0, c0 - hw), hi = pmin(1, c0 + hw))
+}
+
+# Topic domains are snake_case in the data; render as prose in figures.
+pretty_domain <- function(x) {
+  x <- gsub("_", " ", x)
+  paste0(toupper(substring(x, 1, 1)), substring(x, 2))
+}
+
+scale_fill_tier   <- function(...) scale_fill_manual(values = PAL_TIER, ...)
+scale_colour_tier <- function(...) scale_colour_manual(values = PAL_TIER, ...)
+scale_color_tier  <- scale_colour_tier
+scale_colour_language <- function(...) scale_colour_manual(values = PAL_LANGUAGE, ...)
+scale_color_language  <- scale_colour_language
+scale_fill_language   <- function(...) scale_fill_manual(values = PAL_LANGUAGE, ...)
+
+# Percent axis that stops where the data stops. Truncating the top of a rate
+# axis at 100% when nothing exceeds 25% wastes three-quarters of the panel and
+# flattens every difference the figure exists to show.
+scale_x_rate <- function(limit, breaks = waiver(), expand_mult = c(0.01, 0.10)) {
+  scale_x_continuous(labels = scales::label_percent(accuracy = 1),
+                     limits = c(0, limit), breaks = breaks,
+                     expand = expansion(mult = expand_mult))
 }

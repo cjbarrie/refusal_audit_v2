@@ -1,0 +1,5 @@
+language,outcome,weighting,estimate,conf_low,conf_high,estimate_pp,conf_low_pp,conf_high_pp,n_complete_blocks,note,canonical_run_id
+zh,genuine_refusal,response,-2.4492885929950346e-4,-0.0024507197952852956,0.0018840332126590447,-0.024492885929950345,-0.24507197952852955,0.18840332126590448,44911,weighting sensitivity; primary c08 gives models equal weight,canon_019
+ar,genuine_refusal,response,-0.005477743882072636,-0.007504072131872982,-0.0034620045441079604,-0.5477743882072635,-0.7504072131872982,-0.34620045441079605,44909,weighting sensitivity; primary c08 gives models equal weight,canon_019
+ru,genuine_refusal,response,-0.005233619883301412,-0.007071305204985599,-0.0033627612092818537,-0.5233619883301412,-0.7071305204985598,-0.3362761209281854,44902,weighting sensitivity; primary c08 gives models equal weight,canon_019
+hi,genuine_refusal,response,-0.01167740066409645,-0.013921182129413243,-0.009369705515496794,-1.1677400664096451,-1.3921182129413243,-0.9369705515496793,44873,weighting sensitivity; primary c08 gives models equal weight,canon_019

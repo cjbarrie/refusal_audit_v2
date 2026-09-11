@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "roster_version": "local_gguf_expansion_v1_2026-09-09",
+  "status": "local_smoke_only",
+  "scientific_role": "Access, template, language-fidelity, and response-integrity screening; not an analysis sample",
+  "runtime": {
+    "engine": "ollama",
+    "api_base": "http://127.0.0.1:11434",
+    "quantization": "Q8_0",
+    "execution": "one model and one request at a time",
+    "context_tokens": 8192,
+    "temperature": 1.0,
+    "max_output_tokens": 5000,
+    "repeat_penalty": 1.0,
+    "keep_alive": "5m"
+  },
+  "design": {
+    "prompt_meanings": 1,
+    "languages": ["en", "zh", "ar", "ru", "hi"],
+    "requests_per_model": 5,
+    "source_selection": "lexicographically first prompt_id in the frozen 40-meaning jurisdiction expansion pilot"
+  },
+  "models": [
+    {
+      "name": "krutrim-2-instruct-local-q8",
+      "ollama_model": "hf.co/bartowski/krutrim-ai-labs_Krutrim-2-instruct-GGUF:Q8_0",
+      "source_model": "krutrim-ai-labs/Krutrim-2-instruct",
+      "gguf_repository": "bartowski/krutrim-ai-labs_Krutrim-2-instruct-GGUF",
+      "developer": "Ola Krutrim",
+      "developer_jurisdiction": "India",
+      "quantizer": "bartowski",
+      "expected_weight_gb": 13.02
+    },
+    {
+      "name": "gigachat3-10b-a1.8b-local-q8",
+      "ollama_model": "hf.co/ai-sage/GigaChat3-10B-A1.8B-GGUF:Q8_0",
+      "source_model": "ai-sage/GigaChat3-10B-A1.8B",
+      "gguf_repository": "ai-sage/GigaChat3-10B-A1.8B-GGUF",
+      "developer": "Sber AI / AI-Sage",
+      "developer_jurisdiction": "Russia",
+      "quantizer": "AI-Sage",
+      "expected_weight_gb": 11.4
+    },
+    {
+      "name": "eurollm-22b-instruct-2512-local-q8",
+      "ollama_model": "hf.co/bartowski/utter-project_EuroLLM-22B-Instruct-2512-GGUF:Q8_0",
+      "source_model": "utter-project/EuroLLM-22B-Instruct-2512",
+      "gguf_repository": "bartowski/utter-project_EuroLLM-22B-Instruct-2512-GGUF",
+      "developer": "UTTER / EuroLLM consortium",
+      "developer_jurisdiction": "Europe",
+      "quantizer": "bartowski",
+      "expected_weight_gb": 24.06
+    },
+    {
+      "name": "salamandra-7b-instruct-2606-local-q8",
+      "ollama_model": "hf.co/mradermacher/salamandra-7b-instruct-2606-GGUF:Q8_0",
+      "source_model": "BSC-LT/salamandra-7b-instruct-2606",
+      "gguf_repository": "mradermacher/salamandra-7b-instruct-2606-GGUF",
+      "developer": "Barcelona Supercomputing Center",
+      "developer_jurisdiction": "Europe",
+      "quantizer": "mradermacher",
+      "expected_weight_gb": 8.26
+    }
+  ]
+}

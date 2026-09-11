@@ -1,0 +1,6 @@
+jurisdiction,n_models,n_responses,events,single_model,responses_per_model
+CN,2,4992,308,FALSE,2496
+EU,1,2496,0,TRUE,2496
+India,1,2490,152,TRUE,2490
+MENA,3,7488,641,FALSE,2496
+US,4,9983,310,FALSE,2495.75

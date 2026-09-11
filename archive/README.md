@@ -4,6 +4,12 @@ Files moved out of the working tree during the 2026-07-20 cleanup. Nothing here
 is referenced by production code or the R analysis pipeline; it is retained as
 provenance / validation evidence, not as a live dependency.
 
+Later dated cleanups are self-documented in their own directories. In
+particular, `2026-09-04_post_v24_rationalization/` removes superseded documents,
+stale mutable 11-model analysis files and unrelated material from the live
+surface after promotion of `canon_024`; it does not contain any raw-response or
+canonical-release deletion.
+
 ## Contents
 
 ### `annotations/smoke_test/`

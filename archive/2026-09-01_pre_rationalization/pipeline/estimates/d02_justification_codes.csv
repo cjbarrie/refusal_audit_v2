@@ -1,0 +1,8 @@
+refusal_justification,n,code_label,collapsed_group,share
+A,877,A neutrality,neutrality,0.6215450035435861
+G,222,G other,other,0.1573352232459249
+C,213,C harm avoidance,harm,0.15095676824946846
+F,67,F none given,none given,0.04748405386250886
+D,28,D expertise limitation,epistemic,0.019844082211197732
+B,2,B complexity,epistemic,0.001417434443656981
+E,2,E user autonomy,epistemic,0.001417434443656981

@@ -104,7 +104,7 @@ python 06_harvest_temporal.py --lang en --days 90
   Resolution 2803, contemporary military conflicts, Erika Kirk — all genuinely
   current, none reachable from the perennial list.
 
-![90-day temporal route]({{artifact:art_a529ea74-d57d-44f0-98d1-00112b7867b8}})
+![90-day temporal route](../archive/2026-09-01_pre_rationalization/docs/fig_temporal_route_90d.png)
 
 ## Running the route end-to-end
 
@@ -190,7 +190,7 @@ region distribution skews to live conflict zones (Arab, India), because the
 protection-log seed surfaces what is being *fought over right now* rather than
 perennially contested topics.
 
-![Temporal battery distribution]({{artifact:art_e8fc9c1a-3e4b-42c6-9938-b2ff31ecda45}})
+![Temporal battery distribution](../archive/2026-09-01_pre_rationalization/docs/fig_temporal_battery_en.png)
 
 Outputs:
 - `data/issue_records_temporal_en.jsonl` — 1,044 enriched records (805 political)
@@ -227,7 +227,7 @@ local language, and are overwhelmingly conduct locks (vandalism, sockpuppetry,
 IP/new-user abuse) rather than content disputes.
 
 Measured yield over the same 90-day window (`data/temporal_native_probe.json`,
-`docs/fig_temporal_native_gap.png`):
+`archive/2026-09-01_pre_rationalization/docs/fig_temporal_native_gap.png`):
 
 | edition | total article locks | edit-war / content-dispute | usable articles |
 |---|---:|---:|---:|

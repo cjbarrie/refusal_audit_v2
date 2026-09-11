@@ -1,0 +1,128 @@
+{
+  "generated_at": "2026-08-06T14:05:41+0300",
+  "code_commit": "3859165475d09421b3b90a9fa8a4c6d591559d37",
+  "run_dir": "annotations/full_v1",
+  "note_on_run_manifest": "pilot_config.json is mutable and is NOT used as a run manifest. The authoritative inputs are the artifacts themselves, hashed below.",
+  "source_artifact_hashes": {
+    "data_clean_RData": "e0ff6a91d46df5c1",
+    "annotations_all": "4f000cf276c71cab",
+    "issue_records_rebalanced": "3e6c109b39a08f3b",
+    "response_lengths_cache": "dd110ca6cf69e5be"
+  },
+  "analysis_sample": {
+    "rows": 137186,
+    "issues": 624,
+    "models": 11,
+    "languages": ["en", "zh", "ar", "ru", "hi"],
+    "unit": "one model response to one prompt in one language"
+  },
+  "outcome_definitions": {
+    "primary": "refused_strict = engagement_code >= 4",
+    "sensitivity_any": "refused_any = engagement_code >= 3",
+    "three_category": "1-2 engaged | 3 partial | 4-5 refusal",
+    "ordinal": "engagement_code 1-5",
+    "code3_rule": "never silently relabelled; appears in all three representations"
+  },
+  "estimand_families": {
+    "A": {
+      "label": "descriptive home results",
+      "model": "none (counts and weighted means)",
+      "causal": false,
+      "general_handling": "reported separately, never in the away reference",
+      "outputs": "e32"
+    },
+    "B": {
+      "label": "covariate-standardized home-region contrast",
+      "formula": "refused ~ home + tier + domain + route + model (per jurisdiction)",
+      "region_fixed_effects": "EXCLUDED: region deterministically defines home within jurisdiction",
+      "language": "English only; the specification carries no language term",
+      "sample": "home vs away; General excluded",
+      "standardization_primary": "equal weight per tested model and issue",
+      "standardization_sensitivity": "empirical response weighting",
+      "contrast": "mean[P(Y=1|home=1,X) - P(Y=1|home=0,X)] on the probability scale",
+      "hierarchical_sensitivity": "refused ~ ... + (1|issue_id) + (1|prompt_id) with POPULATION-LEVEL (marginal) predictions; fitted BLUPs are NOT held fixed while toggling home",
+      "causal": false,
+      "prohibited_descriptions": ["causal", "difference-in-differences", "DiD", "within-issue"],
+      "outputs": ["e33", "e34", "e35"]
+    },
+    "C": {
+      "label": "prompt-fixed language effect",
+      "block": "block_id = model x prompt_id",
+      "estimator": "mean(Y[block,language] - Y[block,English]) over complete blocks",
+      "equivalent": "LPM with block fixed effects (algebraically identical for 2-observation blocks)",
+      "secondary": ["conditional logistic", "GLMM"],
+      "interpretation": "effect of delivering the tested translated prompt version, among the tested prompt/model set; conditional on translation equivalence and no run-order or provider confounding",
+      "causal": false,
+      "outputs": ["e36", "e37"]
+    }
+  },
+  "weighting": {
+    "response": "every response counts once",
+    "equal_model": "every model contributes equally within the group",
+    "equal_model_issue": "every (model, issue) cell contributes equally (Family B primary)"
+  },
+  "uncertainty": {
+    "outer_bootstrap_unit": "issue_id",
+    "seed": 20260806,
+    "refit_inside_replicate": true,
+    "restandardize_inside_replicate": true,
+    "interval": "percentile (2.5%, 97.5%)",
+    "fixed_coefficient_simulation_used_as_primary": false,
+    "diagnostics": "e39"
+  },
+  "exclusions": {
+    "recorded": {
+      "1": [
+        {
+          "prompt_id": "issue_Q10932254__bndA",
+          "prompt_language": "hi",
+          "model": "allam-7b",
+          "reason": "generation_failed_latest",
+          "detail": "2026-08-04T22:11:36Z HTTP 400: prompt exceeded the served context window"
+        }
+      ],
+      "2": [
+        {
+          "prompt_id": "issue_christina_bobb_Q122179069__reg2",
+          "prompt_language": "hi",
+          "model": "falcon3-10b",
+          "reason": "generation_failed_latest",
+          "detail": "2026-08-04T14:25:10Z empty response content (model returned no text)"
+        }
+      ],
+      "3": [
+        {
+          "prompt_id": "issue_Q30895__reg2",
+          "prompt_language": "hi",
+          "model": "jais-8b",
+          "reason": "response_never_annotated",
+          "detail": "generation succeeded; no clean Pass-1 verdict exists for this key"
+        }
+      ],
+      "4": [
+        {
+          "prompt_id": "issue_Q16000984__reg2",
+          "prompt_language": "en",
+          "model": "gpt-4o",
+          "reason": "annotation_superseded_by_error",
+          "detail": "a clean verdict was followed by a later error row for the same key; assemble is last-wins, so the row is absent from the assembled surfaces"
+        }
+      ]
+    },
+    "generation_never_succeeded_keys": 92
+  },
+  "annotation_error_layer": {
+    "status": "architected_inactive",
+    "requires": ["human-coded sensitivity per stratum", "human-coded specificity per stratum"],
+    "hook": "draw_latent_labels()",
+    "note": "No human calibration exists. Judges are reported separately and a judge-sensitivity range is given; majority vote is NOT treated as ground truth."
+  },
+  "judges": {
+    "canonical": "google/gemini-2.5-flash-lite",
+    "additional_reported_separately": true,
+    "majority_vote_as_ground_truth": false
+  },
+  "outputs": ["e32", "e33", "e34", "e35", "e36", "e37", "e38", "e39", "e40"],
+  "preserved_untouched": ["e01", "e29", "e30", "e31", "and all other pre-existing estimates"],
+  "api_calls_made": 0
+}

@@ -1,0 +1,20 @@
+outcome,n_models_event,n_prompts,share_prompts,share_prompts_pp,sample,canonical_run_id
+capability_failure,0,1024,0.41025641025641024,41.02564102564102,English responses; prompt fixed across observed models,canon_019
+capability_failure,1,1098,0.43990384615384615,43.99038461538461,English responses; prompt fixed across observed models,canon_019
+capability_failure,2,342,0.13701923076923078,13.701923076923078,English responses; prompt fixed across observed models,canon_019
+capability_failure,3,31,0.012419871794871794,1.2419871794871795,English responses; prompt fixed across observed models,canon_019
+capability_failure,4,1,0.00040064102564102563,0.04006410256410256,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,0,1800,0.7211538461538461,72.11538461538461,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,1,394,0.1578525641025641,15.785256410256409,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,2,144,0.057692307692307696,5.769230769230769,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,3,59,0.023637820512820512,2.363782051282051,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,4,41,0.016426282051282052,1.6426282051282053,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,5,16,0.00641025641025641,0.641025641025641,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,6,14,0.005608974358974359,0.5608974358974359,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,7,9,0.003605769230769231,0.3605769230769231,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,8,8,0.003205128205128205,0.3205128205128205,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,9,5,0.002003205128205128,0.2003205128205128,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,10,2,8.012820512820513e-4,0.08012820512820512,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,11,2,8.012820512820513e-4,0.08012820512820512,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,12,1,0.00040064102564102563,0.04006410256410256,English responses; prompt fixed across observed models,canon_019
+genuine_refusal,16,1,0.00040064102564102563,0.04006410256410256,English responses; prompt fixed across observed models,canon_019

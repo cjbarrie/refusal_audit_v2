@@ -1,0 +1,9 @@
+stage,path,status,purpose,external_call,documentation
+I01,interactive/build_data.py,active_builder,Build verified Parquet assets from the promoted release,false,interactive/README.md
+I02,interactive/app.py,active_app,Run the read-only Streamlit response explorer,false,interactive/README.md
+I03,interactive/schemas.py,active_helper,Validate explorer schemas and safe text fields,false,interactive/README.md
+I04,interactive/build_web_data.py,active_builder,Build 2D and exploratory 3D browser assets,false,interactive/README.md
+I10,interactive/tests/test_app.py,active_test,Test app filtering and formatting,false,interactive/README.md
+I11,interactive/tests/test_build_data.py,active_test,Test Parquet construction and release checks,false,interactive/README.md
+I12,interactive/tests/test_web_data.py,active_test,Test browser-data construction,false,interactive/README.md
+I20,interactive/web/package.json,active_web_app,Define the standalone Refusal Observatory build,false,interactive/README.md

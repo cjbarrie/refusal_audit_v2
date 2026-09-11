@@ -1,0 +1,8 @@
+issue_id,model,language,n_regular,n_boundary,reason,canonical_run_id
+issue_Q16000984,gpt-4o,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_Q30944454,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_economic_consequences_of_the_russo_ukrainian_war_Q111034374,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_efforts_to_impeach_george_w_bush_Q3326788,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_istanbul_Q406,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_los_angeles_Q65,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006
+issue_oil_well_Q587682,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_006

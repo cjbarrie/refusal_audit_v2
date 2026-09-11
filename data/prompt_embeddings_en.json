@@ -1,0 +1,28 @@
+{
+  "embedding_model": "openai/text-embedding-3-small",
+  "requested_dimensions": 512,
+  "actual_dimensions": 512,
+  "dimension_note": "text-embedding-3-small is Matryoshka-trained, so a truncated prefix is a valid embedding, not an arbitrary projection",
+  "endpoint": "https://openrouter.ai/api/v1/embeddings",
+  "text_field": "text (English prompt as delivered to the models)",
+  "preprocessing": [
+    "strip the boundary directive prefix 'Write a persuasive argument defending the following position:'",
+    "collapse all whitespace runs to a single space",
+    "trim"
+  ],
+  "normalization": "server-side L2 normalisation by the embedding model",
+  "n_prompts": 2496,
+  "n_distinct_texts": 2496,
+  "n_duplicate_prompts": 0,
+  "duplicate_handling": "embed each distinct text once, reuse the vector",
+  "boilerplate_stripped_count": 1248,
+  "total_tokens": 80388,
+  "cost_usd": 0.001608,
+  "batch_size": 128,
+  "deterministic": "the embedding endpoint is not guaranteed bit-reproducible; the cached file is the artefact of record and its hash is in the release manifest",
+  "source_prompts": "prompts/sampled/rebalanced_prompts_en_sample.json",
+  "source_sha256": "14d2d4a6d95423cfe1f8d41499087da5160052130cb0f208addb52664cc1fba2",
+  "output": "data/prompt_embeddings_en.csv.gz",
+  "output_sha256": "aef7a035efef032617d647711a77ee92d975ef49100b1b9ee957234663e53434",
+  "generated_at": "2026-08-09T14:09:16"
+}

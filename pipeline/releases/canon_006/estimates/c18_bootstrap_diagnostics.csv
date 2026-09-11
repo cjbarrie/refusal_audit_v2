@@ -1,0 +1,464 @@
+canonical_run_id,label,bootstrap_unit,multiplicity_preserved,copy_id_column,seed,replicates_requested,replicates_drawn,replicates_successful,replicates_failed,failure_rate,failed_draws_replaced,interval_reliable,interval_method,n_rows,n_issues,replicates_attempted,method,n_issues_sampled,n_issues_frame,sampling_fraction,fpc,leave_one_out_failed
+canon_006,c02|juris|CN|response,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|CN|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|MENA|response,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|MENA|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|India|response,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|India|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|US|response,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|US|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|EU|response,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|juris|EU|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2079,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c02|model|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|CN|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|CN|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|CN|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|CN|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|CN|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|MENA|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|MENA|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6237,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|MENA|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|MENA|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|MENA|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6238,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|India|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|India|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2078,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|India|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2068,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|India|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2063,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|India|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2043,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|US|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|US|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|US|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|US|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|US|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|EU|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|EU|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|EU|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|EU|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c03|EU|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2079,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|CN|nested|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|CN|response|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|CN|nested|cs,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,1720,215,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|CN|firth,issue_id,TRUE,bootstrap_issue_instance,20260807,200,200,200,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|MENA|nested|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|MENA|response|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|MENA|nested|cs,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,4812,401,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|MENA|firth,issue_id,TRUE,bootstrap_issue_instance,20260807,200,200,200,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|India|nested|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|India|response|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|India|nested|cs,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,1443,361,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|India|firth,issue_id,TRUE,bootstrap_issue_instance,20260807,200,200,200,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|US|nested|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|US|response|full,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|US|nested|cs,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,7631,477,NA,NA,NA,NA,NA,NA,NA
+canon_006,c04|US|firth,issue_id,TRUE,bootstrap_issue_instance,20260807,200,200,200,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|CN|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|CN|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|CN|EQUALMODEL,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|MENA|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|MENA|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|MENA|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|MENA|EQUALMODEL,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|India|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|India|EQUALMODEL,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|US|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|US|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|US|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|US|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c05|US|EQUALMODEL,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|CN|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|CN|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|MENA|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|MENA|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|MENA|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|US|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6239,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|US|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|US|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6239,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lomo|US|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6239,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|CN|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|CN|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2080,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|MENA|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,3120,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|MENA|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,3120,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|India|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1036,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|India|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1040,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|US|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4159,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|tier|US|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|CN|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|CN|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|CN|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|CN|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|CN|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|MENA|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|MENA|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6237,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|MENA|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|MENA|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|MENA|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6238,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|India|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|India|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2078,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|India|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2068,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|India|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,475,25,0.05,FALSE,FALSE,percentile,2063,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|India|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2043,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|US|en,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|US|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|US|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|US|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|lang|US|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8320,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|code3|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4160,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|code3|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|code3|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|code3|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len20|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4155,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len50|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4139,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len100|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4119,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len20|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6238,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len50|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6221,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len100|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6221,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len20|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len50|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len100|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2076,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len20|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len50|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|len100|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|overlap|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,4008,501,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|overlap|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6240,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|overlap|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2000,501,NA,NA,NA,NA,NA,NA,NA
+canon_006,c07|overlap|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,8319,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c08|zh|pooled,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,NA,2000,0,0,NA,NA,percentile,27440,624,2000,NA,NA,NA,NA,NA,NA
+canon_006,c08|zh|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27440,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|zh|equal_model_issue,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27440,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|ar|pooled,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,NA,2000,0,0,NA,NA,percentile,27437,624,2000,NA,NA,NA,NA,NA,NA
+canon_006,c08|ar|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27437,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|ar|equal_model_issue,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27437,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|ru|pooled,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,NA,2000,0,0,NA,NA,percentile,27430,624,2000,NA,NA,NA,NA,NA,NA
+canon_006,c08|ru|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27430,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|ru|equal_model_issue,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27430,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|hi|pooled,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,NA,2000,0,0,NA,NA,percentile,27402,624,2000,NA,NA,NA,NA,NA,NA
+canon_006,c08|hi|equal_model,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27402,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08|hi|equal_model_issue,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27402,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|any|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27440,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|any|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27437,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|any|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27430,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|any|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27402,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|zh|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13715,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|zh|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13725,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|ar|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13709,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|ar|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13728,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|ru|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13702,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|ru|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13728,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|hi|regular,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13677,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|tier|hi|boundary,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,13725,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|zh|home,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4576,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|zh|away,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,18294,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|zh|general,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4570,104,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ar|home,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4574,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ar|away,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,18289,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ar|general,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4574,104,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ru|home,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4575,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ru|away,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,18283,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|ru|general,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4572,104,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|hi|home,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4576,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|hi|away,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,18256,520,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|home|hi|general,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4570,104,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|len|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27170,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|len|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27350,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|len|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27378,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c08s|len|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,27337,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2489,623,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|zh|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2488,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|zh|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4992,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|zh|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,7481,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|zh|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2488,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|zh|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,9983,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|zh|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ar|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2478,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ar|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4992,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ar|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,7488,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ar|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2478,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ar|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,9983,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ar|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|ru|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2471,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ru|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4992,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ru|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,7488,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ru|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2471,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ru|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,9983,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|ru|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2494,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2496,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|m|hi|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2450,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|hi|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,4989,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|hi|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,7485,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|hi|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2450,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|hi|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,9983,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c09|j|hi|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,2495,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c10|overall,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,NA,2000,0,0,NA,NA,percentile,6857,624,2000,NA,NA,NA,NA,NA,NA
+canon_006,c10|w|pooled,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,6857,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c10|w|equal_model_issue,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,6857,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c10|blocks|loose,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,6864,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c10|any,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,6857,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|allam-7b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|claude-opus-4.5,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|deepseek-chat-v3.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|falcon3-10b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|gpt-4o,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,623,623,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|gpt-5.1,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|grok-4.3,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|jais-8b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|mistral-large-2512,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|qwen3-max,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,624,624,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|m|sarvam-30b,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,618,618,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|civil_rights_liberties,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,880,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|economic_policy,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,878,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|environment_energy,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,482,44,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|governance_democracy,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,878,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|migration_nationalism,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,880,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|religion_state,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,703,64,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|security_conflict,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,880,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|social_moral,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,396,36,500,NA,NA,NA,NA,NA,NA
+canon_006,c11|d|territorial_sovereignty,issue_id,TRUE,bootstrap_issue_instance,20260807,500,NA,500,0,0,NA,NA,percentile,880,80,500,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_neg2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_neg2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|economic_left_right|share_neg1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_neg1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|economic_left_right|share_zero,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_zero|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|economic_left_right|share_pos1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_pos1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|economic_left_right|share_pos2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|share_pos2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|economic_left_right|signed_mean,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|economic_left_right|signed_mean|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|share_neg2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|share_neg2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|share_neg1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|share_neg1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|share_zero,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|share_zero|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|share_pos1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|share_pos1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|share_pos2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|share_pos2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|social_left_right|signed_mean,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|social_left_right|signed_mean|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|share_neg2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|share_neg2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|share_neg1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|share_neg1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|share_zero,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|share_zero|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|share_pos1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|share_pos1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|share_pos2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|share_pos2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|authoritarian_libertarian|signed_mean,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|authoritarian_libertarian|signed_mean|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|share_neg2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|share_neg2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|share_neg1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|share_neg1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|share_zero,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|share_zero|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|share_pos1,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|share_pos1|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|share_pos2,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|share_pos2|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c12|populist_elitist|signed_mean,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c12|populist_elitist|signed_mean|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|care_harm|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|care_harm|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|fairness_cheating|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|fairness_cheating|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|liberty_oppression|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|liberty_oppression|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|authority_subversion|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|authority_subversion|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|loyalty_betrayal|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|loyalty_betrayal|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|all,issue_id,TRUE,bootstrap_issue_instance,20260807,2000,2000,2000,0,0,FALSE,TRUE,percentile,6528,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|all|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,6528,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|CN,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1181,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|CN|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1181,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|MENA,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,1699,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|MENA|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,1699,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|India,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,589,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|India|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,589,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|US,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,2435,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|US|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,2435,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c14|sanctity_degradation|EU,issue_id,TRUE,bootstrap_issue_instance,20260807,500,500,500,0,0,FALSE,TRUE,percentile,624,156,NA,NA,NA,NA,NA,NA,NA
+canon_006,c14|sanctity_degradation|EU|jack,issue_id,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,normal approximation,624,NA,NA,delete-one-issue jackknife with FPC,156,624,0.25,0.75,0
+canon_006,c17b|all-judge in|CN|google/gemini-2.5-flash-lite,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|MENA|google/gemini-2.5-flash-lite,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,6233,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|India|google/gemini-2.5-flash-lite,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,2075,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|US|google/gemini-2.5-flash-lite,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,8313,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|CN|google/gemma-4-31b-it,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|MENA|google/gemma-4-31b-it,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,6233,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|India|google/gemma-4-31b-it,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,2075,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|US|google/gemma-4-31b-it,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,8313,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|CN|nvidia/nemotron-3-nano-30b-a3b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|MENA|nvidia/nemotron-3-nano-30b-a3b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,6233,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|India|nvidia/nemotron-3-nano-30b-a3b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,2075,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|US|nvidia/nemotron-3-nano-30b-a3b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,8313,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|CN|nvidia/nemotron-3-super-120b-a12b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,4157,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|MENA|nvidia/nemotron-3-super-120b-a12b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,6233,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|India|nvidia/nemotron-3-super-120b-a12b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,2075,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,c17b|all-judge in|US|nvidia/nemotron-3-super-120b-a12b,issue_id,TRUE,bootstrap_issue_instance,20260807,600,600,600,0,0,FALSE,TRUE,percentile,8313,520,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|allam-7b|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|allam-7b|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|allam-7b|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|allam-7b|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|allam-7b|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|claude-opus-4.5|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|claude-opus-4.5|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|claude-opus-4.5|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|claude-opus-4.5|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|claude-opus-4.5|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|deepseek-chat-v3.1|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|deepseek-chat-v3.1|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|deepseek-chat-v3.1|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2494,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|deepseek-chat-v3.1|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|deepseek-chat-v3.1|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|falcon3-10b|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|falcon3-10b|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|falcon3-10b|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|falcon3-10b|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|falcon3-10b|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2489,623,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-4o|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-4o|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-4o|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-4o|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-4o|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-5.1|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-5.1|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-5.1|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-5.1|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|gpt-5.1|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|grok-4.3|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|grok-4.3|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|grok-4.3|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|grok-4.3|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|grok-4.3|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|jais-8b|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|jais-8b|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|jais-8b|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|jais-8b|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|jais-8b|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|mistral-large-2512|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|mistral-large-2512|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|mistral-large-2512|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|mistral-large-2512|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|mistral-large-2512|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|qwen3-max|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|qwen3-max|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|qwen3-max|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2495,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|qwen3-max|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|qwen3-max|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|sarvam-30b|ar,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2484,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|sarvam-30b|en,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2490,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|sarvam-30b|hi,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2456,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|sarvam-30b|ru,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2477,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a02|sarvam-30b|zh,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,2494,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|deepseek,issue_id,TRUE,bootstrap_issue_instance,20260807,800,800,800,0,0,FALSE,TRUE,percentile,2496,624,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|civil_rights_liberties,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|economic_policy,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|environment_energy,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,176,44,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|governance_democracy,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|migration_nationalism,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|religion_state,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,256,64,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|security_conflict,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|social_moral,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,144,36,NA,NA,NA,NA,NA,NA,NA
+canon_006,a04|dom|territorial_sovereignty,issue_id,TRUE,bootstrap_issue_instance,20260807,400,400,400,0,0,FALSE,TRUE,percentile,320,80,NA,NA,NA,NA,NA,NA,NA

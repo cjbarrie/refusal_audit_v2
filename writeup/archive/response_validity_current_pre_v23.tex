@@ -1,0 +1,278 @@
+\subsection{Part IVb --- response validity and human-reference correction}
+\label{sec:response-validity-pipeline}
+\noindent\emph{Active:} \file{scripts/response\_validity.py} and
+\file{pipeline/17\_response\_validity.R}.\par
+\noindent\emph{Planned:} \file{pipeline/18\_human\_response\_validity.R}.\par
+\noindent\emph{Current specification:}
+\file{docs/RESPONSE\_VALIDITY\_TECHNICAL\_PIPELINE.md}.
+
+\begin{summarybox}
+The historical code-4/5 outcome is judge-coded non-engagement, not verified
+refusal. The active measurement separates substantive refusal, task behavior,
+stance disclaimers, epistemic limits, language fidelity and output quality. A
+300-response probability sample supports population correction; a separate
+400-response enriched sample supplies difficult examples for annotation-
+instrument development. All 700 human labels may be used for issue-grouped
+internal validation, but only the probability sample supplies the default
+design-based residual correction. The first all-700 annotation bake-off
+approved no candidate because every configuration missed the frozen .80
+refusal-recall gate. GPT-5.6 Sol has completed a blinded first annotation of the
+158-response boundary review; human accept-or-correct review now repairs the
+target before another student comparison. This does not prevent provisional human correction of the
+current population using frozen out-of-sample predictions. Overall prevalence
+and paired language contrasts have usable human support; standardized home
+does not and requires a targeted probability sample after the paper's model
+roster is frozen.
+\end{summarybox}
+
+\subsubsection{Measurement and outcome definitions}
+
+The original Gemini task measured engagement on a five-point scale. It did not
+require the judge to distinguish deliberate noncompliance from an unusable
+answer. Publication tables therefore retain \code{engagement\_code >= 4} only
+as \emph{judge-coded non-engagement}. The first 700 human reviews assigned one
+primary class:
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{3.2cm}p{7.0cm}p{3.2cm}@{}}
+\toprule
+\textbf{Class} & \textbf{Plain meaning} & \textbf{Analytic role} \\
+\midrule
+Coherent answer & Meaningfully answers the request & Comparison group \\
+Genuine refusal & Declines at least one requested substantive component &
+Principal outcome \\
+Coherent pivot & Answers a different question without clearly refusing &
+Secondary diagnostic \\
+Incoherent or garbled & Cannot be followed as a meaningful answer &
+Capability failure \\
+Wrong language & Mainly uses a language other than the requested language &
+Capability failure \\
+Technical degeneration & Empty, truncated, repeated, echoed or mechanically
+corrupted output & Capability failure \\
+Ambiguous & Available text does not support a confident decision & Reported
+separately \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The primary classes revealed the relevant failure modes, but forced overlapping
+facts into one box. The active v2.2 review records six dimensions separately:
+task behavior, substantive refusal, stance disclaimer, epistemic limitation,
+language fidelity and output quality. A wrong-language response may therefore
+also be a refusal; a stance disclaimer may precede a functionally complete
+answer. Genuine refusal is coherent or partly coherent output that explicitly
+or implicitly withholds requested substantive political content. A persona
+disclaimer followed by a meaningful assessment is normally not refusal. A
+knowledge cutoff, no browsing, lack of real-time access or insufficient
+evidence is an epistemic limitation, not refusal, unless substantive
+withholding is separately communicated. Wrong-language coding always uses the
+original response and requested language; English translation is only an aid.
+
+\subsubsection{The two human samples}
+
+The human samples have different inferential roles:
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{3.0cm}p{5.0cm}p{4.2cm}p{2.7cm}@{}}
+\toprule
+\textbf{Sample} & \textbf{How cases entered} & \textbf{Permitted use} &
+\textbf{Prohibited use} \\
+\midrule
+Probability sample, $n=300$ & Union of 100 population-random cases, two per
+model--language cell, and 90 cases from predeclared priority groups & Population
+correction and human-sampling uncertainty & Treating one coder as consensus \\
+Enrichment sample, $n=400$ & Excludes the 300 and samples within seven frozen
+groups enriched for likely measurement problems and ordinary controls &
+Examples, instrument development and internal cross-fitted evaluation & Raw
+class percentages as population prevalence \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+If the three component-selection probabilities for response $i$ are
+$p_{i1}$, $p_{i2}$ and $p_{i3}$, its probability-sample inclusion probability
+is
+\[
+ \pi_i=1-(1-p_{i1})(1-p_{i2})(1-p_{i3}).
+\]
+Exact first- and pairwise-inclusion probabilities account for overlap. The 36
+silent repeats measure within-coder consistency and do not enter prevalence or
+instrument training.
+
+The earlier protected partitions contained too few refusals to estimate
+stand-alone recall precisely and were formally retired as pristine holdouts on
+2026-08-25. All 700 labels now enter explicitly internal validation in five
+whole-issue folds. This does not make the enrichment cases representative or
+provide external validation. A probability sample from newly added subject
+models must provide that external audit.
+
+\subsubsection{Scalable annotation instrument}
+
+The instrument returns separate probabilities for genuine refusal and
+capability failure, plus the hard class, component decisions, confidence and
+evidence span. Production input must contain the original response. Literal
+English translation may be added, but cannot replace the source because it can
+conceal wrong-language output or repair garbling.
+
+For each of five folds, examples, prompt details and any probability threshold
+must be selected using only the other four issue folds, then applied once to
+the held-out fold. Promotion requires schema success of at least .995, refusal
+recall of at least .80, refusal precision of at least .75 and capability-
+failure F1 of at least .80. Gates are not relaxed after results are observed.
+
+The first all-700 bake-off completed 8,400 requests and approved no candidate.
+The strongest hard-label configuration was GPT-5.6 Luna zero-shot with source
+text plus translation: refusal precision 0.887, recall 0.746 and capability-
+failure F1 0.904. Most remaining refusal errors were implicit or partial
+refusals. Translation helped refusal discrimination, but translation-only
+input damaged capability measurement.
+
+An earlier follow-up is frozen locally and unpaid. It contains 1,400 Luna requests:
+one error-targeted prompt under source-only and source-plus-translation input.
+For each held-out fold, the other four folds supply fifteen examples and a
+transferred threshold derived from the completed zero-shot probabilities.
+Twenty-three of twenty-five refusal-example placements are implicit refusals.
+The planning cost is \$4.9516954 and the hard ceiling is \$7.50. The exact
+leakage argument and payload are in
+\file{docs/FOLD\_NESTED\_REFUSAL\_REFINEMENT.md}; no provider run is authorized.
+It is no longer the immediate next step because the error review showed that
+the refusal target itself needed repair.
+
+The boundary review contains 158 cases: every old human refusal,
+wrong-language case and pivot, plus deterministic stance, epistemic and Luna
+false-positive screens. The sets overlap. Sol saw none of the previous labels,
+model identity, Luna output, sample role, fold or selection reason. Its 158
+proposals were then inspected with the fields prefilled. The reviewer submitted
+18 exact case-by-case acceptances and explicitly confirmed agreement with the
+remaining 140; both actions are preserved in a separate append-only log. This
+100 per cent agreement is model-assisted confirmation, not independent
+inter-rater reliability. The assembled labels contain 47 genuine refusals, 67
+capability failures, 24 stance disclaimers, 25 epistemic limitations and 55
+task-noncompletion cases, with overlap across dimensions. This is a targeted
+construct audit, not a probability sample or prevalence estimator.
+
+Local rescoring of the immutable 8,400 predictions selects Luna zero-shot on
+the original response internally: refusal precision 0.763, recall 0.957, and
+capability-failure F1 0.915 after harmonization. It remains diagnostic rather than promotion because
+only the targeted 158 cases received v2.2 review, the review was Sol-assisted,
+and those predictions were elicited under the earlier codebook. A four-way
+decomposition shows that correcting the gold definition accounts for most of
+the apparent reversal in performance.
+
+The harmonized 700-row table retains this provenance rather than calling every
+row a fresh v2.2 judgment. It contains 162 direct v2.2 reviews and 538 rows for
+which the non-ambiguous v2.1 class determines both refusal and capability
+failure. The four formerly ambiguous rows were reviewed on a blank, blinded
+v2.2 form: three were capability failures and one a functionally complete
+answer; none was a refusal. No headline outcome remains unresolved. Dimensions
+not established by the old form remain missing rather than being imputed.
+
+The direct probability-weighted diagnostic uses only the original 300-case
+sample. Genuine-refusal prevalence is 1.83 per cent (95 per cent human-design
+interval 0.77--2.90; 13 events); capability-failure prevalence is 20.34 per
+cent (17.15--23.54; 71 events). Refusal language contrasts are close to zero
+but imprecise. The standardized home analysis has only two relevant refusal
+events, both in the US coefficient, so it is unsupported; zero-event cells are
+not interpreted as exact zero effects.
+
+\subsubsection{Human-referenced estimator}
+
+The default method is design-based supervised learning. A prediction for every
+response improves precision; the probability-sampled human cases estimate and
+remove average prediction error. For a linear estimand
+$\theta=\sum_i a_iY_i$,
+\[
+ \widehat\theta=\sum_i a_im_i+
+ \sum_i\frac{R_i a_i(Y_i-m_i)}{\pi_i},
+\]
+where $Y_i$ is the human outcome, $m_i$ is an out-of-issue prediction, $R_i$
+indicates human probability-sample inclusion and $\pi_i$ is its known
+inclusion probability. The enriched sample may improve $m_i$; it does not
+enter the default residual correction as though it represented the population.
+
+Uncertainty must incorporate the exact human-sampling design, whole-issue
+dependence in the substantive response design, and prediction-fitting or fold-
+partition uncertainty when it is not explicitly conditioned away. Tables keep
+five quantities distinct: original non-engagement, Sol machine-reference
+sensitivity, direct probability-weighted human estimate, prediction-only
+estimate and human-referenced corrected estimate. Frozen Sol probabilities may
+serve as a provisional efficiency model for the current response population;
+passing the cheaper-instrument gate is important for expansion but is not a
+prerequisite for beginning this current-population correction.
+
+\subsubsection{Implications for the paper}
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{4.0cm}p{5.0cm}p{5.0cm}@{}}
+\toprule
+\textbf{Analysis} & \textbf{Current status} & \textbf{Required action} \\
+\midrule
+Overall genuine-refusal prevalence & Provisionally supported & Implement
+Stage~18 with full uncertainty and one-coder sensitivity \\
+Paired language contrasts & Supported but rare-event sensitive & Preserve
+prompt pairing and add whole-issue uncertainty \\
+Standardized home contrast & Insufficient human refusal events & Draw a
+targeted probability sample after the final model roster is frozen \\
+Framing & Weak precision & Retain as secondary unless support improves \\
+Capability failure & Supported as a separate outcome & Never combine it with
+genuine refusal \\
+Slant and moral foundations & Recovered coherent responses lack content labels
+& Defer denominator repair and additional content annotation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The current probability sample contains no contributing human refusal event
+for the China, EU or India standardized-home cells, one for MENA and two for
+the US. Interval width alone is therefore not a sufficient readiness test: a
+smooth prediction can appear precise despite no observed event in an arm. If
+home remains a headline result, its targeted human design must be recalculated
+after the final paper roster is fixed.
+
+Adding subject models creates responses that had zero chance to enter the
+current human probability sample. Old-roster results remain valid for that
+roster, but expanded pooled or equal-model claims require a new probability
+sample from the added rows, an external calibration audit and combination
+under the actual multi-phase inclusion probabilities. The existing 700 labels
+remain useful as a development corpus.
+
+\subsubsection{Active artifacts and current limits}
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}p{6.2cm}p{7.8cm}@{}}
+\toprule
+\textbf{Path} & \textbf{Current role} \\
+\midrule
+\file{config/response\_validity\_codebook\_v2.json} & Frozen human definitions \\
+\file{annotations/response\_validity\_human\_v2/base\_freeze\_v3\_complete\_language\_review/}
+& Probability sample and one-coder human labels \\
+\file{annotations/response\_validity\_human\_v2/enrichment\_wave\_v2\_400/storage\_freeze\_400\_v1/}
+& Completed enrichment corpus for instrument development \\
+\file{annotations/response\_validity\_human\_v2/scalable\_annotation\_bakeoff\_v1/}
+& Completed internal bake-off manifests and results \\
+\file{annotations/response\_validity\_human\_v2/fold\_nested\_refusal\_refinement\_v2/}
+& Unpaid 1,400-request error-targeted payload and pre-run thresholds \\
+\file{config/response\_validity\_decomposed\_v2\_2.json}
+& Active decomposed measurement rules \\
+\file{annotations/response\_validity\_human\_v2/decomposed\_review\_v2\_2/}
+& Completed 158-case Sol-assisted review and internal rescore; not independent validation or a prevalence sample \\
+\file{pipeline/17\_response\_validity.R} & Current machine-reference estimates \\
+\file{pipeline/18\_human\_response\_validity.R} & Planned human-reference estimator; not yet canonical \\
+\file{docs/RESPONSE\_VALIDITY\_DECISION\_LOG.md} & Historical experiments,
+approvals, amendments, costs and superseded choices \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The defensible current conclusions are that the old measure mixes refusal and
+capability failure, that the repaired target materially changes the internal
+student assessment, that genuine-refusal prevalence now has a provisional
+direct human-weighted estimate, that language remains imprecise, that no
+low-cost population annotation instrument is externally certified, and that
+home requires additional human event support. Enrichment percentages
+are not prevalence; machine reference is not human truth; and a threshold
+tuned and evaluated on the same fold cannot promote a candidate.

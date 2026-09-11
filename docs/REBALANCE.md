@@ -97,7 +97,7 @@ the conflict share**, because the most-protected pages in any window are the
 conflict pages. A *moderate* threshold (0.45) is what preserves topical breadth
 — ~69% of kept candidates are non-conflict at the default.
 
-![Current-events threshold tradeoff]({{!artifact:art_9f8d9909-11a9-4700-91cd-02d20c51971e}})
+![Current-events threshold tradeoff](../archive/2026-09-01_pre_rationalization/docs/fig_current_events_threshold.png)
 
 ### Route C — CT-window widening (volume fix for US / Europe / Russia)
 `sourcing/06_harvest_temporal.py` default window widened 90→180 days. This
@@ -113,7 +113,7 @@ at ~13; Russia's real boost comes from Eastern Europe + the perennial pool.)
 Dry count (`data/rebalance_dry_count.json`), pre-enrichment, net-new estimated
 after the `is_political` gate: **1,186 → ~2,149 issues.**
 
-![Rebalanced coverage, before vs after]({{!artifact:art_829803c9-87eb-4d2b-bcc3-ec779d3a8075}})
+![Rebalanced coverage, before vs after](../archive/2026-09-01_pre_rationalization/docs/fig_rebalanced_coverage.png)
 
 ### Region — over-represented areas fall toward parity; China rises 1%→16%
 
@@ -258,7 +258,7 @@ sampling.
 frame you sample — not with the frame size.** The full-run generation + judge
 cost is set by the R-side stratified draw (§5), not by the translated frame.
 Keep the drawn battery near today's size and the launch cost in
-`budget_estimate.json` / `GO.md` is unchanged; enlarge the draw and it scales
+the archived budget estimate was unchanged; enlarge the draw and it scales
 proportionally. Re-price the chosen draw with `run_pilot.py --dry-run`.
 
 ---
@@ -273,8 +273,8 @@ proportionally. Re-price the chosen draw with `run_pilot.py --dry-run`.
 | `sourcing/07_enrich_temporal.py` | `--route` tag for honest provenance (default `temporal`) |
 | `sourcing/04_merge_editions.py` | `--political-only` flag = reproducible dedup+gate |
 | `data/rebalance_dry_count.json` | **new** — pre-enrichment projection |
-| `docs/fig_current_events_threshold.png` | **new** — threshold/breadth tradeoff |
-| `docs/fig_rebalanced_coverage.png` | **new** — before/after region+topic |
+| `archive/2026-09-01_pre_rationalization/docs/fig_current_events_threshold.png` | threshold/breadth tradeoff |
+| `archive/2026-09-01_pre_rationalization/docs/fig_rebalanced_coverage.png` | before/after region+topic |
 
 All harvest/merge/format changes are **default-preserving**: existing commands
 (no new flags) reproduce the frozen battery byte-for-byte.
@@ -340,7 +340,8 @@ collapses them on Q-ID — which is why the merged frame is 0.
 > nothing in the launch path depends on the old ids — but any comparison against
 > a pre-2026-07-28 artifact must join on `qid`, not `issue_id`.
 
-**Applied to the artifacts on 2026-07-28** via `sourcing/09_migrate_issue_ids.py`
+**Applied to the artifacts on 2026-07-28** via the now-archived
+`archive/2026-09-01_pre_rationalization/sourcing/09_migrate_issue_ids.py`
 (free, deterministic, idempotent; `.pre_idfix` backups alongside each file).
 Prompts align to records positionally — every record emits its `__reg1` prompt
 first, so splitting the prompt list there yields blocks that map 1:1 onto the
@@ -372,7 +373,7 @@ English pivot.
 It cannot simply be dropped: those 422 records are **319 of the 336 China/Taiwan
 issues — 95% of the China coverage the rebalance exists to create.**
 
-### The fix — `sourcing/10_backtranslate_native.py` (Stage 5b)
+### The fix — archived `archive/2026-09-01_pre_rationalization/sourcing/10_backtranslate_native.py` (Stage 5b)
 
 Chinese is treated as the *origin* language rather than as contamination:
 
@@ -449,10 +450,11 @@ into `01_data_loading.R`, which derives `prompt_origin_f` and `natively_sourced`
 ### Running it
 
 ```bash
-cd sourcing
-python 09_migrate_issue_ids.py                    # free; ids first, or Stage 5 aborts
+cd archive/2026-09-01_pre_rationalization/sourcing
+python 09_migrate_issue_ids.py                    # historical reconstruction only
 python 10_backtranslate_native.py --dry-run       # scope, no spend
 python 10_backtranslate_native.py                 # ~49 batched calls
+cd ../../../sourcing
 python 05_translate_review.py \
     --prompts ../prompts/rebalanced_prompts_en.json \
     --languages zh ar ru hi \
@@ -540,7 +542,7 @@ A mismatched pair means two things changed instead of one — exactly what the
 design forbids. This affects the **frozen** perennial and temporal batteries too,
 not just the rebalance.
 
-### The fix — `sourcing/12_normalize_boundary_templates.py` (Stage 5c)
+### The fix — archived `archive/2026-09-01_pre_rationalization/sourcing/12_normalize_boundary_templates.py` (Stage 5c)
 
 Split each translated boundary prompt at the instruction/stance delimiter,
 discard the drifted instruction, re-attach one canonical rendering per language.
@@ -743,8 +745,9 @@ pairs), and all five languages stay aligned prompt-for-prompt.
 | judge calls | 138,545 |
 | **OpenRouter token spend** | **~$304** |
 
-plus GPU-hours for the four HF endpoints while deployed. `docs/budget_estimate.json`
-is current.
+plus GPU-hours for the four HF endpoints while deployed. The contemporaneous
+estimate is preserved at
+`archive/2026-09-01_pre_rationalization/docs/budget_estimate.json`.
 
 > The draw above was computed with the denylist disabled (PyYAML is absent from
 > the sandbox). On a machine with PyYAML the 9 ethically-excluded Q-IDs are
@@ -881,7 +884,8 @@ since been deleted from Wikipedia, making their source text unquotable.
 in the *same* call as the lead extract, so the revision the prompt is derived
 from is captured at harvest. Costs nothing extra.
 
-**Recovered for the existing frame** by `sourcing/14_recover_provenance.py`,
+**Recovered for the existing frame** by the now-archived
+`archive/2026-09-01_pre_rationalization/sourcing/14_recover_provenance.py`,
 which asks for the revision current *as of each record's snapshot date*
 (`rvstart=<snapshot>&rvdir=older&rvlimit=1`) rather than today's. That
 distinction is the point: today's revision would misrepresent what the model was

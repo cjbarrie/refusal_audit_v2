@@ -1,0 +1,30 @@
+check_id,description,status,detail,canonical_run_id
+A1,"analysis has 224,544 unique response keys across 18 models",PASS,,canon_024
+A2,final v2.4 hash is the frozen accepted hash,PASS,,canon_024
+A3,"combined genuine-refusal count is 6,127",PASS,,canon_024
+A4,"combined capability-failure count is 52,563",PASS,,canon_024
+A5,"original-label sensitivity is confined to and exact for 137,186 rows",PASS,,canon_024
+A6,refusal and capability failure are allowed to overlap,PASS,overlap n = 736,canon_024
+B1,all required v2.4 estimate tables exist,PASS,,canon_024
+C1,home table has 5 jurisdictions x 2 distinct current outcomes,PASS,,canon_024
+C2,home primary rows are nested full-target predictive contrasts,PASS,,canon_024
+C3,finite home estimates are probability differences,PASS,,canon_024
+C3b,standardized home and away risks reproduce the contrast,PASS,,canon_024
+C4,common-support diagnostics report retained target weight,PASS,,canon_024
+D1,language table has 4 contrasts x 2 current outcomes,PASS,,canon_024
+D2,language blocks are complete prompt/model pairs,PASS,,canon_024
+D3,language estimates are bounded differences,PASS,,canon_024
+D3b,paired language arm levels reproduce each contrast,PASS,,canon_024
+D4,framing table has the same two current outcomes,PASS,,canon_024
+D5,framing primary requires complete 2+2 English blocks,PASS,,canon_024
+D6,equal-model framing arm levels reproduce each contrast,PASS,,canon_024
+E1,stability uses only current v2.4 outcomes,PASS,,canon_024
+E2,stability ranges are explicitly not confidence intervals,PASS,,canon_024
+E3,"UMAP has one coordinate per 2,496 prompts",PASS,,canon_024
+E4,UMAP carries v2.4 refusal and capability propensities,PASS,,canon_024
+E4b,region atlas has six balanced 416-prompt strata,PASS,,canon_024
+E5,original-to-final transition rows sum to one within original label,PASS,,canon_024
+F1,main figure inventory is exactly two PNGs,PASS,"Fig1_jurisdiction_refusal_atlas_home.png, Fig2_language_refusal_atlas_contrasts.png",canon_024
+F2,extended figure inventory contains only supported analyses,PASS,"ED1_home_absolute_risks_genuine_refusal.png, ED10_content_fingerprint_capability_failure.png, ED11_prompt_distribution_genuine_refusal.png, ED12_prompt_distribution_capability_failure.png, ED13_capability_failure_semantic_atlas.png, ED14_genuine_refusal_semantic_atlas_by_model.png, ED2_home_absolute_risks_capability_failure.png, ED3_language_absolute_rates_genuine_refusal.png, ED4_language_absolute_rates_capability_failure.png, ED5_measurement_reclassification.png, ED6_annotation_component_profile.png, ED7_model_specific_contrasts_genuine_refusal.png, ED8_model_specific_contrasts_capability_failure.png, ED9_content_fingerprint_genuine_refusal.png",canon_024
+F3,live root scripts never source pipeline/pending,PASS,,canon_024
+G1,every active root R script links a technical reference,PASS,,canon_024

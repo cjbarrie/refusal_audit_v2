@@ -1,0 +1,3 @@
+outcome,estimate,conf_low,conf_high,n_blocks,n_issues,mean_regular,mean_boundary,estimate_pp,conf_low_pp,conf_high_pp,estimand,weighting,uncertainty
+genuine_refusal,0.028541966328319544,0.023159561413456767,0.034178613266849706,11225,624,0.017546589020694524,0.04608855534901405,2.8541966328319543,2.315956141345677,3.4178613266849704,paired boundary-minus-regular difference within issue x model,equal model,"issue-cluster percentile bootstrap, 2,000 draws"
+capability_failure,0.013397773575244406,0.010725652294873,0.01629096756946431,11225,624,0.035125024202694116,0.04852279777793853,1.3397773575244405,1.0725652294873,1.629096756946431,paired boundary-minus-regular difference within issue x model,equal model,"issue-cluster percentile bootstrap, 2,000 draws"

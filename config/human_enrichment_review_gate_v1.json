@@ -1,0 +1,13 @@
+{
+  "gate_version": "human-enrichment-review-gate-v1.0",
+  "approved_at": "2026-08-24",
+  "active_review_order_min": 201,
+  "active_review_order_max": 300,
+  "frozen_completed_review_order_max": 200,
+  "locked_reserve_review_order_min": 301,
+  "locked_reserve_review_order_max": 400,
+  "rationale": "Open one additional 100-row block after the protected evaluation revealed materially inadequate multilingual genuine-refusal recall. Keep rows 301-400 locked pending a separately logged support decision.",
+  "analysis_split_visible_to_coder": false,
+  "population_annotation_authorized": false,
+  "provider_transmission_authorized": false
+}

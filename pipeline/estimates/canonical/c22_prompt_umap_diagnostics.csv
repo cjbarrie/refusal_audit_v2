@@ -1,0 +1,2 @@
+n_prompts,embedding_dimensions,n_neighbors,min_dist,metric,seed,geometry_note,interpretation,canonical_run_id
+2496,512,25,0.15,cosine,20260809,one English-prompt geometry; outcomes do not enter the fit,exploratory locator only; distances and clusters are not estimands,canon_019

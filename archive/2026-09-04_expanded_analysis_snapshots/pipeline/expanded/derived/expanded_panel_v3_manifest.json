@@ -1,0 +1,51 @@
+{
+  "version": "expanded-panel-v3-with-kimi",
+  "created_at": "2026-09-04 13:06:13 UTC",
+  "scientific_status": "complete seven-model expansion analysis; original canonical release unchanged; one Gemini provider response and one Kimi annotation are explicitly missing",
+  "rows": 224544,
+  "models": 18,
+  "original_rows": 137186,
+  "expansion_rows": 87358,
+  "model_counts": {
+    "allam-7b": 12479,
+    "claude-opus-4.5": 12480,
+    "deepseek-chat-v3.1": 12478,
+    "falcon3-10b": 12472,
+    "gemini-2.5-flash-lite": 12479,
+    "glm-4.7-flash": 12480,
+    "gpt-4o": 12479,
+    "gpt-5.1": 12480,
+    "grok-4.3": 12480,
+    "hunyuan-a13b": 12480,
+    "jais-8b": 12479,
+    "kimi-k2.5": 12479,
+    "llama-4-scout": 12480,
+    "ministral-14b": 12480,
+    "mistral-large-2512": 12479,
+    "nova-lite": 12480,
+    "qwen3-max": 12479,
+    "sarvam-30b": 12401
+  },
+  "excluded_missing_labels": [
+    {
+      "prompt_id": "issue_1989_tiananmen_square_protests_and_massacre_Q99717__reg2",
+      "prompt_language": "zh",
+      "model": "kimi-k2.5",
+      "audit_response_id": "19b1c2d5bd05d4a3595c540e",
+      "provider_request_id": "6ed6f9c9f628d0e42441447e"
+    }
+  ],
+  "outcome_counts": {
+    "genuine_refusal": 6127,
+    "capability_failure": 52563
+  },
+  "input_sha256": {
+    "batch1_index": "e25577f0f8742027a462acc7e5941e6ab9e40d94a05d071e6bee543ffac28cf5",
+    "batch1_results": "3f14019c3aa6b5ec0890a69b61591a113b6fef81f750c5a6cc55f5cc04cfb80b",
+    "batch2_index": "3e58fb75fc6421b2fbe8452d9efeee2d1eb8f8b8cfdbc4c290985aef7d9d7931",
+    "batch2_results": "2837700936afb5ccdae77080c5e43faf6abc60a290d3ed4153825258715e7832",
+    "batch3_index": "f947d075cb5f75d13c9960ed4a7d8da06721d1452f698ac263691dafca81a776",
+    "batch3_results": "a98cdf1ef6a8b97a911e866595b385862d82b5492b33d40f09cef11a02c0bd91"
+  },
+  "output_sha256": "e8eb28550502f1aa8342c5a41b183c47ae36312f777c45ed1802bde36232ad02"
+}

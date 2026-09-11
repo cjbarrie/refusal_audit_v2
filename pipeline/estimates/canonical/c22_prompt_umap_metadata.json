@@ -1,0 +1,14 @@
+{
+  "embeddings": "data/prompt_embeddings_en.csv.gz",
+  "embedding_metadata": "data/prompt_embeddings_en.json",
+  "embedding_sha256": "aef7a035efef032617d647711a77ee92d975ef49100b1b9ee957234663e53434",
+  "n_prompts": 2496,
+  "seed": 20260809,
+  "n_neighbors": 25,
+  "min_dist": 0.15,
+  "metric": "cosine",
+  "original_response_validity_sha256": "ce1b6c07de09e96912b034195c2c5ab6f2ef7762fbb103143e02913f1383cf75",
+  "analysis_rows": 224544,
+  "analysis_models": 18,
+  "canonical_run_id": "canon_019"
+}

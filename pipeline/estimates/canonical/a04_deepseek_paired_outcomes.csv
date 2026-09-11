@@ -1,0 +1,3 @@
+outcome,model,n_blocks,n_issues,estimate,conf_low,conf_high,estimate_pp,conf_low_pp,conf_high_pp,estimand,interpretation,canonical_run_id
+genuine_refusal,deepseek-chat-v3.1,2496,624,0.10056089743589744,0.08533653846153846,0.11599559294871795,10.056089743589745,8.533653846153847,11.599559294871794,paired Chinese minus English difference within prompt_id,one-model case study; not evidence about other models,canon_019
+capability_failure,deepseek-chat-v3.1,2496,624,-0.001201923076923077,-0.005819310897435898,0.003605769230769231,-0.1201923076923077,-0.5819310897435898,0.3605769230769231,paired Chinese minus English difference within prompt_id,one-model case study; not evidence about other models,canon_019

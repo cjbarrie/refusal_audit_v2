@@ -1,0 +1,141 @@
+{
+  "generated_at": "2026-08-06T11:27:06.232677+00:00",
+  "assumptions": {
+    "engage_rate": 0.944,
+    "judge_calls_engaged": 3,
+    "judge_calls_refused": 1,
+    "tokens_per_call": {
+      "gen": [
+        140,
+        400
+      ],
+      "judge": [
+        1865,
+        62
+      ],
+      "stance": [
+        1350,
+        60
+      ]
+    },
+    "pricing_usd_per_token": {
+      "openai/gpt-5.1": [
+        1.25e-06,
+        1e-05
+      ],
+      "anthropic/claude-opus-4.5": [
+        5e-06,
+        2.5e-05
+      ],
+      "openai/gpt-4o": [
+        2.5e-06,
+        1e-05
+      ],
+      "x-ai/grok-4.3": [
+        1.25e-06,
+        2.5e-06
+      ],
+      "deepseek/deepseek-chat-v3.1": [
+        2.5e-07,
+        9.5e-07
+      ],
+      "qwen/qwen3-max": [
+        7.8e-07,
+        3.9e-06
+      ],
+      "mistralai/mistral-large-2512": [
+        5e-07,
+        1.5e-06
+      ],
+      "google/gemini-2.5-flash-lite": [
+        1e-07,
+        4e-07
+      ],
+      "openai/gpt-oss-120b": [
+        3.7e-08,
+        1.7e-07
+      ],
+      "google/gemma-4-31b-it": [
+        1e-07,
+        3.4e-07
+      ],
+      "nvidia/nemotron-3-super-120b-a12b": [
+        8.5e-08,
+        4e-07
+      ],
+      "inclusionai/ling-2.6-flash": [
+        1e-08,
+        3e-08
+      ],
+      "cohere/command-r7b-12-2024": [
+        3.7e-08,
+        1.5e-07
+      ]
+    },
+    "mena_via_hf_endpoints_billed_per_gpu_hour": true,
+    "hf_endpoint_hourly_usd_assumption": 1.0,
+    "n_issues": 20,
+    "batteries": [
+      "rebalanced"
+    ]
+  },
+  "configurations": {
+    "baseline (7 OpenRouter models x 4 langs)": {
+      "n_models": 7,
+      "n_langs": 4,
+      "cells": 4,
+      "prompts_per_lang": 2496,
+      "gens": 69888,
+      "gens_openrouter": 69888,
+      "gens_endpoint": 0,
+      "judge": 69888,
+      "stance": 0,
+      "total_calls": 139776,
+      "gen_usd": 231.1715328,
+      "judge_usd": 14.7673344,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 245.9388672
+    },
+    "+Russian  (7 OpenRouter models x 5 langs)": {
+      "n_models": 7,
+      "n_langs": 5,
+      "cells": 5,
+      "prompts_per_lang": 2496,
+      "gens": 87360,
+      "gens_openrouter": 87360,
+      "gens_endpoint": 0,
+      "judge": 87360,
+      "stance": 0,
+      "total_calls": 174720,
+      "gen_usd": 288.96441599999997,
+      "judge_usd": 18.459168,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 307.42358399999995
+    },
+    "+MENA/India (11 models x 5 langs)": {
+      "n_models": 11,
+      "n_langs": 5,
+      "cells": 5,
+      "prompts_per_lang": 2496,
+      "gens": 137280,
+      "gens_openrouter": 87360,
+      "gens_endpoint": 49920,
+      "judge": 137280,
+      "stance": 0,
+      "total_calls": 274560,
+      "gen_usd": 288.96441599999997,
+      "judge_usd": 29.007264,
+      "stance_usd": 0.0,
+      "panel_usd": {},
+      "panel_total_usd": 0,
+      "panel_calls": 0,
+      "total_usd": 317.97168
+    }
+  }
+}

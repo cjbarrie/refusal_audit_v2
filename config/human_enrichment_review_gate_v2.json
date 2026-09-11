@@ -1,0 +1,15 @@
+{
+  "gate_version": "human-enrichment-review-gate-v2.0",
+  "approved_at": "2026-08-24",
+  "trigger": "surrogate-refinement-support-gate-v1 returned support_pass=false: genuine-refusal and non-English genuine-refusal thresholds failed; capability-failure threshold passed",
+  "active_review_order_min": 301,
+  "active_review_order_max": 400,
+  "frozen_completed_review_order_max": 300,
+  "locked_reserve_review_order_min": null,
+  "locked_reserve_review_order_max": null,
+  "rationale": "Open the prespecified final 100-row fallback block to enlarge refusal support before any new protected provider evaluation.",
+  "analysis_split_visible_to_coder": false,
+  "evaluation_labels_from_orders_201_300_remain_sealed": true,
+  "population_annotation_authorized": false,
+  "provider_transmission_authorized": false
+}

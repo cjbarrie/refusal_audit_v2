@@ -1,0 +1,19 @@
+{
+  "snapshot_version": "human-surrogate-protected-evaluation-pricing-v1.0",
+  "pricing_verified_at": "2026-08-24",
+  "currency": "USD",
+  "pricing_basis": "OpenRouter listed price for the pinned OpenAI route; cache discounts excluded",
+  "encoding": "o200k_base",
+  "planning_output_tokens": 220,
+  "max_output_tokens": 500,
+  "max_attempts": 4,
+  "model": {
+    "model_id": "openai/gpt-5.6-luna",
+    "provider_tag": "openai",
+    "allow_fallbacks": false,
+    "input_usd_per_million": 0.20,
+    "output_usd_per_million": 1.20,
+    "reasoning": {"enabled": false, "exclude": true},
+    "pricing_source": "https://openrouter.ai/openai/gpt-5.6-luna-20260709"
+  }
+}

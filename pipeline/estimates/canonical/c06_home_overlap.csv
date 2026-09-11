@@ -1,316 +1,973 @@
-jurisdiction,level,n_home,n_away,stratum,both_arms,canonical_run_id
-CN,deepseek-chat-v3.1,416,1664,model,TRUE,canon_012
-CN,qwen3-max,416,1664,model,TRUE,canon_012
-EU,mistral-large-2512,416,1664,model,TRUE,canon_012
-India,sarvam-30b,416,1660,model,TRUE,canon_012
-MENA,allam-7b,416,1664,model,TRUE,canon_012
-MENA,falcon3-10b,416,1664,model,TRUE,canon_012
-MENA,jais-8b,416,1664,model,TRUE,canon_012
-US,claude-opus-4.5,416,1664,model,TRUE,canon_012
-US,gpt-4o,416,1663,model,TRUE,canon_012
-US,gpt-5.1,416,1664,model,TRUE,canon_012
-US,grok-4.3,416,1664,model,TRUE,canon_012
-CN,civil_rights_liberties,88,512,domain,TRUE,canon_012
-CN,economic_policy,96,360,domain,TRUE,canon_012
-CN,environment_energy,8,120,domain,TRUE,canon_012
-CN,governance_democracy,184,408,domain,TRUE,canon_012
-CN,migration_nationalism,48,544,domain,TRUE,canon_012
-CN,religion_state,8,384,domain,TRUE,canon_012
-CN,security_conflict,24,600,domain,TRUE,canon_012
-CN,social_moral,0,152,domain,FALSE,canon_012
-CN,territorial_sovereignty,376,248,domain,TRUE,canon_012
-EU,civil_rights_liberties,40,260,domain,TRUE,canon_012
-EU,economic_policy,28,200,domain,TRUE,canon_012
-EU,environment_energy,8,56,domain,TRUE,canon_012
-EU,governance_democracy,68,228,domain,TRUE,canon_012
-EU,migration_nationalism,152,144,domain,TRUE,canon_012
-EU,religion_state,16,180,domain,TRUE,canon_012
-EU,security_conflict,52,260,domain,TRUE,canon_012
-EU,social_moral,12,64,domain,TRUE,canon_012
-EU,territorial_sovereignty,40,272,domain,TRUE,canon_012
-India,civil_rights_liberties,96,204,domain,TRUE,canon_012
-India,economic_policy,40,186,domain,TRUE,canon_012
-India,environment_energy,12,51,domain,TRUE,canon_012
-India,governance_democracy,44,251,domain,TRUE,canon_012
-India,migration_nationalism,44,252,domain,TRUE,canon_012
-India,religion_state,108,88,domain,TRUE,canon_012
-India,security_conflict,40,272,domain,TRUE,canon_012
-India,social_moral,0,76,domain,FALSE,canon_012
-India,territorial_sovereignty,32,280,domain,TRUE,canon_012
-MENA,civil_rights_liberties,108,792,domain,TRUE,canon_012
-MENA,economic_policy,36,648,domain,TRUE,canon_012
-MENA,environment_energy,24,168,domain,TRUE,canon_012
-MENA,governance_democracy,132,756,domain,TRUE,canon_012
-MENA,migration_nationalism,120,768,domain,TRUE,canon_012
-MENA,religion_state,120,468,domain,TRUE,canon_012
-MENA,security_conflict,564,372,domain,TRUE,canon_012
-MENA,social_moral,12,216,domain,TRUE,canon_012
-MENA,territorial_sovereignty,132,804,domain,TRUE,canon_012
-US,civil_rights_liberties,336,864,domain,TRUE,canon_012
-US,economic_policy,400,512,domain,TRUE,canon_012
-US,environment_energy,128,128,domain,TRUE,canon_012
-US,governance_democracy,192,991,domain,TRUE,canon_012
-US,migration_nationalism,144,1040,domain,TRUE,canon_012
-US,religion_state,112,672,domain,TRUE,canon_012
-US,security_conflict,80,1168,domain,TRUE,canon_012
-US,social_moral,240,64,domain,TRUE,canon_012
-US,territorial_sovereignty,32,1216,domain,TRUE,canon_012
-CN,current-events,8,688,route,TRUE,canon_012
-CN,perennial,824,880,route,TRUE,canon_012
-CN,temporal,0,1760,route,FALSE,canon_012
-EU,current-events,152,196,route,TRUE,canon_012
-EU,perennial,144,708,route,TRUE,canon_012
-EU,temporal,120,760,route,TRUE,canon_012
-India,current-events,32,314,route,TRUE,canon_012
-India,perennial,16,834,route,TRUE,canon_012
-India,temporal,368,512,route,TRUE,canon_012
-MENA,current-events,228,816,route,TRUE,canon_012
-MENA,perennial,120,2436,route,TRUE,canon_012
-MENA,temporal,900,1740,route,TRUE,canon_012
-US,current-events,336,1056,route,TRUE,canon_012
-US,perennial,960,2447,route,TRUE,canon_012
-US,temporal,368,3152,route,TRUE,canon_012
-CN,regular,416,1664,tier,TRUE,canon_012
-CN,boundary,416,1664,tier,TRUE,canon_012
-EU,regular,208,832,tier,TRUE,canon_012
-EU,boundary,208,832,tier,TRUE,canon_012
-India,regular,208,828,tier,TRUE,canon_012
-India,boundary,208,832,tier,TRUE,canon_012
-MENA,regular,624,2496,tier,TRUE,canon_012
-MENA,boundary,624,2496,tier,TRUE,canon_012
-US,regular,832,3327,tier,TRUE,canon_012
-US,boundary,832,3328,tier,TRUE,canon_012
-CN,civil_rights_liberties | current-events,0,32,domain x route,FALSE,canon_012
-CN,civil_rights_liberties | perennial,88,184,domain x route,TRUE,canon_012
-CN,civil_rights_liberties | temporal,0,296,domain x route,FALSE,canon_012
-CN,economic_policy | current-events,0,144,domain x route,FALSE,canon_012
-CN,economic_policy | perennial,96,104,domain x route,TRUE,canon_012
-CN,economic_policy | temporal,0,112,domain x route,FALSE,canon_012
-CN,environment_energy | current-events,0,40,domain x route,FALSE,canon_012
-CN,environment_energy | perennial,8,40,domain x route,TRUE,canon_012
-CN,environment_energy | temporal,0,40,domain x route,FALSE,canon_012
-CN,governance_democracy | current-events,8,128,domain x route,TRUE,canon_012
-CN,governance_democracy | perennial,176,72,domain x route,TRUE,canon_012
-CN,governance_democracy | temporal,0,208,domain x route,FALSE,canon_012
-CN,migration_nationalism | current-events,0,104,domain x route,FALSE,canon_012
-CN,migration_nationalism | perennial,48,168,domain x route,TRUE,canon_012
-CN,migration_nationalism | temporal,0,272,domain x route,FALSE,canon_012
-CN,religion_state | current-events,0,24,domain x route,FALSE,canon_012
-CN,religion_state | perennial,8,104,domain x route,TRUE,canon_012
-CN,religion_state | temporal,0,256,domain x route,FALSE,canon_012
-CN,security_conflict | current-events,0,112,domain x route,FALSE,canon_012
-CN,security_conflict | perennial,24,32,domain x route,TRUE,canon_012
-CN,security_conflict | temporal,0,456,domain x route,FALSE,canon_012
-CN,social_moral | current-events,0,24,domain x route,FALSE,canon_012
-CN,social_moral | perennial,0,120,domain x route,FALSE,canon_012
-CN,social_moral | temporal,0,8,domain x route,FALSE,canon_012
-CN,territorial_sovereignty | current-events,0,80,domain x route,FALSE,canon_012
-CN,territorial_sovereignty | perennial,376,56,domain x route,TRUE,canon_012
-CN,territorial_sovereignty | temporal,0,112,domain x route,FALSE,canon_012
-EU,civil_rights_liberties | current-events,4,12,domain x route,TRUE,canon_012
-EU,civil_rights_liberties | perennial,20,116,domain x route,TRUE,canon_012
-EU,civil_rights_liberties | temporal,16,132,domain x route,TRUE,canon_012
-EU,economic_policy | current-events,24,48,domain x route,TRUE,canon_012
-EU,economic_policy | perennial,4,96,domain x route,TRUE,canon_012
-EU,economic_policy | temporal,0,56,domain x route,FALSE,canon_012
-EU,environment_energy | current-events,4,16,domain x route,TRUE,canon_012
-EU,environment_energy | perennial,0,24,domain x route,FALSE,canon_012
-EU,environment_energy | temporal,4,16,domain x route,TRUE,canon_012
-EU,governance_democracy | current-events,32,36,domain x route,TRUE,canon_012
-EU,governance_democracy | perennial,24,100,domain x route,TRUE,canon_012
-EU,governance_democracy | temporal,12,92,domain x route,TRUE,canon_012
-EU,migration_nationalism | current-events,40,12,domain x route,TRUE,canon_012
-EU,migration_nationalism | perennial,64,44,domain x route,TRUE,canon_012
-EU,migration_nationalism | temporal,48,88,domain x route,TRUE,canon_012
-EU,religion_state | current-events,0,12,domain x route,FALSE,canon_012
-EU,religion_state | perennial,12,44,domain x route,TRUE,canon_012
-EU,religion_state | temporal,4,124,domain x route,TRUE,canon_012
-EU,security_conflict | current-events,16,40,domain x route,TRUE,canon_012
-EU,security_conflict | perennial,8,20,domain x route,TRUE,canon_012
-EU,security_conflict | temporal,28,200,domain x route,TRUE,canon_012
-EU,social_moral | current-events,8,4,domain x route,TRUE,canon_012
-EU,social_moral | perennial,4,56,domain x route,TRUE,canon_012
-EU,social_moral | temporal,0,4,domain x route,FALSE,canon_012
-EU,territorial_sovereignty | current-events,24,16,domain x route,TRUE,canon_012
-EU,territorial_sovereignty | perennial,8,208,domain x route,TRUE,canon_012
-EU,territorial_sovereignty | temporal,8,48,domain x route,TRUE,canon_012
-India,civil_rights_liberties | current-events,0,16,domain x route,FALSE,canon_012
-India,civil_rights_liberties | perennial,0,136,domain x route,FALSE,canon_012
-India,civil_rights_liberties | temporal,96,52,domain x route,TRUE,canon_012
-India,economic_policy | current-events,4,67,domain x route,TRUE,canon_012
-India,economic_policy | perennial,0,99,domain x route,FALSE,canon_012
-India,economic_policy | temporal,36,20,domain x route,TRUE,canon_012
-India,environment_energy | current-events,0,19,domain x route,FALSE,canon_012
-India,environment_energy | perennial,0,24,domain x route,FALSE,canon_012
-India,environment_energy | temporal,12,8,domain x route,TRUE,canon_012
-India,governance_democracy | current-events,12,56,domain x route,TRUE,canon_012
-India,governance_democracy | perennial,0,123,domain x route,FALSE,canon_012
-India,governance_democracy | temporal,32,72,domain x route,TRUE,canon_012
-India,migration_nationalism | current-events,4,48,domain x route,TRUE,canon_012
-India,migration_nationalism | perennial,4,104,domain x route,TRUE,canon_012
-India,migration_nationalism | temporal,36,100,domain x route,TRUE,canon_012
-India,religion_state | current-events,4,8,domain x route,TRUE,canon_012
-India,religion_state | perennial,0,56,domain x route,FALSE,canon_012
-India,religion_state | temporal,104,24,domain x route,TRUE,canon_012
-India,security_conflict | current-events,0,56,domain x route,FALSE,canon_012
-India,security_conflict | perennial,0,28,domain x route,FALSE,canon_012
-India,security_conflict | temporal,40,188,domain x route,TRUE,canon_012
-India,social_moral | current-events,0,12,domain x route,FALSE,canon_012
-India,social_moral | perennial,0,60,domain x route,FALSE,canon_012
-India,social_moral | temporal,0,4,domain x route,FALSE,canon_012
-India,territorial_sovereignty | current-events,8,32,domain x route,TRUE,canon_012
-India,territorial_sovereignty | perennial,12,204,domain x route,TRUE,canon_012
-India,territorial_sovereignty | temporal,12,44,domain x route,TRUE,canon_012
-MENA,civil_rights_liberties | current-events,24,24,domain x route,TRUE,canon_012
-MENA,civil_rights_liberties | perennial,12,396,domain x route,TRUE,canon_012
-MENA,civil_rights_liberties | temporal,72,372,domain x route,TRUE,canon_012
-MENA,economic_policy | current-events,12,204,domain x route,TRUE,canon_012
-MENA,economic_policy | perennial,0,300,domain x route,FALSE,canon_012
-MENA,economic_policy | temporal,24,144,domain x route,TRUE,canon_012
-MENA,environment_energy | current-events,12,48,domain x route,TRUE,canon_012
-MENA,environment_energy | perennial,0,72,domain x route,FALSE,canon_012
-MENA,environment_energy | temporal,12,48,domain x route,TRUE,canon_012
-MENA,governance_democracy | current-events,36,168,domain x route,TRUE,canon_012
-MENA,governance_democracy | perennial,12,360,domain x route,TRUE,canon_012
-MENA,governance_democracy | temporal,84,228,domain x route,TRUE,canon_012
-MENA,migration_nationalism | current-events,24,132,domain x route,TRUE,canon_012
-MENA,migration_nationalism | perennial,0,324,domain x route,FALSE,canon_012
-MENA,migration_nationalism | temporal,96,312,domain x route,TRUE,canon_012
-MENA,religion_state | current-events,0,36,domain x route,FALSE,canon_012
-MENA,religion_state | perennial,72,96,domain x route,TRUE,canon_012
-MENA,religion_state | temporal,48,336,domain x route,TRUE,canon_012
-MENA,security_conflict | current-events,96,72,domain x route,TRUE,canon_012
-MENA,security_conflict | perennial,12,72,domain x route,TRUE,canon_012
-MENA,security_conflict | temporal,456,228,domain x route,TRUE,canon_012
-MENA,social_moral | current-events,0,36,domain x route,FALSE,canon_012
-MENA,social_moral | perennial,12,168,domain x route,TRUE,canon_012
-MENA,social_moral | temporal,0,12,domain x route,FALSE,canon_012
-MENA,territorial_sovereignty | current-events,24,96,domain x route,TRUE,canon_012
-MENA,territorial_sovereignty | perennial,0,648,domain x route,FALSE,canon_012
-MENA,territorial_sovereignty | temporal,108,60,domain x route,TRUE,canon_012
-US,civil_rights_liberties | current-events,16,48,domain x route,TRUE,canon_012
-US,civil_rights_liberties | perennial,272,272,domain x route,TRUE,canon_012
-US,civil_rights_liberties | temporal,48,544,domain x route,TRUE,canon_012
-US,economic_policy | current-events,160,128,domain x route,TRUE,canon_012
-US,economic_policy | perennial,192,208,domain x route,TRUE,canon_012
-US,economic_policy | temporal,48,176,domain x route,TRUE,canon_012
-US,environment_energy | current-events,48,32,domain x route,TRUE,canon_012
-US,environment_energy | perennial,80,16,domain x route,TRUE,canon_012
-US,environment_energy | temporal,0,80,domain x route,FALSE,canon_012
-US,governance_democracy | current-events,32,240,domain x route,TRUE,canon_012
-US,governance_democracy | perennial,32,463,domain x route,TRUE,canon_012
-US,governance_democracy | temporal,128,288,domain x route,TRUE,canon_012
-US,migration_nationalism | current-events,0,208,domain x route,FALSE,canon_012
-US,migration_nationalism | perennial,64,368,domain x route,TRUE,canon_012
-US,migration_nationalism | temporal,80,464,domain x route,TRUE,canon_012
-US,religion_state | current-events,32,16,domain x route,TRUE,canon_012
-US,religion_state | perennial,64,160,domain x route,TRUE,canon_012
-US,religion_state | temporal,16,496,domain x route,TRUE,canon_012
-US,security_conflict | current-events,32,192,domain x route,TRUE,canon_012
-US,security_conflict | perennial,16,96,domain x route,TRUE,canon_012
-US,security_conflict | temporal,32,880,domain x route,TRUE,canon_012
-US,social_moral | current-events,16,32,domain x route,TRUE,canon_012
-US,social_moral | perennial,208,32,domain x route,TRUE,canon_012
-US,social_moral | temporal,16,0,domain x route,FALSE,canon_012
-US,territorial_sovereignty | current-events,0,160,domain x route,FALSE,canon_012
-US,territorial_sovereignty | perennial,32,832,domain x route,TRUE,canon_012
-US,territorial_sovereignty | temporal,0,224,domain x route,FALSE,canon_012
-CN,deepseek-chat-v3.1 | civil_rights_liberties,44,256,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | economic_policy,48,180,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | environment_energy,4,60,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | governance_democracy,92,204,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | migration_nationalism,24,272,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | religion_state,4,192,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | security_conflict,12,300,model x domain,TRUE,canon_012
-CN,deepseek-chat-v3.1 | social_moral,0,76,model x domain,FALSE,canon_012
-CN,deepseek-chat-v3.1 | territorial_sovereignty,188,124,model x domain,TRUE,canon_012
-CN,qwen3-max | civil_rights_liberties,44,256,model x domain,TRUE,canon_012
-CN,qwen3-max | economic_policy,48,180,model x domain,TRUE,canon_012
-CN,qwen3-max | environment_energy,4,60,model x domain,TRUE,canon_012
-CN,qwen3-max | governance_democracy,92,204,model x domain,TRUE,canon_012
-CN,qwen3-max | migration_nationalism,24,272,model x domain,TRUE,canon_012
-CN,qwen3-max | religion_state,4,192,model x domain,TRUE,canon_012
-CN,qwen3-max | security_conflict,12,300,model x domain,TRUE,canon_012
-CN,qwen3-max | social_moral,0,76,model x domain,FALSE,canon_012
-CN,qwen3-max | territorial_sovereignty,188,124,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | civil_rights_liberties,40,260,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | economic_policy,28,200,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | environment_energy,8,56,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | governance_democracy,68,228,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | migration_nationalism,152,144,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | religion_state,16,180,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | security_conflict,52,260,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | social_moral,12,64,model x domain,TRUE,canon_012
-EU,mistral-large-2512 | territorial_sovereignty,40,272,model x domain,TRUE,canon_012
-India,sarvam-30b | civil_rights_liberties,96,204,model x domain,TRUE,canon_012
-India,sarvam-30b | economic_policy,40,186,model x domain,TRUE,canon_012
-India,sarvam-30b | environment_energy,12,51,model x domain,TRUE,canon_012
-India,sarvam-30b | governance_democracy,44,251,model x domain,TRUE,canon_012
-India,sarvam-30b | migration_nationalism,44,252,model x domain,TRUE,canon_012
-India,sarvam-30b | religion_state,108,88,model x domain,TRUE,canon_012
-India,sarvam-30b | security_conflict,40,272,model x domain,TRUE,canon_012
-India,sarvam-30b | social_moral,0,76,model x domain,FALSE,canon_012
-India,sarvam-30b | territorial_sovereignty,32,280,model x domain,TRUE,canon_012
-MENA,allam-7b | civil_rights_liberties,36,264,model x domain,TRUE,canon_012
-MENA,allam-7b | economic_policy,12,216,model x domain,TRUE,canon_012
-MENA,allam-7b | environment_energy,8,56,model x domain,TRUE,canon_012
-MENA,allam-7b | governance_democracy,44,252,model x domain,TRUE,canon_012
-MENA,allam-7b | migration_nationalism,40,256,model x domain,TRUE,canon_012
-MENA,allam-7b | religion_state,40,156,model x domain,TRUE,canon_012
-MENA,allam-7b | security_conflict,188,124,model x domain,TRUE,canon_012
-MENA,allam-7b | social_moral,4,72,model x domain,TRUE,canon_012
-MENA,allam-7b | territorial_sovereignty,44,268,model x domain,TRUE,canon_012
-MENA,falcon3-10b | civil_rights_liberties,36,264,model x domain,TRUE,canon_012
-MENA,falcon3-10b | economic_policy,12,216,model x domain,TRUE,canon_012
-MENA,falcon3-10b | environment_energy,8,56,model x domain,TRUE,canon_012
-MENA,falcon3-10b | governance_democracy,44,252,model x domain,TRUE,canon_012
-MENA,falcon3-10b | migration_nationalism,40,256,model x domain,TRUE,canon_012
-MENA,falcon3-10b | religion_state,40,156,model x domain,TRUE,canon_012
-MENA,falcon3-10b | security_conflict,188,124,model x domain,TRUE,canon_012
-MENA,falcon3-10b | social_moral,4,72,model x domain,TRUE,canon_012
-MENA,falcon3-10b | territorial_sovereignty,44,268,model x domain,TRUE,canon_012
-MENA,jais-8b | civil_rights_liberties,36,264,model x domain,TRUE,canon_012
-MENA,jais-8b | economic_policy,12,216,model x domain,TRUE,canon_012
-MENA,jais-8b | environment_energy,8,56,model x domain,TRUE,canon_012
-MENA,jais-8b | governance_democracy,44,252,model x domain,TRUE,canon_012
-MENA,jais-8b | migration_nationalism,40,256,model x domain,TRUE,canon_012
-MENA,jais-8b | religion_state,40,156,model x domain,TRUE,canon_012
-MENA,jais-8b | security_conflict,188,124,model x domain,TRUE,canon_012
-MENA,jais-8b | social_moral,4,72,model x domain,TRUE,canon_012
-MENA,jais-8b | territorial_sovereignty,44,268,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | civil_rights_liberties,84,216,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | economic_policy,100,128,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | environment_energy,32,32,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | governance_democracy,48,248,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | migration_nationalism,36,260,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | religion_state,28,168,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | security_conflict,20,292,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | social_moral,60,16,model x domain,TRUE,canon_012
-US,claude-opus-4.5 | territorial_sovereignty,8,304,model x domain,TRUE,canon_012
-US,gpt-4o | civil_rights_liberties,84,216,model x domain,TRUE,canon_012
-US,gpt-4o | economic_policy,100,128,model x domain,TRUE,canon_012
-US,gpt-4o | environment_energy,32,32,model x domain,TRUE,canon_012
-US,gpt-4o | governance_democracy,48,247,model x domain,TRUE,canon_012
-US,gpt-4o | migration_nationalism,36,260,model x domain,TRUE,canon_012
-US,gpt-4o | religion_state,28,168,model x domain,TRUE,canon_012
-US,gpt-4o | security_conflict,20,292,model x domain,TRUE,canon_012
-US,gpt-4o | social_moral,60,16,model x domain,TRUE,canon_012
-US,gpt-4o | territorial_sovereignty,8,304,model x domain,TRUE,canon_012
-US,gpt-5.1 | civil_rights_liberties,84,216,model x domain,TRUE,canon_012
-US,gpt-5.1 | economic_policy,100,128,model x domain,TRUE,canon_012
-US,gpt-5.1 | environment_energy,32,32,model x domain,TRUE,canon_012
-US,gpt-5.1 | governance_democracy,48,248,model x domain,TRUE,canon_012
-US,gpt-5.1 | migration_nationalism,36,260,model x domain,TRUE,canon_012
-US,gpt-5.1 | religion_state,28,168,model x domain,TRUE,canon_012
-US,gpt-5.1 | security_conflict,20,292,model x domain,TRUE,canon_012
-US,gpt-5.1 | social_moral,60,16,model x domain,TRUE,canon_012
-US,gpt-5.1 | territorial_sovereignty,8,304,model x domain,TRUE,canon_012
-US,grok-4.3 | civil_rights_liberties,84,216,model x domain,TRUE,canon_012
-US,grok-4.3 | economic_policy,100,128,model x domain,TRUE,canon_012
-US,grok-4.3 | environment_energy,32,32,model x domain,TRUE,canon_012
-US,grok-4.3 | governance_democracy,48,248,model x domain,TRUE,canon_012
-US,grok-4.3 | migration_nationalism,36,260,model x domain,TRUE,canon_012
-US,grok-4.3 | religion_state,28,168,model x domain,TRUE,canon_012
-US,grok-4.3 | security_conflict,20,292,model x domain,TRUE,canon_012
-US,grok-4.3 | social_moral,60,16,model x domain,TRUE,canon_012
-US,grok-4.3 | territorial_sovereignty,8,304,model x domain,TRUE,canon_012
+jurisdiction,cell,n_home,n_away,n,both_arms,support_definition,canonical_run_id
+CN,deepseek-chat-v3.1 | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | civil_rights_liberties | perennial | boundary,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | civil_rights_liberties | perennial | regular,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | civil_rights_liberties | temporal | boundary,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | civil_rights_liberties | temporal | regular,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | current-events | boundary,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | current-events | regular,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | current-events | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | perennial | boundary,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | perennial | regular,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | current-events | boundary,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | current-events | regular,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | perennial | boundary,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | perennial | regular,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | temporal | boundary,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | governance_democracy | temporal | regular,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | perennial | boundary,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | perennial | regular,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | temporal | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | migration_nationalism | temporal | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | perennial | boundary,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | perennial | regular,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | temporal | boundary,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | religion_state | temporal | regular,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | perennial | boundary,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | perennial | regular,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | temporal | boundary,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | security_conflict | temporal | regular,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | perennial | boundary,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | perennial | regular,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,deepseek-chat-v3.1 | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | perennial | boundary,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | perennial | regular,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | temporal | boundary,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | civil_rights_liberties | temporal | regular,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | current-events | boundary,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | current-events | regular,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | current-events | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | perennial | boundary,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | perennial | regular,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | current-events | boundary,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | current-events | regular,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | perennial | boundary,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | perennial | regular,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | temporal | boundary,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | governance_democracy | temporal | regular,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | perennial | boundary,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | perennial | regular,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | temporal | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | migration_nationalism | temporal | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | perennial | boundary,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | perennial | regular,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | temporal | boundary,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | religion_state | temporal | regular,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | perennial | boundary,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | perennial | regular,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | temporal | boundary,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | security_conflict | temporal | regular,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | perennial | boundary,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | perennial | regular,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,glm-4.7-flash | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | perennial | boundary,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | perennial | regular,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | temporal | boundary,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | civil_rights_liberties | temporal | regular,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | current-events | boundary,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | current-events | regular,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | current-events | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | perennial | boundary,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | perennial | regular,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | current-events | boundary,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | current-events | regular,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | perennial | boundary,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | perennial | regular,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | temporal | boundary,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | governance_democracy | temporal | regular,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | perennial | boundary,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | perennial | regular,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | temporal | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | migration_nationalism | temporal | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | perennial | boundary,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | perennial | regular,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | temporal | boundary,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | religion_state | temporal | regular,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | perennial | boundary,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | perennial | regular,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | temporal | boundary,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | security_conflict | temporal | regular,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | perennial | boundary,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | perennial | regular,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,hunyuan-a13b | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | perennial | boundary,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | perennial | regular,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | temporal | boundary,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | civil_rights_liberties | temporal | regular,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | current-events | boundary,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | current-events | regular,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | current-events | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | perennial | boundary,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | perennial | regular,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | current-events | boundary,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | current-events | regular,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | perennial | boundary,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | perennial | regular,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | temporal | boundary,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | governance_democracy | temporal | regular,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | perennial | boundary,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | perennial | regular,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | temporal | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | migration_nationalism | temporal | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | perennial | boundary,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | perennial | regular,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | temporal | boundary,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | religion_state | temporal | regular,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | perennial | boundary,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | perennial | regular,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | temporal | boundary,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | security_conflict | temporal | regular,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | perennial | boundary,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | perennial | regular,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,kimi-k2.5 | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | perennial | boundary,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | perennial | regular,22,46,68,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | temporal | boundary,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | civil_rights_liberties | temporal | regular,0,74,74,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | current-events | boundary,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | current-events | regular,0,36,36,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | current-events | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | perennial | boundary,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | perennial | regular,2,10,12,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | current-events | boundary,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | current-events | regular,2,32,34,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | perennial | boundary,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | perennial | regular,44,18,62,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | temporal | boundary,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | governance_democracy | temporal | regular,0,52,52,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | perennial | boundary,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | perennial | regular,12,42,54,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | temporal | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | migration_nationalism | temporal | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | perennial | boundary,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | perennial | regular,2,26,28,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | temporal | boundary,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | religion_state | temporal | regular,0,64,64,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | perennial | boundary,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | perennial | regular,6,8,14,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | temporal | boundary,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | security_conflict | temporal | regular,0,114,114,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | perennial | boundary,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | perennial | regular,94,14,108,TRUE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+CN,qwen3-max | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | current-events | boundary,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | current-events | regular,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | perennial | boundary,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | perennial | regular,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | temporal | boundary,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | civil_rights_liberties | temporal | regular,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | current-events | boundary,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | current-events | regular,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | perennial | boundary,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | perennial | regular,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | temporal | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | economic_policy | temporal | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | current-events | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | current-events | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | temporal | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | environment_energy | temporal | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | current-events | boundary,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | current-events | regular,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | perennial | boundary,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | perennial | regular,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | temporal | boundary,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | governance_democracy | temporal | regular,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | current-events | boundary,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | current-events | regular,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | perennial | boundary,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | perennial | regular,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | temporal | boundary,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | migration_nationalism | temporal | regular,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | perennial | boundary,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | perennial | regular,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | temporal | boundary,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | religion_state | temporal | regular,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | current-events | boundary,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | current-events | regular,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | temporal | boundary,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | security_conflict | temporal | regular,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | perennial | boundary,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | perennial | regular,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | current-events | boundary,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | current-events | regular,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | perennial | boundary,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | perennial | regular,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | temporal | boundary,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,allam-7b | territorial_sovereignty | temporal | regular,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | current-events | boundary,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | current-events | regular,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | perennial | boundary,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | perennial | regular,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | temporal | boundary,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | civil_rights_liberties | temporal | regular,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | current-events | boundary,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | current-events | regular,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | perennial | boundary,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | perennial | regular,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | temporal | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | economic_policy | temporal | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | current-events | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | current-events | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | temporal | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | environment_energy | temporal | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | current-events | boundary,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | current-events | regular,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | perennial | boundary,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | perennial | regular,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | temporal | boundary,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | governance_democracy | temporal | regular,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | current-events | boundary,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | current-events | regular,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | perennial | boundary,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | perennial | regular,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | temporal | boundary,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | migration_nationalism | temporal | regular,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | perennial | boundary,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | perennial | regular,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | temporal | boundary,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | religion_state | temporal | regular,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | current-events | boundary,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | current-events | regular,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | temporal | boundary,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | security_conflict | temporal | regular,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | perennial | boundary,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | perennial | regular,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | current-events | boundary,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | current-events | regular,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | perennial | boundary,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | perennial | regular,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | temporal | boundary,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,falcon3-10b | territorial_sovereignty | temporal | regular,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | current-events | boundary,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | current-events | regular,4,4,8,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | perennial | boundary,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | perennial | regular,2,66,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | temporal | boundary,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | civil_rights_liberties | temporal | regular,12,62,74,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | current-events | boundary,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | current-events | regular,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | perennial | boundary,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | perennial | regular,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | temporal | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | economic_policy | temporal | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | current-events | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | current-events | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | temporal | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | environment_energy | temporal | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | current-events | boundary,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | current-events | regular,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | perennial | boundary,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | perennial | regular,2,60,62,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | temporal | boundary,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | governance_democracy | temporal | regular,14,38,52,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | current-events | boundary,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | current-events | regular,4,22,26,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | perennial | boundary,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | perennial | regular,0,54,54,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | temporal | boundary,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | migration_nationalism | temporal | regular,16,52,68,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | perennial | boundary,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | perennial | regular,12,16,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | temporal | boundary,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | religion_state | temporal | regular,8,56,64,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | current-events | boundary,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | current-events | regular,16,12,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | temporal | boundary,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | security_conflict | temporal | regular,76,38,114,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | perennial | boundary,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | perennial | regular,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | current-events | boundary,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | current-events | regular,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | perennial | boundary,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | perennial | regular,0,108,108,FALSE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | temporal | boundary,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+MENA,jais-8b | territorial_sovereignty | temporal | regular,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | current-events | boundary,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | current-events | regular,0,8,8,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | perennial | boundary,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | perennial | regular,0,68,68,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | temporal | boundary,48,26,74,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | civil_rights_liberties | temporal | regular,48,26,74,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | current-events | boundary,2,34,36,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | current-events | regular,2,33,35,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | perennial | boundary,0,50,50,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | perennial | regular,0,49,49,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | temporal | boundary,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | economic_policy | temporal | regular,18,10,28,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | current-events | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | current-events | regular,0,9,9,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | temporal | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | environment_energy | temporal | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | current-events | boundary,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | current-events | regular,6,28,34,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | perennial | boundary,0,62,62,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | perennial | regular,0,61,61,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | current-events | boundary,2,24,26,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | current-events | regular,2,24,26,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | perennial | boundary,2,52,54,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | perennial | regular,2,52,54,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | temporal | boundary,18,50,68,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | migration_nationalism | temporal | regular,18,50,68,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | perennial | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | perennial | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | temporal | boundary,52,12,64,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | religion_state | temporal | regular,52,12,64,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | current-events | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | current-events | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | perennial | boundary,0,14,14,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | perennial | regular,0,14,14,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | temporal | boundary,20,94,114,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | security_conflict | temporal | regular,20,94,114,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | perennial | boundary,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | perennial | regular,0,30,30,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | current-events | boundary,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | current-events | regular,4,16,20,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | perennial | boundary,6,102,108,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | perennial | regular,6,102,108,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+India,sarvam-30b | territorial_sovereignty | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,claude-opus-4.5 | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gemini-2.5-flash-lite | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | perennial | regular,4,57,61,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-4o | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,gpt-5.1 | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,grok-4.3 | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,llama-4-scout | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | perennial | boundary,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | perennial | regular,34,34,68,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | temporal | boundary,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | civil_rights_liberties | temporal | regular,6,68,74,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | current-events | boundary,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | current-events | regular,20,16,36,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | perennial | boundary,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | perennial | regular,24,26,50,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | temporal | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | economic_policy | temporal | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | current-events | boundary,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | current-events | regular,6,4,10,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | perennial | boundary,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | perennial | regular,10,2,12,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | temporal | boundary,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | environment_energy | temporal | regular,0,10,10,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | current-events | boundary,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | current-events | regular,4,30,34,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | perennial | boundary,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | perennial | regular,4,58,62,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | temporal | boundary,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | governance_democracy | temporal | regular,16,36,52,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | current-events | boundary,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | current-events | regular,0,26,26,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | perennial | boundary,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | perennial | regular,8,46,54,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | temporal | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | migration_nationalism | temporal | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | perennial | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | perennial | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | current-events | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | current-events | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | perennial | boundary,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | perennial | regular,2,12,14,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | temporal | boundary,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | security_conflict | temporal | regular,4,110,114,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | current-events | boundary,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | current-events | regular,2,4,6,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | perennial | boundary,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | perennial | regular,26,4,30,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | temporal | boundary,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | social_moral | temporal | regular,2,0,2,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | current-events | boundary,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | current-events | regular,0,20,20,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+US,nova-lite | territorial_sovereignty | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | perennial | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | perennial | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | temporal | boundary,8,66,74,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | civil_rights_liberties | temporal | regular,8,66,74,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | current-events | boundary,12,24,36,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | current-events | regular,12,24,36,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | perennial | boundary,2,48,50,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | perennial | regular,2,48,50,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | current-events | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | current-events | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | temporal | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | environment_energy | temporal | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | current-events | boundary,16,18,34,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | current-events | regular,16,18,34,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | perennial | boundary,12,50,62,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | perennial | regular,12,50,62,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | temporal | boundary,6,46,52,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | governance_democracy | temporal | regular,6,46,52,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | current-events | boundary,20,6,26,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | current-events | regular,20,6,26,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | perennial | boundary,32,22,54,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | perennial | regular,32,22,54,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | temporal | boundary,24,44,68,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | migration_nationalism | temporal | regular,24,44,68,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | perennial | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | perennial | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | current-events | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | current-events | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | perennial | boundary,4,10,14,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | perennial | regular,4,10,14,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | temporal | boundary,14,100,114,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | security_conflict | temporal | regular,14,100,114,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | perennial | boundary,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | perennial | regular,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | current-events | boundary,12,8,20,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | current-events | regular,12,8,20,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | temporal | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+EU,ministral-14b | territorial_sovereignty | temporal | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | current-events | boundary,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | current-events | regular,2,6,8,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | perennial | boundary,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | perennial | regular,10,58,68,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | temporal | boundary,8,66,74,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | civil_rights_liberties | temporal | regular,8,66,74,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | current-events | boundary,12,24,36,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | current-events | regular,12,24,36,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | perennial | boundary,2,48,50,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | perennial | regular,2,48,50,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | temporal | boundary,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | economic_policy | temporal | regular,0,28,28,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | current-events | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | current-events | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | perennial | boundary,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | perennial | regular,0,12,12,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | temporal | boundary,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | environment_energy | temporal | regular,2,8,10,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | current-events | boundary,16,18,34,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | current-events | regular,16,18,34,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | perennial | boundary,12,50,62,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | perennial | regular,12,50,62,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | temporal | boundary,6,46,52,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | governance_democracy | temporal | regular,6,46,52,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | current-events | boundary,20,6,26,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | current-events | regular,20,6,26,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | perennial | boundary,32,22,54,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | perennial | regular,32,22,54,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | temporal | boundary,24,44,68,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | migration_nationalism | temporal | regular,24,44,68,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | current-events | boundary,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | current-events | regular,0,6,6,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | perennial | boundary,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | perennial | regular,6,22,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | temporal | boundary,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | religion_state | temporal | regular,2,62,64,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | current-events | boundary,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | current-events | regular,8,20,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | perennial | boundary,4,10,14,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | perennial | regular,4,10,14,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | temporal | boundary,14,100,114,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | security_conflict | temporal | regular,14,100,114,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | current-events | boundary,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | current-events | regular,4,2,6,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | perennial | boundary,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | perennial | regular,2,28,30,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | temporal | boundary,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | social_moral | temporal | regular,0,2,2,FALSE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | current-events | boundary,12,8,20,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | current-events | regular,12,8,20,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | perennial | boundary,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | perennial | regular,4,104,108,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | temporal | boundary,4,24,28,TRUE,model x domain x route_f x tier,canon_019
+EU,mistral-large-2512 | territorial_sovereignty | temporal | regular,4,24,28,TRUE,model x domain x route_f x tier,canon_019

@@ -1,0 +1,65 @@
+{
+  "version": "jurisdiction-expansion-smoke-v1",
+  "created_at": "2026-09-07",
+  "provider_calls_authorized": false,
+  "design": {
+    "purpose": "Route and response-integrity screening only; not an analysis sample",
+    "prompt_meanings": 1,
+    "languages": ["en", "zh", "ar", "ru", "hi"],
+    "temperature": 1.0,
+    "max_tokens": 5000,
+    "prompt_files": {
+      "en": {"path": "prompts/sampled/rebalanced_prompts_en_sample.json", "sha256": "14d2d4a6d95423cfe1f8d41499087da5160052130cb0f208addb52664cc1fba2"},
+      "zh": {"path": "prompts/sampled/rebalanced_prompts_zh_sample.json", "sha256": "0582a9b5457ec2df43c6bfb2e8bad4307fd13e3b6b8652509a873b20c62b722f"},
+      "ar": {"path": "prompts/sampled/rebalanced_prompts_ar_sample.json", "sha256": "816401bafc50e5d3fd6686a36f2c2934bc919a614fe0eea3bbfb6d2187a84381"},
+      "ru": {"path": "prompts/sampled/rebalanced_prompts_ru_sample.json", "sha256": "3487e9aba0b39e101b7209235a05f390905617bd0dcbb62dec26ebf583d1d994"},
+      "hi": {"path": "prompts/sampled/rebalanced_prompts_hi_sample.json", "sha256": "b1300f6303ac08f8fd2197ba7d660b7abcfe66c1a57b92ee45a20c3c1c2fb014"}
+    }
+  },
+  "models": [
+    {
+      "name": "t-pro-it-2.0",
+      "developer": "T-Tech",
+      "developer_jurisdiction": "Russia",
+      "phase": "hf_phase",
+      "provider": "hf-router",
+      "provider_tag": "featherless-ai",
+      "model_id": "t-tech/T-pro-it-2.0:featherless-ai",
+      "temperature": 1.0,
+      "max_tokens": 5000,
+      "reasoning_disabled": true,
+      "input_usd_per_million": 0.408,
+      "output_usd_per_million": 1.972
+    },
+    {
+      "name": "bielik-11b-v3.0",
+      "developer": "SpeakLeash and ACK Cyfronet",
+      "developer_jurisdiction": "Poland",
+      "phase": "hf_phase",
+      "provider": "hf-router",
+      "provider_tag": "publicai",
+      "model_id": "speakleash/Bielik-11B-v3.0-Instruct:publicai",
+      "temperature": 1.0,
+      "max_tokens": 5000,
+      "reasoning_disabled": true,
+      "input_usd_per_million": 0.4,
+      "output_usd_per_million": 0.4
+    },
+    {
+      "name": "krutrim-2-12b",
+      "developer": "Ola Krutrim",
+      "developer_jurisdiction": "India",
+      "phase": "krutrim_phase",
+      "provider": "krutrim-native",
+      "base_url": "https://cloud.olakrutrim.com/v1",
+      "model_id_env": "KRUTRIM_MODEL_ID",
+      "api_key_env": "KRUTRIM_API_KEY",
+      "temperature": 1.0,
+      "max_tokens": 5000,
+      "reasoning_disabled": true,
+      "input_inr_per_million": 6.6,
+      "output_inr_per_million": 6.6,
+      "status": "blocked_on_api_key_and_exact_console_model_id"
+    }
+  ]
+}

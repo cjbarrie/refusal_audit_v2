@@ -1,0 +1,42 @@
+stage,script,status,purpose,external_call,authoritative_document
+G01,scripts/sample_prompts.py,active_supporting,Draw issue-level prompt samples while preserving multilingual and matched-prompt blocks,false,scripts/README.md
+G02,scripts/generate_responses.py,completed_production_implementation,Generate original-panel subject-model responses with append-only last-valid semantics,guarded,scripts/README.md
+G03,scripts/annotation_pipeline.py,completed_original_measurement,Run the original Gemini multi-pass annotation whose non-engagement field is now sensitivity only,guarded,scripts/README.md
+G04,scripts/run_pilot.py,completed_original_orchestrator,Coordinate original sampling generation annotation and assembly,guarded,scripts/README.md
+G05,scripts/embed_prompts.py,completed_geometry_input,Create the cached English prompt embeddings used by the fixed UMAP,guarded,scripts/README.md
+E01,scripts/model_roster.py,active_local_contract,Validate versioned subject-model rosters and calculate deterministic request inventories,false,scripts/README.md
+E02,scripts/openrouter_expansion_v3.py,completed_expansion_orchestrator,Prepare cost authorize and run the seven-model v3 expansion stages,guarded,docs/OPENROUTER_MODEL_EXPANSION_V1.md
+E03,scripts/jurisdiction_expansion_smoke.py,active_guarded_contract,Freeze cost authorize and run new-developer route smoke tests,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E04,scripts/jurisdiction_expansion_pilot.py,active_guarded_contract,Freeze cost authorize and run the 400-response T-pro and Bielik pilot,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E05,scripts/sarvam_105b_smoke.py,active_guarded_contract,Freeze cost authorize and run the native Sarvam-105B five-language access smoke,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E06,scripts/jurisdiction_expansion_pilot_repair.py,active_guarded_contract,Repair only transient T-pro and Bielik pilot transport failures once at sequential concurrency,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E07,scripts/sarvam_105b_pilot.py,active_guarded_contract,Freeze cost authorize and run the native Sarvam-105B 40-meaning pilot,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E08,scripts/jurisdiction_pilot_annotation.py,active_guarded_contract,Freeze cost authorize and run uniform Luna v2.4 annotation of the three jurisdiction pilots,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E09,scripts/jurisdiction_pilot_sol_audit.py,active_guarded_contract,Freeze cost authorize and run the design-weighted Sol v2.4 jurisdiction-pilot audit,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E10,scripts/jurisdiction_expansion_full.py,active_guarded_contract,Freeze cost authorize and run independent full-corpus generation contracts for T-pro Bielik and Sarvam,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E11,scripts/jurisdiction_full_annotation.py,active_guarded_contract,Freeze cost authorize and run blinded Luna v2.4 annotations separately for each completed jurisdiction full run,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E12,scripts/local_gguf_expansion_smoke.py,active_local_contract,Freeze run and audit the four-model local Q8 five-language smoke,local,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E13,scripts/local_gguf_expansion_pilot.py,active_local_contract,Run the frozen 40-meaning five-language admission pilot for viable local Q8 models,local,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E14,scripts/gigachat_local_template_repair.py,active_local_contract,Run the versioned raw-completion repair for the GigaChat embedded-template incompatibility,local,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E15,scripts/gigachat_local_pilot.py,active_local_contract,Run the matched 40-meaning GigaChat pilot through the versioned raw-completion route,local,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E16,scripts/run_local_gguf_pilot_sequence.py,active_local_orchestrator,Resume GigaChat Krutrim and Salamandra admission pilots sequentially without paid calls,local,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E17,scripts/local_gguf_pilot_annotation.py,active_guarded_contract,Freeze cost authorize and run blinded Luna v2.4 annotation of the four local-model admission pilots,guarded,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E18,scripts/fanar_diagnostic.py,completed_route_diagnostic,Freeze authorize run and audit the native Fanar five-language access diagnostic,guarded,scripts/README.md
+E19,scripts/fanar_pilot.py,completed_route_pilot,Freeze authorize run and audit the native Fanar matched 40-meaning admission pilot,guarded,scripts/README.md
+E20,scripts/fanar_route_audit.py,completed_route_audit,Freeze authorize run and audit the probability-sampled Fanar English-Arabic filtering study,guarded,scripts/README.md
+E21,scripts/local_gguf_pilot_sol_audit.py,active_guarded_contract,Freeze cost authorize run and score the design-weighted Sol audit of local-model pilot labels,guarded,docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md
+E22,scripts/local_gguf_hpc_benchmark_annotation.py,active_guarded_contract,Freeze cost authorize run and summarize joint Luna v2.4 refusal and capability-failure labels for all 400 Torch benchmark responses,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E23,scripts/local_gguf_hpc_benchmark_sol_audit.py,active_guarded_contract,Freeze cost authorize run and score a Sol census of every flagged Torch benchmark response plus probability-sampled clean controls,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E24,scripts/fanar_system_audit.py,active_local_audit,Reconcile native Fanar delivery outcomes and calculate textual-refusal and system-noncompliance bounds,false,docs/FANAR_EXPERIMENTS_V1.md
+E25,scripts/fanar_filter_retest.py,active_guarded_contract,Freeze authorize and run a one-shot repeatability audit of the 29 original native Fanar response filters,guarded,docs/FANAR_EXPERIMENTS_V1.md
+E26,scripts/fanar_retest_sol_annotation.py,active_guarded_contract,Freeze cost authorize run and summarize Sol v2.4 labels for all 16 responses exposed by the Fanar filter retest,guarded,docs/FANAR_EXPERIMENTS_V1.md
+V01,scripts/response_validity.py,active_guarded_contract,Expose local validation and versioned paid response-validity commands,guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
+A01,scripts/audit_repository.py,active_local_audit,Rebuild the forensic file-level artifact registry,false,docs/REPOSITORY_MAP.md
+A02,scripts/replication_check.py,active_local_check,Verify the frozen prompt and outcome hashes promoted release figures script registries and secret boundary,false,docs/REPLICATION_GUIDE.md
+A03,scripts/private_repo_preflight.py,active_local_check,Check prospective private-repository files for tracked secrets missing origin and GitHub size limits without printing secret values,false,docs/PRIVATE_REPOSITORY_HANDOFF.md
+H01,scripts/config.py,active_helper,Define original-panel model routing and generation defaults,false,scripts/README.md
+H02,scripts/env_utils.py,active_helper,Load local credentials without printing or copying their values,false,scripts/README.md
+C01,scripts/checks/check_generation.py,active_local_check,Summarize generation completeness without changing run state,false,scripts/README.md
+C02,scripts/checks/check_annotation.py,active_local_check,Summarize original annotation completeness without changing run state,false,scripts/README.md
+C03,scripts/checks/check_pending.py,active_local_check,Report pending generation and annotation work without provider calls,false,scripts/README.md
+C04,scripts/checks/watch_generation.py,active_local_monitor,Poll append-only generation progress without altering it,false,scripts/README.md

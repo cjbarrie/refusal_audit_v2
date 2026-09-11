@@ -1,4 +1,5 @@
 # =============================================================================
+# Technical reference: docs/r_pipeline/_orders.md
 # Canonical orderings — ONE declaration, reused everywhere
 # =============================================================================
 # Sourced by BOTH `_theme.R` (the figure layer) and `10_canonical_common.R`
@@ -15,9 +16,8 @@
 # RULE: row order in a figure is fixed by one of these vectors, never by the
 # estimates being displayed — an order computed from the data makes the ranking
 # a property of the thing being shown, so the strongest cells always drift to
-# one end and the layout implies a finding. The two deliberate exceptions are
-# stated in the legends (Fig 2c per-model rows, Fig 3b foundations), where the
-# ordering IS the point.
+# one end and the layout implies a finding. Any future data-ranked display must
+# declare that exception in its external legend.
 
 # --- jurisdictions -----------------------------------------------------------
 # Ordered by the size of the home contrast in the first release and then frozen,
@@ -38,18 +38,25 @@ HOME_REGION_OF <- c(CN = "China", MENA = "Arab", India = "India",
 # Grouped by developer jurisdiction, alphabetical within group. NOT ordered by
 # any estimate. This is the row order for every per-model display.
 ORDER_MODEL <- c(
-  "deepseek-chat-v3.1", "qwen3-max",                                  # CN
+  "deepseek-chat-v3.1", "glm-4.7-flash", "hunyuan-a13b", "kimi-k2.5",
+  "qwen3-max",                                                        # CN
   "allam-7b", "falcon3-10b", "jais-8b",                               # MENA
-  "sarvam-30b",                                                       # India
-  "claude-opus-4.5", "gpt-4o", "gpt-5.1", "grok-4.3",                 # US
-  "mistral-large-2512")                                               # EU
+  "sarvam-105b", "sarvam-30b",                                      # India
+  "claude-opus-4.5", "gemini-2.5-flash-lite", "gpt-4o", "gpt-5.1",
+  "grok-4.3", "llama-4-scout", "nova-lite",                          # US
+  "bielik-11b-v3.0", "ministral-14b", "mistral-large-2512")          # EU
 MODEL_JURIS <- c(
-  "deepseek-chat-v3.1" = "CN",   "qwen3-max"          = "CN",
+  "deepseek-chat-v3.1" = "CN",   "glm-4.7-flash"      = "CN",
+  "hunyuan-a13b"       = "CN",   "kimi-k2.5"          = "CN",
+  "qwen3-max"          = "CN",
   "allam-7b"           = "MENA", "falcon3-10b"        = "MENA",
   "jais-8b"            = "MENA",
-  "sarvam-30b"         = "India",
-  "claude-opus-4.5"    = "US",   "gpt-4o"             = "US",
-  "gpt-5.1"            = "US",   "grok-4.3"           = "US",
+  "sarvam-105b"        = "India", "sarvam-30b"         = "India",
+  "claude-opus-4.5"    = "US",   "gemini-2.5-flash-lite" = "US",
+  "gpt-4o"             = "US",   "gpt-5.1"            = "US",
+  "grok-4.3"           = "US",   "llama-4-scout"      = "US",
+  "nova-lite"          = "US",
+  "bielik-11b-v3.0"    = "EU",   "ministral-14b"      = "EU",
   "mistral-large-2512" = "EU")
 
 # --- languages ---------------------------------------------------------------
@@ -66,7 +73,9 @@ ORDER_LANG_CONTRAST_CODE <- setdiff(ORDER_LANG, "en")
 stopifnot(identical(unname(LANG_LABEL[ORDER_LANG_CONTRAST_CODE]),
                     ORDER_LANG_CONTRAST))
 
-# --- content categories ------------------------------------------------------
+# --- pending content categories ----------------------------------------------
+# Retained only so historical scripts under pipeline/pending/ can be inspected;
+# no active estimator or figure uses these ideology/foundation constants.
 ORDER_IDEO_DIM <- c("Economic", "Social", "Authority", "Populism")
 ORDER_IDEO_BIN <- c("-2", "-1", "0", "+1", "+2")
 # Endpoints are DIMENSION-SPECIFIC: "left/right" is meaningful for the economic

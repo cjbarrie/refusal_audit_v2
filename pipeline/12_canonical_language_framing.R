@@ -1,435 +1,294 @@
 # =============================================================================
-# CANONICAL PART 2 -- prompt-delivery effects
-#   c08 language paired        c10 framing paired
-#   c09 language by model      c11 framing by model and domain
+# Technical reference: docs/r_pipeline/12_canonical_language_framing.md
+# PAIRED LANGUAGE AND FRAMING ANALYSES -- final Luna v2.4 outcomes
 # =============================================================================
-# Both estimands here are PAIRED and computed directly from observed outcomes:
-# no model is required, and each reproduces a direct tabulation exactly.
+# Language estimand: within (model,prompt_id), target-language outcome minus
+# English outcome, averaged equally over models. This holds the exact prompt ID
+# and subject model fixed. It is the effect of the delivered translation under
+# assumptions about translation equivalence and run stability; it is not the
+# causal effect of a user's language.
 #
-# A. LANGUAGE. block_id = model x prompt_id; for a non-English language L,
-#    delta_L = mean over complete blocks of ( Y[block,L] - Y[block,English] ).
-#    Holds the model and the exact prompt fixed and varies only delivery language.
+# Framing estimand: within English (issue_id,model), mean boundary minus mean
+# regular outcome, requiring the intended 2+2 prompt block. Prompt wording is
+# not randomized, so causal interpretation requires exchangeability of generated
+# variants within issue.
 #
-#    INTERPRETATION: the effect of delivering the tested translated prompt
-#    version, conditional on (i) translation equivalence -- a translation that is
-#    harder, more ambiguous or differently loaded carries that difference inside
-#    the estimate -- and (ii) no language-specific run-time, provider or
-#    annotation drift, since languages were generated in separate runs, sometimes
-#    through different provider routings, and judged by the same judge whose
-#    behaviour may itself vary by language. It is NOT the causal effect of a
-#    user's language.
-#
-# B. FRAMING. For each issue x model x language block,
-#    delta = mean(boundary outcomes) - mean(regular outcomes), then averaged with
-#    equal model weighting. Regular and boundary prompts derive from the same
-#    issue by design, so the pairing is real.
-#
-#    A causal reading of framing requires the generated regular and boundary
-#    variants to be EXCHANGEABLE given the issue -- i.e. that the two prompt
-#    templates differ only in framing and not in difficulty, specificity or
-#    loadedness. They were produced by a generation template, not randomised, so
-#    that is an assumption, not a design guarantee.
+# Primary outcome: genuine_refusal. Capability failure is separate. Original
+# judge-coded non-engagement is written to dedicated sensitivity tables on the
+# original eleven-model roster only.
+# Inference: issue-cluster percentile bootstrap with fixed draws and no retries.
+# Outputs: c08-c11 plus c10b incomplete blocks and c18 diagnostics.
 
 source("pipeline/10_canonical_common.R")
-cat(strrep("=", 78), "\nCANONICAL PART 2: PROMPT DELIVERY\n", strrep("=", 78), "\n", sep = "")
+suppressPackageStartupMessages(library(tidyverse))
 
-B_HEAD <- as.integer(Sys.getenv("CANON_B_HEAD", "2000"))
+B_PRIMARY <- as.integer(Sys.getenv("CANON_B_HEAD", "2000"))
 B_SENS <- as.integer(Sys.getenv("CANON_B_SENS", "500"))
 NONEN <- setdiff(LANGS_C, "en")
-LANG_LAB <- c(en = "English", zh = "Chinese", ar = "Arabic", ru = "Russian", hi = "Hindi")
+OUTCOMES <- c("genuine_refusal", "capability_failure")
+OUTCOME_ROLE <- c(genuine_refusal = "primary",
+                  capability_failure = "diagnostic")
 
-LANG_INTERP <- paste(
-  "effect of delivering the tested translated prompt version, among the tested",
-  "prompt/model set; conditional on translation equivalence and on no",
-  "language-specific run-time, provider or annotation drift;",
-  "NOT the causal effect of user language")
-FRAME_INTERP <- paste(
-  "paired boundary-minus-regular difference within issue x model x language.",
-  "The block holds the ISSUE and the MODEL fixed; it does NOT hold prompt",
-  "content fixed -- the regular and boundary variants are different realized",
-  "prompts about the same issue, which is the exposure being varied.",
-  "A causal reading requires the generated regular and boundary variants to be",
-  "exchangeable given the issue, which is an assumption about the generation",
-  "template, not a randomisation.")
+cat(strrep("=", 78), "\nPAIRED LANGUAGE AND FRAMING: LUNA v2.4\n",
+    strrep("=", 78), "\n", sep = "")
 
-# -----------------------------------------------------------------------------
-# Generic paired bootstrap: resample ISSUES, carrying every block for a drawn
-# issue together, with multiplicity preserved.
-# -----------------------------------------------------------------------------
-boot_paired <- function(df, stat, B, label, max_fail_rate = 0.02) {
-  # FIXED NUMBER OF DRAWS. This used to loop `while (length(vals) < B)`, i.e.
-  # resample until B SUCCESSES -- the same conditional-bootstrap defect the
-  # shared boot_canon() had. It conditions the interval on the replicates where
-  # the statistic happened to be finite, which are systematically the draws with
-  # more events, and biases the interval inward. Failures are now stored as NA,
-  # counted, and reported; a draw is never replaced.
-  iss <- split(seq_len(nrow(df)), df$issue_id)
-  keys <- names(iss)
-  d0 <- df; d0$bootstrap_issue_instance <- as.character(d0$issue_id)
-  point <- tryCatch(stat(d0), error = function(e) NA_real_)
-  set.seed(CAN_SEED)
+# Resample issues while keeping every response/block for a sampled issue.
+boot_paired <- function(d, stat, B, label, max_fail_rate = 0.02) {
+  idx <- split(seq_len(nrow(d)), d$issue_id)
+  issues <- names(idx)
+  point <- tryCatch(stat(d), error = function(e) NA_real_)
+  draw_seed <- CAN_SEED + sum(utf8ToInt(label))
+  set.seed(draw_seed)
   vals <- rep(NA_real_, B)
   for (b in seq_len(B)) {
-    drawn <- sample(keys, length(keys), replace = TRUE)
-    rows <- unlist(iss[drawn], use.names = FALSE)
-    dd <- df[rows, , drop = FALSE]
-    # One instance label per DRAW, so a twice-drawn issue keeps its copies apart.
-    dd$bootstrap_issue_instance <- rep(paste0(drawn, "#", seq_along(drawn)),
-                                       times = lengths(iss[drawn]))
-    v <- tryCatch(stat(dd), error = function(e) NA_real_)
-    vals[b] <- if (is.null(v) || length(v) != 1L || !is.finite(v)) NA_real_ else v
+    draw <- sample(issues, length(issues), replace = TRUE)
+    x <- d[unlist(idx[draw], use.names = FALSE), , drop = FALSE]
+    x$bootstrap_issue_instance <- rep(paste0(draw, "#", seq_along(draw)),
+                                      times = lengths(idx[draw]))
+    vals[b] <- tryCatch(stat(x), error = function(e) NA_real_)
   }
-  okv <- vals[!is.na(vals)]
-  nfail <- sum(is.na(vals)); frate <- nfail / B
-  reliable <- frate <= max_fail_rate
-  record_diag(tibble(canonical_run_id = CANONICAL_RUN_ID, label = label,
-                     bootstrap_unit = "issue_id", multiplicity_preserved = TRUE,
-                     copy_id_column = "bootstrap_issue_instance", seed = CAN_SEED,
-                     replicates_requested = B, replicates_drawn = B,
-                     replicates_successful = length(okv), replicates_failed = nfail,
-                     failure_rate = frate, failed_draws_replaced = FALSE,
-                     interval_reliable = reliable,
-                     interval_method = "percentile",
-                     n_rows = nrow(df), n_issues = length(keys)))
-  # No trusted interval when too many draws had no defined statistic.
+  ok <- vals[is.finite(vals)]
+  fail <- 1 - length(ok) / B
+  reliable <- fail <= max_fail_rate
+  record_diag(tibble(
+    canonical_run_id = CANONICAL_RUN_ID, label = label,
+    bootstrap_unit = "issue_id", multiplicity_preserved = TRUE,
+    copy_id_column = "bootstrap_issue_instance", seed = draw_seed,
+    replicates_requested = B, replicates_drawn = B,
+    replicates_successful = length(ok), replicates_failed = B - length(ok),
+    failure_rate = fail, failed_draws_replaced = FALSE,
+    interval_reliable = reliable, interval_method = "percentile",
+    n_rows = nrow(d), n_issues = length(issues)))
   list(estimate = point,
-       conf_low  = if (reliable && length(okv) > 1) unname(quantile(okv, .025)) else NA_real_,
-       conf_high = if (reliable && length(okv) > 1) unname(quantile(okv, .975)) else NA_real_,
-       failure_rate = frate, interval_reliable = reliable)
+       conf_low = if (reliable && length(ok) > 1) unname(quantile(ok, .025)) else NA_real_,
+       conf_high = if (reliable && length(ok) > 1) unname(quantile(ok, .975)) else NA_real_,
+       failure_rate = fail, interval_reliable = reliable)
 }
 
-
-# Three weightings of a per-block difference `d`.
-wmean_blocks <- function(df, how) {
-  ic <- if ("bootstrap_issue_instance" %in% names(df)) "bootstrap_issue_instance" else "issue_id"
-  if (how == "pooled") return(mean(df$d))
-  if (how == "equal_model") {
-    m <- tapply(df$d, as.character(df$model), mean)
-    return(mean(m))
-  }
-  # equal_model_issue: within model, each issue equal; then models equal
-  key <- paste(as.character(df$model), df[[ic]], sep = "\r")
-  cell <- tapply(df$d, key, mean)
-  mod <- sub("\r.*$", "", names(cell))
-  mean(tapply(cell, mod, mean))
+block_mean <- function(d, weighting = "equal_model") {
+  if (!nrow(d)) return(NA_real_)
+  if (weighting == "response") return(mean(d$d))
+  if (weighting == "equal_model")
+    return(mean(tapply(d$d, as.character(d$model), mean)))
+  stop("unknown paired weighting: ", weighting)
 }
 
-# =============================================================================
-# A. LANGUAGE  (c08, c09)
-# =============================================================================
-# THE PREDECLARED PRIMARY WEIGHTING. Equal weight per model matches the target
-# population used everywhere else in the paper; the other two are robustness.
-PRIMARY_W <- "equal_model"
-cat("\nA. paired language effects (primary weighting:", PRIMARY_W, ")\n")
-
-# The INTENDED block universe is constructed explicitly: every model x prompt
-# the design meant to observe in both arms. Defining missingness only from the
-# rows that happen to exist cannot distinguish "English present, translation
-# missing" from "neither present", and cannot report a completion rate at all.
-# Use the block_id canon already carries. Reconstructing it here produced a
-# different separator, so the join matched nothing and every language reported
-# zero complete pairs.
-INTENDED <- canon %>%
-  distinct(block_id, model, prompt_id, issue_id, juris, home_status, tier)
-
-paired_blocks <- function(L, outcome = "refused_strict", d = canon) {
-  en <- d %>% filter(lang == "en") %>%
-    select(block_id, y_en = all_of(outcome))
-  lx <- d %>% filter(lang == L) %>% select(block_id, y_l = all_of(outcome))
-  uni <- INTENDED %>%
-    left_join(en, by = "block_id") %>% left_join(lx, by = "block_id") %>%
-    mutate(status = case_when(
-      !is.na(y_en) & !is.na(y_l) ~ "complete pair",
-      !is.na(y_en) &  is.na(y_l) ~ "English only",
-       is.na(y_en) & !is.na(y_l) ~ "target-language only",
-      TRUE                       ~ "missing in both"))
-  full <- uni %>% filter(status == "complete pair") %>% mutate(d = y_l - y_en)
-  counts <- uni %>% count(status, name = "n")
-  getn <- function(k) { v <- counts$n[counts$status == k]; if (length(v)) v else 0L }
-  list(blocks = full,
-       n_intended = nrow(uni), n_complete = nrow(full),
-       n_en_only = getn("English only"),
-       n_lang_only = getn("target-language only"),
-       n_missing_both = getn("missing in both"),
-       completion_rate = nrow(full) / nrow(uni),
-       n_en = sum(!is.na(uni$y_en)), n_l = sum(!is.na(uni$y_l)),
-       n_missing = nrow(uni) - nrow(full))
+# Paired arm levels use the same complete blocks and equal-model target as the
+# difference. They are descriptive levels that explain a contrast's baseline;
+# inference remains attached to the paired difference.
+paired_levels <- function(d) {
+  by_model <- d |> group_by(model) |>
+    summarise(mean_english = mean(y_en), mean_target = mean(y_target),
+              .groups = "drop")
+  c(mean_english = mean(by_model$mean_english),
+    mean_target = mean(by_model$mean_target))
 }
 
-c08 <- map_dfr(NONEN, function(L) {
-  P <- paired_blocks(L)
-  map_dfr(c("pooled", "equal_model", "equal_model_issue"), function(how) {
-    bt <- boot_paired(P$blocks, function(x) wmean_blocks(x, how),
-                      if (how == "pooled") B_HEAD else B_SENS,
-                      sprintf("c08|%s|%s", L, how))
-    tibble(language = L, language_label = unname(LANG_LAB[L]), weighting = how,
-           estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
-           estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
-           conf_high_pp = pp(bt$conf_high),
-           n_intended_blocks = P$n_intended,
-           n_complete_blocks = P$n_complete, n_missing_blocks = P$n_missing,
-           n_english_only = P$n_en_only, n_target_language_only = P$n_lang_only,
-           n_missing_in_both = P$n_missing_both,
-           completion_rate = P$completion_rate,
-           n_blocks_english = P$n_en, n_blocks_language = P$n_l,
-           n_issues = n_distinct(P$blocks$issue_id),
-           raw_mean_english = mean(P$blocks$y_en),
-           raw_mean_language = mean(P$blocks$y_l))
+paired_language_blocks <- function(language, outcome) {
+  meta <- canon |> distinct(model, prompt_id, issue_id, juris, domain, tier,
+                            home_status)
+  en <- canon |> filter(lang == "en") |>
+    select(model, prompt_id, y_en = all_of(outcome))
+  target <- canon |> filter(lang == language) |>
+    select(model, prompt_id, y_target = all_of(outcome))
+  universe <- meta |> left_join(en, by = c("model", "prompt_id")) |>
+    left_join(target, by = c("model", "prompt_id")) |>
+    mutate(pair_status = case_when(
+      !is.na(y_en) & !is.na(y_target) ~ "complete",
+      !is.na(y_en) ~ "English only",
+      !is.na(y_target) ~ "target only",
+      TRUE ~ "missing both"))
+  list(
+    blocks = universe |> filter(pair_status == "complete") |>
+      mutate(d = y_target - y_en),
+    diagnostics = universe |> count(pair_status, name = "n"))
+}
+
+# A. Prompt-fixed language contrasts ------------------------------------------
+c08 <- map_dfr(NONEN, function(language) {
+  map_dfr(OUTCOMES, function(outcome) {
+    p <- paired_language_blocks(language, outcome)
+    blocks <- p$blocks
+    B <- if (outcome == "genuine_refusal") B_PRIMARY else B_SENS
+    bt <- boot_paired(blocks, function(x) block_mean(x, "equal_model"), B,
+                      sprintf("c08|%s|%s", language, outcome))
+    counts <- setNames(p$diagnostics$n, p$diagnostics$pair_status)
+    n_status <- function(k) if (k %in% names(counts)) counts[[k]] else 0L
+    lv <- paired_levels(blocks)
+    tibble(
+      language = language, outcome = outcome,
+      outcome_role = unname(OUTCOME_ROLE[outcome]), weighting = "equal_model",
+      estimate = bt$estimate, conf_low = bt$conf_low,
+      conf_high = bt$conf_high, estimate_pp = pp(bt$estimate),
+      conf_low_pp = pp(bt$conf_low), conf_high_pp = pp(bt$conf_high),
+      mean_english = unname(lv["mean_english"]),
+      mean_target = unname(lv["mean_target"]),
+      mean_english_pp = pp(mean_english), mean_target_pp = pp(mean_target),
+      n_complete_blocks = nrow(blocks), n_issues = n_distinct(blocks$issue_id),
+      n_english_only = n_status("English only"),
+      n_target_only = n_status("target only"),
+      n_missing_both = n_status("missing both"),
+      interval_reliable = bt$interval_reliable,
+      replicate_failure_rate = bt$failure_rate)
   })
-})
-
-cat("  sensitivities: any-refusal, response length, prompt type, home status\n")
-lang_sens <- bind_rows(
-  map_dfr(NONEN, function(L) {
-    P <- paired_blocks(L, "refused_any")
-    bt <- boot_paired(P$blocks, function(x) wmean_blocks(x, "pooled"), B_SENS,
-                      sprintf("c08s|any|%s", L))
-    tibble(language = L, sensitivity = "outcome_any_refusal", level = "codes 3-5",
-           estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-  }),
-  map_dfr(NONEN, function(L) map_dfr(c("regular", "boundary"), function(t) {
-    P <- paired_blocks(L); b <- P$blocks %>% filter(tier == t)
-    bt <- boot_paired(b, function(x) wmean_blocks(x, "pooled"), B_SENS,
-                      sprintf("c08s|tier|%s|%s", L, t))
-    tibble(language = L, sensitivity = "prompt_type", level = t,
-           estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-  })),
-  map_dfr(NONEN, function(L) map_dfr(c("home", "away", "general"), function(h) {
-    P <- paired_blocks(L); b <- P$blocks %>% filter(home_status == h)
-    if (nrow(b) < 50) return(NULL)
-    bt <- boot_paired(b, function(x) wmean_blocks(x, "pooled"), B_SENS,
-                      sprintf("c08s|home|%s|%s", L, h))
-    tibble(language = L, sensitivity = "home_status", level = h,
-           estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-  })))
-if (!is.null(CANON_LEN)) {
-  lang_sens <- bind_rows(lang_sens, map_dfr(NONEN, function(L) {
-    en <- canon %>% filter(lang == "en") %>%
-      left_join(CANON_LEN, by = c("prompt_id", "prompt_language", "model")) %>%
-      select(block_id, model, issue_id, y_en = refused_strict, len_en = response_chars)
-    lx <- canon %>% filter(lang == L) %>%
-      left_join(CANON_LEN, by = c("prompt_id", "prompt_language", "model")) %>%
-      select(block_id, y_l = refused_strict, len_l = response_chars)
-    j <- inner_join(en, lx, by = "block_id") %>%
-      filter(!is.na(len_en), !is.na(len_l), pmin(len_en, len_l) >= 50) %>%
-      mutate(d = y_l - y_en)
-    bt <- boot_paired(j, function(x) wmean_blocks(x, "pooled"), B_SENS,
-                      sprintf("c08s|len|%s", L))
-    tibble(language = L, sensitivity = "min_response_chars", level = "50 (both sides)",
-           estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-  }))
-}
-
-# JUDGE SENSITIVITY IS NOT REPORTED FOR THE PAIRED LANGUAGE EFFECT, and the
-# rows that used to appear here have been retired.
-#
-# The panel judges labelled ENGLISH responses only. Re-labelling one arm of a
-# paired difference and leaving the other arm on the anchor judge's labels does
-# not perturb the instrument -- it changes the estimand into a comparison
-# between two different measuring devices, one per arm. Any movement it produced
-# was a between-judge level difference, not judge sensitivity of the language
-# effect. A real version needs the panel run on the non-English arm; until then
-# the honest statement is that this quantity has no judge-sensitivity estimate.
-LANG_JUDGE_NOTE <- paste(
-  "no judge-sensitivity estimate exists for the paired language effect:",
-  "the panel covers English only, and re-labelling a single arm compares two",
-  "instruments rather than perturbing one")
-
-# Assemble: primary rows (one per weighting) plus the labelled sensitivities.
-# The judge-perturbation rows that used to be bound in here are retired -- see
-# LANG_JUDGE_NOTE above.
-c08 <- bind_rows(
-  c08 %>% mutate(sensitivity = "primary", level = weighting),
-  lang_sens %>% mutate(weighting = "pooled")) %>%
-  mutate(primary_weighting = PRIMARY_W,
-         judge_sensitivity = LANG_JUDGE_NOTE,
-         estimand = "paired within-block difference, language minus English",
-         block_definition = "block_id = model x prompt_id",
-         interpretation = LANG_INTERP,
-         outcome = "refused_strict (codes 4-5) unless stated",
-         bootstrap_unit = "issue_id",
-         canonical_run_id = CANONICAL_RUN_ID)
+}) |> mutate(
+  estimand = "paired target-language minus English difference",
+  block = "model x prompt_id", bootstrap_unit = "issue_id",
+  interpretation = paste("effect of delivering the tested translation to the",
+    "tested model/prompt set; not the effect of user language"),
+  canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c08, file.path(CAN_EST, "c08_language_paired.csv"))
 
-# --- c08b: the weighting comparison, as a table -------------------------------
-# Pooled, equal-per-model and equal-per-model-issue agree to within a fraction
-# of a percentage point here, because the design is balanced. Showing all three
-# is how a reader knows that, but it does not need a panel -- so it is a table,
-# and the figure space goes to the per-model intervals instead.
-#
-# Written HERE rather than in 21_figures_extended.R, where it used to live: a
-# canonical output must be produced by the script that estimates it, not by the
-# script that draws it.
-write_csv(
-  c08 %>% filter(sensitivity == "primary") %>%
-    transmute(language = language_label, weighting, estimate_pp, conf_low_pp,
-              conf_high_pp,
-              primary_weighting,
-              note = paste("weighting comparison; the three agree closely, so",
-                           "this is tabulated rather than plotted"),
-              canonical_run_id = CANONICAL_RUN_ID),
-  file.path(CAN_EST, "c08b_weighting_comparison.csv"))
-cat("\n  primary (pooled):\n")
-print(as.data.frame(c08 %>% filter(sensitivity == "primary", weighting == PRIMARY_W) %>%
-        select(language_label, estimate_pp, conf_low_pp, conf_high_pp,
-               n_intended_blocks, n_complete_blocks, n_english_only,
-               n_target_language_only, completion_rate)),
-      digits = 3, row.names = FALSE)
+# Original-label measurement sensitivity. Complete-pair filtering automatically
+# restricts this table to the original eleven models because expansion rows have
+# no original Gemini label.
+c08c <- map_dfr(NONEN, function(language) {
+  p <- paired_language_blocks(language, "original_nonengagement")
+  bt <- boot_paired(p$blocks, function(x) block_mean(x, "equal_model"), B_SENS,
+                    sprintf("c08c|%s", language))
+  lv <- paired_levels(p$blocks)
+  tibble(language = language, outcome = "original_nonengagement",
+         outcome_role = "measurement sensitivity", weighting = "equal_model",
+         estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high,
+         estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+         conf_high_pp = pp(bt$conf_high), mean_english = unname(lv["mean_english"]),
+         mean_target = unname(lv["mean_target"]), n_complete_blocks = nrow(p$blocks),
+         n_models = n_distinct(p$blocks$model), interval_reliable = bt$interval_reliable)
+}) |> mutate(
+  estimand = "paired target-language minus English difference",
+  sample = "original eleven models with Gemini labels",
+  changed = "outcome definition and roster relative to the 20-model primary analysis",
+  canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c08c, file.path(CAN_EST, "c08c_original_nonengagement_sensitivity.csv"))
 
-cat("\n  heterogeneity by model and jurisdiction (EXPLORATORY)\n")
-c09 <- map_dfr(NONEN, function(L) {
-  P <- paired_blocks(L)
-  bind_rows(
-    map_dfr(sort(unique(as.character(P$blocks$model))), function(m) {
-      b <- P$blocks %>% filter(model == m)
-      bt <- boot_paired(b, function(x) mean(x$d), B_SENS, sprintf("c09|m|%s|%s", L, m))
-      tibble(language = L, grouping = "model", group = m,
-             jurisdiction = as.character(b$juris[1]), n_blocks = nrow(b),
-             estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-    }),
-    map_dfr(JURIS_C, function(j) {
-      b <- P$blocks %>% filter(juris == j)
-      if (!nrow(b)) return(NULL)
-      bt <- boot_paired(b, function(x) wmean_blocks(x, "equal_model"), B_SENS,
-                        sprintf("c09|j|%s|%s", L, j))
-      tibble(language = L, grouping = "jurisdiction", group = j, jurisdiction = j,
-             n_blocks = nrow(b), estimate = bt$estimate,
-             conf_low = bt$conf_low, conf_high = bt$conf_high)
-    }))
-}) %>% mutate(language_label = unname(LANG_LAB[language]),
-              estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
-              conf_high_pp = pp(conf_high), interpretation = LANG_INTERP,
-              canonical_run_id = CANONICAL_RUN_ID)
-c09 <- c09 %>% mutate(
-  evidence_status = paste("EXPLORATORY. 44 model x language cells are reported;",
-    "these are not multiplicity-adjusted, and a cell whose interval excludes",
-    "zero is not a confirmatory test. Read them as heterogeneity description."),
-  n_cells_reported = nrow(c09))
+# Same complete blocks under empirical-response rather than equal-model weights.
+c08b <- map_dfr(NONEN, function(language) {
+  p <- paired_language_blocks(language, "genuine_refusal")
+  bt <- boot_paired(p$blocks, function(x) block_mean(x, "response"), B_SENS,
+                    sprintf("c08b|%s", language))
+  tibble(language = language, outcome = "genuine_refusal",
+         weighting = "response", estimate = bt$estimate,
+         conf_low = bt$conf_low, conf_high = bt$conf_high,
+         estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+         conf_high_pp = pp(bt$conf_high), n_complete_blocks = nrow(p$blocks))
+}) |> mutate(note = "weighting sensitivity; primary c08 gives models equal weight",
+             canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c08b, file.path(CAN_EST, "c08b_weighting_comparison.csv"))
+
+# Exploratory model-specific heterogeneity; no multiplicity-adjusted claims.
+c09 <- map_dfr(NONEN, function(language) {
+  map_dfr(c("genuine_refusal", "capability_failure"), function(outcome) {
+    p <- paired_language_blocks(language, outcome)$blocks
+    map_dfr(sort(unique(p$model)), function(m) {
+      d <- p |> filter(model == m)
+      bt <- boot_paired(d, function(x) mean(x$d), B_SENS,
+                        sprintf("c09|%s|%s|%s", language, outcome, m))
+      tibble(language = language, outcome = outcome, model = m,
+             jurisdiction = as.character(d$juris[1]), n_blocks = nrow(d),
+             n_issues = n_distinct(d$issue_id), estimate = bt$estimate,
+             conf_low = bt$conf_low, conf_high = bt$conf_high,
+             estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+             conf_high_pp = pp(bt$conf_high),
+             mean_english = mean(d$y_en), mean_target = mean(d$y_target),
+             mean_english_pp = pp(mean_english), mean_target_pp = pp(mean_target),
+             interval_reliable = bt$interval_reliable)
+    })
+  })
+}) |> mutate(
+  estimand = "model-specific paired language minus English difference",
+  evidence_status = "exploratory heterogeneity; no multiplicity adjustment",
+  canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c09, file.path(CAN_EST, "c09_language_by_model.csv"))
-cat(sprintf("  c09: %d rows\n", nrow(c09)))
 
-# =============================================================================
-# B. FRAMING  (c10, c11)
-# =============================================================================
-cat("\nB. paired framing effects (English primary)\n")
-
-# The design puts TWO regular and TWO boundary prompts in every issue x model x
-# language block. A block with fewer is an incomplete cell, and averaging over
-# whatever happens to be present makes the comparison depend on which prompt
-# survived -- the arms are then not matched on prompt position within the issue.
-# PRIMARY requires the complete 2+2 block. The looser n_reg>0 & n_bnd>0 rule is
-# retained as a labelled sensitivity so the cost of the restriction is visible.
-frame_blocks <- function(d, outcome = "refused_strict", complete_only = TRUE) {
-  b <- d %>% group_by(issue_id, model, lang, juris, domain) %>%
-    summarise(n_reg = sum(tier == "regular"), n_bnd = sum(tier == "boundary"),
-              mean_reg = mean(.data[[outcome]][tier == "regular"]),
-              mean_bnd = mean(.data[[outcome]][tier == "boundary"]),
-              .groups = "drop") %>%
-    filter(n_reg > 0, n_bnd > 0) %>% mutate(d = mean_bnd - mean_reg)
-  if (complete_only) b <- b %>% filter(n_reg == 2, n_bnd == 2)
-  b
+# B. Issue/model-paired framing contrasts -------------------------------------
+framing_blocks <- function(outcome, complete_only = TRUE) {
+  x <- CANON_ENGLISH |> filter(!is.na(.data[[outcome]])) |>
+    group_by(issue_id, model, juris, domain) |>
+    summarise(n_regular = sum(tier == "regular"),
+              n_boundary = sum(tier == "boundary"),
+              mean_regular = ifelse(n_regular > 0,
+                mean(.data[[outcome]][tier == "regular"]), NA_real_),
+              mean_boundary = ifelse(n_boundary > 0,
+                mean(.data[[outcome]][tier == "boundary"]), NA_real_),
+              .groups = "drop") |>
+    filter(n_regular > 0, n_boundary > 0) |>
+    mutate(d = mean_boundary - mean_regular)
+  if (complete_only) x |> filter(n_regular == 2, n_boundary == 2) else x
 }
 
-FB_ALL <- frame_blocks(CANON_ENGLISH, complete_only = FALSE)
-FB_EN  <- FB_ALL %>% filter(n_reg == 2, n_bnd == 2)
-
-# Report the incomplete blocks BY KEY, so they can be chased in the raw data
-# rather than merely counted.
-FB_INCOMPLETE <- FB_ALL %>% filter(n_reg != 2 | n_bnd != 2) %>%
-  transmute(issue_id, model, language = lang, n_regular = n_reg,
-            n_boundary = n_bnd,
-            reason = "expected 2 regular + 2 boundary prompts",
-            canonical_run_id = CANONICAL_RUN_ID)
-write_csv(FB_INCOMPLETE, file.path(CAN_EST, "c10b_framing_incomplete_blocks.csv"))
-cat(sprintf("  framing blocks: %d complete (2+2), %d incomplete -> c10b\n",
-            nrow(FB_EN), nrow(FB_INCOMPLETE)))
-if (nrow(FB_INCOMPLETE))
-  print(as.data.frame(FB_INCOMPLETE %>% select(issue_id, model, n_regular, n_boundary)),
-        row.names = FALSE)
-bt <- boot_paired(FB_EN, function(x) wmean_blocks(x, "equal_model"), B_HEAD, "c10|overall")
-c10 <- tibble(scope = "overall", level = "all models", n_blocks = nrow(FB_EN),
-              n_issues = n_distinct(FB_EN$issue_id),
-              mean_regular = mean(FB_EN$mean_reg), mean_boundary = mean(FB_EN$mean_bnd),
-              estimate = bt$estimate, conf_low = bt$conf_low, conf_high = bt$conf_high)
-
-for (how in c("pooled", "equal_model_issue")) {
-  b2 <- boot_paired(FB_EN, function(x) wmean_blocks(x, how), B_SENS,
-                    sprintf("c10|w|%s", how))
-  c10 <- bind_rows(c10, tibble(scope = "weighting sensitivity", level = how,
-    n_blocks = nrow(FB_EN), n_issues = n_distinct(FB_EN$issue_id),
-    estimate = b2$estimate, conf_low = b2$conf_low, conf_high = b2$conf_high))
-}
-# Block-completeness sensitivity: the looser rule, labelled.
-b_loose <- boot_paired(FB_ALL, function(x) wmean_blocks(x, "equal_model"), B_SENS,
-                       "c10|blocks|loose")
-c10 <- bind_rows(c10, tibble(scope = "block completeness sensitivity",
-  level = "n_reg>0 & n_bnd>0 (incomplete blocks included)",
-  n_blocks = nrow(FB_ALL), n_issues = n_distinct(FB_ALL$issue_id),
-  estimate = b_loose$estimate, conf_low = b_loose$conf_low,
-  conf_high = b_loose$conf_high))
-
-# any-refusal outcome
-FB_ANY <- frame_blocks(CANON_ENGLISH, "refused_any")
-b3 <- boot_paired(FB_ANY, function(x) wmean_blocks(x, "equal_model"), B_SENS, "c10|any")
-c10 <- bind_rows(c10, tibble(scope = "outcome sensitivity", level = "refused_any (codes 3-5)",
-  n_blocks = nrow(FB_ANY), estimate = b3$estimate, conf_low = b3$conf_low,
-  conf_high = b3$conf_high))
-
-c10 <- c10 %>% mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
-                      conf_high_pp = pp(conf_high),
-                      estimand = "paired boundary-minus-regular framing difference",
-                      block_definition = "issue_id x model x language",
-                      sample = "English", weighting = "equal-model unless stated",
-                      block_rule = "PRIMARY: complete 2 regular + 2 boundary blocks only",
-                      interpretation = FRAME_INTERP, bootstrap_unit = "issue_id",
-                      canonical_run_id = CANONICAL_RUN_ID)
-write_csv(c10, file.path(CAN_EST, "c10_framing_paired.csv"))
-print(as.data.frame(c10 %>% select(scope, level, estimate_pp, conf_low_pp, conf_high_pp)),
-      digits = 3, row.names = FALSE)
-
-cat("\n  framing by model and domain\n")
-c11 <- bind_rows(
-  map_dfr(sort(unique(as.character(FB_EN$model))), function(m) {
-    b <- FB_EN %>% filter(model == m)
-    r <- boot_paired(b, function(x) mean(x$d), B_SENS, sprintf("c11|m|%s", m))
-    tibble(grouping = "model", group = m, jurisdiction = as.character(b$juris[1]),
-           n_blocks = nrow(b), estimate = r$estimate,
-           conf_low = r$conf_low, conf_high = r$conf_high)
-  }),
-  map_dfr(sort(unique(as.character(FB_EN$domain))), function(dm) {
-    b <- FB_EN %>% filter(domain == dm)
-    r <- boot_paired(b, function(x) wmean_blocks(x, "equal_model"), B_SENS,
-                     sprintf("c11|d|%s", dm))
-    tibble(grouping = "domain", group = dm, jurisdiction = NA_character_,
-           n_blocks = nrow(b), estimate = r$estimate,
-           conf_low = r$conf_low, conf_high = r$conf_high)
-  })) %>%
-  mutate(estimate_pp = pp(estimate), conf_low_pp = pp(conf_low),
-         conf_high_pp = pp(conf_high), interpretation = FRAME_INTERP,
+all_blocks <- framing_blocks("genuine_refusal", complete_only = FALSE)
+c10b <- all_blocks |> filter(n_regular != 2 | n_boundary != 2) |>
+  mutate(reason = "primary framing estimand requires 2 regular and 2 boundary prompts",
          canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c10b, file.path(CAN_EST, "c10b_framing_incomplete_blocks.csv"))
 
-# Legacy GLMMs retained as SENSITIVITIES only.
-cat("  legacy GLMM sensitivities\n")
-suppressPackageStartupMessages(library(lme4))
-glmm_rows <- tibble()
-for (spec in c("refused ~ tier + (1|issue_id)",
-               "refused ~ tier * domain + model + (1|issue_id)")) {
-  m <- tryCatch(glmer(as.formula(sub("refused", "refused_strict", spec)),
-                      data = CANON_ENGLISH, family = binomial,
-                      control = glmerControl(optimizer = "bobyqa",
-                                             optCtrl = list(maxfun = 2e5))),
-                error = function(e) NULL)
-  glmm_rows <- bind_rows(glmm_rows, tibble(
-    grouping = "legacy GLMM sensitivity", group = spec, jurisdiction = NA_character_,
-    n_blocks = nrow(CANON_ENGLISH),
-    estimate = if (is.null(m)) NA_real_ else unname(fixef(m)["tierboundary"]),
-    conf_low = NA_real_, conf_high = NA_real_, estimate_pp = NA_real_,
-    interpretation = paste("LOG-ODDS coefficient, not a probability difference;",
-                           "retained as a sensitivity only")))
-}
-c11 <- bind_rows(c11, glmm_rows) %>% mutate(canonical_run_id = CANONICAL_RUN_ID)
-write_csv(c11, file.path(CAN_EST, "c11_framing_by_model_domain.csv"))
-cat(sprintf("  c11: %d rows\n", nrow(c11)))
+c10 <- map_dfr(OUTCOMES, function(outcome) {
+  d <- framing_blocks(outcome)
+  B <- if (outcome == "genuine_refusal") B_PRIMARY else B_SENS
+  bt <- boot_paired(d, function(x) block_mean(x, "equal_model"), B,
+                    sprintf("c10|%s", outcome))
+  mean_regular_equal_model <- mean(tapply(d$mean_regular, d$model, mean))
+  mean_boundary_equal_model <- mean(tapply(d$mean_boundary, d$model, mean))
+  tibble(outcome = outcome, outcome_role = unname(OUTCOME_ROLE[outcome]),
+         n_blocks = nrow(d), n_issues = n_distinct(d$issue_id),
+         mean_regular = mean_regular_equal_model,
+         mean_boundary = mean_boundary_equal_model, estimate = bt$estimate,
+         conf_low = bt$conf_low, conf_high = bt$conf_high,
+         estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+         conf_high_pp = pp(bt$conf_high),
+         interval_reliable = bt$interval_reliable)
+}) |> mutate(
+  estimand = "paired boundary minus regular mean within issue x model",
+  sample = "English complete 2+2 blocks", weighting = "equal model",
+  causal_interpretation = paste("requires exchangeability of generated regular",
+    "and boundary variants within issue; variants were not randomized"),
+  canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c10, file.path(CAN_EST, "c10_framing_paired.csv"))
+
+d_original_framing <- framing_blocks("original_nonengagement")
+bt_original_framing <- boot_paired(
+  d_original_framing, function(x) block_mean(x, "equal_model"), B_SENS,
+  "c10c|original_nonengagement")
+c10c <- tibble(
+  outcome = "original_nonengagement", outcome_role = "measurement sensitivity",
+  n_blocks = nrow(d_original_framing),
+  n_issues = n_distinct(d_original_framing$issue_id),
+  n_models = n_distinct(d_original_framing$model),
+  mean_regular = mean(tapply(d_original_framing$mean_regular,
+                             d_original_framing$model, mean)),
+  mean_boundary = mean(tapply(d_original_framing$mean_boundary,
+                              d_original_framing$model, mean)),
+  estimate = bt_original_framing$estimate,
+  conf_low = bt_original_framing$conf_low,
+  conf_high = bt_original_framing$conf_high,
+  estimate_pp = pp(estimate), conf_low_pp = pp(conf_low), conf_high_pp = pp(conf_high),
+  interval_reliable = bt_original_framing$interval_reliable,
+  estimand = "paired boundary minus regular mean within issue x model",
+  sample = "original eleven English models with Gemini labels; complete 2+2 blocks",
+  changed = "outcome definition and roster relative to the 20-model primary analysis",
+  canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c10c, file.path(CAN_EST, "c10c_original_nonengagement_sensitivity.csv"))
+
+c11 <- map_dfr(c("genuine_refusal", "capability_failure"), function(outcome) {
+  d <- framing_blocks(outcome)
+  map_dfr(sort(unique(d$model)), function(m) {
+    z <- d |> filter(model == m)
+    bt <- boot_paired(z, function(x) mean(x$d), B_SENS,
+                      sprintf("c11|%s|%s", outcome, m))
+    tibble(outcome = outcome, model = m,
+           jurisdiction = as.character(z$juris[1]), n_blocks = nrow(z),
+           n_issues = n_distinct(z$issue_id), estimate = bt$estimate,
+           conf_low = bt$conf_low, conf_high = bt$conf_high,
+           estimate_pp = pp(bt$estimate), conf_low_pp = pp(bt$conf_low),
+           conf_high_pp = pp(bt$conf_high),
+           interval_reliable = bt$interval_reliable)
+  })
+}) |> mutate(
+  estimand = "model-specific paired boundary minus regular difference",
+  evidence_status = "exploratory heterogeneity; no multiplicity adjustment",
+  canonical_run_id = CANONICAL_RUN_ID)
+write_csv(c11, file.path(CAN_EST, "c11_framing_by_model.csv"))
 
 flush_diag()
-cat("\n", strrep("=", 78), "\nPART 2 DONE\n", strrep("=", 78), "\n", sep = "")
+cat(sprintf("wrote c08-c11; %d primary language rows\n",
+            sum(c08$outcome == "genuine_refusal")))

@@ -1,0 +1,48 @@
+{
+  "snapshot_version": "fold-nested-refusal-refinement-v2.0",
+  "pricing_verified_at": "2026-08-25",
+  "currency": "USD",
+  "pricing_basis": "OpenRouter first-party OpenAI route list price; cache discounts and fallback routes excluded",
+  "source_bakeoff_version": "scalable-human-annotation-bakeoff-v1.0",
+  "folds": 5,
+  "model": {
+    "model_id": "openai/gpt-5.6-luna",
+    "provider_tag": "openai",
+    "allow_fallbacks": false,
+    "input_usd_per_million": 0.20,
+    "output_usd_per_million": 1.20,
+    "reasoning": {"enabled": false, "exclude": true},
+    "pricing_source": "https://openrouter.ai/openai/gpt-5.6-luna"
+  },
+  "configuration": "fold_nested_error_targeted_15_v2",
+  "input_modes": [
+    "original_only",
+    "original_plus_translation"
+  ],
+  "examples_per_fold": 15,
+  "example_roles_per_language": [
+    "hard_refusal",
+    "boundary_nonrefusal",
+    "hard_capability_failure"
+  ],
+  "max_output_tokens": 420,
+  "planning_output_tokens": 190,
+  "input_token_reserve_multiplier": 1.10,
+  "input_token_reserve_fixed": 256,
+  "max_attempts": 4,
+  "threshold_selection": {
+    "unit": "held-out issue fold",
+    "training_data": "completed v1 Luna zero-shot probabilities from the other four issue folds only, matched to input mode",
+    "transfer_rule": "freeze the selected threshold before the v2 provider run and apply it unchanged to v2 probabilities in the held-out fold",
+    "candidate_grid": "all unique training-fold refusal probabilities plus 0 and 1",
+    "eligible_rule": "refusal precision >= 0.75 and recall >= 0.80 on the four training folds",
+    "selection_rule": "among eligible thresholds maximize refusal F1, then precision, then choose the higher threshold",
+    "failure_rule": "if none is eligible, among thresholds with recall >= 0.80 maximize precision, then F1, then choose the higher threshold; if no threshold reaches 0.80 recall, maximize recall, then precision, then F1, then choose the lower threshold; a training-fold failure is recorded but final promotion still uses the untouched concatenated predictions"
+  },
+  "promotion_gates": {
+    "schema_success_min": 0.995,
+    "genuine_refusal_recall_min": 0.80,
+    "genuine_refusal_precision_min": 0.75,
+    "capability_failure_f1_min": 0.80
+  }
+}

@@ -1,445 +1,315 @@
 # =============================================================================
-# MAIN FIGURES -- Fig 1, Fig 2, Fig 3
+# Technical reference: docs/r_pipeline/20_figures_main.md
+# MAIN FIGURES -- genuine refusal only
 # =============================================================================
-#   Fig 1  home jurisdiction: unadjusted and standardized differences, one forest
-#   Fig 2  language: pooled, jurisdiction and model contrasts (framing is ED10)
-#   Fig 3  content of engaged responses: ideology, foundations, agreement
+# Figure 1 places the English genuine-refusal semantic map beside the matching
+# English home-topic contrasts for each developer jurisdiction. One fixed UMAP
+# geometry is reused throughout. A coloured sector denotes each model that
+# refused; this preserves multi-model combinations without inventing dozens of
+# categorical combination colours.
 #
-# These READ the canonical tables and fit nothing, which is what lets
-# audit_figures.R check every plotted value against its source row. They write
-# no canonical table either: a table produced only by a plotting script exists
-# only when the artwork is rebuilt.
-#
-# NO TITLES, SUBTITLES OR CAPTIONS INSIDE A PANEL. Panel letters (multi-panel
-# figures only), axis labels, tick labels, category names, concise facet
-# headings, compact legends and direct numeric labels. Everything else is in
-# docs/CANONICAL_FIGURE_LEGENDS.md.
-#
-# ORDERINGS COME FROM pipeline/_orders.R and are never re-derived from the data.
-#
-# THREE ENCODINGS ARE CONSTANT ACROSS THE WHOLE SET and carry no legend:
-#   * an INTERVAL is thin, dark and centred on its estimate; a paired CONNECTOR
-#     is thicker, much paler, and runs only between two paired endpoints;
-#   * a STRUCTURAL ZERO -- no refusals at all, so the contrast does not exist --
-#     is a hollow square with the words "not estimable", never a point at zero;
-#   * colour never carries two meanings in one figure.
+# Figure 2 links delivered-language semantic maps to paired language contrasts.
+# Capability failure is absent from both main figures and appears separately in
+# Extended Data. This script fits no model, interval, embedding, or UMAP.
 
 source("pipeline/_theme.R")
-suppressPackageStartupMessages({
-  library(tidyverse); library(scales); library(patchwork)
-})
+suppressPackageStartupMessages({library(tidyverse); library(patchwork)})
 
 CAN_EST <- Sys.getenv("CANON_EST_DIR", "pipeline/estimates/canonical")
 CAN_FIG <- Sys.getenv("CANON_FIG_DIR", "pipeline/figures/main")
+CAN_LAYOUT <- Sys.getenv("CANON_LAYOUT_DIR", CAN_EST)
 dir.create(CAN_FIG, showWarnings = FALSE, recursive = TRUE)
-rd <- function(f) { p <- file.path(CAN_EST, f)
-  if (file.exists(p)) read_csv(p, show_col_types = FALSE) else
-    stop("missing canonical table: ", f) }
-
-PROMOTED_FIG <- "pipeline/figures/main"
-
-# A PREVIEW RENDER MUST NOT TOUCH THE PROMOTED TREE. The layout artefact goes to
-# CAN_EST, which defaults to the promoted estimates directory -- so rendering a
-# draft to a scratch CANON_FIG_DIR without also redirecting CANON_EST_DIR used to
-# overwrite a promoted file. Figures somewhere else plus estimates in the
-# promoted tree means this is a preview, and the write is skipped.
-save_layout <- function(obj, fname) {
-  same <- function(a, b) identical(normalizePath(a, mustWork = FALSE),
-                                   normalizePath(b, mustWork = FALSE))
-  if (same(CAN_EST, "pipeline/estimates/canonical") &&
-      !same(CAN_FIG, PROMOTED_FIG)) {
-    cat("  preview render: layout artefact NOT written to the promoted tree\n")
-  } else saveRDS(obj, file.path(CAN_EST, fname))
+dir.create(CAN_LAYOUT, showWarnings = FALSE, recursive = TRUE)
+rd <- function(f) {
+  p <- file.path(CAN_EST, f)
+  if (!file.exists(p)) stop("missing canonical table: ", f)
+  read_csv(p, show_col_types = FALSE)
 }
 theme_set(theme_nature(base_size = PT_BODY))
-TXT <- pt_to_mm(PT_MIN)
-LWC <- 0.5
+figs <- list()
+save_main <- function(plot, name, height) {
+  save_fig(plot, file.path(CAN_FIG, paste0(name, ".png")),
+           width = W2, height = height)
+  figs[[name]] <<- plot
+}
 
-cat(strrep("=", 78), "\nMAIN FIGURES\n", strrep("=", 78), "\n", sep = "")
+JURIS_LABEL <- c(CN = "China", MENA = "MENA", India = "India",
+                 US = "United States", EU = "Europe")
+LANG_LABEL <- c(en = "English", zh = "Chinese", ar = "Arabic",
+                ru = "Russian", hi = "Hindi")
+HOME_X_LIMITS <- c(-15, 25)
 
-# =============================================================================
-# FIGURE 1 -- home jurisdiction: hierarchical forest, two aligned columns
-# =============================================================================
-# TWO COLUMNS, ONE ROW SPINE. The unadjusted difference and the standardized
-# contrast share a hierarchical y axis -- jurisdiction aggregate, then the models
-# inside it -- and ONE x scale, so a mark at the same horizontal position means
-# the same number in either column.
-#
-# THE TWO COLUMNS ARE DIFFERENT ESTIMANDS, not two goes at one number. Both are
-# equal-model weighted so the only thing that differs between them is the
-# adjustment; the standardized column remains a covariate-standardized
-# predictive contrast, not a causal effect.
-#
-# WHY THE MODEL ROWS CARRY NO INTERVALS. The panel's job is to show whether a
-# jurisdiction result is consistent across the models inside it, and that is a
-# question about the SPREAD of the model points. Drawn with intervals, four
-# overlapping pale bars in the US block obscure the spread and compete with the
-# aggregate; drawn as points, the spread reads instantly. The model intervals
-# are in c02 and c05, and they are exploratory in any case -- not
-# multiplicity-adjusted -- so giving them interval-level prominence here would
-# overstate them.
-#
-# COLOUR MEANS JURISDICTION AND NOTHING ELSE. The aggregate takes the full
-# jurisdiction colour, the models the same hue at reduced opacity. Rank within a
-# group is never encoded.
-cat("Fig 1 ...\n")
+# Shared data contracts ------------------------------------------------------
 c02 <- rd("c02_home_descriptive_english.csv")
 c04 <- rd("c04_home_standardized.csv")
 c05 <- rd("c05_home_by_model.csv")
+c08 <- rd("c08_language_paired.csv")
+c09 <- rd("c09_language_by_model.csv")
+c22 <- rd("c22_prompt_umap_coordinates.csv")
+c22p <- rd("c22_prompt_outcome_propensities.csv")
+c22m <- rd("c22_prompt_outcomes_by_model.csv")
 
-# EQUAL-MODEL descriptive weighting, chosen deliberately: the standardized
-# contrast standardizes to a target in which every model carries equal weight,
-# so the descriptive column must weight models the same way. It is also what
-# makes the hierarchy honest -- the aggregate is exactly the mean of the model
-# points shown beneath it.
-u_agg <- c02 %>% filter(grouping == "jurisdiction", quantity == "home_minus_away",
-                        weighting == "equal_model") %>%
-  transmute(jurisdiction, key = "AGG", est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, estimable)
-u_mod <- c02 %>% filter(grouping == "model", quantity == "home_minus_away") %>%
-  transmute(jurisdiction, key = stratum_value, est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, estimable)
-s_agg <- c04 %>% filter(weighting == "nested", estimator == "maximum likelihood",
-                        support == "full target") %>%
-  transmute(jurisdiction, key = "AGG", est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, estimable)
-s_mod <- c05 %>% filter(model != "EQUAL-MODEL AVERAGE") %>%
-  transmute(jurisdiction, key = model, est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, estimable)
+stopifnot(nrow(c22) == 2496L, !anyDuplicated(c22$prompt_id),
+          setequal(unique(c22m$model), ORDER_MODEL),
+          all(c22m$genuine_refusal %in% 0:1))
+c22m <- c22m |> mutate(jurisdiction = unname(MODEL_JURIS[model]))
+stopifnot(!anyNA(c22m$jurisdiction))
 
-# STRUCTURAL ZEROS ARE NOT ESTIMATES. EU recorded no refusals in either arm, so
-# the standardized contrast is undefined and the descriptive difference is an
-# arithmetic 0 - 0 rather than a measured null. c02 reports it as estimable with
-# a value of 0; that is true of the arithmetic and false of the quantity, so the
-# jurisdiction is marked not estimable in BOTH columns here.
-zero_arm <- c02 %>%
-  filter(grouping == "jurisdiction", quantity == "observed_rate",
-         weighting == "response", home_status %in% c("home", "away")) %>%
-  group_by(jurisdiction) %>%
-  summarise(structural = sum(refusals_strict) == 0, .groups = "drop") %>%
-  filter(structural) %>% pull(jurisdiction)
-blank_zero <- function(d) d %>%
-  mutate(estimable = estimable & !(jurisdiction %in% zero_arm))
-u_agg <- blank_zero(u_agg); u_mod <- blank_zero(u_mod)
-s_agg <- blank_zero(s_agg); s_mod <- blank_zero(s_mod)
-
-# A jurisdiction with ONE model has an aggregate that is arithmetically that
-# model's estimate, in both columns. Two marks for one number is not a
-# hierarchy, so those arms get a single row.
-n_models <- s_mod %>% count(jurisdiction)
-single <- n_models$jurisdiction[n_models$n == 1]
-
-spine <- map_dfr(ORDER_JURIS, function(j) {
-  ms <- intersect(ORDER_MODEL, s_mod$key[s_mod$jurisdiction == j])
-  rows <- tibble(jurisdiction = j, key = "AGG", lab = j, is_agg = TRUE)
-  if (!(j %in% single) && length(ms))
-    rows <- bind_rows(rows, tibble(jurisdiction = j, key = ms,
-                                   lab = paste0("   ", ms), is_agg = FALSE))
-  rows
-}) %>%
-  # Whitespace, not rules or shading, separates the groups.
-  mutate(gap = cumsum(is_agg & row_number() > 1), y = -(row_number() + 0.6 * gap))
-
-# One shared x range across both columns.
-XL <- bind_rows(u_agg, u_mod, s_agg, s_mod) %>% filter(estimable)
-XLIM <- c(min(XL$lo, min(XL$est), na.rm = TRUE) - 1.0,
-          max(XL$hi, max(XL$est), na.rm = TRUE) + 3.5)
-
-# EQUAL PANEL WIDTHS, so 1 pp is the same physical distance in both columns.
-# The row labels sit in the left panel's y-axis strip and consume width the
-# right panel would otherwise give to data. The right panel therefore carries
-# the SAME labels drawn in no colour: the strip is measured and reserved
-# identically, nothing is drawn, and the two panel regions come out the same
-# width. Setting widths = c(1, 1) alone would not do it.
-mk_col <- function(dat, xlab, show_y) {
-  d   <- spine %>% left_join(dat, by = c("jurisdiction", "key"))
-  agg <- d %>% filter(is_agg, estimable %in% TRUE)
-  mod <- d %>% filter(!is_agg, estimable %in% TRUE)
-  ne  <- d %>% filter(is_agg, !(estimable %in% TRUE))
-  ggplot() +
-    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
-    geom_point(data = mod, aes(x = est, y = y, colour = jurisdiction),
-               size = 1.4, alpha = 0.5, shape = 16) +
-    geom_linerange(data = agg, aes(y = y, xmin = lo, xmax = hi,
-                                   colour = jurisdiction), linewidth = 0.85) +
-    geom_point(data = agg, aes(x = est, y = y, fill = jurisdiction),
-               shape = 23, size = 2.5, colour = "white", stroke = 0.4) +
-    geom_text(data = agg, aes(x = hi, y = y, label = fmt_pp(est),
-                              colour = jurisdiction),
-              hjust = -0.30, size = TXT, fontface = "bold") +
-    { if (nrow(ne))
-        geom_point(data = ne, aes(x = 0, y = y), shape = SHAPE_NOT_ESTIMABLE,
-                   size = 1.7, colour = INK_FAINT, stroke = 0.4) } +
-    { if (nrow(ne))
-        geom_text(data = ne, aes(x = 0, y = y), label = NOT_ESTIMABLE_TEXT,
-                  hjust = -0.14, size = TXT, colour = INK_FAINT) } +
-    scale_colour_manual(values = PAL_JURIS, guide = "none") +
-    scale_fill_manual(values = PAL_JURIS, guide = "none") +
-    scale_y_continuous(breaks = spine$y, labels = spine$lab,
-                       limits = range(spine$y) + c(-0.9, 0.9)) +
-    scale_x_continuous(limits = XLIM, expand = expansion(mult = c(0.01, 0.01))) +
-    labs(x = xlab, y = NULL) +
-    theme_nature(base_size = PT_BODY, grid = "x") +
-    theme(axis.ticks.y = element_blank(),
-          # Jurisdiction rows are ink and bold; model rows are indented, softer
-          # and lighter, so the hierarchy reads without boxes or shading. The
-          # per-tick vectors are the standard idiom for this and ggplot2 warns
-          # that it is not formally supported; the warning is muted at the call
-          # site rather than the styling being dropped.
-          axis.text.y = element_text(
-            hjust = 0, size = PT_MIN,
-            colour = if (show_y) ifelse(spine$is_agg, INK, INK_SOFT) else NA,
-            face = ifelse(spine$is_agg, "bold", "plain"))) +
-    tag_only() + theme(plot.tag = element_blank())
-}
-quiet_vec_text <- function(expr) withCallingHandlers(expr, warning = function(w) {
-  if (grepl("Vectorized input to `element_text", conditionMessage(w)))
-    invokeRestart("muffleWarning") })
-
-p1 <- quiet_vec_text(
-  (mk_col(bind_rows(u_agg, u_mod), "Unadjusted home - away (pp)", TRUE) |
-   mk_col(bind_rows(s_agg, s_mod), "Standardized home - away (pp)", FALSE)) +
-    plot_layout(widths = c(1, 1)))
-save_fig(p1, file.path(CAN_FIG, "Fig1_home_jurisdiction.png"),
-         width = W2, height = H_WIDE)
-
-# =============================================================================
-# FIGURE 2 -- language: pooled, jurisdiction and model, on one shared scale
-# =============================================================================
-# FRAMING IS NOT IN THIS FIGURE. It is a different exposure answered by a
-# different block, and pairing it with language forced both into a half-height
-# panel. It is now ED10, at full size, with nothing removed from the analysis.
-#
-# THREE NESTED LEVELS, ALL CANONICAL. The overall pooled contrast (c08 primary,
-# equal_model), the five jurisdiction contrasts and the eleven model contrasts
-# (both c09). The jurisdiction rows are NOT an aesthetic addition: c09 applies
-# the SAME estimator as c08's primary -- wmean_blocks(., "equal_model") over the
-# paired blocks -- restricted to one jurisdiction's models, with its own paired
-# bootstrap. The nesting is exact and is checked in audit_figures.R: each
-# jurisdiction equals the equal-model mean of its models, and the overall equals
-# the equal-model mean of all eleven, to 1e-8.
-#
-# COLOUR MEANS JURISDICTION. The pooled row is ink, not a hue, because "all
-# models" is not a jurisdiction.
-#
-# ONE SHARED LINEAR SCALE, NOT FOUR FREE ONES. Cross-language magnitude is part
-# of the result: Hindi is not Chinese with a different axis. The cost is real --
-# five of the 44 model cells run past +15 pp and compress the rest -- and two
-# alternatives were tested and rejected. Clipping the axis pushed the MENA
-# aggregate for Hindi (+35 pp) off the panel, and a canonical aggregate must not
-# be an arrowhead. A second magnified band read well but doubled the figure to a
-# full page to re-draw the same spine, and the cell-level detail it showed is
-# already ED4. What the shared scale still delivers is the finding: the pooled
-# effects are small and the MENA spread around them is enormous.
-cat("Fig 2 ...\n")
-c08 <- rd("c08_language_paired.csv"); c09 <- rd("c09_language_by_model.csv")
-
-lv_all <- c08 %>% filter(sensitivity == "primary", weighting == "equal_model") %>%
-  transmute(language, key = "ALL", jurisdiction = NA_character_,
-            est = estimate_pp, lo = conf_low_pp, hi = conf_high_pp, lvl = "all")
-lv_jur <- c09 %>% filter(grouping == "jurisdiction") %>%
-  transmute(language, key = group, jurisdiction = group, est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, lvl = "juris")
-lv_mod <- c09 %>% filter(grouping == "model") %>%
-  transmute(language, key = group, jurisdiction, est = estimate_pp,
-            lo = conf_low_pp, hi = conf_high_pp, lvl = "model")
-lv <- bind_rows(lv_all, lv_jur, lv_mod)
-
-# A one-model jurisdiction has an aggregate equal to its model, so it gets one
-# row -- the same rule as Fig 1.
-lv_single <- lv_mod %>% distinct(jurisdiction, key) %>% count(jurisdiction) %>%
-  filter(n == 1) %>% pull(jurisdiction)
-lspine <- bind_rows(
-  tibble(jurisdiction = NA_character_, key = "ALL", lab = "All models", lvl = "all"),
-  map_dfr(ORDER_JURIS, function(j) {
-    ms <- intersect(ORDER_MODEL, lv_mod$key[lv_mod$jurisdiction == j])
-    r <- tibble(jurisdiction = j, key = j, lab = j, lvl = "juris")
-    if (!(j %in% lv_single) && length(ms))
-      r <- bind_rows(r, tibble(jurisdiction = j, key = ms,
-                               lab = paste0("   ", ms), lvl = "model"))
-    r
-  })) %>%
-  # Whitespace, not rules or shading, separates the groups.
-  mutate(gap = cumsum(lvl != "model" & row_number() > 1),
-         y = -(row_number() + 0.7 * gap))
-
-LANG_XLIM <- c(-9, 72)
-
-lang_panel <- function(L) {
-  d <- lspine %>% left_join(filter(lv, language == L),
-                            by = c("jurisdiction", "key", "lvl"))
-  A <- filter(d, lvl == "all"); J <- filter(d, lvl == "juris")
-  M <- filter(d, lvl == "model")
-  span <- diff(LANG_XLIM)
-  # A label goes left of its interval when the interval runs near the panel
-  # edge, so no direct label is ever clipped.
-  place <- function(x) x %>% mutate(
-    lx = if_else(hi > LANG_XLIM[2] - 0.22 * span, lo, hi),
-    hj = if_else(hi > LANG_XLIM[2] - 0.22 * span, 1.22, -0.28))
-  # Only genuinely extreme model cells are labelled; labelling all 11 per panel
-  # would bury the aggregate the panel exists to show.
-  EXT <- place(filter(M, abs(est) >= 15))
-  ggplot() +
-    geom_vline(xintercept = 0, colour = INK_SOFT, linewidth = 0.3) +
-    geom_linerange(data = M, aes(y = y, xmin = lo, xmax = hi,
-                                 colour = jurisdiction),
-                   linewidth = 0.3, alpha = 0.5) +
-    geom_point(data = M, aes(x = est, y = y, colour = jurisdiction),
-               size = 0.95, alpha = 0.62, shape = 16) +
-    geom_linerange(data = J, aes(y = y, xmin = lo, xmax = hi,
-                                 colour = jurisdiction), linewidth = 0.62) +
-    geom_point(data = J, aes(x = est, y = y, fill = jurisdiction),
-               shape = 23, size = 1.8, colour = "white", stroke = 0.3) +
-    geom_linerange(data = A, aes(y = y, xmin = lo, xmax = hi), colour = INK,
-                   linewidth = 0.8) +
-    geom_point(data = A, aes(x = est, y = y), shape = 23, size = 2.5,
-               fill = INK, colour = "white", stroke = 0.35) +
-    geom_text(data = place(A), aes(x = lx, y = y, label = fmt_pp(est), hjust = hj),
-              size = TXT, fontface = "bold", colour = INK) +
-    { if (nrow(EXT))
-        geom_text(data = EXT, aes(x = lx, y = y, label = fmt_pp0(est),
-                                  colour = jurisdiction, hjust = hj), size = TXT) } +
-    scale_colour_manual(values = PAL_JURIS, guide = "none", na.value = INK) +
-    scale_fill_manual(values = PAL_JURIS, guide = "none", na.value = INK) +
-    scale_y_continuous(breaks = lspine$y, labels = lspine$lab,
-                       limits = range(lspine$y) + c(-0.9, 0.9)) +
-    scale_x_continuous(limits = LANG_XLIM,
-                       expand = expansion(mult = c(0.02, 0.02))) +
-    labs(x = NULL, y = NULL) +
-    theme_nature(base_size = PT_BODY, grid = "x") +
-    theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
+# Convert the uncommon multi-model refusals into equal-angle sectors. Radius
+# is expressed in UMAP coordinates and therefore fixed across every map.
+make_wedges <- function(events, radius = .090, vertices = 14L) {
+  if (!nrow(events)) return(tibble())
+  events |>
+    arrange(jurisdiction, prompt_id, factor(model, levels = ORDER_MODEL)) |>
+    group_by(jurisdiction, prompt_id) |>
+    mutate(n_refusers = n(), sector = row_number()) |>
+    ungroup() |>
+    filter(n_refusers > 1L) |>
+    pmap_dfr(function(jurisdiction, prompt_id, model, genuine_refusal,
+                      umap_x, umap_y, n_refusers, sector, ...) {
+      a0 <- pi / 2 + 2 * pi * (sector - 1) / n_refusers
+      a1 <- pi / 2 + 2 * pi * sector / n_refusers
+      theta <- seq(a0, a1, length.out = vertices + 1L)
+      tibble(
+        jurisdiction = jurisdiction, prompt_id = prompt_id, model = model,
+        glyph_group = paste(prompt_id, model, sep = "__"),
+        vertex = seq_len(length(theta) + 2L),
+        x = c(umap_x, umap_x + radius * cos(theta), umap_x),
+        y = c(umap_y, umap_y + radius * sin(theta), umap_y))
+    })
 }
 
-# THE ROW LABELS ARE THEIR OWN COLUMN. Reserving the label strip inside all four
-# panels is the only way to force equal panel widths when one carries axis text,
-# but with four panels that spends a quarter of the figure on three invisible
-# strips. As a column the labels are drawn as data, so the jurisdiction/model
-# hierarchy is mapped rather than styled per tick, and the four panels are
-# identical in width by construction.
-lang_labels <- function() {
-  ggplot(lspine, aes(x = 0, y = y, label = lab)) +
-    geom_text(aes(colour = lvl == "model",
-                  fontface = if_else(lvl == "model", "plain", "bold")),
-              hjust = 0, size = TXT, show.legend = FALSE) +
-    scale_colour_manual(values = c(`TRUE` = INK_SOFT, `FALSE` = INK)) +
-    scale_y_continuous(limits = range(lspine$y) + c(-0.9, 0.9)) +
-    scale_x_continuous(limits = c(0, 1), expand = expansion(0)) +
-    coord_cartesian(clip = "off") +
-    labs(x = NULL, y = NULL) +
+events <- c22m |>
+  select(prompt_id, model, genuine_refusal, jurisdiction) |>
+  filter(genuine_refusal == 1L) |>
+  left_join(c22 |> select(prompt_id, umap_x, umap_y), by = "prompt_id") |>
+  group_by(jurisdiction, prompt_id) |>
+  mutate(n_refusers = n()) |>
+  ungroup()
+single_events <- events |> filter(n_refusers == 1L)
+multi_polygons <- make_wedges(events |> select(-n_refusers))
+
+# Some English prompt-model outcomes are absent because generation or annotation
+# failed. They must not silently become non-refusals; incomplete prompt cells
+# receive the explicit hollow marker below.
+coverage <- crossing(prompt_id = c22$prompt_id, model = ORDER_MODEL) |>
+  mutate(jurisdiction = unname(MODEL_JURIS[model])) |>
+  left_join(c22m |> select(prompt_id, model, genuine_refusal),
+            by = c("prompt_id", "model")) |>
+  group_by(jurisdiction, prompt_id) |>
+  summarise(n_expected = n(), n_observed = sum(!is.na(genuine_refusal)),
+            any_refusal = any(genuine_refusal == 1L, na.rm = TRUE),
+            .groups = "drop")
+
+x_lim <- range(c22$umap_x) + c(-.12, .12)
+y_lim <- range(c22$umap_y) + c(-.12, .12)
+
+semantic_map <- function(j) {
+  mods <- ORDER_MODEL[unname(MODEL_JURIS[ORDER_MODEL]) == j]
+  pal <- PAL_MODEL_BLOCK[[j]]
+  bg <- c22 |> mutate(legend_group = "No genuine refusal")
+  single <- single_events |> filter(jurisdiction == j) |>
+    mutate(legend_group = model)
+  poly <- multi_polygons |> filter(jurisdiction == j)
+  incomplete <- coverage |> filter(jurisdiction == j, n_observed < n_expected,
+                                    !any_refusal) |>
+    left_join(c22 |> select(prompt_id, umap_x, umap_y), by = "prompt_id")
+  legend_values <- c("No genuine refusal" = "#BFC3C5", pal)
+  legend_breaks <- c("No genuine refusal", mods)
+
+  ggplot() +
+    geom_point(data = bg, aes(umap_x, umap_y, colour = legend_group),
+               alpha = .34, size = .25) +
+    geom_point(data = single, aes(umap_x, umap_y, colour = legend_group),
+               alpha = .94, size = .82) +
+    geom_polygon(data = poly, aes(x, y, group = glyph_group, fill = model),
+                 colour = "white", linewidth = .045, alpha = .96) +
+    geom_point(data = incomplete, aes(umap_x, umap_y), shape = 21,
+               fill = "white", colour = INK_FAINT, stroke = .30, size = .72) +
+    scale_colour_manual(values = legend_values, breaks = legend_breaks,
+                        labels = legend_breaks, drop = FALSE, name = NULL) +
+    scale_fill_manual(values = pal, guide = "none") +
+    guides(colour = guide_legend(
+      ncol = 1, byrow = TRUE,
+      override.aes = list(alpha = 1, size = 1.15))) +
+    coord_equal(xlim = x_lim, ylim = y_lim, expand = FALSE, clip = "off") +
+    labs(x = NULL, y = NULL,
+         tag = sprintf("%s · %d model%s", JURIS_LABEL[[j]], length(mods),
+                       ifelse(length(mods) == 1L, "", "s"))) +
     theme_nature(base_size = PT_BODY, grid = "none") +
-    # The x axis is kept but invisible: its height is what holds these rows in
-    # register with the four panels, which do carry one.
-    theme(axis.text.y = element_blank(), axis.ticks = element_blank(),
-          axis.ticks.x.bottom = element_blank(),
-          axis.text.x = element_text(colour = NA),
-          axis.line = element_blank(), axis.line.x.bottom = element_blank(),
-          panel.grid = element_blank(), plot.margin = margin(1, 0, 1, 1))
+    theme(axis.text = element_blank(), axis.ticks = element_blank(),
+          axis.ticks.x = element_blank(), axis.ticks.y = element_blank(),
+          axis.line = element_blank(), axis.line.x = element_blank(),
+          axis.line.y = element_blank(), legend.position = "right",
+          legend.justification = "center", legend.text = element_text(size = PT_MIN),
+          legend.spacing.x = unit(1, "pt"), legend.spacing.y = unit(0, "pt"),
+          legend.key.height = unit(5.2, "pt"), legend.key.width = unit(5.2, "pt"),
+          legend.box.margin = margin(0, 0, 0, 3),
+          plot.tag = element_text(face = "bold", size = PT_TITLE, hjust = 0),
+          plot.tag.position = c(0, 1), plot.margin = margin(8, 3, 1, 1),
+          plot.title = element_blank(), plot.subtitle = element_blank(),
+          plot.caption = element_blank())
 }
 
-lang_ps <- imap(LANG_LABEL[ORDER_LANG_CONTRAST_CODE], function(lab, L)
-  lang_panel(L) + labs(tag = lab) +
-    theme(plot.tag = element_text(size = PT_BODY, face = "bold", hjust = 0),
-          plot.tag.position = c(0.02, 0.995)))
+home_forest <- function(j, show_key = FALSE, show_x_title = TRUE) {
+  mods <- ORDER_MODEL[unname(MODEL_JURIS[ORDER_MODEL]) == j]
+  pal <- PAL_MODEL_BLOCK[[j]]
+  rows <- c("All models", mods)
+  ypos <- setNames(rev(seq_along(rows)), rows)
 
-fig2 <- wrap_elements(
-  wrap_plots(c(list(lang_labels()), lang_ps), nrow = 1,
-             widths = c(0.40, 1, 1, 1, 1))) /
-  grid::textGrob("Difference from English (percentage points)",
-                 gp = grid::gpar(fontsize = PT_AXIS, col = INK)) +
-  plot_layout(heights = c(1, 0.04))
-fig2 <- quiet_vec_text(fig2)
-save_fig(fig2, file.path(CAN_FIG, "Fig2_language.png"), width = W2, height = H_STD)
+  raw <- c02 |>
+    filter(outcome == "genuine_refusal", quantity == "home minus away",
+           jurisdiction == j) |>
+    mutate(y = unname(ypos[["All models"]]) + .13,
+           series = "Descriptive difference")
+  adjusted <- c04 |>
+    filter(outcome == "genuine_refusal", weighting == "nested",
+           support == "full target", jurisdiction == j) |>
+    mutate(y = unname(ypos[["All models"]]) - .13,
+           series = "Standardized contrast")
+  model_rows <- c05 |>
+    filter(outcome == "genuine_refusal", jurisdiction == j) |>
+    mutate(y = unname(ypos[model]))
 
-# =============================================================================
-# FIGURE 3 -- content of engaged responses
-# =============================================================================
-cat("Fig 3 ...\n")
-c12 <- rd("c12_ideology_distribution.csv")
-c14 <- rd("c14_moral_prevalence_equal_model.csv")
+  p <- ggplot() +
+    geom_vline(xintercept = 0, colour = INK_FAINT, linewidth = .34) +
+    geom_vline(xintercept = c(-10, 10, 20), colour = RULE, linewidth = .18) +
+    geom_errorbar(data = raw,
+                  aes(xmin = conf_low_pp, xmax = conf_high_pp, y = y),
+                  orientation = "y", width = 0, colour = INK_FAINT,
+                  linewidth = .42) +
+    geom_point(data = raw, aes(estimate_pp, y, shape = series),
+               colour = INK_FAINT, fill = "white", size = 1.6, stroke = .5) +
+    geom_errorbar(data = filter(adjusted, interval_reliable),
+                  aes(xmin = conf_low_pp, xmax = conf_high_pp, y = y),
+                  orientation = "y", width = 0, colour = ACCENT,
+                  linewidth = .62) +
+    geom_point(data = adjusted, aes(estimate_pp, y, shape = series),
+               colour = ACCENT,
+               fill = if (isTRUE(adjusted$interval_reliable[[1]])) ACCENT else "white",
+               size = 1.9, stroke = .58) +
+    geom_errorbar(data = filter(model_rows, estimable, interval_reliable),
+                  aes(xmin = conf_low_pp, xmax = conf_high_pp, y = y,
+                      colour = model), orientation = "y", width = 0,
+                  linewidth = .43) +
+    geom_point(data = filter(model_rows, estimable),
+               aes(estimate_pp, y, colour = model), size = 1.45) +
+    geom_point(data = filter(model_rows, !estimable), aes(x = 0, y = y),
+               shape = 4, colour = INK_FAINT, size = 1.45, stroke = .55) +
+    scale_colour_manual(values = pal, guide = "none") +
+    scale_shape_manual(values = c("Descriptive difference" = 21,
+                                  "Standardized contrast" = 23),
+                       breaks = c("Descriptive difference",
+                                  "Standardized contrast"), name = NULL) +
+    scale_x_continuous(limits = HOME_X_LIMITS,
+                       breaks = c(-10, 0, 10, 20),
+                       expand = expansion(mult = c(0, .01))) +
+    scale_y_continuous(breaks = unname(ypos), labels = names(ypos),
+                       limits = c(.55, max(ypos) + .5), expand = c(0, 0)) +
+    labs(x = if (show_x_title) "Home − away difference (percentage points)" else NULL,
+         y = NULL) +
+    theme_nature(base_size = PT_BODY, grid = "none") +
+    theme(axis.text.y = element_text(colour = INK, size = PT_MIN),
+          axis.title.x = element_text(size = PT_MIN),
+          legend.position = if (show_key) "top" else "none",
+          legend.justification = "left", legend.text = element_text(size = PT_MIN),
+          plot.margin = margin(8, 4, 2, 2)) +
+    tag_only() + theme(plot.tag = element_blank())
+  if (show_key) {
+    p <- p + guides(shape = guide_legend(
+      nrow = 1, override.aes = list(
+        colour = c(INK_FAINT, ACCENT), fill = c("white", ACCENT), size = 1.5)))
+  }
+  p
+}
 
-# --- a: the FULL five-bin distribution ----------------------------------------
-# The estimand is a distribution over five categories summing to one. Plotting
-# only the four directional bins gave all the ink to between 8% and 20% of it.
-# Neutral is drawn, and dominates the row exactly as it dominates the data.
-BINL <- c(share_neg2 = "-2", share_neg1 = "-1", share_zero = "0",
-          share_pos1 = "+1", share_pos2 = "+2")
-ideo <- c12 %>% filter(role == "PRIMARY") %>%
-  mutate(d = factor(dimension, levels = rev(ORDER_IDEO_DIM)),
-         bin = factor(unname(BINL[quantity]), levels = ORDER_IDEO_BIN),
-         share = estimate * 100,
-         lab = ifelse(estimate * 100 >= 8, sprintf("%.0f", estimate * 100), ""))
-ends <- tibble(dimension = names(IDEO_ENDPOINTS),
-               endpoint_neg = vapply(IDEO_ENDPOINTS, `[`, character(1), 1),
-               endpoint_pos = vapply(IDEO_ENDPOINTS, `[`, character(1), 2)) %>%
-  mutate(d = factor(dimension, levels = rev(ORDER_IDEO_DIM)))
-# geom_col reverses the fill factor when stacking, so both the bars and their
-# labels take reverse = TRUE and the drawn order IS the scale order.
-stk  <- position_stack(reverse = TRUE)
-stkc <- position_stack(vjust = 0.5, reverse = TRUE)
+jurisdiction_block <- function(j, show_key = FALSE, show_x_title = TRUE) {
+  (semantic_map(j) | home_forest(j, show_key, show_x_title)) +
+    plot_layout(widths = c(.52, .48))
+}
 
-p3a <- ggplot(ideo, aes(x = share, y = d, fill = bin)) +
-  geom_col(width = 0.56, colour = "white", linewidth = 0.25, position = stk) +
-  geom_text(aes(label = lab, colour = bin %in% c("-2", "+2")),
-            position = stkc, size = TXT, show.legend = FALSE) +
-  geom_text(data = ends, aes(x = -5, y = d, label = endpoint_neg),
-            inherit.aes = FALSE, hjust = 1, size = TXT, colour = INK_SOFT) +
-  geom_text(data = ends, aes(x = 105, y = d, label = endpoint_pos),
-            inherit.aes = FALSE, hjust = 0, size = TXT, colour = INK_SOFT) +
-  scale_fill_manual(values = PAL_IDEO, name = NULL, breaks = ORDER_IDEO_BIN) +
-  scale_colour_manual(values = c(`TRUE` = "white", `FALSE` = INK), guide = "none") +
-  scale_x_continuous(labels = label_percent(scale = 1, accuracy = 1),
-                     breaks = c(0, 50, 100),
-                     expand = expansion(mult = c(0.30, 0.24))) +
-  coord_cartesian(clip = "off") +
-  labs(x = "Share of engaged responses", y = NULL) +
+# Figure 1: five equal-height jurisdiction rows. A two-column prototype was
+# rejected at print size: fixed-aspect maps left large vertical voids and the
+# local model keys truncated. Full-width rows retain the map--estimate pairing,
+# give every semantic map the same physical dimensions, and keep all 20 model
+# names legible. Only the final row repeats the common x-axis title.
+fig1_blocks <- map2(
+  ORDER_JURIS,
+  seq_along(ORDER_JURIS),
+  ~ jurisdiction_block(.x, show_key = .y == 1L,
+                        show_x_title = .y == length(ORDER_JURIS)))
+fig1 <- wrap_plots(fig1_blocks, ncol = 1, heights = rep(1, length(fig1_blocks)))
+save_main(fig1, "Fig1_jurisdiction_refusal_atlas_home", H_PAGE)
+
+# Figure 2: semantic pattern and paired language contrasts -------------------
+language_points <- c22p |>
+  filter(outcome == "genuine_refusal", language %in% ORDER_LANG) |>
+  left_join(c22 |> select(prompt_id, umap_x, umap_y), by = "prompt_id") |>
+  mutate(language_label = factor(unname(LANG_LABEL[language]),
+                                 levels = unname(LANG_LABEL[ORDER_LANG])))
+stopifnot(nrow(language_points) == nrow(c22) * length(ORDER_LANG))
+
+p_language_maps <- ggplot(language_points, aes(umap_x, umap_y)) +
+  geom_point(colour = "#B8B8BA", alpha = .23, size = .16) +
+  geom_point(data = filter(language_points, propensity > 0),
+             aes(size = propensity), colour = ACCENT, alpha = .78) +
+  facet_wrap(~ language_label, nrow = 1) +
+  scale_size_area(max_size = 1.5, limits = c(0, 1),
+                  breaks = c(.05, .10, .20),
+                  labels = scales::label_percent(accuracy = 1),
+                  name = "Genuine-refusal propensity") +
+  coord_equal(xlim = x_lim, ylim = y_lim, expand = FALSE) +
+  labs(x = NULL, y = NULL) +
   theme_nature(base_size = PT_BODY, grid = "none") +
-  theme(legend.position = "top", legend.text = element_text(size = PT_MIN),
-        legend.key.size = unit(5, "pt"), legend.margin = margin(0, 0, 0, 0),
-        axis.text.y = element_text(colour = INK, face = "bold", size = PT_BODY)) +
-  tag_only()
+  theme(axis.text = element_blank(), axis.ticks = element_blank(),
+        axis.line = element_blank(), strip.text = element_text(size = PT_MIN),
+        legend.position = "top", legend.justification = "left",
+        legend.text = element_text(size = PT_MIN),
+        legend.title = element_text(size = PT_MIN)) +
+  tag_only() + theme(plot.tag = element_blank())
 
-# --- b + c: prevalence and agreement, ONE aligned compound block --------------
-# One row-label column, two value columns, one shared row order. The two columns
-# keep separate axes and different geometries because they are DIFFERENT
-# QUANTITIES: prevalence carries a 95% issue-cluster sampling interval; PSA
-# carries a min-max across the six judge pairs, which has no coverage at all.
-mf <- c14 %>% filter(scope == "overall") %>%
-  mutate(f = factor(foundation, levels = rev(ORDER_FOUNDATION)))
-
-p3b <- ggplot(mf, aes(x = estimate * 100, y = f)) +
-  geom_linerange(aes(xmin = conf_low * 100, xmax = conf_high * 100),
-                 colour = INK, linewidth = LWC) +
-  geom_point(shape = 21, size = 2.0, fill = INK, colour = "white", stroke = 0.35) +
-  scale_y_discrete(limits = rev(ORDER_FOUNDATION)) +
-  scale_x_continuous(expand = expansion(mult = c(0.05, 0.08)),
-                     labels = label_percent(scale = 1, accuracy = 1)) +
-  labs(x = "Prevalence among engaged responses", y = NULL) +
+agg_language <- c08 |>
+  filter(outcome == "genuine_refusal", weighting == "equal_model") |>
+  mutate(language_label = factor(unname(LANG_LABEL[language]),
+                                 levels = rev(ORDER_LANG_CONTRAST)))
+p_agg_language <- ggplot(agg_language, aes(estimate_pp, language_label)) +
+  geom_vline(xintercept = 0, colour = INK_FAINT, linewidth = .34) +
+  geom_errorbar(aes(xmin = conf_low_pp, xmax = conf_high_pp),
+                orientation = "y", width = 0, colour = ACCENT, linewidth = .62) +
+  geom_point(shape = 23, fill = ACCENT, colour = ACCENT, size = 1.9) +
+  scale_x_continuous(breaks = c(-1, -.5, 0, .5)) +
+  labs(x = "Target language − English (percentage points)", y = NULL) +
   theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(axis.text.y = element_text(colour = INK)) + tag_only()
+  theme(axis.text.y = element_text(colour = INK, size = PT_BODY)) +
+  tag_only() + theme(plot.tag = element_blank())
 
-p3c <- ggplot(mf, aes(x = psa_mean, y = f)) +
-  geom_errorbar(aes(xmin = psa_min, xmax = psa_max), colour = INK_FAINT,
-                linewidth = 0.35, width = 0.28, orientation = "y") +
-  geom_point(shape = 21, size = 1.8, fill = INK_SOFT, colour = "white",
-             stroke = 0.3) +
-  scale_y_discrete(limits = rev(ORDER_FOUNDATION), labels = NULL) +
-  scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
-                     expand = expansion(mult = c(0.06, 0.06))) +
-  labs(x = "Positive specific agreement", y = NULL) +
-  theme_nature(base_size = PT_BODY, grid = "x") +
-  theme(axis.ticks.y = element_blank()) + tag_only()
+model_language <- c09 |>
+  filter(outcome == "genuine_refusal") |>
+  mutate(model = factor(model, levels = rev(ORDER_MODEL)),
+         language_label = factor(unname(LANG_LABEL[language]),
+                                 levels = ORDER_LANG_CONTRAST),
+         excludes_zero = conf_low_pp > 0 | conf_high_pp < 0)
+lim_lang <- max(abs(model_language$estimate_pp), na.rm = TRUE)
+p_model_language <- ggplot(model_language,
+    aes(language_label, model, fill = estimate_pp)) +
+  geom_tile(colour = "white", linewidth = .2) +
+  geom_point(data = filter(model_language, excludes_zero), shape = 16,
+             colour = INK, size = .42) +
+  scale_fill_gradient2(low = "#2C5F7C", mid = "#F2F2F0", high = "#8C363C",
+                       midpoint = 0, limits = c(-lim_lang, lim_lang),
+                       name = "Difference (pp)") +
+  labs(x = NULL, y = NULL) +
+  theme_nature(base_size = PT_BODY, grid = "none") +
+  theme(axis.text.x = element_text(colour = INK, size = PT_MIN),
+        axis.text.y = element_text(colour = INK, size = PT_MIN),
+        legend.position = "top", legend.justification = "left",
+        legend.text = element_text(size = PT_MIN),
+        legend.title = element_text(size = PT_MIN), axis.line = element_blank(),
+        axis.ticks = element_blank()) +
+  tag_only() + theme(plot.tag = element_blank())
 
-fig3 <- (p3a | p3b | p3c) + plot_layout(widths = c(1.30, 1.05, 0.50)) +
-  plot_annotation(tag_levels = "a")
-save_fig(fig3, file.path(CAN_FIG, "Fig3_content.png"),
-         width = W2, height = H_WIDE)
+fig2 <- p_language_maps / (p_agg_language | p_model_language) +
+  plot_layout(heights = c(.92, 1.08), widths = c(.42, .58))
+save_main(fig2, "Fig2_language_refusal_atlas_contrasts", H_STD)
 
-# Assembled objects are saved so audit_figures.R can MEASURE the rendered layout
-# rather than grep the source for font sizes. AUDIT ARTEFACTS, not artwork.
-save_layout(list(Fig1_home_jurisdiction = p1,
-            Fig2_language = fig2,
-            Fig3_content = fig3),
-            "c20_figure_layout_main.rds")
-
-cat("\nwrote:\n"); print(list.files(CAN_FIG))
-cat("\n", strrep("=", 78), "\nMAIN FIGURES DONE\n", strrep("=", 78), "\n", sep = "")
+saveRDS(figs, file.path(CAN_LAYOUT, "c20_figure_layout_main.rds"))

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "roster_version": "local_gguf_hpc_v1_2026-09-10",
+  "status": "prepared_not_run",
+  "scientific_role": "Full-corpus response generation for four locally piloted jurisdiction-expansion models",
+  "slurm": {
+    "account": "torch_pr_309_social_sciences",
+    "accelerator_constraint": "l40s",
+    "gpus_per_task": 1,
+    "array_concurrency": 8,
+    "shards_per_model_language_cell": 2
+  },
+  "runtime": {
+    "engine": "llama.cpp server through Apptainer",
+    "container_source": "docker://ghcr.io/ggml-org/llama.cpp:server-cuda-b10335",
+    "container_tag": "server-cuda-b10335",
+    "context_tokens_per_slot": 8192,
+    "parallel_slots": 4,
+    "temperature": 1.0,
+    "max_output_tokens": 5000,
+    "repeat_penalty": 1.0,
+    "maximum_attempts": 2
+  },
+  "languages": ["en", "zh", "ar", "ru", "hi"],
+  "models": [
+    {
+      "name": "krutrim-2-instruct-local-q8",
+      "source_model": "krutrim-ai-labs/Krutrim-2-instruct",
+      "gguf_repository": "bartowski/krutrim-ai-labs_Krutrim-2-instruct-GGUF",
+      "gguf_revision": "b13041b3d6c66714232a43e6b7e260e96f89b204",
+      "gguf_filename": "krutrim-ai-labs_Krutrim-2-instruct-Q8_0.gguf",
+      "developer": "Ola Krutrim",
+      "developer_jurisdiction": "India",
+      "quantizer": "bartowski",
+      "prompt_template": "krutrim_single_user"
+    },
+    {
+      "name": "gigachat3-10b-a1.8b-local-q8",
+      "source_model": "ai-sage/GigaChat3-10B-A1.8B",
+      "gguf_repository": "ai-sage/GigaChat3-10B-A1.8B-GGUF",
+      "gguf_revision": "168cca1c900711022968f1c1bea91657f1b74675",
+      "gguf_filename": "GigaChat3-10B-A1.8B-q8_0.gguf",
+      "developer": "Sber AI / AI-Sage",
+      "developer_jurisdiction": "Russia",
+      "quantizer": "AI-Sage",
+      "prompt_template": "gigachat_single_user"
+    },
+    {
+      "name": "eurollm-22b-instruct-2512-local-q8",
+      "source_model": "utter-project/EuroLLM-22B-Instruct-2512",
+      "gguf_repository": "bartowski/utter-project_EuroLLM-22B-Instruct-2512-GGUF",
+      "gguf_revision": "1dbd312ffa10e83e5faa855e3727cbf4abc45f08",
+      "gguf_filename": "utter-project_EuroLLM-22B-Instruct-2512-Q8_0.gguf",
+      "developer": "UTTER / EuroLLM consortium",
+      "developer_jurisdiction": "Europe",
+      "quantizer": "bartowski",
+      "prompt_template": "chatml_single_user"
+    },
+    {
+      "name": "salamandra-7b-instruct-2606-local-q8",
+      "source_model": "BSC-LT/salamandra-7b-instruct-2606",
+      "gguf_repository": "mradermacher/salamandra-7b-instruct-2606-GGUF",
+      "gguf_revision": "8bcd7d8d8545749ef73b3046f7cb5cd64d8c70c1",
+      "gguf_filename": "salamandra-7b-instruct-2606.Q8_0.gguf",
+      "developer": "Barcelona Supercomputing Center",
+      "developer_jurisdiction": "Europe",
+      "quantizer": "mradermacher",
+      "prompt_template": "chatml_single_user"
+    }
+  ]
+}

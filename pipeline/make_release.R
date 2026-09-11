@@ -1,11 +1,12 @@
 # =============================================================================
+# Technical reference: docs/r_pipeline/make_release.md
 # make_release.R -- THE release command
 # =============================================================================
 # One command builds the paper's analysis end to end:
 #
 #   CANONICAL_RUN_ID=canon_004 Rscript pipeline/make_release.R
 #
-# It runs inputs -> reliability -> canonical estimation -> appendix descriptives
+# It runs inputs -> v2.4 canonical estimation -> appendix descriptives
 # -> figures -> manifest -> acceptance -> figure audit, and PROMOTES the result
 # to pipeline/estimates/canonical and pipeline/figures ONLY if every check
 # passes.
@@ -26,7 +27,6 @@
 #      after it and the figure audit both pass.
 #
 # Flags:
-#   --skip-data      do not rebuild data_clean.RData (it is an input, not output)
 #   --allow-dirty    permit a release from a dirty working tree (recorded)
 #   --no-promote     build and check, but leave the live directories untouched
 #   --figures-only --from <run_id>
@@ -49,6 +49,17 @@ arg_val <- function(f, default = "") {
   if (is.na(i) || i == length(args)) default else args[i + 1]
 }
 sha256 <- function(p) if (file.exists(p)) digest(p, algo = "sha256", file = TRUE) else NA_character_
+
+# A former --skip-data mode read the mutable root pipeline/data_clean.RData.
+# That file could predate the current roster while still passing basic schema
+# checks. Full releases now always rebuild data inside their isolated release;
+# figure-only releases use the separate hash-verified inheritance path below.
+if (has("--skip-data")) {
+  cat("ERROR: --skip-data was retired because it could read stale mutable data.\n",
+      "       Run a full release, or use --figures-only --from <release_id>.\n",
+      sep = "")
+  quit(save = "no", status = 2)
+}
 
 # --- figures-only mode -------------------------------------------------------
 # WHY THIS EXISTS. A full release is ~93 minutes, of which the two figure
@@ -74,6 +85,69 @@ if (!nzchar(RUN_ID)) {
 }
 if (!grepl("^[A-Za-z0-9._-]+$", RUN_ID)) {
   cat("ERROR: CANONICAL_RUN_ID must be a plain identifier.\n"); quit(save = "no", status = 2)
+}
+
+# --- active-pipeline registry gate ------------------------------------------
+# The registry is the single machine-readable map of runnable analysis code.
+# Check it before creating a release directory so a stray root-level R script,
+# a missing technical reference, or a paid-call stage cannot silently enter a
+# paper build.
+REGISTRY_PATH <- "pipeline/PIPELINE_REGISTRY.csv"
+if (!file.exists(REGISTRY_PATH)) {
+  cat("ERROR: missing active-pipeline registry: ", REGISTRY_PATH, "\n", sep = "")
+  quit(save = "no", status = 2)
+}
+REGISTRY <- suppressMessages(read_csv(REGISTRY_PATH, show_col_types = FALSE))
+required_registry_columns <- c("script", "status", "technical_document",
+                               "paid_external_call")
+if (!all(required_registry_columns %in% names(REGISTRY))) {
+  cat("ERROR: pipeline registry schema is incomplete.\n")
+  quit(save = "no", status = 2)
+}
+active_registry <- REGISTRY %>% filter(status == "active")
+if (anyDuplicated(active_registry$script)) {
+  cat("ERROR: duplicate active script in pipeline registry.\n")
+  quit(save = "no", status = 2)
+}
+missing_active <- active_registry$script[!file.exists(active_registry$script)]
+missing_docs <- REGISTRY$technical_document[
+  REGISTRY$status %in% c("active", "planned") & !file.exists(REGISTRY$technical_document)]
+root_r <- sort(list.files("pipeline", pattern = "\\.R$", full.names = TRUE))
+registered_root_r <- sort(active_registry$script[
+  startsWith(active_registry$script, "pipeline/") & endsWith(active_registry$script, ".R")])
+unregistered_root_r <- setdiff(root_r, registered_root_r)
+if (length(missing_active) || length(missing_docs) || length(unregistered_root_r)) {
+  if (length(missing_active)) cat("ERROR: missing active scripts: ",
+                                  paste(missing_active, collapse = ", "), "\n", sep = "")
+  if (length(missing_docs)) cat("ERROR: missing technical documents: ",
+                                paste(missing_docs, collapse = ", "), "\n", sep = "")
+  if (length(unregistered_root_r)) cat("ERROR: unregistered root R scripts: ",
+                                       paste(unregistered_root_r, collapse = ", "), "\n", sep = "")
+  quit(save = "no", status = 2)
+}
+if (any(active_registry$paid_external_call == "true")) {
+  cat("ERROR: an active analysis stage is marked as making a paid external call.\n")
+  quit(save = "no", status = 2)
+}
+cat("pipeline registry: PASS (", nrow(active_registry), " active entries)\n", sep = "")
+source("pipeline/_expansion_input.R")
+
+# Keep the complete expansion dependency set in one place.  These functions are
+# used both by the figures-only pre-flight and by the release manifest, which
+# prevents the two provenance checks from drifting apart.
+expansion_annotation_inputs <- function() {
+  x <- unlist(lapply(EXPANSION_BATCHES$path, function(p)
+    file.path(p, c("manifest.json", "run_summary.json", "response_index.parquet",
+                   "results.jsonl", "prompt.txt", "response_schema.json"))))
+  x[file.exists(x)]
+}
+expansion_generation_inputs <- function() {
+  roots <- EXPANSION_GENERATION_ROOTS
+  x <- c(file.path(roots, "manifest.json"),
+         unlist(lapply(roots, function(p)
+           list.files(p, pattern = "^(results[.]jsonl|run_summary[.]json)$",
+                      recursive = TRUE, full.names = TRUE))))
+  unique(x[file.exists(x)])
 }
 # The paper release reads the FULL run, never the pilot.
 RUN_DIR <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/full_v1")
@@ -108,13 +182,13 @@ cat(sprintf("git: %s @ %s%s\n", GIT_BRANCH, GIT_SHORT, if (DIRTY) "  [DIRTY]" el
 # in principle move an estimate -- _theme.R is not, because only the figures read
 # it. 30_acceptance.R and audit_figures.R are not on it either: they are gates
 # that re-run every time, so changing them is safe and in fact desirable.
-EST_PATH <- c("pipeline/_orders.R", "pipeline/01_data_loading.R",
-              "pipeline/02_judge_reliability.R", "pipeline/10_canonical_common.R",
+EST_PATH <- c("pipeline/_orders.R", "pipeline/_response_validity.R",
+              "pipeline/_expansion_input.R",
+              "pipeline/01_data_loading.R", "pipeline/10_canonical_common.R",
               "pipeline/11_canonical_home.R",
               "pipeline/12_canonical_language_framing.R",
-              "pipeline/13_canonical_content.R",
-              "pipeline/14_canonical_judge_uncertainty.R",
               "pipeline/15_subsample_stability.R", "pipeline/16_prompt_umap.R",
+              "pipeline/17_response_validity.R",
               "pipeline/40_appendix_descriptives.R")
 SRC_MAN <- NULL
 if (FIGS_ONLY) {
@@ -156,13 +230,35 @@ if (FIGS_ONLY) {
   want <- c(seed = Sys.getenv("CAN_SEED", "20260807"),
             B_head = Sys.getenv("CANON_B_HEAD", "2000"),
             B_sens = Sys.getenv("CANON_B_SENS", "500"),
-            B_judge = Sys.getenv("CANON_B_JUDGE", "600"))
+            stability_reps = Sys.getenv("CANON_STABILITY_REPS", "100"))
   bad <- names(want)[map_chr(names(want), function(k) env_of(SRC_MAN, k)) != want]
   ann_now <- c(file.path(RUN_DIR, "annotations_all.jsonl"))
   ann_src <- SRC_MAN %>% filter(kind == "input_annotations",
                                 basename(path) == "annotations_all.jsonl")
   if (nrow(ann_src) && !identical(sha256(ann_now), ann_src$sha256[1]))
     bad <- c(bad, "annotations_all.jsonl")
+  rv_now <- Sys.getenv("RESPONSE_VALIDITY_PATH",
+    "annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations.parquet")
+  rv_src <- SRC_MAN %>% filter(kind == "input_response_validity",
+                               basename(path) == "final_annotations.parquet")
+  if (!nrow(rv_src) || !identical(sha256(rv_now), rv_src$sha256[1]))
+    bad <- c(bad, "final_annotations.parquet")
+
+  # The combined panel also depends on the frozen expansion annotations and on
+  # the raw generation artifacts from which their response indexes were built.
+  # Compare complete path/hash sets: changed, missing, or newly added inputs all
+  # invalidate a figures-only inheritance.
+  compare_input_set <- function(kind, paths) {
+    src <- SRC_MAN %>% filter(.data$kind == !!kind) %>% select(path, sha256)
+    now <- tibble(path = paths, sha256 = map_chr(paths, sha256))
+    identical(arrange(src, path), arrange(now, path))
+  }
+  if (!compare_input_set("input_expansion_annotation",
+                         expansion_annotation_inputs()))
+    bad <- c(bad, "expansion annotation artifacts")
+  if (!compare_input_set("input_expansion_generation",
+                         expansion_generation_inputs()))
+    bad <- c(bad, "expansion generation artifacts")
   if (length(bad)) {
     cat("\nERROR: --figures-only refused. These differ from release ", FROM_ID,
         ":\n", sep = "")
@@ -188,7 +284,12 @@ if (dir.exists(REL) && !has("--rebuild")) {
   quit(save = "no", status = 4)
 }
 if (dir.exists(REL) && has("--rebuild")) {
-  cat("--rebuild: removing existing ", REL, "\n", sep = "")
+  existing_manifest <- file.path(REL, "estimates", "c00_manifest.csv")
+  if (file.exists(existing_manifest)) {
+    cat("ERROR: --rebuild cannot replace a manifested release. Choose a new ID.\n")
+    quit(save = "no", status = 4)
+  }
+  cat("--rebuild: removing manifest-less failed build ", REL, "\n", sep = "")
   unlink(REL, recursive = TRUE)
 }
 for (d in c(B_EST, B_FIG, B_APP)) dir.create(d, recursive = TRUE, showWarnings = FALSE)
@@ -206,20 +307,16 @@ cat("build dir : ", REL, "\n\n", sep = "")
 PLAN <- tribble(
   ~id,  ~script,                                    ~what,                              ~foundational,
   "01", "pipeline/01_data_loading.R",               "build data_clean.RData",           TRUE,
-  "02", "pipeline/02_judge_reliability.R",          "judge-panel reliability",          TRUE,
-  "11", "pipeline/11_canonical_home.R",             "home standardization (c02-c07)",   TRUE,
-  "12", "pipeline/12_canonical_language_framing.R", "language + framing (c08-c11)",     TRUE,
-  "13", "pipeline/13_canonical_content.R",          "content (c12-c16, c19)",           TRUE,
-  "14", "pipeline/14_canonical_judge_uncertainty.R","judge sensitivity (c17-c17d)",     TRUE,
-  "15", "pipeline/15_subsample_stability.R",        "issue-subsample stability (c21)",  TRUE,
-  # 16 SKIPS cleanly when the embedding cache is absent, so it is not
-  # foundational: a machine that has never run scripts/embed_prompts.py still
-  # builds a complete release, minus the two UMAP figures.
-  "16", "pipeline/16_prompt_umap.R",                "prompt-semantic UMAP (c22)",       FALSE,
+  "11", "pipeline/11_canonical_home.R",             "v2.4 home standardization (c02-c07)", TRUE,
+  "12", "pipeline/12_canonical_language_framing.R", "v2.4 language + framing (c08-c11)", TRUE,
+  "15", "pipeline/15_subsample_stability.R",        "v2.4 issue-subsample stability (c21)", TRUE,
+  # The semantic atlas is now Main Figure 1, so its frozen embedding cache and
+  # c22 tables are part of the publication contract rather than optional.
+  "16", "pipeline/16_prompt_umap.R",                "prompt-semantic UMAP (c22)",       TRUE,
+  "17", "pipeline/17_response_validity.R",          "v2.4 measurement descriptives (c23-c27)", TRUE,
   "40", "pipeline/40_appendix_descriptives.R",      "appendix descriptives (a01-a04)",  FALSE,
   "20", "pipeline/20_figures_main.R",               "main figures",                     TRUE,
   "21", "pipeline/21_figures_extended.R",           "Extended Data figures",            TRUE)
-if (has("--skip-data")) PLAN <- PLAN %>% filter(id != "01")
 
 # INHERIT THE ESTIMATES. Copied file by file with its hash re-verified against
 # the source manifest, so a corrupted or hand-edited source release cannot be
@@ -252,10 +349,14 @@ if (FIGS_ONLY) {
 }
 
 CAN_SEED_VALUE <- Sys.getenv("CAN_SEED", "20260807")
+DATA_PATH <- file.path(B_EST, "data_clean.RData")
 ENVV <- c(paste0("CANONICAL_RUN_ID=", RUN_ID),
           "CANON_RELEASE=1",
           paste0("CAN_SEED=", CAN_SEED_VALUE),
+          paste0("CANON_VALID_CORES=", Sys.getenv("CANON_VALID_CORES", "4")),
           paste0("REFUSAL_RUN_DIR=", RUN_DIR),
+          paste0("CANON_DATA_PATH=", DATA_PATH),
+          paste0("CANON_SUMMARY_DIR=", B_EST),
           paste0("CANON_EST_DIR=", B_EST),
           paste0("CANON_FIG_DIR=", B_FIG),
           paste0("CANON_APPFIG_DIR=", B_APP))
@@ -302,12 +403,17 @@ out_files <- c(
   file.path(B_FIG, list.files(B_FIG)),
   file.path(B_APP, list.files(B_APP)))
 
-src_files <- list.files("pipeline", pattern = "[.]R$", full.names = TRUE)
-py_files  <- list.files("scripts", pattern = "[.]py$", full.names = TRUE)
+src_files <- active_registry$script[grepl("[.]R$", active_registry$script)]
+py_files  <- c(list.files("scripts", pattern = "[.]py$", full.names = TRUE,
+                          recursive = TRUE),
+               list.files("src/refusal_audit", pattern = "[.]py$", full.names = TRUE,
+                          recursive = TRUE))
+py_files <- py_files[!grepl("/__pycache__/|/archive/", py_files)]
 # Specification and legend documents are part of what a release asserts, so
 # their hashes belong in the manifest too: a spec edited after the build is a
 # different claim about the same numbers.
-doc_files <- c(list.files("docs", pattern = "[.]md$", full.names = TRUE),
+doc_files <- c(list.files("docs", pattern = "[.]md$", full.names = TRUE,
+                          recursive = TRUE),
                "CLAUDE.md", "pipeline/README.md")
 doc_files <- doc_files[file.exists(doc_files)]
 ann_inputs <- c(file.path(RUN_DIR, "annotations_all.jsonl"),
@@ -315,14 +421,22 @@ ann_inputs <- c(file.path(RUN_DIR, "annotations_all.jsonl"),
                            full.names = TRUE),
                 file.path(RUN_DIR, "annotations_panel.jsonl"))
 ann_inputs <- ann_inputs[file.exists(ann_inputs)]
+validity_inputs <- c(
+  "annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations.parquet",
+  "annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations_manifest.json",
+  "annotations/response_validity_v2_4/wall_to_wall_luna_v1/prompt.txt",
+  "annotations/response_validity_v2_4/wall_to_wall_luna_v1/response_schema.json")
+validity_inputs <- validity_inputs[file.exists(validity_inputs)]
+expansion_inputs <- expansion_annotation_inputs()
+expansion_generation <- expansion_generation_inputs()
 # The prompt-embedding cache is an INPUT, produced once outside the release by
 # scripts/embed_prompts.py (which calls an API; the release never does). Its
 # hash belongs in the manifest so the UMAP is traceable to the vectors it used.
 emb_inputs <- c("data/prompt_embeddings_en.csv.gz", "data/prompt_embeddings_en.json")
 emb_inputs <- emb_inputs[file.exists(emb_inputs)]
 
-pkgs <- c("tidyverse", "ggplot2", "dplyr", "lme4", "logistf", "irr", "umap",
-          "digest", "svglite", "ragg", "statmod")
+pkgs <- c("tidyverse", "ggplot2", "dplyr", "arrow", "digest", "uwot",
+          "jsonlite", "ragg", "systemfonts")
 pkg_ver <- map_dfr(pkgs, function(p) tibble(
   kind = "package", path = p,
   sha256 = NA_character_,
@@ -344,15 +458,19 @@ man <- bind_rows(
          detail = NA_character_),
   tibble(kind = "documentation", path = doc_files,
          sha256 = map_chr(doc_files, sha256), detail = NA_character_),
-  tibble(kind = "input_data", path = "pipeline/data_clean.RData",
-         sha256 = sha256("pipeline/data_clean.RData"), detail = NA_character_),
   tibble(kind = "input_annotations", path = ann_inputs,
          sha256 = map_chr(ann_inputs, sha256), detail = NA_character_),
+  tibble(kind = "input_response_validity", path = validity_inputs,
+         sha256 = map_chr(validity_inputs, sha256), detail = NA_character_),
+  tibble(kind = "input_expansion_annotation", path = expansion_inputs,
+         sha256 = map_chr(expansion_inputs, sha256), detail = NA_character_),
+  tibble(kind = "input_expansion_generation", path = expansion_generation,
+         sha256 = map_chr(expansion_generation, sha256), detail = NA_character_),
   tibble(kind = "input_embeddings", path = emb_inputs,
          sha256 = map_chr(emb_inputs, sha256), detail = NA_character_),
   pkg_ver,
   tibble(kind = "environment", path = c("R", "python", "embedding_model", "seed",
-                                        "B_head", "B_sens", "B_judge"),
+                                        "B_head", "B_sens", "stability_reps"),
          sha256 = NA_character_,
          detail = c(paste(R.version$major, R.version$minor, sep = "."),
                     tryCatch(system2("python3", "--version", stdout = TRUE)[1],
@@ -361,7 +479,7 @@ man <- bind_rows(
                     CAN_SEED_VALUE,
                     Sys.getenv("CANON_B_HEAD", "2000"),
                     Sys.getenv("CANON_B_SENS", "500"),
-                    Sys.getenv("CANON_B_JUDGE", "600")))) %>%
+                    Sys.getenv("CANON_STABILITY_REPS", "100")))) %>%
   mutate(canonical_run_id = RUN_ID, git_sha = GIT_SHA, git_branch = GIT_BRANCH,
          git_dirty = DIRTY,
          generated_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"),

@@ -1,8 +1,34 @@
 # =============================================================================
-# Script 01: Data Loading and Preparation
+# Technical reference: docs/r_pipeline/01_data_loading.md
+# Script 01: assemble the response-level analysis frame
 # =============================================================================
-# Load multilingual annotation data and prepare for analysis
-# Saves clean data as RData for use in subsequent scripts
+# Scientific purpose
+#   Reconstruct the 137,186-response original corpus, attach its frozen Luna
+#   v2.4 outcomes, and append the nine completed expansion models through the
+#   manifest-bound contract in pipeline/_expansion_input.R. The result contains
+#   249,201 observed and annotated responses from 20 models.
+#
+# Unit/key
+#   One row per (prompt_id, prompt_language, model). Boundary and regular prompt
+#   records are assembled separately before the key contract is enforced.
+#
+# Inputs
+#   annotations/full_v1/annotations_all.jsonl
+#   annotations/full_v1/annotations_{en,zh,ar,ru,hi}_boundary.jsonl
+#   annotations/full_v1/prompts_meta/test_prompts_<language>.json
+#   final Luna v2.4 Parquet named in pipeline/_response_validity.R
+#   three expansion response-index/result/manifest sets named in
+#   pipeline/_expansion_input.R
+#
+# Outputs
+#   CANON_DATA_PATH (default pipeline/data_clean.RData), object data_clean
+#   CANON_SUMMARY_DIR/00_{model,language,category}_summary.csv
+#
+# Missing/error policy
+#   JSONL error records and invalid original engagement codes are excluded.
+#   Every retained response must have prompt metadata and one exact v2.4 label.
+#   One twice-empty Gemini generation and one exhausted Kimi annotation remain
+#   explicitly absent. Duplicate or unmatched retained keys stop execution.
 
 library(jsonlite)
 library(tidyverse)
@@ -11,15 +37,21 @@ library(here)
 # Set working directory to the repo root portably (replaces a hardcoded path).
 # here::here() locates the project root from any subdirectory.
 setwd(here::here())
+source("pipeline/_response_validity.R")
+source("pipeline/_expansion_input.R")
 
 # Run directory holding the annotation-pipeline outputs for this run.
 # Override either with an env var, e.g. REFUSAL_RUN_DIR=annotations/pilot_v1
-run_dir     <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/pilot_v1")
+run_dir     <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/full_v1")
 prompts_dir <- Sys.getenv("REFUSAL_PROMPTS_DIR", file.path(run_dir, "prompts_meta"))
 cat(sprintf("Run dir: %s\nPrompts dir: %s\n", run_dir, prompts_dir))
 
-# Create output directories
-dir.create("pipeline/tables", showWarnings = FALSE, recursive = TRUE)
+# Release builds direct both derived data and summaries into the isolated release
+# tree. Interactive/local runs retain the historical defaults.
+data_output <- Sys.getenv("CANON_DATA_PATH", "pipeline/data_clean.RData")
+summary_dir <- Sys.getenv("CANON_SUMMARY_DIR", "pipeline/tables")
+dir.create(dirname(data_output), showWarnings = FALSE, recursive = TRUE)
+dir.create(summary_dir, showWarnings = FALSE, recursive = TRUE)
 
 cat(rep("=", 80), "\n", sep = "")
 cat("LOADING MULTILINGUAL ANNOTATION DATA\n")
@@ -125,7 +157,8 @@ if (!"route" %in% names(data_clean)) {
 
 data_clean <- data_clean %>%
   mutate(
-    # Binary engagement/refusal
+    # Historical Gemini measurement. These aliases remain only so pending
+    # pre-v2.4 analyses can be reconstructed; live estimators do not use them.
     engaged = engagement_code <= 3,
     refused = engagement_code >= 4,
 
@@ -238,7 +271,8 @@ data_clean <- data_clean %>%
 
     # --- SLANT SUBSAMPLE (annotation passes 2/3) -------------------------
     # Passes 2 and 3 (ideology, moral foundations) were run on a 25% ISSUE
-    # subsample, not on every response -- see docs/SLANT_SUBSAMPLE.md. Sampling
+    # subsample, not on every response -- see the archived SLANT_SUBSAMPLE.md
+    # and current docs/DEFERRED_SLANT_MORAL_VALIDITY.md. Sampling
     # whole issues rather than responses keeps every model x language x tier
     # cell balanced and preserves the issue-level clustering the mixed models
     # rely on.
@@ -275,60 +309,6 @@ data_clean <- data_clean %>%
     ),
     contemporary = route != "perennial"
   )
-
-# =============================================================================
-# Basic Descriptive Statistics
-# =============================================================================
-
-cat("\n")
-cat(rep("=", 80), "\n", sep = "")
-cat("BASIC DESCRIPTIVE STATISTICS\n")
-cat(rep("=", 80), "\n", sep = "")
-
-# Overall counts
-cat("\nOverall:\n")
-cat(sprintf("  Total responses: %d\n", nrow(data_clean)))
-cat(sprintf("  Engagement rate: %.1f%%\n", mean(data_clean$engaged) * 100))
-cat(sprintf("  Refusal rate: %.1f%%\n", mean(data_clean$refused) * 100))
-
-# By model
-cat("\nBy model:\n")
-model_summary <- data_clean %>%
-  group_by(model_f) %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(engagement_rate))
-
-print(model_summary)
-
-# By language
-cat("\nBy language:\n")
-language_summary <- data_clean %>%
-  group_by(language_f) %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    .groups = "drop"
-  ) %>%
-  arrange(desc(engagement_rate))
-
-print(language_summary)
-
-# By category
-cat("\nBy category:\n")
-category_summary <- data_clean %>%
-  group_by(prompt_category) %>%
-  summarise(
-    n = n(),
-    engagement_rate = mean(engaged),
-    .groups = "drop"
-  ) %>%
-  arrange(engagement_rate)
-
-print(category_summary)
 
 # =============================================================================
 # Merge Prompts Metadata (to get controversy_tier)
@@ -404,33 +384,62 @@ data_clean <- data_clean %>%
   filter(!(dataset_type == "base" & controversy_tier == "boundary_testing")) %>%
   filter(!is.na(category))
 
-# Attach the slant-subsample flag from the manifest the annotator wrote.
-slant_manifest <- file.path(run_dir, "pass23_subsample.json")
-if (file.exists(slant_manifest)) {
-  sm <- jsonlite::fromJSON(slant_manifest)
-  data_clean$slant_eligible <- data_clean$issue_id %in% sm$issue_ids
-  cat(sprintf("\nSlant subsample: %d issues (%.0f%% draw, seed %s); %d of %d rows eligible\n",
-              sm$n_issues, 100 * sm$subsample_frac, sm$seed,
-              sum(data_clean$slant_eligible), nrow(data_clean)))
-} else {
-  # No manifest: either passes 2/3 never ran, or they ran on everything.
-  data_clean$slant_eligible <- "economic_left_right" %in% names(data_clean) &&
-    !all(is.na(data_clean$economic_left_right))
-  cat("\nSlant subsample: no manifest found; slant_eligible set from data.\n")
-}
-# Did this row actually receive the deep passes? Distinct from eligibility:
-# a refusal is eligible but legitimately has no slant codes. The column is
-# absent entirely until passes 2/3 have been assembled, and `is.na(NULL)`
-# returns logical(0), which fails to recycle -- so guard on existence.
-data_clean$has_slant <- if ("economic_left_right" %in% names(data_clean))
-  !is.na(data_clean$economic_left_right) else FALSE
-cat(sprintf("Rows with slant codes: %d (%.1f%% of eligible engaged)\n",
-            sum(data_clean$has_slant),
-            100 * sum(data_clean$has_slant) /
-              max(sum(data_clean$slant_eligible & data_clean$engaged), 1)))
+# The annotation record and frozen prompt battery independently carry category
+# and tier. A silent disagreement would make sample inclusion use one source
+# while the model adjusts for the other, so require exact agreement here.
+stopifnot(all(as.character(data_clean$prompt_category) ==
+              as.character(data_clean$category)),
+          all(as.character(data_clean$controversy_tier) ==
+              as.character(data_clean$meta_controversy_tier)))
 
 cat(sprintf("Merged metadata. Controversy tier distribution:\n"))
 print(table(data_clean$controversy_tier, useNA = "ifany"))
+
+# =============================================================================
+# Attach the final response-validity measurement and summarize current outcomes
+# =============================================================================
+
+cat("\nAttaching final Luna v2.4 outcomes...\n")
+data_clean <- attach_final_outcomes(data_clean)
+stopifnot(nrow(data_clean) == RV_EXPECTED_N,
+          !anyDuplicated(data_clean[RV_KEY]))
+
+cat("\nAppending nine completed expansion models...\n")
+data_clean <- append_expansion_rows(data_clean)
+stopifnot(nrow(data_clean) == EXP_EXPECTED_N,
+          !anyDuplicated(data_clean[EXP_KEY]))
+
+cat(sprintf("  Responses: %s\n", format(nrow(data_clean), big.mark = ",")))
+cat(sprintf("  Genuine refusals: %s (%.2f%%)\n",
+            format(sum(data_clean$genuine_refusal), big.mark = ","),
+            100 * mean(data_clean$genuine_refusal)))
+cat(sprintf("  Capability failures: %s (%.2f%%)\n",
+            format(sum(data_clean$capability_failure), big.mark = ","),
+            100 * mean(data_clean$capability_failure)))
+cat(sprintf("  Original judge-coded non-engagement: %s (%.2f%%; sensitivity only)\n",
+            format(sum(data_clean$original_nonengagement, na.rm = TRUE), big.mark = ","),
+            100 * mean(data_clean$original_nonengagement, na.rm = TRUE)))
+
+summarize_current_outcomes <- function(d, ...) {
+  d %>% group_by(...) %>% summarise(
+    n = n(),
+    genuine_refusal_n = sum(genuine_refusal, na.rm = TRUE),
+    genuine_refusal_rate = mean(genuine_refusal, na.rm = TRUE),
+    capability_failure_n = sum(capability_failure, na.rm = TRUE),
+    capability_failure_rate = mean(capability_failure, na.rm = TRUE),
+    original_nonengagement_n = sum(original_nonengagement, na.rm = TRUE),
+    original_nonengagement_observed_n = sum(!is.na(original_nonengagement)),
+    original_nonengagement_rate = if_else(
+      original_nonengagement_observed_n > 0,
+      original_nonengagement_n / original_nonengagement_observed_n, NA_real_),
+    .groups = "drop")
+}
+model_summary <- summarize_current_outcomes(data_clean, model_f) %>%
+  arrange(desc(genuine_refusal_rate))
+language_summary <- summarize_current_outcomes(data_clean, language_f) %>%
+  arrange(desc(genuine_refusal_rate))
+category_summary <- summarize_current_outcomes(data_clean, prompt_category) %>%
+  arrange(desc(genuine_refusal_rate))
 
 # =============================================================================
 # Save Clean Data
@@ -442,17 +451,17 @@ cat("SAVING CLEAN DATA\n")
 cat(rep("=", 80), "\n", sep = "")
 
 # Save as RData for fast loading in subsequent scripts
-save(data_clean, file = "pipeline/data_clean.RData")
-cat("Saved: pipeline/data_clean.RData\n")
+save(data_clean, file = data_output)
+cat("Saved: ", data_output, "\n", sep = "")
 
 # Also save summary tables
-write_csv(model_summary, "pipeline/tables/00_model_summary.csv")
-write_csv(language_summary, "pipeline/tables/00_language_summary.csv")
-write_csv(category_summary, "pipeline/tables/00_category_summary.csv")
-cat("Saved: pipeline/tables/00_*.csv\n")
+write_csv(model_summary, file.path(summary_dir, "00_model_summary.csv"))
+write_csv(language_summary, file.path(summary_dir, "00_language_summary.csv"))
+write_csv(category_summary, file.path(summary_dir, "00_category_summary.csv"))
+cat("Saved: ", summary_dir, "/00_*.csv\n", sep = "")
 
 cat("\n")
 cat(rep("=", 80), "\n", sep = "")
 cat("DATA LOADING COMPLETE\n")
 cat(rep("=", 80), "\n", sep = "")
-cat("\nNext: Run 40_appendix_engagement.R\n\n")
+cat("\nNext: run the canonical estimators through pipeline/make_release.R\n\n")

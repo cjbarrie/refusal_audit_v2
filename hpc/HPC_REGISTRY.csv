@@ -1,0 +1,14 @@
+stage,script,status,purpose,external_call,documentation
+HPC01,hpc/prepare_local_gguf_full.py,active_local_contract,Freeze and audit the four-model full-corpus task map,false,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC02,hpc/download_models.py,active_guarded_download,Download hash-pinned GGUF files to Torch scratch,network_download,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC03,hpc/run_local_gguf_shard.py,active_hpc_generation,Serve one GGUF model and execute one benchmark or production shard,hpc_inference,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC04,hpc/audit_benchmark.py,active_local_check,Apply the mechanical benchmark gate before full generation,false,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC05,hpc/prepare_fanar_local_pilot.py,experimental_contract,Freeze and audit the matched local Fanar pilot,false,docs/FANAR_EXPERIMENTS_V1.md
+HPC06,hpc/run_fanar_local_pilot.py,experimental_hpc_generation,Run one local Fanar pilot shard,hpc_inference,docs/FANAR_EXPERIMENTS_V1.md
+HPC10,hpc/slurm/00_bootstrap.sbatch,active_hpc_setup,Create the pinned Python environment and container cache,network_download,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC11,hpc/slurm/01_download_models.sbatch,active_hpc_setup,Download the four pinned GGUF files as a CPU array,network_download,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC12,hpc/slurm/02_benchmark.sbatch,active_hpc_gate,Run the four 100-response benchmark shards,hpc_inference,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC13,hpc/slurm/03_generate_full.sbatch,active_hpc_generation,Run the forty full-corpus model-language shards,hpc_inference,docs/HPC_LOCAL_GGUF_FULL_V1.md
+HPC14,hpc/slurm/04_fanar_download.sbatch,experimental_hpc_setup,Download the pinned local Fanar checkpoint,network_download,docs/FANAR_EXPERIMENTS_V1.md
+HPC15,hpc/slurm/05_fanar_pilot.sbatch,experimental_hpc_generation,Run the five-language local Fanar pilot,hpc_inference,docs/FANAR_EXPERIMENTS_V1.md
+HPC90,hpc/tests/test_local_gguf_hpc.py,active_test,Test task-map and local-HPC contracts,false,docs/HPC_LOCAL_GGUF_FULL_V1.md

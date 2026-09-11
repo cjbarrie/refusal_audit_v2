@@ -1,0 +1,2 @@
+annotation_version,model,n,unique_keys,genuine_refusal_n,capability_failure_n,original_annotations_sha256,expansion_rows,known_unobserved_generation_rows,known_unresolved_annotation_rows,repair_n,repair_model,sol_repair_used,human_gold_standard,canonical_run_id
+combined-original-and-expansion-luna-v2.4-v1,openai/gpt-5.6-luna,224544,224544,6127,52563,ce1b6c07de09e96912b034195c2c5ab6f2ef7762fbb103143e02913f1383cf75,87358,1,1,129,openai/gpt-5.6-luna,FALSE,FALSE,canon_019

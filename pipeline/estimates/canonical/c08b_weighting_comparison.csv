@@ -1,13 +1,5 @@
-language,weighting,estimate_pp,conf_low_pp,conf_high_pp,primary_weighting,note,canonical_run_id
-Chinese,pooled,1.3228862973760933,0.8961180600922279,1.7127062765614538,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Chinese,equal_model,1.319700388721682,0.8988972301874882,1.7194407384719648,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Chinese,equal_model_issue,1.319213713876636,0.8945759185660715,1.719739325515309,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Arabic,pooled,2.3289718263658563,1.9275268591718104,2.7196389744482805,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Arabic,equal_model,2.329985362140775,1.9172893494590608,2.7046964311191983,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Arabic,equal_model_issue,2.3310023310023316,1.9209826631701608,2.704994658119659,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Russian,pooled,3.948231862923806,3.5479677624831383,4.3357214658864915,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Russian,equal_model,3.939008290934524,3.5541852328491124,4.322121521009791,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Russian,equal_model_issue,3.938422688422691,3.5538983585858595,4.321216977466974,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Hindi,pooled,8.517626450624043,8.074863915864753,8.956871071655549,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Hindi,equal_model,8.495386495265736,8.0189075644898,8.90180912554866,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
-Hindi,equal_model_issue,8.494803807303807,8.018769425019428,8.900938471250969,equal_model,"weighting comparison; the three agree closely, so this is tabulated rather than plotted",canon_012
+language,outcome,weighting,estimate,conf_low,conf_high,estimate_pp,conf_low_pp,conf_high_pp,n_complete_blocks,note,canonical_run_id
+zh,genuine_refusal,response,-2.4492885929950346e-4,-0.0024507197952852956,0.0018840332126590447,-0.024492885929950345,-0.24507197952852955,0.18840332126590448,44911,weighting sensitivity; primary c08 gives models equal weight,canon_019
+ar,genuine_refusal,response,-0.005477743882072636,-0.007504072131872982,-0.0034620045441079604,-0.5477743882072635,-0.7504072131872982,-0.34620045441079605,44909,weighting sensitivity; primary c08 gives models equal weight,canon_019
+ru,genuine_refusal,response,-0.005233619883301412,-0.007071305204985599,-0.0033627612092818537,-0.5233619883301412,-0.7071305204985598,-0.3362761209281854,44902,weighting sensitivity; primary c08 gives models equal weight,canon_019
+hi,genuine_refusal,response,-0.01167740066409645,-0.013921182129413243,-0.009369705515496794,-1.1677400664096451,-1.3921182129413243,-0.9369705515496793,44873,weighting sensitivity; primary c08 gives models equal weight,canon_019

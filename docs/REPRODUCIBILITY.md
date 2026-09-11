@@ -62,7 +62,9 @@ The free candidate harvest (Stage 1, Stage 4) needs no key.
 ## 3. Run it — one command
 
 The driver `run_pipeline.py` runs harvest → enrich → format per edition, then
-merges, tee-ing per-stage counts and wall-time to `sourcing/run.log`.
+merges, tee-ing per-stage counts and wall-time to a run log. The completed log
+is preserved at `archive/sourcing/run.log`; a rerun creates a new mutable log
+and does not replace that provenance copy.
 
 ### 3a. Free validation harvest (no LLM, no key)
 
@@ -72,7 +74,7 @@ python run_pipeline.py --editions en zh ar ja id
 
 Produces `data/candidate_issues.json` (en) and `data/candidate_issues_{zh,ar,ja,id}.json`,
 then stops before any spend. This is the run behind
-`fig_multiedition_candidates.png`. Expected counts (run-to-run Wikidata
+the archived `fig_multiedition_candidates.png`. Expected counts (run-to-run Wikidata
 resolution varies by a handful): **en ~516, zh ~106, ar 71, ja ~148, id 57**.
 
 ### 3b. Full English battery (harvest + enrich + format + merge)
@@ -83,7 +85,9 @@ python run_pipeline.py --editions en --enrich --model anthropic/claude-sonnet-5 
 ```
 
 Produces `data/issue_records_full.jsonl`, `prompts/full_prompts_en.json`,
-`prompts/full_review_sheet.csv`, and (via Stage 4) `issue_records_merged.jsonl`.
+`prompts/full_review_sheet.csv`, and (via Stage 4) an intermediate merged issue
+record. That mutable intermediate is not retained; its accepted contents are
+incorporated into `data/issue_records_rebalanced.jsonl`.
 
 ### 3c. All five editions, enriched (the native-sourcing battery)
 
@@ -304,5 +308,5 @@ deterministic regardless of worker count.
 ## 10. Downstream (unchanged)
 
 Everything after the translated batteries — generate → judge → R analysis — is
-the carried-over legacy machinery. See `NEXT_STEPS.md` for the downstream runbook
+the carried-over legacy machinery. See `PIPELINE_ENTRYPOINTS.md` for the supported downstream commands
 (model-panel refresh, generation, judging, and the three R entry-script edits).

@@ -1,22 +1,2 @@
-diagnostic,value,detail,interpretation,canonical_run_id
-neighbourhood_preservation_k15,0.39484508547008523,share of embedding kNN retained in the 2-D map,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-topic_purity_k15,0.6489316239316236,share of 2-D neighbours sharing topic_domain,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-topic_purity_shuffled_baseline,0.11710336538461538,"same statistic with topic labels permuted, mean of 20",EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-near_duplicate_prompts,0,prompts with cosine >= 0.995 to another prompt,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-prompts_missing_embedding,0,"in canon, absent from the embedding cache",EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-embeddings_not_in_canon,0,"in the cache, absent from canon",EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn10_md0.05,0.43613782051282063,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn25_md0.05,0.41087072649572626,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn50_md0.05,0.37481303418803413,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn10_md0.15,0.4260416666666666,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn25_md0.15,0.39484508547008523,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn50_md0.15,0.3564369658119656,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn10_md0.40,0.3891025641025641,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn25_md0.40,0.34695512820512786,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-grid_preservation_nn50_md0.40,0.2956997863247861,hyper-parameter sensitivity,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260810_procrustes_rmse,0.4178162963292499,relative RMSE after Procrustes alignment to the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260811_procrustes_rmse,0.41854419375466584,relative RMSE after Procrustes alignment to the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260812_procrustes_rmse,0.37379707343565466,relative RMSE after Procrustes alignment to the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260810_neighbour_overlap,0.6744391025641024,share of 2-D kNN shared with the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260811_neighbour_overlap,0.6523504273504273,share of 2-D kNN shared with the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
-seed_20260812_neighbour_overlap,0.6590811965811967,share of 2-D kNN shared with the canonical fit,EXPLORATORY. The projection establishes no causal effect and validates no taxonomy.,canon_012
+n_prompts,embedding_dimensions,n_neighbors,min_dist,metric,seed,geometry_note,interpretation,canonical_run_id
+2496,512,25,0.15,cosine,20260809,one English-prompt geometry; outcomes do not enter the fit,exploratory locator only; distances and clusters are not estimands,canon_019

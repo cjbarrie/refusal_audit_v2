@@ -1,15 +1,1 @@
-family,estimand,level,fraction,n_failures,canonical_run_id
-home,standardized home-away (full target),CN,0.1,1,canon_012
-home,standardized home-away (full target),EU,0.1,500,canon_012
-home,standardized home-away (full target),EU,0.2,500,canon_012
-home,standardized home-away (full target),EU,0.3,500,canon_012
-home,standardized home-away (full target),EU,0.4,500,canon_012
-home,standardized home-away (full target),EU,0.5,500,canon_012
-home,standardized home-away (full target),EU,0.6,500,canon_012
-home,standardized home-away (full target),EU,0.75,500,canon_012
-home,standardized home-away (full target),EU,0.9,500,canon_012
-home,standardized home-away (full target),EU,1,1,canon_012
-home,standardized home-away (full target),India,0.1,43,canon_012
-home,standardized home-away (full target),India,0.2,2,canon_012
-home,standardized home-away (full target),US,0.1,71,canon_012
-home,standardized home-away (full target),US,0.2,12,canon_012
+fraction,percentage,family,level,outcome,failed_draws,canonical_run_id

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "roster_version": "openrouter_expansion_v3_1_all_languages_2026-09-03",
+  "status": "setup_only_not_authorized",
+  "provider_calls_authorized": false,
+  "scientific_scope": "All five languages for every retained model; capability failure is retained as a distinct measured outcome",
+  "supersedes_for_unrun_hunyuan_stage": "config/model_rosters/openrouter_expansion_v3_cell_approved.json",
+  "preserves_completed_v3_stages": [1, 2, 3],
+  "decision": {
+    "recorded_at": "2026-09-03",
+    "rationale": "Do not select model-language cells on pilot outcomes. Retain conditional cells and separate capability failure from genuine refusal in annotation and analysis.",
+    "newly_included_cells": ["hunyuan-a13b/en", "hunyuan-a13b/ru"]
+  },
+  "base_route_roster": {
+    "path": "config/model_rosters/multirouter_expansion_v2.json",
+    "sha256": "5c8078861773e74eea80cc7afc308032a167d6a1097553f2b3748253b73664e8"
+  },
+  "cell_registry": {
+    "path": "annotations/model_expansion_v1/openrouter_pilot_v1/cell_viability_v1/final_cell_registry.csv",
+    "sha256": "429a8225457d4ca2922b550032d4f307a9dfe5e7027dfe0af8d76e53f46d9071",
+    "included_decisions": ["approved", "conditional"],
+    "excluded_decision": "removed_model"
+  },
+  "generation_contract": {
+    "messages": "one user message containing the canonical target-language prompt text; no system message",
+    "temperature": 1.0,
+    "max_tokens": 5000,
+    "provider_fallbacks": false,
+    "reasoning": "disabled where supported and never retained",
+    "max_attempts": 2,
+    "planning_output_tokens": 1500
+  },
+  "included_models": [
+    "glm-4.7-flash",
+    "kimi-k2.5",
+    "hunyuan-a13b",
+    "gemini-2.5-flash-lite",
+    "llama-4-scout",
+    "nova-lite",
+    "ministral-14b"
+  ],
+  "languages_per_model": ["en", "zh", "ar", "ru", "hi"],
+  "n_models": 7,
+  "n_cells": 35,
+  "n_requests": 87360
+}

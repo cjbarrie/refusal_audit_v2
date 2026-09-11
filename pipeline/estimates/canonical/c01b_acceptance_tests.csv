@@ -1,109 +1,30 @@
-test,description,result,detail,canonical_run_id
-A1,"canonical sample is 137,186 rows",PASS,"137,186",canon_012
-A2,one row per model x prompt_id x language,PASS,,canon_012
-A3,624 issues / 11 models / 5 languages / 2 tiers,PASS,,canon_012
-A4,General issues never enter the home or away arms,PASS,"22,868 General rows, all held at home_status='general'",canon_012
-A5,refused_strict is exactly engagement_code >= 4,PASS,,canon_012
-B1,nested weights sum to 1,PASS,sum = 1.000000000000,canon_012
-B2,nested weights give every model equal total mass,PASS,range 0.00e+00 across 11 models,canon_012
-B3,weights equalise an artificially imbalanced roster (raw shares do not),PASS,weighted range 1.57e-15; raw share range 0.0833,canon_012
-B4,weighting changes the answer when the roster is imbalanced,PASS,imbalanced frame: weighted 0.0889 vs unweighted 0.1038,canon_012
-B5,"on the real (balanced) design, weighted equals unweighted",PASS,"0.088942 both ways; balance is why, and it is not a free pass",canon_012
-C1,replicate frames carry a per-draw instance label,PASS,,canon_012
-C2,replicates that draw an issue twice keep the copies distinct,PASS,duplicate draws seen: TRUE; instance- and issue-keyed answers diverge: TRUE,canon_012
-C3,every bootstrapped quantity records its seed and replicate counts,PASS,1132 entries,canon_012
-C3b,any bootstrap above the failure threshold is marked unreliable,PASS,max failure rate 0.472; 0 undeclared,canon_012
-C3c,"c18 holds diagnostics from every bootstrapping part, not just the last",PASS,missing: ,canon_012
-C4,c18 labels are unique within the run,PASS,,canon_012
-D1,every estimate table carries exactly one canonical_run_id,PASS,34 tables,canon_012
-D1b,all estimate tables come from the same run,PASS,canon_012,canon_012
-D1c,every reliability table carries the run id,PASS,11 reliability tables,canon_012
-D2,every canonical table names its estimand,PASS,,canon_012
-E1,no un-negated causal claim in any canonical table,PASS,verbatim prompt text exempt: prompt_text,canon_012
-E1b,the verbatim exemption covers study prompts only,PASS,,canon_012
-E2,standardized contrast is labelled non-causal,PASS,,canon_012
-E3,content tables declare conditioning on engagement,PASS,,canon_012
-E4,ideology tables carry the weak-reliability warning,PASS,,canon_012
-E5,moral foundations are declared non-exclusive,PASS,,canon_012
-F1,"non-estimable jurisdictions are flagged, not silently dropped",PASS,not estimable: EU,canon_012
-F2,"English slant coverage is complete, and partial languages are excluded",PASS,"en 6528/6528; excluded: ar, ru, zh",canon_012
-F3,"all four non-English languages are estimated, nulls included",PASS,"ar, hi, ru, zh",canon_012
-F4,paired tables report incomplete blocks rather than dropping silently,PASS,,canon_012
-F5,a design-based FPC jackknife is recorded with the right sampling fraction,PASS,"390 jackknives, f = 0.250",canon_012
-F5b,the frozen-battery interval is narrower on average,PASS,median width ratio 0.891,canon_012
-G1,no majority-vote label is used as ground truth,PASS,,canon_012
-G2,"judge spread is labelled as an observed envelope, not an interval",PASS,,canon_012
-G3,the latent-error simulation layer refuses to run without validation data,PASS,"draw_latent_labels() requires human-estimated sensitivity, s",canon_012
-G4,the canonical outcome is a single named judge,PASS,google/gemini-2.5-flash-lite,canon_012
-H1,main figures are exactly the expected PNGs,PASS,"Fig1_home_jurisdiction.png, Fig2_language_framing.png, Fig3_content.png",canon_012
-H2,Extended Data figures are exactly the expected PNGs,PASS,"ED1_judge_sensitivity.png, ED2_focused_sensitivity.png, ED3_sample_size_stability.png, ED4_language_heterogeneity.png, ED5_slant_by_model.png, ED6_foundations_by_model.png, ED7_measurement_reliability.png, ED8_prompt_semantic_umap.png, ED9_prompt_semantic_umap_by_model.png",canon_012
-H3,no non-PNG artefact in any active figure directory,PASS,,canon_012
-H3b,obsolete figure directories are gone,PASS,,canon_012
-H4,FIG2c pooled framing row exists in c10,PASS,,canon_012
-H5,ideology bins sum to one within each dimension,PASS,,canon_012
-H6,c17d exists and declares itself paired,PASS,,canon_012
-H7,the canonical judge's own paired difference is exactly zero,PASS,theta_canonical - theta_canonical must be 0 by construction,canon_012
-H8,c17d point estimates reproduce c17b on the same sample,PASS,both must come from the identical gcomp() on the identical sample,canon_012
-H9,paired intervals are narrower than combined marginal intervals,PASS,,canon_012
-H10,c17d records a fixed draw count with failures counted,PASS,,canon_012
-H11,c17d never calls the canonical judge ground truth,PASS,,canon_012
-H12,"c07b and c08b are written by estimation scripts, not figure scripts",PASS,,canon_012
-I1,ideology has EXACTLY five bins per dimension,PASS,5,canon_012
-I2,"the five bins are the five categories, not a 3-way collapse",PASS,,canon_012
-I3,each dimension's bins sum to one,PASS,,canon_012
-I4,every ideology bin carries an interval,PASS,,canon_012
-I5,"signed_mean is secondary, not the declared primary",PASS,,canon_012
-I6,authority and populism do not carry generic left/right endpoints,PASS,,canon_012
-I7,reliability reports PAIRWISE positive specific agreement,PASS,,canon_012
-I8,the mis-named positive_specific_agreement column is gone,PASS,,canon_012
-I9,the PSA formula is 2a/(2a+b+c),PASS,0.6667 on the reference case,canon_012
-I10,no arbitrary agreement threshold or verdict is stored,PASS,,canon_012
-I11,judge comparisons state their common support,PASS,,canon_012
-I12,every judge in a comparison uses the SAME sample,PASS,one n per jurisdiction across judges,canon_012
-I13,the judge envelope is not called a bound or an interval,PASS,OBSERVED JUDGE POINT ENVELOPE (range of judge point estimate,canon_012
-I13b,the point envelope and the union of intervals are separate columns,PASS,,canon_012
-I14,no full-sample estimate is inserted into the envelope,PASS,,canon_012
-I15,the one-armed judge perturbation of c08 is retired,PASS,,canon_012
-I16,primary framing uses complete 2+2 blocks only,PASS,,canon_012
-I17,incomplete framing blocks are listed by key,PASS,7 incomplete blocks,canon_012
-I18,framing captions do not claim prompt content is held fixed,PASS,,canon_012
-I19,GLM warnings and separation are recorded on every standardized row,PASS,,canon_012
-I20,a penalized-logit sensitivity exists,PASS,,canon_012
-I21,both a full-target and a common-support estimand are reported,PASS,,canon_012
-I22,"support restriction reports retained rows, issues, cells and weight",PASS,,canon_012
-I23,the equal-model average carries an interval,PASS,,canon_012
-I24,"failed bootstrap draws are counted, never replaced",PASS,,canon_012
-I25,every bootstrap draws a fixed number of replicates,PASS,,canon_012
-I26,"the finite-battery interval is design-based, not a rescaled percentile",PASS,,canon_012
-I27,timings are present and non-empty,PASS,10 stages,canon_012
-I28,"the manifest records git sha, hashes and environment",PASS,,canon_012
-I29,the manifest does not list itself,PASS,,canon_012
-I30,"the release is not built from a dirty tree, or says so",PASS,dirty: FALSE,canon_012
-J1,c13 has one row per dimension x model x quantity,PASS,264 rows,canon_012
-J2,c15 has one row per foundation x model,PASS,66 rows,canon_012
-J3.conf_low,c13 and c15 carry conf_low,PASS,,canon_012
-J3.conf_high,c13 and c15 carry conf_high,PASS,,canon_012
-J3.conf_low_battery,c13 and c15 carry conf_low_battery,PASS,,canon_012
-J3.conf_high_battery,c13 and c15 carry conf_high_battery,PASS,,canon_012
-J3.n,c13 and c15 carry n,PASS,,canon_012
-J3.n_issues,c13 and c15 carry n_issues,PASS,,canon_012
-J3.estimable,c13 and c15 carry estimable,PASS,,canon_012
-J3.support_ok,c13 and c15 carry support_ok,PASS,,canon_012
-J4,every model-level interval brackets its point estimate,PASS,,canon_012
-J5,"model-level share intervals stay inside [0,1]",PASS,,canon_012
-J6,"c13 five bins sum to one within every (dimension, model)",PASS,,canon_012
-J7,c13/c15 report missing content labels rather than zeroing them,PASS,,canon_012
-J8,the equal-model aggregate is the mean of the model-level rows,PASS,,canon_012
-J10,"c21 resamples ISSUES, not response rows",PASS,,canon_012
-J11,c21 ranges are never called confidence intervals,PASS,,canon_012
-J12,c21 records a master seed and a deterministic replicate-seed rule,PASS,,canon_012
-J13,c21 tolerances were prespecified,PASS,,canon_012
-J14,the 100% fraction is the deterministic full sample,PASS,,canon_012
-J15,subsample draws are nested and reproducible from the master seed,PASS,,canon_012
-J16,c21 estimability is recorded and mostly satisfied,PASS,mean 0.978,canon_012
-J20,exactly one UMAP coordinate pair per prompt,PASS,"2496 rows, 2496 prompts",canon_012
-J21,one geometry: every facet reads the same coordinate table,PASS,,canon_012
-J22,"refusal propensities are bounded in [0,1]",PASS,,canon_012
-J23,"propensity weighting is equal-per-jurisdiction, models nested",PASS,,canon_012
-J24,every prompt-language cell has a propensity and a denominator,PASS,,canon_012
-J30,every table the documentation names exists in the release,PASS,,canon_012
+check_id,description,status,detail,canonical_run_id
+A1,"analysis has 224,544 unique response keys across 18 models",PASS,,canon_024
+A2,final v2.4 hash is the frozen accepted hash,PASS,,canon_024
+A3,"combined genuine-refusal count is 6,127",PASS,,canon_024
+A4,"combined capability-failure count is 52,563",PASS,,canon_024
+A5,"original-label sensitivity is confined to and exact for 137,186 rows",PASS,,canon_024
+A6,refusal and capability failure are allowed to overlap,PASS,overlap n = 736,canon_024
+B1,all required v2.4 estimate tables exist,PASS,,canon_024
+C1,home table has 5 jurisdictions x 2 distinct current outcomes,PASS,,canon_024
+C2,home primary rows are nested full-target predictive contrasts,PASS,,canon_024
+C3,finite home estimates are probability differences,PASS,,canon_024
+C3b,standardized home and away risks reproduce the contrast,PASS,,canon_024
+C4,common-support diagnostics report retained target weight,PASS,,canon_024
+D1,language table has 4 contrasts x 2 current outcomes,PASS,,canon_024
+D2,language blocks are complete prompt/model pairs,PASS,,canon_024
+D3,language estimates are bounded differences,PASS,,canon_024
+D3b,paired language arm levels reproduce each contrast,PASS,,canon_024
+D4,framing table has the same two current outcomes,PASS,,canon_024
+D5,framing primary requires complete 2+2 English blocks,PASS,,canon_024
+D6,equal-model framing arm levels reproduce each contrast,PASS,,canon_024
+E1,stability uses only current v2.4 outcomes,PASS,,canon_024
+E2,stability ranges are explicitly not confidence intervals,PASS,,canon_024
+E3,"UMAP has one coordinate per 2,496 prompts",PASS,,canon_024
+E4,UMAP carries v2.4 refusal and capability propensities,PASS,,canon_024
+E4b,region atlas has six balanced 416-prompt strata,PASS,,canon_024
+E5,original-to-final transition rows sum to one within original label,PASS,,canon_024
+F1,main figure inventory is exactly two PNGs,PASS,"Fig1_jurisdiction_refusal_atlas_home.png, Fig2_language_refusal_atlas_contrasts.png",canon_024
+F2,extended figure inventory contains only supported analyses,PASS,"ED1_home_absolute_risks_genuine_refusal.png, ED10_content_fingerprint_capability_failure.png, ED11_prompt_distribution_genuine_refusal.png, ED12_prompt_distribution_capability_failure.png, ED13_capability_failure_semantic_atlas.png, ED14_genuine_refusal_semantic_atlas_by_model.png, ED2_home_absolute_risks_capability_failure.png, ED3_language_absolute_rates_genuine_refusal.png, ED4_language_absolute_rates_capability_failure.png, ED5_measurement_reclassification.png, ED6_annotation_component_profile.png, ED7_model_specific_contrasts_genuine_refusal.png, ED8_model_specific_contrasts_capability_failure.png, ED9_content_fingerprint_genuine_refusal.png",canon_024
+F3,live root scripts never source pipeline/pending,PASS,,canon_024
+G1,every active root R script links a technical reference,PASS,,canon_024

@@ -1,4 +1,5 @@
 # =============================================================================
+# Technical reference: docs/r_pipeline/_theme.md
 # Design system for publication figures
 # =============================================================================
 # Sourced by every plotting script. One theme, one palette, one export path.
@@ -101,6 +102,21 @@ PAL_JURIS <- c(
   "US"    = "#96A8B6",   # cool grey-blue      L* 68
   "EU"    = "#C0CBD3"    # light cool slate    L* 81
 )
+
+# Model identity inside a jurisdiction block. These palettes are deliberately
+# local: no semantic map asks a reader to distinguish all 20 models at once.
+# The same colour is reused for the model's standardized estimate beside that
+# map. Values are drawn from Paul Tol's colour-vision-safe muted palette; the
+# grey semantic background is not reused for a model.
+MODEL_PALETTE_BASE <- c(
+  "#332288", "#117733", "#44AA99", "#88CCEE",
+  "#999933", "#CC6677", "#882255"
+)
+PAL_MODEL_BLOCK <- lapply(ORDER_JURIS, function(j) {
+  models <- ORDER_MODEL[unname(MODEL_JURIS[ORDER_MODEL]) == j]
+  setNames(MODEL_PALETTE_BASE[seq_along(models)], models)
+})
+names(PAL_MODEL_BLOCK) <- ORDER_JURIS
 # Issue regions carry the colour of the jurisdiction whose home they are;
 # "General" has no jurisdiction and is a neutral near-white.
 PAL_REGION <- c(
@@ -136,7 +152,7 @@ scale_fill_juris <- function(...)
 #   prompt tier     -> shape: circle = regular, triangle = boundary
 #   refusal reason  -> its own qualitative palette, below
 #   increase/decr.  -> sign and direction, never a second colour scheme
-#   not estimable   -> hollow square, and the words "not estimable"
+#   not estimable   -> grey cross; defined in the external legend, never a zero
 #
 # Refusal reasons are response types, not model origins, so they must not borrow
 # jurisdiction hues. Four qualitative colours, lightness-separated for grayscale.
@@ -194,6 +210,7 @@ PAL_DIVERGE <- c("#2C5F7C", "#8FAFC2", "#EFEFEF", "#D69B7A", "#8C363C")
 # already means CN. The neutral bin is deliberately the palest thing in the
 # whole system: it holds 80-92% of the mass, and if it were saturated it would
 # be the only thing on the page.
+# Pending-content compatibility only; no live figure uses this palette.
 PAL_IDEO <- c("-2" = "#2C5F7C", "-1" = "#93B0C4", "0" = "#EDEDEA",
               "+1" = "#DCA982", "+2" = "#A2603A")
 
@@ -232,7 +249,9 @@ H_SHORT <- 62  / 25.4  # 183 x  62 mm -- 2-4 rows; a single band of facets
 H_WIDE  <- 85  / 25.4  # 183 x  85 mm -- few rows, wide value axes
 H_STD   <- 125 / 25.4  # 183 x 125 mm -- the default multi-panel canvas
 H_TALL  <- 165 / 25.4  # 183 x 165 mm -- many stacked rows
-CANVASES <- c(short = H_SHORT, wide = H_WIDE, standard = H_STD, tall = H_TALL)
+H_PAGE  <- 225 / 25.4  # 183 x 225 mm -- full-page semantic atlas
+CANVASES <- c(short = H_SHORT, wide = H_WIDE, standard = H_STD,
+              tall = H_TALL, page = H_PAGE)
 
 # =============================================================================
 # theme_nature()

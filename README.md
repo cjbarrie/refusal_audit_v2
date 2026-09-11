@@ -1,97 +1,133 @@
-# refusal_audit_v2
+# Refusal audit v2
 
-A fresh build of the LLM political-refusal audit, rebuilt around a
-**disciplined, externally-anchored question-sourcing pipeline**.
+This repository studies when language models refuse political prompts, fail to
+answer them coherently, or behave differently across issue regions and prompt
+languages. The prompt battery is anchored in Wikipedia issue records rather
+than drafted from scratch by a model.
 
-## What is different from the legacy repo
+## Current state and replication contract
 
-The legacy project (`../refusal_audit`) sourced its prompt battery by
-drafting questions with GPT-4o. This version replaces the *sourcing* stage
-with a pipeline that seeds from **Wikipedia's human-curated
-`List of controversial issues`**, enriches each issue with structured
-information, and formats issues into matched regular + boundary prompts.
-Everything downstream of sourcing — model generation, the LLM-as-judge
-annotation passes, and the R analysis pipeline — is carried over unchanged
-so results remain comparable.
+- The promoted baseline contains **224,544** unique
+  `(prompt_id, prompt_language, model)` keys from 18 models, five prompt
+  languages, 624 issues and 2,496 English prompt meanings. It joins the
+  137,186-response original panel to 87,358 completed expansion annotations.
+- The original production annotation used Gemini 2.5 Flash-Lite. Its codes
+  4–5 are retained as **judge-coded non-engagement**, not treated as validated
+  refusal.
+- The completed production measurement is Luna v2.4 at
+  `annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations.parquet`.
+  It contains one label per original-panel response, including 3,591 derived
+  genuine refusals and 43,317 derived capability failures. Its SHA-256 is
+  `ce1b6c07de09e96912b034195c2c5ab6f2ef7762fbb103143e02913f1383cf75`.
+- Three frozen v3 expansion batches apply the unchanged Luna v2.4 codebook to the
+  seven added models. The combined frame contains 6,127 genuine refusals and
+  52,563 capability failures. One empty Gemini generation and one exhausted
+  Kimi annotation remain missing; neither is imputed.
+- The promoted working release is **`canon_024`**. It inherits the hash-verified
+  18-model estimates from `canon_021` and makes the accepted compact two-figure
+  genuine-refusal redesign canonical. It passes 29/29 analysis checks and
+  16/16 figure checks. The manifest records that it was built from a dirty
+  working tree under explicit approval; a clean-tree rebuild remains required
+  before the final archival paper release.
+- The live R source has advanced to an unpromoted **20-model candidate**. Its
+  checked build, `canon_029`, contains 249,201 observed responses after adding
+  Sarvam-105B and Bielik 11B v3.0. It passed the current gates but was also
+  built from a dirty tree and does not silently replace `canon_024`.
+- T-pro-it-2.0, the four NYU Torch local models and the local Fanar experiment
+  remain operational workbench runs. None enters either release above.
+- Sol was used as a frontier machine reference in validation work. It is not a
+  human gold standard, and no selective Sol production cascade has been run.
 
-Two seed routes feed the identical enrich → format → translate stages:
+No currently supported paid production stage runs by default. The guarded v2.4
+provider commands require a frozen payload, an exact recorded authorization
+and an explicit paid-run flag. Historical sourcing and generation programs are
+preserved implementations, not blanket authorization to call providers.
 
-- **Perennial route** (main) — `Wikipedia:List of controversial issues`, a
-  curated list of long-contested topics. Frozen English battery: **387 issues
-  → 1,548 prompts**.
-- **Temporal route** (`docs/TEMPORAL_SOURCING.md`) — the MediaWiki *protection
-  log*, which surfaces what is being politically fought over *right now*.
-  English-only **at the seed stage** (the route does not transfer to other
-  editions — see the doc). Run: **799 political issues → 3,199 prompts**, fully
-  disjoint from the perennial battery on Wikidata Q-ID.
+## Repository structure
 
-Both batteries are English-sourced and then **translated into the study
-languages** via `sourcing/05_translate_review.py` (sonnet-5), so the
-cross-language refusal contrast runs on both. Six languages are supported
-(`en/zh/ja/id/ar/ru`); five are frozen and **Russian (`ru`) is wired but not yet
-generated** (`--languages ru`, needs `OPENROUTER_API_KEY`).
+| Path | Purpose |
+|---|---|
+| `sourcing/` | Wikipedia harvest, enrichment, prompt construction and translation code |
+| `data/` | retained sourcing inputs, intermediate records and the fixed English embedding cache |
+| `prompts/` | frozen multilingual prompt batteries and review/provenance files |
+| `scripts/` | numbered registry of response generation, measurement and guarded operational CLIs |
+| `src/refusal_audit/` | response-validity design, validation and v2.4 implementation modules |
+| `annotations/` | raw responses, original annotations, human reviews, validation runs and final v2.4 labels |
+| `pipeline/` | current R estimators, PNG figures, immutable releases and acceptance gates |
+| `interactive/` | read-only Streamlit verifier and standalone 3-D/2-D Refusal Observatory |
+| `docs/` | current technical documentation, registries and decision records; indexed by `docs/README.md` |
+| `archive/` | dated or stage-specific historical material; never part of the live execution path |
+| `writeup/` | current technical write-up source/PDF and archived prior versions |
 
-Subject panel: up to a **10-model jurisdiction panel** (US 4 / CN 2 / EU 1 /
-MENA 3). Seven models route via OpenRouter (`OPENROUTER_API_KEY`); the three MENA
-models (`allam-7b`, `falcon3-10b`, `jais-8b`) are each served on a **dedicated HF
-Inference Endpoint** (`HF_TOKEN` + per-model `*_ENDPOINT_URL`), joining the roster
-only when their endpoint URL is set. See `docs/NEXT_STEPS.md` for the roster and
-`docs/MENA_HF_ENDPOINT_INTEGRATION.md` for the deploy recipe.
+The detailed directory and data-flow map is
+[`docs/REPOSITORY_MAP.md`](docs/REPOSITORY_MAP.md). The exhaustive file-level
+inventory is [`docs/ARTIFACT_REGISTRY.csv`](docs/ARTIFACT_REGISTRY.csv).
+The live Python command inventory is
+[`scripts/SCRIPT_REGISTRY.csv`](scripts/SCRIPT_REGISTRY.csv).
+Start a replication with
+[`docs/REPLICATION_GUIDE.md`](docs/REPLICATION_GUIDE.md); use
+[`docs/REPLICATION_STATUS.md`](docs/REPLICATION_STATUS.md) to distinguish
+promoted results from work in progress.
 
-The legacy repo is treated as **reference-only**. We copy the reusable
-machinery here once and do not refashion it in place. See `MANIFEST.md`
-for exactly what was copied, built fresh, or deliberately left behind.
+## Supported entry points
 
-## Layout
-
-```
-sourcing/    NEW: Wikipedia seed -> enrich -> format -> translate pipeline (Stages 1-5, + 1b/2b temporal)
-prompts/     frozen prompt batteries: {full,temporal}_prompts_{en,zh,ja,id,ar}.json + canonical review CSVs
-responses/   model outputs (written under annotations/<run_id>/responses/)
-annotations/ judge scores, one run dir per pilot/run (annotations/<run_id>/)
-pipeline/    R analysis (01_data_loading.R ... 16_*.R); 01 patched for v2, 02-16 pending setwd fix
-scripts/     Python machinery: sampling, generation, 4-pass judge, stance, config, pilot driver
-data/        intermediate sourcing artifacts (candidate lists, issue records)
-docs/        design docs, sourcing rationale, reproducibility + annotation runbooks
-```
-
-## Pipeline in one line
-
-```
-Wikipedia controversy lists (en / zh / ar / ja / id)
-  -> harvest (Stage 1) -> enrich (Stage 2) -> format (Stage 3) -> merge on Q-ID (Stage 4)
-  -> human review -> freeze full_prompts_{lang}.json
-  -> [UNCHANGED] generate responses -> LLM-as-judge -> R analysis -> papers
-```
-
-Reproduce the whole sourcing stage with one command:
+Run commands from the repository root. The authoritative command guide is
+[`docs/PIPELINE_ENTRYPOINTS.md`](docs/PIPELINE_ENTRYPOINTS.md).
 
 ```bash
-cd sourcing
-python run_pipeline.py --editions en zh ar ja id            # free candidate harvest (no key)
-python run_pipeline.py --editions en --enrich               # full English battery (needs OPENROUTER_API_KEY)
+# Verify the frozen prompts, outcome table and promoted canon_024 release
+make baseline-check PYTHON=.venv/bin/python
 
-# temporal route (English seed): harvest -> batched enrich -> format
-python 06_harvest_temporal.py --days 90 --lang en
-python 07_enrich_temporal.py --workers 8                    # batched enricher (needs OPENROUTER_API_KEY)
-python 03_format_prompts.py --records ../data/issue_records_temporal_en.jsonl \
-       --out-prompts ../prompts/temporal_prompts_en.json \
-       --out-review ../prompts/temporal_review_en.csv --workers 8
+# Check prospective private-Git files without printing any matched value
+make private-repo-preflight PYTHON=.venv/bin/python
 
-# translate either battery into zh/ja/id/ar (needs OPENROUTER_API_KEY)
-python 05_translate_review.py --prompts ../prompts/full_prompts_en.json
-python 05_translate_review.py --prompts ../prompts/temporal_prompts_en.json
+# Run Python tests and test the current R code against its matching candidate
+make python-tests PYTHON=.venv/bin/python
+make r-candidate-test CANDIDATE_RELEASE=canon_029
+
+# Rebuild explorer assets from the promoted release and start the web version
+make interactive-data PYTHON=.venv/bin/python
+make interactive-web
+
+# Build, but do not promote, a newly named candidate analysis release
+make candidate-release RUN_ID=canon_030
 ```
 
-Docs — sourcing:
-- `docs/PIPELINE.md` — full design
-- `docs/REPRODUCIBILITY.md` — step-by-step runbook (env, keys, every flag)
-- `docs/NATIVE_SOURCING.md` — why/how of native-language multi-edition sourcing
-- `docs/TEMPORAL_SOURCING.md` — the contemporary protection-log route (English seed, translated to all five languages)
-- `docs/repro_check.md` — verification against the frozen English battery
+Prompt sourcing, model generation, translation and annotation can make
+external or paid calls. The guarded v2.4 commands, inputs and authorization rules
+are listed in the entry-point guide; do not infer permission from the presence
+of a local `.env` file.
 
-Docs — downstream (generation → judge → R):
-- `docs/NEXT_STEPS.md` — downstream runbook (sample → generate → judge → R)
-- `docs/ANNOTATION_CONTRACT.md` — the R pipeline's input contract the annotation stage satisfies
-- `docs/ANNOTATION_RUNBOOK.md` — how to run the annotation pipeline (roster, stages, R-loader changes)
-- `docs/R_PIPELINE_WALKTHROUGH.md` — the 23-script R analysis layer
+## Technical references
+
+- Ordered replication procedure:
+  [`docs/REPLICATION_GUIDE.md`](docs/REPLICATION_GUIDE.md)
+- Current inclusion status:
+  [`docs/REPLICATION_STATUS.md`](docs/REPLICATION_STATUS.md)
+- Private Git handoff and disclosure boundary:
+  [`docs/PRIVATE_REPOSITORY_HANDOFF.md`](docs/PRIVATE_REPOSITORY_HANDOFF.md)
+- Adopted response-validity procedure:
+  [`docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md`](docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md)
+- Final codebook and decision history:
+  [`docs/RESPONSE_VALIDITY_CODEBOOK_RATIONALE.md`](docs/RESPONSE_VALIDITY_CODEBOOK_RATIONALE.md) and
+  [`docs/RESPONSE_VALIDITY_DECISION_LOG.md`](docs/RESPONSE_VALIDITY_DECISION_LOG.md)
+- Current estimands:
+  [`docs/CANONICAL_ANALYSES.md`](docs/CANONICAL_ANALYSES.md)
+- R script index: [`docs/R_PIPELINE_WALKTHROUGH.md`](docs/R_PIPELINE_WALKTHROUGH.md)
+- Completed model-expansion provenance:
+  [`docs/OPENROUTER_MODEL_EXPANSION_V1.md`](docs/OPENROUTER_MODEL_EXPANSION_V1.md)
+- New-developer route screening:
+  [`docs/JURISDICTION_MODEL_EXPANSION_V1.md`](docs/JURISDICTION_MODEL_EXPANSION_V1.md)
+- Local-model runtime and admission pilots:
+  [`docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md`](docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md)
+  records the local admission pilots; the reproducible NYU Torch full-corpus
+  implementation is documented in
+  [`docs/HPC_LOCAL_GGUF_FULL_V1.md`](docs/HPC_LOCAL_GGUF_FULL_V1.md).
+- Current R/code audit:
+  [`docs/CODE_ANALYSIS_AUDIT.md`](docs/CODE_ANALYSIS_AUDIT.md)
+- The hash-preserving 1 September cleanup manifest:
+  [`docs/ARCHIVE_MANIFEST.csv`](docs/ARCHIVE_MANIFEST.csv); later cleanup
+  inventory: [`archive/2026-09-04_post_v24_rationalization/README.md`](archive/2026-09-04_post_v24_rationalization/README.md)
+
+Historical paths in frozen manifests are not rewritten. Use the archive
+manifest to resolve paths moved during the 1 September 2026 rationalization.

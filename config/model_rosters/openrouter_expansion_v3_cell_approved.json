@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "roster_version": "openrouter_expansion_v3_cell_approved_2026-09-02",
+  "status": "setup_only_not_authorized",
+  "provider_calls_authorized": false,
+  "scientific_scope": "Primary expansion restricted to model-language cells that passed the frozen viability rule",
+  "base_route_roster": {
+    "path": "config/model_rosters/multirouter_expansion_v2.json",
+    "sha256": "5c8078861773e74eea80cc7afc308032a167d6a1097553f2b3748253b73664e8"
+  },
+  "cell_registry": {
+    "path": "annotations/model_expansion_v1/openrouter_pilot_v1/cell_viability_v1/final_cell_registry.csv",
+    "sha256": "429a8225457d4ca2922b550032d4f307a9dfe5e7027dfe0af8d76e53f46d9071",
+    "included_decision": "approved",
+    "excluded_decisions": ["conditional", "removed_model"]
+  },
+  "generation_contract": {
+    "messages": "one user message containing the canonical target-language prompt text; no system message",
+    "temperature": 1.0,
+    "max_tokens": 5000,
+    "provider_fallbacks": false,
+    "reasoning": "disabled where supported and never retained",
+    "max_attempts": 2,
+    "planning_output_tokens": 1500
+  },
+  "approved_cells": {
+    "glm-4.7-flash": ["en", "zh", "ar", "ru", "hi"],
+    "kimi-k2.5": ["en", "zh", "ar", "ru", "hi"],
+    "hunyuan-a13b": ["zh", "ar", "hi"],
+    "gemini-2.5-flash-lite": ["en", "zh", "ar", "ru", "hi"],
+    "llama-4-scout": ["en", "zh", "ar", "ru", "hi"],
+    "nova-lite": ["en", "zh", "ar", "ru", "hi"],
+    "ministral-14b": ["en", "zh", "ar", "ru", "hi"]
+  },
+  "excluded_cells": {
+    "conditional": ["hunyuan-a13b/en", "hunyuan-a13b/ru"],
+    "removed_model": [
+      "mistral-small-3.2/en",
+      "mistral-small-3.2/zh",
+      "mistral-small-3.2/ar",
+      "mistral-small-3.2/ru",
+      "mistral-small-3.2/hi"
+    ],
+    "failed_route_not_in_registry": ["apertus-v1.5-70b"]
+  },
+  "stage_order": [
+    "ministral-14b",
+    "nova-lite",
+    "llama-4-scout",
+    "hunyuan-a13b",
+    "glm-4.7-flash",
+    "gemini-2.5-flash-lite",
+    "kimi-k2.5"
+  ]
+}

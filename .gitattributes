@@ -1,0 +1,5 @@
+# Large binary analysis frames are retained for provenance but stored as LFS
+# objects so ordinary Git history contains only small, stable pointers.
+pipeline/estimates/canonical/data_clean.RData filter=lfs diff=lfs merge=lfs -text
+archive/2026-09-04_expanded_analysis_snapshots/pipeline/expanded/derived/*.rds filter=lfs diff=lfs merge=lfs -text
+archive/2026-09-04_post_v24_rationalization/pipeline/*.RData filter=lfs diff=lfs merge=lfs -text

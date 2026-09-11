@@ -1,0 +1,16 @@
+{
+  "gate_version": "surrogate-refinement-support-gate-v1.0",
+  "frozen_at": "2026-08-24",
+  "evaluation_membership": "analysis_split == evaluation and review_order between 201 and 300 inclusive",
+  "thresholds": {
+    "genuine_refusal": 15,
+    "non_english_genuine_refusal": 10,
+    "capability_failure": 30
+  },
+  "pass_rule": "all thresholds must be met",
+  "failure_action": "Keep the 62 evaluation labels sealed, open review orders 301-400 for human coding, and rerun a separately versioned support gate over the enlarged evaluation reserve before any provider evaluation.",
+  "success_action": "Use development labels only to freeze candidate prompts and scoring; do not join predictions to evaluation labels until all candidate outputs are assembled.",
+  "evaluation_counts_may_be_emitted": false,
+  "evaluation_rows_may_be_emitted": false,
+  "provider_transmission_authorized": false
+}

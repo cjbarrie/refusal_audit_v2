@@ -1,0 +1,16 @@
+# Exact Python 3.9 package versions used for the current local replication checks.
+# Transitive dependencies remain resolved by pip; provider-run manifests are the
+# authority for historical API behavior.
+altair==5.5.0
+numpy==2.0.2
+openai==1.88.0
+pandas==2.2.3
+patsy==1.0.2
+pyarrow==21.0.0
+PyYAML==6.0.2
+pytest==8.4.2
+scikit-learn==1.6.1
+scipy==1.13.1
+streamlit==1.50.0
+tiktoken==0.13.0
+umap-learn==0.5.12

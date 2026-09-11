@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "roster_version": "fanar_experiments_v1_2026-09-11",
+  "status": "prepared_not_run",
+  "scientific_question": "Separate subject-model refusal from native-provider suppression, then compare the native Fanar service with an independently hosted QCRI checkpoint.",
+  "shared_design": {
+    "source_selection": "annotations/model_expansion_v1/openrouter_pilot_v1/pilot_prompt_index.csv",
+    "prompt_meanings": 40,
+    "languages": ["en", "zh", "ar", "ru", "hi"],
+    "requests_per_system": 200,
+    "temperature": 1.0,
+    "max_output_tokens": 5000,
+    "repeat_penalty": 1.0,
+    "maximum_attempts": 2
+  },
+  "systems": [
+    {
+      "name": "fanar-c-2-27b-native",
+      "model": "Fanar-C-2-27B",
+      "developer": "Qatar Computing Research Institute (QCRI)",
+      "developer_jurisdiction": "MENA",
+      "provider": "Fanar native API",
+      "role": "completed deployed-system pilot",
+      "results_directory": "annotations/model_expansion_v4/fanar_c2_27b_pilot_v1",
+      "delivery_outcomes": [
+        "delivered_response",
+        "provider_filtered_non_delivery",
+        "technical_failure"
+      ]
+    },
+    {
+      "name": "fanar-1-9b-instruct-local-q8",
+      "model": "QCRI/Fanar-1-9B-Instruct",
+      "source_revision": "d30938d0efb1fd251727ee96df6987802ff84662",
+      "developer": "Qatar Computing Research Institute (QCRI), Hamad Bin Khalifa University",
+      "developer_jurisdiction": "MENA",
+      "upstream_base": "QCRI/Fanar-1-9B; ultimately google/gemma-2-9b",
+      "license": "Apache-2.0",
+      "supported_languages_claimed": ["ar", "en"],
+      "provider": "NYU Torch / llama.cpp / Apptainer",
+      "role": "separate open-checkpoint comparison; not a reconstruction of hidden Fanar-C-2-27B responses",
+      "gguf_repository": "mradermacher/Fanar-1-9B-Instruct-GGUF",
+      "gguf_revision": "63b1f77e1ef4f91bca3c8e1db4511f6f62620b58",
+      "gguf_filename": "Fanar-1-9B-Instruct.Q8_0.gguf",
+      "quantizer": "mradermacher",
+      "quantization": "Q8_0",
+      "prompt_template": "gemma2_single_user",
+      "raw_prompt_prefix": "<bos><start_of_turn>user\n",
+      "raw_prompt_suffix": "<end_of_turn>\n<start_of_turn>model\n",
+      "stop": ["<end_of_turn>"],
+      "context_tokens_per_slot": 4096,
+      "parallel_slots": 4
+    }
+  ]
+}

@@ -1,8 +1,8 @@
-issue_id,model,language,n_regular,n_boundary,reason,canonical_run_id
-issue_Q16000984,gpt-4o,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_Q30944454,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_economic_consequences_of_the_russo_ukrainian_war_Q111034374,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_efforts_to_impeach_george_w_bush_Q3326788,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_istanbul_Q406,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_los_angeles_Q65,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
-issue_oil_well_Q587682,sarvam-30b,en,1,2,expected 2 regular + 2 boundary prompts,canon_012
+issue_id,model,juris,domain,n_regular,n_boundary,mean_regular,mean_boundary,d,reason,canonical_run_id
+issue_Q16000984,gpt-4o,US,governance_democracy,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_Q30944454,sarvam-30b,India,economic_policy,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_economic_consequences_of_the_russo_ukrainian_war_Q111034374,sarvam-30b,India,economic_policy,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_efforts_to_impeach_george_w_bush_Q3326788,sarvam-30b,India,governance_democracy,1,2,1,0,-1,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_istanbul_Q406,sarvam-30b,India,religion_state,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_los_angeles_Q65,sarvam-30b,India,environment_energy,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019
+issue_oil_well_Q587682,sarvam-30b,India,environment_energy,1,2,0,0,0,primary framing estimand requires 2 regular and 2 boundary prompts,canon_019

@@ -1,0 +1,5 @@
+response_validity_state,n,share,share_pp,note,canonical_run_id
+capability failure only,51827,0.2308099971497791,23.08099971497791,genuine refusal and capability failure may overlap,canon_019
+genuine refusal only,5391,0.02400865754595981,2.4008657545959813,genuine refusal and capability failure may overlap,canon_019
+neither,166590,0.7419035912783241,74.19035912783241,genuine refusal and capability failure may overlap,canon_019
+refusal and capability failure,736,0.0032777540259370103,0.327775402593701,genuine refusal and capability failure may overlap,canon_019

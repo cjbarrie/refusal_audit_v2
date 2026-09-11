@@ -86,7 +86,7 @@ PRICING = {
     # judges
     "google/gemini-2.5-flash-lite":   (1.0e-7,  4.0e-7),
     "openai/gpt-oss-120b":            (3.7e-8,  1.7e-7),
-    # multi-judge reliability panel (docs/MULTI_JUDGE_PLAN.md), live rates
+    # multi-judge reliability panel (historical plan in the dated root archive), live rates
     # pulled 2026-08-04. Chosen for: structured-output support, reasoning that
     # can be DISABLED, and a published quality index -- a weak judge depresses
     # agreement for reasons unrelated to how hard the coding task is.
@@ -119,7 +119,7 @@ HF_ENDPOINT_HOURLY = 1.00
 # battery is 3,696 characters (~1,027 tokens at 3.6 ch/tok), plus the pass
 # template (Pass 1 ~300, Pass 2 ~800, Pass 3 ~740 tokens). The old flat
 # (620, 60) under-priced judging ~4x; the calibrated figures below reproduce
-# observed spend to within ~2%. See docs/MULTI_JUDGE_PLAN.md section 2.
+# observed spend to within ~2%; the completed plan is in the dated archive.
 TOK = {
     "gen":    (140, 400),   # prompt in, model answer out
     "judge":  (1865, 62),   # MEASURED over passes 1-3 on the panel pilot
@@ -733,7 +733,7 @@ def cost_estimate(args):
         },
         "configurations": {name: b for name, b in configs},
     }
-    bud_path = os.path.join(ROOT, "docs", "budget_estimate.json")
+    bud_path = os.path.join(ROOT, "logs", "budget_estimate.json")
     os.makedirs(os.path.dirname(bud_path), exist_ok=True)
     json.dump(out, open(bud_path, "w"), indent=2)
     # Price the panel on the FULL matrix, matching the "full expanded matrix
@@ -742,7 +742,7 @@ def cost_estimate(args):
     # exactly the sort of mismatch a launch decision should not rest on.
     if mena.get("panel_usd"):
         print()
-        print("  RELIABILITY PANEL -- full matrix (docs/MULTI_JUDGE_PLAN.md)")
+        print("  RELIABILITY PANEL -- historical full matrix")
         for j, v in sorted(mena["panel_usd"].items(), key=lambda kv: -kv[1]):
             print(f"    {j:<44} ${v:>8.2f}")
         print(f"    {'panel subtotal':<44} ${mena['panel_total_usd']:>8.2f}"
@@ -780,7 +780,7 @@ def main():
                          "rate limits (HTTP 429).")
     # Pass 1 is the canonical annotation for this study: the target is refusal
     # and the nature of refusal, both of which come entirely from Pass 1
-    # (docs/ANNOTATION_TRIM_FULL_RUN.md). Ideology and moral foundations measure
+    # (archived ANNOTATION_TRIM_FULL_RUN.md). Ideology and moral foundations measure
     # the slant of answers the model DID give -- a different research question.
     # This was a settled decision, but it lived behind an opt-in flag, so
     # forgetting --pass1-only silently bought a different, more expensive
@@ -793,7 +793,7 @@ def main():
                          "-- the study's target is refusal + nature of refusal, "
                          "which is Pass 1 alone. Use for a pilot that needs slant. "
                          "Consumed by pipeline/22_estimates_slant.R; see "
-                         "docs/SLANT_SUBSAMPLE.md.")
+                         "docs/DEFERRED_SLANT_MORAL_VALIDITY.md.")
     ap.add_argument("--limit", type=int, default=None, metavar="N",
                     help="Annotate at most N responses per (battery, language). "
                          "Use for a panel PILOT: validates parse rates, cost per "
@@ -813,7 +813,7 @@ def main():
                          "<run_dir>/panel/<judge>/. The anchor's output and "
                          "annotations_all.jsonl are untouched, so the existing "
                          "analysis pipeline is unaffected. "
-                         "See docs/MULTI_JUDGE_PLAN.md.")
+                         "See the archived multi-judge plan for provenance.")
     ap.add_argument("--pass23-subsample", type=float, default=1.0,
                     metavar="FRAC",
                     help="With --all-passes: run Passes 2/3 on a random FRAC of "

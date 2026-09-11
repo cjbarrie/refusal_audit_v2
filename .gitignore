@@ -4,6 +4,10 @@
 # Python bytecode
 __pycache__/
 *.py[cod]
+.pytest_cache/
+
+# Repository-local render and inspection scratch
+tmp/
 
 # LaTeX build byproducts (keep .tex and .pdf)
 *.aux
@@ -20,6 +24,10 @@ writeup/p[0-9].log
 
 # Secrets — never commit
 .env
+
+# Unrelated personal contact list retained locally from an earlier cleanup.
+# It is not scientific evidence and must never enter the research repository.
+/archive/2026-09-04_post_v24_rationalization/prompts/AI Workshop Invite List.csv
 
 # Repair snapshots written by the sourcing/annotation fix chain
 # (.pre_idfix, .pre_backtranslate, .pre_template_fix, .pre_battery_tag,
@@ -41,6 +49,19 @@ data/_provenance_cache.json
 # Live run outputs and logs (regenerable; annotations/<run_id>/ is run state)
 annotations/full_v1/
 annotations/panel_pilot/
+# Response-validity run state contains full prompts/responses and provider
+# metadata. Technical documents record hashes and counts; raw/derived row-level
+# artifacts remain local and are reproducible from the protected source data.
+annotations/response_validity_*/
+# Subject-model expansion payloads/results contain full prompts and responses.
+# Tracked code and documentation retain their hashes and construction rules.
+annotations/model_expansion_*/
+# Torch models, container images and full-run ledgers live on scratch. If a
+# local copy is made, it is derived run state rather than source code.
+hpc/*.sif
+hpc/*.gguf
+hpc/logs/*.out
+hpc/logs/*.err
 # Judge-panel pilot/bake-off run state: same category as full_v1 -- regenerable
 # run output, not source. See docs/MULTI_JUDGE_PLAN.md.
 logs/
@@ -56,3 +77,11 @@ pipeline/releases/
 
 # Unpromoted figure previews. The canonical tree is pipeline/figures/.
 /preview/
+
+# renv restores a platform-specific project library from renv.lock.
+renv/library/
+renv/local/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/

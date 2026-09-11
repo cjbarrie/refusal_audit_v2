@@ -1,11 +1,4 @@
 step,script,minutes,status,canonical_run_id
-02,pipeline/02_judge_reliability.R,8.06056958436966,0,canon_012
-11,pipeline/11_canonical_home.R,55.14218023220698,0,canon_012
-12,pipeline/12_canonical_language_framing.R,3.9327322165171306,0,canon_012
-13,pipeline/13_canonical_content.R,2.7356589833895364,0,canon_012
-14,pipeline/14_canonical_judge_uncertainty.R,13.769880330562591,0,canon_012
-15,pipeline/15_subsample_stability.R,8.53850570122401,0,canon_012
-16,pipeline/16_prompt_umap.R,0.6004104137420654,0,canon_012
-40,pipeline/40_appendix_descriptives.R,0.3759549657503764,0,canon_012
-20,pipeline/20_figures_main.R,0.048091351985931396,0,canon_012
-21,pipeline/21_figures_extended.R,0.08933871984481812,0,canon_012
+20,pipeline/20_figures_main.R,0.09930724700291951,0,canon_024
+21,pipeline/21_figures_extended.R,0.1837141990661621,0,canon_024
+--,estimates inherited from canon_021,NA,0,canon_024

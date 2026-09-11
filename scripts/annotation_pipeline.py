@@ -586,7 +586,7 @@ class LLMClient:
         # extra_body key so it is a no-op for judges that do not support it.
         #
         # NOTE: openai/gpt-oss-* have reasoning `mandatory: true` and IGNORE this.
-        # Do not use them as panel judges -- see docs/MULTI_JUDGE_PLAN.md.
+        # Do not use them as panel judges; see the archived multi-judge plan.
         # Retry transient upstream failures. The panel judges are served from
         # SHARED provider pools and rate-limit at modest concurrency: a pilot at
         # 16 workers saw 64-73% failures for two of them, all of them 429s or
@@ -978,7 +978,10 @@ def load_existing_annotations(output_file: str) -> dict:
             except json.JSONDecodeError:
                 continue
             key = (r.get("prompt_id"), r.get("prompt_language"), r.get("model"))
-            out[key] = r
+            # Preserve the last VALID annotation. A later error must not erase a
+            # completed label and cause unnecessary paid re-annotation on resume.
+            if all(v is not None for v in key) and r.get("engagement_code") is not None and not r.get("error"):
+                out[key] = r
     return out
 
 
@@ -1305,7 +1308,8 @@ if __name__ == "__main__":
         help="Max tokens per judge verdict (default: 1000). OpenRouter reserves "
              "credits against this ceiling; the judge emits short JSON."
     )
-    # Pass 1 alone is the canonical annotation (docs/ANNOTATION_TRIM_FULL_RUN.md):
+    # Pass 1 alone was the original production annotation (see the archived
+    # ANNOTATION_TRIM_FULL_RUN.md); Luna v2.4 is the current outcome measure:
     # the study measures refusal and the nature of refusal, both of which come
     # from Pass 1. Passes 2-3 measure the slant of answers that were given, a
     # different question. Defaulting to Pass 1 means the documented design is

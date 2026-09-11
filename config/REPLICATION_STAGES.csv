@@ -1,0 +1,13 @@
+stage,name,status,entrypoint,principal_input,principal_output,external_call,documentation
+00,environment,active,Makefile,requirements-lock.txt and renv.lock,validated local environments,false,docs/REPLICATION_GUIDE.md
+01,wikipedia sourcing,frozen_reconstructable,sourcing/run_pipeline.py,sourcing/editions.yaml and Wikipedia APIs,data candidate and issue-record files,optional,docs/REPRODUCIBILITY.md
+02,prompt construction and freeze,frozen_reconstructable,sourcing/03_format_prompts.py and scripts/sample_prompts.py,enriched issue records,prompts/sampled five-language battery,optional,docs/PIPELINE.md
+03,original response generation,completed_guarded,scripts/generate_responses.py,frozen prompt battery,annotations/full_v1 response ledgers,paid_guarded,scripts/README.md
+04,original annotation,completed_superseded_measurement,scripts/annotation_pipeline.py,original response ledgers,original Gemini annotations,paid_guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
+05,v2.4 outcome annotation,completed_guarded,scripts/response_validity.py,response texts and response_validity_decomposed_v2_4.json,final Luna v2.4 outcomes,paid_guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
+06,accepted expansion assembly,active,pipeline/01_data_loading.R,original outcomes and accepted expansion batches,release-scoped data_clean.RData,false,docs/r_pipeline/01_data_loading.md
+07,statistical estimation,active,pipeline/11_canonical_home.R and pipeline/12_canonical_language_framing.R,release-scoped analysis frame,c02-c27 estimate tables,false,docs/CANONICAL_ANALYSES.md
+08,figures,active,pipeline/20_figures_main.R and pipeline/21_figures_extended.R,accepted estimate tables,PNG figures,false,docs/CANONICAL_FIGURE_LEGENDS.md
+09,release and acceptance,active,pipeline/make_release.R,registered R stages,immutable release and optional promotion,false,docs/r_pipeline/make_release.md
+10,interactive explorers,active,interactive/build_data.py and interactive/build_web_data.py,promoted release,local Parquet and browser JSON,false,interactive/README.md
+90,model expansion workbench,in_progress,scripts and hpc guarded expansion entrypoints,frozen expansion payloads,append-only response and annotation ledgers,paid_or_hpc,docs/REPLICATION_STATUS.md

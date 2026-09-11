@@ -1,13 +1,17 @@
 # =============================================================================
-# CANONICAL LAYER -- shared foundation   (sourced by 51-56; not run alone)
+# Technical reference: docs/r_pipeline/10_canonical_common.md
+# CANONICAL LAYER -- shared v2.4 foundation (sourced; not run alone)
 # =============================================================================
-# This is the paper's analysis layer. docs/CANONICAL_ANALYSES.md is its
-# specification; docs/ESTIMANDS.md is a historical catalogue of what came before
-# and is NOT the paper spec.
+# This file constructs the analysis frame, weights, issue-cluster resampling,
+# support checks, outcome-model fitting and g-computation shared by the live
+# estimators. It performs no estimation on its own. The primary outcome is the
+# final Luna v2.4 `genuine_refusal`; `capability_failure` is distinct. The
+# original Gemini `original_nonengagement` sensitivity is observed only for the
+# original eleven models and is never imputed for expansion models.
 #
 # SCOPE RULES
-#   * Reads only. Never writes to prompts/, responses/, annotations/ or
-#     data_clean.RData.
+#   * Reads only. Never writes to prompts/, responses/, annotations/ or the
+#     run-scoped analysis-data file.
 #   * Writes only the release estimate directory and pipeline/figures/{main,extended}/.
 #   * Calls no API, endpoint, generation, translation or annotation service.
 #
@@ -45,6 +49,7 @@ CAN_APP_FIG <- Sys.getenv("CANON_APPFIG_DIR", "pipeline/figures/extended")
 # Sys.getenv("CAN_SEED") meant the two could disagree without anything failing.
 CAN_SEED <- as.integer(Sys.getenv("CAN_SEED", "20260807"))
 RUN_DIR  <- Sys.getenv("REFUSAL_RUN_DIR", "annotations/full_v1")
+CAN_DATA_PATH <- Sys.getenv("CANON_DATA_PATH", "pipeline/data_clean.RData")
 dir.create(CAN_EST, showWarnings = FALSE, recursive = TRUE)
 dir.create(CAN_FIG, showWarnings = FALSE, recursive = TRUE)
 dir.create(CAN_APP_FIG, showWarnings = FALSE, recursive = TRUE)
@@ -57,7 +62,9 @@ CANONICAL_RUN_ID <- Sys.getenv("CANONICAL_RUN_ID",
 # -----------------------------------------------------------------------------
 # Sample
 # -----------------------------------------------------------------------------
-load("pipeline/data_clean.RData")
+load(CAN_DATA_PATH)
+source("pipeline/_response_validity.R")
+source("pipeline/_expansion_input.R")
 
 # ONE declaration of every canonical ordering, shared with the figure layer
 # (`_theme.R` sources the same file). These three names are aliases kept so the
@@ -69,8 +76,7 @@ LANGS_C       <- ORDER_LANG       # alias -> _orders.R
 JURIS_C       <- ORDER_JURIS      # alias -> _orders.R
 
 canon <- data_clean %>%
-  filter(!is.na(jurisdiction_f), !is.na(engagement_code),
-         prompt_language %in% LANGS_C) %>%
+  filter(!is.na(jurisdiction_f), prompt_language %in% LANGS_C) %>%
   mutate(
     juris   = factor(as.character(jurisdiction_f), levels = JURIS_C),
     lang    = factor(prompt_language, levels = LANGS_C),
@@ -85,31 +91,32 @@ canon <- data_clean %>%
       as.character(region_focus) == HOME_REGION_C[as.character(juris)] ~ "home",
       TRUE ~ "away"),
     home = as.integer(home_status == "home"),
-    # Outcomes. Code 3 is preserved as a standalone category and is never
-    # silently folded into either side.
-    refused_strict = as.integer(engagement_code >= 4),
-    refused_any    = as.integer(engagement_code >= 3),
+    # Historical aliases exist only for pending scripts that reconstruct the
+    # pre-v2.4 release. No live estimator below uses these names.
+    refused_strict = original_nonengagement,
+    refused_any = if_else(is.na(engagement_code), NA_integer_,
+                          as.integer(engagement_code >= 3)),
     outcome3 = factor(case_when(engagement_code <= 2 ~ "engaged",
                                 engagement_code == 3 ~ "partial",
-                                TRUE ~ "refusal"),
-                      levels = c("engaged", "partial", "refusal")),
+                                TRUE ~ "judge-coded non-engagement"),
+                      levels = c("engaged", "partial",
+                                 "judge-coded non-engagement")),
     engagement_ordinal = as.integer(engagement_code),
     block_id = paste(model, prompt_id, sep = "||"))
 
 # --- hard assertions on the authoritative sample ------------------------------
-stopifnot(nrow(canon) == 137186L)
+stopifnot(nrow(canon) == EXP_EXPECTED_N)
 stopifnot(nrow(count(canon, model, prompt_id, prompt_language) %>% filter(n > 1)) == 0L)
 stopifnot(n_distinct(canon$issue_id) == 624L,
-          n_distinct(canon$model) == 11L,
+          n_distinct(canon$model) == EXP_EXPECTED_MODELS,
           n_distinct(canon$lang) == 5L,
           nlevels(canon$tier) == 2L)
 stopifnot(!any(canon$home_status == "away" & canon$region_focus == "General"))
+stopifnot(sum(canon$genuine_refusal) == EXP_EXPECTED_REFUSALS,
+          sum(canon$capability_failure) == EXP_EXPECTED_CAPABILITY_FAILURES,
+          sum(!is.na(canon$original_nonengagement)) == RV_EXPECTED_N)
 
 CANON_ENGLISH <- canon %>% filter(lang == "en")
-
-# Response lengths (read-only derivation, cached by the v2 layer).
-CANON_LEN <- if (file.exists("pipeline/response_lengths.csv"))
-  suppressMessages(read_csv("pipeline/response_lengths.csv", show_col_types = FALSE)) else NULL
 
 # -----------------------------------------------------------------------------
 # Weights
@@ -237,7 +244,7 @@ jack_fpc <- function(d, stat, n_total, issue_col = "issue_id",
 }
 
 # Run-scoped diagnostics. Appends within a run, but a (run_id, label) pair can
-# never duplicate -- 56_ asserts it.
+# never duplicate; duplicate keys stop here rather than being hidden downstream.
 .CANON_DIAG <- new.env(parent = emptyenv())
 .CANON_DIAG$rows <- list()
 record_diag <- function(df) {
@@ -268,13 +275,11 @@ flush_diag <- function(file = "c18_bootstrap_diagnostics.csv") {
 pp <- function(x) 100 * x
 
 # -----------------------------------------------------------------------------
-# MULTI-JUDGE INTEGRATION
+# PENDING ORIGINAL-JUDGE INTEGRATION
 # -----------------------------------------------------------------------------
-# Principle: the canonical outcome is the Gemini label. Additional judges are a
-# SENSITIVITY DIMENSION, not a correction and not a consensus. Majority vote is
-# never computed as ground truth -- with no human calibration there is no basis
-# for saying the majority is right, and a consensus label would conceal exactly
-# the disagreement the panel exists to expose.
+# These helpers remain solely so scripts under pipeline/pending/ can reconstruct
+# original-Gemini reliability work. They do not define the live outcome and are
+# not called by the release plan.
 #
 # Three things every headline quantity can therefore report:
 #   1. the canonical estimate (Gemini);
@@ -357,9 +362,13 @@ CANON_META <- list(
   seed = CAN_SEED,
   bootstrap_unit = "issue_id",
   bootstrap_copy_id = "bootstrap_issue_instance (multiplicity preserved)",
-  primary_outcome = "refused_strict = engagement_code >= 4",
-  sensitivity_outcome = "refused_any = engagement_code >= 3",
-  code3 = "standalone partial/mixed category; never merged silently",
+  primary_outcome = "genuine_refusal = Luna v2.4 pred_genuine_refusal",
+  diagnostic_outcome = "capability_failure = Luna v2.4 pred_capability_failure",
+  sensitivity_outcome = "original_nonengagement = engagement_code >= 4",
+  original_response_validity_path = RV_DEFAULT_PATH,
+  original_response_validity_sha256 = RV_EXPECTED_SHA256,
+  expansion_annotation_batches = EXPANSION_BATCHES$path,
+  analysis_data_path = CAN_DATA_PATH,
   general_handling = "reported separately; never in the away category",
   primary_language = "en",
   api_calls = 0L)
@@ -371,21 +380,21 @@ cat(sprintf("[canonical] run %s | rows %s | English %s | issues %d\n",
 # =============================================================================
 # Standardized home contrast: specification, estimability, g-computation
 # =============================================================================
-# Shared by 51 (the canonical estimate) and 54 (the same estimate refit under
-# each panel judge). One definition, so a judge-sensitivity result can never
-# be a specification difference wearing a judge's name.
+# Used by active stage 11 and retained pending sensitivity code. One definition
+# prevents an apparent measurement sensitivity from being a specification
+# difference wearing a judge's name.
 
 # home * model where a jurisdiction has >1 model, so model-specific contrasts
 # come straight out of the fit. No region term: region DETERMINES home within a
 # jurisdiction, so it is collinear with the contrast of interest.
-build_f <- function(d, outcome = "refused_strict") {
+build_f <- function(d, outcome = "genuine_refusal") {
   rhs <- if (nlevels(droplevels(factor(d$model))) > 1) "home * model_f" else "home"
   for (v in c("tier", "domain", "route_f"))
     if (nlevels(droplevels(factor(d[[v]]))) > 1) rhs <- c(rhs, v)
   as.formula(paste(outcome, "~", paste(rhs, collapse = " + ")))
 }
 
-estimable_chk <- function(d, outcome = "refused_strict") {
+estimable_chk <- function(d, outcome = "genuine_refusal") {
   # The outcome is a PARAMETER. Hard-coding refused_strict here meant the
   # codes-3-5 sensitivity was tested for separation on the wrong variable, so a
   # specification could be declared estimable on one outcome and then fit on
@@ -458,7 +467,7 @@ sep_diagnose <- function(fit, w = NULL) {
 # The transparent headline measure of unsupported target remains
 # 1 - target_weight_retained from restrict_support(); this adds the
 # model-based view of the same problem.
-cf_extreme_weight <- function(fit, d, w, outcome = "refused_strict") {
+cf_extreme_weight <- function(fit, d, w, outcome = "genuine_refusal") {
   if (is.null(fit)) return(NA_real_)
   p1 <- tryCatch(stats::predict(fit, newdata = transform(d, home = 1L),
                                 type = "response"), error = function(e) NULL)
@@ -483,8 +492,9 @@ fit_logit <- function(f, data, firth = FALSE) {
   list(fit = fit, warnings = warns)
 }
 
-gcomp <- function(d, wfun = w_nested, outcome = "refused_strict",
-                  per_model = FALSE, firth = FALSE, strict = TRUE) {
+gcomp <- function(d, wfun = w_nested, outcome = "genuine_refusal",
+                  per_model = FALSE, firth = FALSE, strict = TRUE,
+                  return_levels = FALSE) {
   ic <- if ("bootstrap_issue_instance" %in% names(d)) "bootstrap_issue_instance" else "issue_id"
   f  <- build_f(d, outcome)
   r  <- fit_logit(f, d, firth = firth)
@@ -515,7 +525,14 @@ gcomp <- function(d, wfun = w_nested, outcome = "refused_strict",
     return(if (per_model) NULL else NA_real_)
 
   w <- wfun(d, issue_col = ic)
-  if (!per_model) return(sum(w * (p1 - p0)))
+  if (!per_model) {
+    home_risk <- sum(w * p1)
+    away_risk <- sum(w * p0)
+    if (return_levels)
+      return(c(home_risk = home_risk, away_risk = away_risk,
+               contrast = home_risk - away_risk))
+    return(home_risk - away_risk)
+  }
   ms <- sort(unique(as.character(d$model)))
   vapply(ms, function(m) {
     sel <- as.character(d$model) == m

@@ -21,9 +21,9 @@ SUPPORTED_LANGUAGES = ["en", "zh", "ar", "ru", "hi"]
 #       ENDPOINT_MODELS below and appended to this roster at import time whenever
 #       their endpoint-URL env var is set. A fourth endpoint model — Sarvam
 #       (India) — is added the same way. With all endpoints deployed the full
-#       panel is 4 US / 2 CN / 1 EU / 3 MENA / 1 India = 11 models. Deploy recipe
-#       + smoke test: docs/MENA_HF_ENDPOINT_INTEGRATION.md,
-#       docs/INDIA_SARVAM_HINDI_INTEGRATION.md, scripts/smoke_test_endpoint.py.
+#       panel is 4 US / 2 CN / 1 EU / 3 MENA / 1 India = 11 models. The completed
+#       endpoint integration notes are preserved in the dated root archive;
+#       current roster facts are summarized in docs/REPOSITORY_MAP.md.
 TEST_MODELS = [
     ("gpt-5.1", "openai/gpt-5.1", "US", "openrouter"),                          # OpenAI
     ("claude-opus-4.5", "anthropic/claude-opus-4.5", "US", "openrouter"),       # Anthropic
@@ -44,8 +44,9 @@ TEST_MODELS = [
 # to the roster ONLY when its endpoint-URL env var is set. An undeployed endpoint
 # therefore never breaks the working serverless roster.
 # Entry: (display_name, hub_repo, jurisdiction, provider, endpoint_url_env_var)
-# Deploy recipe + smoke test: docs/MENA_HF_ENDPOINT_INTEGRATION.md,
-# scripts/smoke_test_endpoint.py.
+# Historical deployment notes are in the dated archive. The retained local
+# endpoint diagnostic is archived at
+# scripts/archive/endpoint_setup/smoke_test_endpoint.py.
 ENDPOINT_MODELS = [
     ("allam-7b", "humain-ai/ALLaM-7B-Instruct-preview", "MENA", "hf-endpoint", "ALLAM_ENDPOINT_URL"),
     ("falcon3-10b", "tiiuae/Falcon3-10B-Instruct", "MENA", "hf-endpoint", "FALCON3_ENDPOINT_URL"),

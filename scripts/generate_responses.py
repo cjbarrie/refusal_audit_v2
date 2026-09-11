@@ -14,7 +14,8 @@ import threading
 import time
 import fcntl
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import List, Dict, Optional, Tuple
+from pathlib import Path
+from typing import Any, List, Dict, Optional, Tuple
 from openai import OpenAI
 from datetime import datetime, timezone
 
@@ -23,10 +24,18 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from env_utils import load_env_from_file
-from config import TEST_MODELS, MODEL_PROVIDER, PROVIDER_ENDPOINTS, HF_ENDPOINT_URL_VARS, MODEL_MAX_TOKENS
+from config import TEST_MODELS, PROVIDER_ENDPOINTS, HF_ENDPOINT_URL_VARS, MODEL_MAX_TOKENS
+from model_roster import (
+    estimate_cost,
+    load_roster,
+    request_extra_body,
+    select_models,
+    sha256_file,
+)
 
 # topic_domain (v2 batteries) -> legacy prompt_category expected by the R pipeline.
-# Carried metadata only; never feeds any judge prompt. See docs/ANNOTATION_CONTRACT.md.
+# Carried metadata only; never feeds any judge prompt. The original contract is
+# retained in archive/2026-09-04_post_v24_rationalization/docs/ANNOTATION_CONTRACT.md.
 TOPIC_DOMAIN_TO_CATEGORY = {
     "territorial_sovereignty": "territorial_sovereignty",
     "governance_democracy": "governance_democracy",
@@ -122,7 +131,8 @@ def generate_response(
     max_tokens: int = 5000,
     max_retries: int = 4,
     base_delay: float = 2.0,
-) -> Tuple[Optional[str], Optional[str]]:
+    extra_body: Optional[Dict[str, Any]] = None,
+) -> Tuple[Optional[str], Optional[str], Dict[str, Any]]:
     """
     Generate a response from a model via its OpenAI-compatible endpoint.
 
@@ -142,21 +152,26 @@ def generate_response(
         base_delay: Seconds for the first backoff; doubles each retry.
 
     Returns:
-        (response_text, reasoning_text). response_text is the model's answer
+        (response_text, reasoning_text, response_metadata). response_text is the model's answer
         (message.content, with any inline <think> block stripped). reasoning_text
         is the chain-of-thought a hybrid reasoning model (e.g. sarvam-30b) routes
         to a separate reasoning_content / reasoning field, or None if the model
-        emits no separate reasoning field. Stored as provenance; never annotated.
+        emits no separate reasoning field. ``response_metadata`` contains only
+        returned model/provider identity, token counts and cost—not hidden
+        reasoning—and is used to audit OpenRouter routing and spend.
     """
     last_exc = None
     for attempt in range(max_retries + 1):
         try:
-            response = client.chat.completions.create(
+            request_kwargs = dict(
                 model=model_id,
                 messages=[{"role": "user", "content": prompt_text}],
                 temperature=temperature,
                 max_tokens=max_tokens,
             )
+            if extra_body:
+                request_kwargs["extra_body"] = extra_body
+            response = client.chat.completions.create(**request_kwargs)
             msg = response.choices[0].message
             # Strip any inline <think>...</think> reasoning block (hybrid
             # reasoning models like sarvam-30b). No-op for models that don't
@@ -168,7 +183,16 @@ def generate_response(
             # Capture it as provenance; it is never fed to any judge.
             reasoning = (getattr(msg, "reasoning_content", None)
                          or getattr(msg, "reasoning", None) or None)
-            return content, reasoning
+            usage = getattr(response, "usage", None)
+            metadata = {
+                "resolved_model_id": getattr(response, "model", None),
+                "resolved_provider": getattr(response, "provider", None),
+                "prompt_tokens": getattr(usage, "prompt_tokens", None),
+                "completion_tokens": getattr(usage, "completion_tokens", None),
+                "total_tokens": getattr(usage, "total_tokens", None),
+                "provider_cost_usd": getattr(usage, "cost", None),
+            }
+            return content, reasoning, metadata
         except Exception as e:
             last_exc = e
             if attempt < max_retries and _is_transient(e):
@@ -201,7 +225,10 @@ def load_existing_responses(output_file: str) -> dict:
             except json.JSONDecodeError:
                 continue
             key = (r.get("prompt_id"), r.get("prompt_language"), r.get("model"))
-            out[key] = r
+            # Last VALID record wins. A later failed retry is provenance, not a
+            # tombstone for an already recovered response.
+            if all(v is not None for v in key) and r.get("response_text") and not r.get("error"):
+                out[key] = r
     return out
 
 
@@ -214,6 +241,8 @@ def generate_all_responses(
     only_models: Optional[List[str]] = None,
     exclude_models: Optional[List[str]] = None,
     max_tokens: int = 5000,
+    roster_file: Optional[str] = None,
+    dry_run: bool = False,
 ):
     """
     Generate responses from all test models for all prompts.
@@ -223,7 +252,119 @@ def generate_all_responses(
         output_file: Path to save responses (JSONL format)
         limit: Optional limit on number of prompts to process
         verbose: Print progress information
+        roster_file: Optional explicit expansion roster. If omitted, preserve
+            the legacy ``config.TEST_MODELS`` behavior exactly.
+        dry_run: Validate and cost the selected prompt/model matrix locally,
+            without reading credentials, opening the output, or calling an API.
     """
+    roster_manifest = load_roster(roster_file) if roster_file else None
+    if roster_manifest:
+        roster = select_models(roster_manifest, only_models, exclude_models)
+    else:
+        # Normalize the legacy tuple roster to the same dictionary shape used by
+        # explicit expansion rosters. No request-routing controls are added to
+        # historical/default runs.
+        roster = [
+            {
+                "name": name,
+                "model_id": model_id,
+                "developer": None,
+                "developer_jurisdiction": jurisdiction,
+                "provider": provider,
+                "temperature": 1.0,
+                "max_tokens": MODEL_MAX_TOKENS.get(name, max_tokens),
+                "provider_routing": None,
+                "reasoning": None,
+            }
+            for name, model_id, jurisdiction, provider in TEST_MODELS
+        ]
+        known = {model["name"] for model in roster}
+        requested = set(only_models or []) | set(exclude_models or [])
+        unknown = requested - known
+        if unknown:
+            raise ValueError("Unknown model(s): " + ", ".join(sorted(unknown)))
+        if only_models:
+            roster = [m for m in roster if m["name"] in set(only_models)]
+        if exclude_models:
+            roster = [m for m in roster if m["name"] not in set(exclude_models)]
+        if not roster:
+            raise SystemExit("No models left after --models/--exclude-models filter.")
+
+    # Load prompts before any credential checks. This makes --dry-run a truly
+    # local validation of the actual prompt count and selected model matrix.
+    prompts, language = load_prompts(prompts_file)
+    if limit:
+        prompts = prompts[:limit]
+
+    # A full expansion command must use the exact retained multilingual draw,
+    # not the 11,089-row source bank or a silently edited translation. A later
+    # pilot will get its own versioned payload/roster rather than weakening this
+    # check. ``--limit`` is allowed only for local dry-run inspection.
+    if roster_manifest:
+        expected_files = roster_manifest.get("design", {}).get("prompt_files", {})
+        expected = expected_files.get(language)
+        if not expected:
+            raise ValueError(f"Roster has no frozen prompt file for language {language!r}")
+        actual_path = os.path.abspath(prompts_file)
+        expected_path = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", expected["path"])
+        )
+        if actual_path != expected_path:
+            raise ValueError(
+                "Expansion roster requires its frozen prompt file for "
+                f"{language}: {expected['path']}"
+            )
+        actual_hash = sha256_file(Path(actual_path))
+        if actual_hash != expected["sha256"]:
+            raise ValueError(
+                f"Prompt hash mismatch for {language}: expected "
+                f"{expected['sha256']}, got {actual_hash}"
+            )
+        if limit is None and len(prompts) != int(expected["n_prompts"]):
+            raise ValueError(
+                f"Prompt count mismatch for {language}: expected "
+                f"{expected['n_prompts']}, got {len(prompts)}"
+            )
+        if limit is not None and not dry_run:
+            raise ValueError(
+                "Paid expansion runs cannot use --limit; freeze a separate "
+                "pilot prompt payload and roster instead."
+            )
+
+    if dry_run:
+        print(f"Loaded {len(prompts)} prompts (language: {language})")
+        print(f"Selected {len(roster)} model(s): " + ", ".join(m["name"] for m in roster))
+        print(f"Response slots in this command: {len(prompts) * len(roster)}")
+        if roster_manifest:
+            design = roster_manifest.get("design", {})
+            estimate = estimate_cost(
+                roster,
+                responses_per_model=len(prompts),
+                input_tokens_per_response=int(
+                    design.get("planning_input_tokens_per_response", 100)
+                ),
+                output_tokens_per_response=int(
+                    design.get("planning_output_tokens_per_response", 1500)
+                ),
+            )
+            print(f"Roster version: {roster_manifest['roster_version']}")
+            print(f"Roster SHA-256: {roster_manifest['_sha256']}")
+            print(f"Roster status: {roster_manifest['status']}")
+            print(
+                "Planning-token cost for this one-language command: "
+                f"${estimate['total_estimated_usd']:.4f}"
+            )
+        print("DRY RUN: no credential read, output write, or provider request occurred.")
+        return
+
+    if roster_manifest and not roster_manifest["provider_calls_authorized"]:
+        raise RuntimeError(
+            f"Roster {roster_manifest['roster_version']!r} is setup-only and does "
+            "not authorize provider calls. Freeze the pilot payload, provider "
+            "routes, cost ceiling and explicit authorization before changing "
+            "provider_calls_authorized."
+        )
+
     # Per-provider client factory. Each subject model names a provider
     # ("openrouter" | "hf-endpoint"); PROVIDER_ENDPOINTS maps that to a
     # (base_url, key_env_var) pair. Clients are built lazily and cached, so we
@@ -282,7 +423,7 @@ def generate_all_responses(
 
     # Validate up front that every provider needed by the roster has a
     # credential, so a run fails fast rather than mid-stream.
-    needed_providers = {MODEL_PROVIDER[name] for name, *_ in TEST_MODELS}
+    needed_providers = {model["provider"] for model in roster}
     missing = []
     for prov in sorted(needed_providers):
         _, key_var = PROVIDER_ENDPOINTS[prov]
@@ -293,27 +434,15 @@ def generate_all_responses(
             "Missing credentials for the model roster: " + ", ".join(missing)
         )
 
-    # Roster filter. Throughput across a shared worker pool is set by the
+    # Throughput across a shared worker pool is set by the
     # SLOWEST model, not the average: workers pile up on it and the whole roster
     # degrades to its service rate. sarvam-30b (30B Q4 on one endpoint, an 8000
     # token budget for its <think> block) ran ~25x slower than the others and
     # pinned the full-run rate to its own. Splitting it into a separate process
     # lets the fast models run at their own pace.
-    roster = list(TEST_MODELS)
-    if only_models:
-        roster = [m for m in roster if m[0] in set(only_models)]
-    if exclude_models:
-        roster = [m for m in roster if m[0] not in set(exclude_models)]
-    if not roster:
-        raise SystemExit("No models left after --models/--exclude-models filter.")
     if only_models or exclude_models:
         print(f"Roster filtered to {len(roster)} model(s): "
-              f"{', '.join(m[0] for m in roster)}")
-
-    # Load prompts
-    prompts, language = load_prompts(prompts_file)
-    if limit:
-        prompts = prompts[:limit]
+              f"{', '.join(m['name'] for m in roster)}")
 
     if verbose:
         print(f"Loaded {len(prompts)} prompts (language: {language})")
@@ -334,7 +463,7 @@ def generate_all_responses(
         print()
 
     # Build the todo list: one task per (prompt, model) slot not already clean.
-    total = len(prompts) * len(TEST_MODELS)
+    total = len(prompts) * len(roster)
     tasks = []
     skipped = 0
     for prompt in prompts:
@@ -377,7 +506,8 @@ def generate_all_responses(
             # perennial-vs-contested-right-now contrast runnable from one arm.
             "route": prompt.get('route'),
         }
-        for model_name, model_id, _jurisdiction, provider in roster:
+        for model in roster:
+            model_name = model["name"]
             if (prompt_id, language, model_name) in clean_keys:
                 skipped += 1
                 continue
@@ -386,8 +516,9 @@ def generate_all_responses(
                 "prompt_category": prompt_category,
                 "prompt_text": prompt_text,
                 "model_name": model_name,
-                "model_id": model_id,
-                "provider": provider,
+                "model_id": model["model_id"],
+                "provider": model["provider"],
+                "model_config": model,
                 "provenance": provenance,
             })
 
@@ -406,6 +537,14 @@ def generate_all_responses(
             "model": task["model_name"],
             "model_id": task["model_id"],
             "provider": task["provider"],
+            "developer": task["model_config"].get("developer"),
+            "developer_jurisdiction": task["model_config"].get(
+                "developer_jurisdiction"
+            ),
+            "roster_version": roster_manifest["roster_version"] if roster_manifest else None,
+            "roster_sha256": roster_manifest["_sha256"] if roster_manifest else None,
+            "requested_provider_routing": task["model_config"].get("provider_routing"),
+            "requested_reasoning": task["model_config"].get("reasoning"),
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "reasoning_content": None,
             **task["provenance"],
@@ -422,19 +561,34 @@ def generate_all_responses(
             # window (allam-7b: max_model_len=4096, else HTTP 400) or raised UP
             # for a reasoning model that must fit its <think> block plus the answer
             # (sarvam-30b: 8000). Models absent from the map use the global default.
-            call_max_tokens = MODEL_MAX_TOKENS.get(task["model_name"], max_tokens)
-            response_text, reasoning_text = generate_response(
+            call_max_tokens = int(task["model_config"].get("max_tokens", max_tokens))
+            call_temperature = float(task["model_config"].get("temperature", 1.0))
+            base["request_temperature"] = call_temperature
+            base["request_max_tokens"] = call_max_tokens
+            request_body = (
+                request_extra_body(task["model_config"])
+                if roster_manifest and task["provider"] == "openrouter"
+                else None
+            )
+            response_text, reasoning_text, response_metadata = generate_response(
                 client=client,
                 model_id=call_model_id,
                 prompt_text=task["prompt_text"],
-                temperature=1.0,
+                temperature=call_temperature,
                 max_tokens=call_max_tokens,
+                extra_body=request_body,
             )
             base["timestamp"] = datetime.now(timezone.utc).isoformat()
             # Chain-of-thought provenance for hybrid reasoning models (sarvam-30b
             # routes it to a separate reasoning_content field). None for every
             # non-reasoning model. Carried for later auditing; never annotated.
-            base["reasoning_content"] = reasoning_text
+            # Expansion rosters explicitly disable and exclude reasoning. Never
+            # persist a provider's accidental reasoning return for those runs.
+            base["reasoning_content"] = None if roster_manifest else reasoning_text
+            base["reasoning_returned_unexpectedly"] = bool(
+                roster_manifest and reasoning_text
+            )
+            base.update(response_metadata)
             # A "successful" API call can still return null/empty content — e.g. a
             # provider-side moderation block or a null-content refusal. Treat that
             # as an error so it is flagged (not written as a silent clean row) and
@@ -559,6 +713,16 @@ if __name__ == "__main__":
         help="Max completion tokens per response (default: 5000). OpenRouter "
              "reserves credits against this ceiling; keep it near real usage."
     )
+    parser.add_argument(
+        "--roster",
+        default=None,
+        help="Explicit opt-in roster JSON. Omit to retain config.TEST_MODELS.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Validate and cost the selected matrix locally; make no API call.",
+    )
 
     args = parser.parse_args()
 
@@ -572,4 +736,6 @@ if __name__ == "__main__":
         only_models=[m.strip() for m in args.models.split(",")] if args.models else None,
         exclude_models=([m.strip() for m in args.exclude_models.split(",")]
                         if args.exclude_models else None),
+        roster_file=args.roster,
+        dry_run=args.dry_run,
     )

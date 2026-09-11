@@ -76,8 +76,31 @@ The current page loads all 2,496 prompt points and only the 6,127
 genuine-refusal response records in `canon_024`. Gray context points remain
 hoverable and selectable. Selecting a point opens its prompt, matching
 responses, refusal evidence and v2.4 coding without leaving the constellation.
-Generated JSON is gitignored and must be rebuilt whenever a different release
-is promoted.
+The publication JSON is versioned through Git LFS so a GitHub Pages build uses
+the exact reviewed browser dataset rather than regenerating it from untracked
+raw annotations.
+
+### GitHub Pages publication
+
+`npm run build:pages` produces a fully static bundle under `web/dist/pages`.
+The workflow `.github/workflows/publish-refusal-observatory.yml` places that
+bundle under an unlisted route and deploys it from `main`. The page includes a
+`noindex` instruction and the deployment root disallows web crawlers. These are
+discovery deterrents, not access control: anyone who obtains the full URL can
+read the published prompts and genuine-refusal responses.
+
+To update the public site after promoting a new canonical release:
+
+```bash
+python interactive/build_data.py
+python interactive/build_web_data.py
+cd interactive/web
+npm run build:pages
+```
+
+Review the local build, commit the three `public/data/*.json` LFS pointers and
+site changes, then merge to `main`. The Pages workflow runs automatically. It
+can also be started manually from the repository's Actions tab.
 
 ## Test
 

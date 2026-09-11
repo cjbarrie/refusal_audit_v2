@@ -34,9 +34,9 @@ yarn-error.log*
 next-env.d.ts
 /dist/
 /.wrangler/
+/.vite/
 /outputs/
 /work/
 
-# Reproducible browser data built from the promoted canonical release.
-/public/data/*.json
-!/public/data/.gitkeep
+# Browser publication data are deliberately versioned as Git LFS objects so
+# GitHub Pages can reproduce the exact reviewed release without private inputs.

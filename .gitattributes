@@ -3,3 +3,4 @@
 pipeline/estimates/canonical/data_clean.RData filter=lfs diff=lfs merge=lfs -text
 archive/2026-09-04_expanded_analysis_snapshots/pipeline/expanded/derived/*.rds filter=lfs diff=lfs merge=lfs -text
 archive/2026-09-04_post_v24_rationalization/pipeline/*.RData filter=lfs diff=lfs merge=lfs -text
+interactive/web/public/data/*.json filter=lfs diff=lfs merge=lfs -text

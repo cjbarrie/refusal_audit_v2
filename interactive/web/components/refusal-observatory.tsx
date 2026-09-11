@@ -255,9 +255,9 @@ export function RefusalObservatory() {
 
   useEffect(() => {
     Promise.all([
-      loadJson<PromptPoint[]>('/data/prompts.json', 'Prompt data could not be loaded.'),
-      loadJson<Refusal[]>('/data/refusals.json', 'Refusal data could not be loaded.'),
-      loadJson<Metadata>('/data/metadata.json', 'Metadata could not be loaded.'),
+      loadJson<PromptPoint[]>('./data/prompts.json', 'Prompt data could not be loaded.'),
+      loadJson<Refusal[]>('./data/refusals.json', 'Refusal data could not be loaded.'),
+      loadJson<Metadata>('./data/metadata.json', 'Metadata could not be loaded.'),
     ]).then(([promptData, refusalData, metadataData]) => {
       setPrompts(promptData); setRefusals(refusalData); setMetadata(metadataData);
     }).catch((error: Error) => setLoadingError(error.message));

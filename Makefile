@@ -1,7 +1,7 @@
 PYTHON ?= python3
 RSCRIPT ?= Rscript
 NODE_DIR := interactive/web
-CANDIDATE_RELEASE ?= canon_029
+CANDIDATE_RELEASE ?= canon_031
 
 .PHONY: help baseline-check private-repo-preflight python-tests r-candidate-test audit web-test check candidate-release interactive-data interactive-web
 
@@ -11,7 +11,7 @@ help:
 	  '  make baseline-check       Verify frozen prompts, outcomes and canon_024' \
 	  '  make private-repo-preflight Check prospective Git files for size and secrets' \
 	  '  make python-tests         Run the repository Python tests' \
-	  '  make r-candidate-test     Test the current 20-model R code against canon_029' \
+	  '  make r-candidate-test     Test the current 24-model R code against canon_031' \
 	  '  make web-test             Test data builders and build the web explorer' \
 	  '  make audit                Rebuild docs/ARTIFACT_REGISTRY.csv' \
 	  '  make check                Run all of the above except the artifact rewrite' \
@@ -46,7 +46,7 @@ audit:
 	$(PYTHON) scripts/audit_repository.py
 
 candidate-release:
-	@test -n "$(RUN_ID)" || (printf '%s\n' 'RUN_ID is required, e.g. make candidate-release RUN_ID=canon_030'; exit 2)
+	@test -n "$(RUN_ID)" || (printf '%s\n' 'RUN_ID is required, e.g. make candidate-release RUN_ID=canon_032'; exit 2)
 	CANONICAL_RUN_ID=$(RUN_ID) $(RSCRIPT) pipeline/make_release.R --no-promote
 
 interactive-data:

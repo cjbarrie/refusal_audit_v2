@@ -4,7 +4,7 @@ This script produces descriptive appendix tables from the current Luna v2.4
 frame. It does not run independent-sample hypothesis tests.
 
 - `a01_outcome_rates_by_model_language.csv` reports genuine refusal and
-  capability failure for each observed 20-model/language cell. These are raw
+  capability failure for each observed 24-model/language cell. These are raw
   rates, not language effects.
 - `a02_task_behavior_composition.csv` reports the full v2.4 task-behavior
   distribution within each cell.

@@ -17,17 +17,33 @@ T-pro-it-2.0 remains outside the analysis until its generation and annotation
 are complete. Promotion is deferred so an interim roster cannot silently
 replace the working paper release.
 
+The accepted, non-promoted `canon_031` candidate adds 49,879 successfully generated and Luna-coded
+responses from Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B. It therefore
+uses 299,080 observed responses from 24 models. This document describes that
+candidate specification. Its numerical estimates were fully recomputed in
+`canon_030`; `canon_031` inherits those hash-verified estimates, corrects the
+Russia non-estimability glyph, and passes 29/29 numerical and 17/17 figure
+checks. It does not replace promoted `canon_024`.
+
 ## Measurement
 
-The current interim response-behavior analyses use one 249,201-response frame: the
+The current candidate response-behavior analyses use one 299,080-response frame: the
 hash-verified 137,186-row original Luna v2.4 table plus three hash-verified
-v3 batches and two v4 batches containing 112,015 completed annotations for nine
-additional models. `genuine_refusal` is primary. `capability_failure` is a distinct
+v3 batches and three v4 sources containing 161,894 completed annotations for 13
+additional models. The roster, paths, counts and hashes are declared in
+`config/analysis_roster_v1.json`. `genuine_refusal` is primary. `capability_failure` is a distinct
 diagnostic outcome and may overlap refusal. `original_nonengagement`, defined
 as original Gemini `engagement_code >= 4`, exists only for the original 11-model
 panel and is retained as a separately labelled measurement sensitivity on that
 fixed roster. It is never treated as zero for expansion rows. Luna is a scalable
 machine annotator, not a human gold standard.
+
+For the four Torch models, a frozen 1,335-response probability audit compares
+Luna with GPT-5.6 Sol. It includes censuses of all Luna refusal positives and
+refusal-unassessable cases plus probability samples of capability failures and
+apparently clean controls. Inverse inclusion probabilities recover the
+49,879-response target population. Sol is a frontier-model reference, not human
+ground truth, and its labels never overwrite the Luna census used below.
 
 The exact join and integrity rules are implemented in
 `pipeline/_response_validity.R` and documented in
@@ -86,6 +102,11 @@ standardization controlling measured composition. It is not causal because
 home status is not randomized and region remains related to issue substance.
 
 Implementation: `pipeline/11_canonical_home.R`.
+
+GigaChat3 is assigned to the Russia developer jurisdiction for descriptive,
+language and semantic-map analyses. The battery contains no Russia-focused
+issue stratum, so a Russia home contrast is undefined. The code records
+`home_status = not_defined` and does not substitute Europe or any other region.
 
 ## Result family 3: delivered-language contrast
 

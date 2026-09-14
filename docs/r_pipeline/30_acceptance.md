@@ -4,9 +4,9 @@ This is the numerical release gate, not an estimator. It sources the common
 frame and then reads candidate tables/figures from the environment-selected
 release directories.
 
-The first checks bind the release to the combined contract: 249,201 unique
-keys across 20 models, the exact original-panel Parquet SHA-256, 6,794 genuine
-refusals, 60,968 capability failures, and exact reproduction of the original
+The first checks bind the release to the registry-defined contract: 299,080 unique
+keys across 24 models, the exact original-panel Parquet SHA-256, 7,175 genuine
+refusals, 74,598 capability failures, and exact reproduction of the original
 Gemini sensitivity on its 137,186-row domain. Further checks enforce the
 two-outcome home/language/framing table shapes, bounded
 probability differences, common-support diagnostics, v2.4-only stability,

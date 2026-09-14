@@ -88,6 +88,7 @@ canon <- data_clean %>%
     # THREE positions. `general` has no home jurisdiction and is never `away`.
     home_status = case_when(
       region_focus == "General" ~ "general",
+      is.na(HOME_REGION_C[as.character(juris)]) ~ "not_defined",
       as.character(region_focus) == HOME_REGION_C[as.character(juris)] ~ "home",
       TRUE ~ "away"),
     home = as.integer(home_status == "home"),

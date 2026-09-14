@@ -48,6 +48,7 @@ CURRENT_DOCS = {
     "docs/ARCHIVE_MANIFEST.csv", "docs/ARTIFACT_REGISTRY.csv",
     "docs/CANONICAL_FIGURE_LEGENDS.md", "docs/CODE_ANALYSIS_AUDIT.md",
     "docs/PIPELINE_ENTRYPOINTS.md",
+    "docs/TECHNICAL_PIPELINE.md",
     "docs/REPOSITORY_MAP.md",
     "docs/RESPONSE_VALIDITY.md",
     "docs/NATIVE_SOURCING.md", "docs/PIPELINE.md", "docs/REBALANCE.md",
@@ -61,6 +62,7 @@ CURRENT_DOCS = {
     "docs/REPLICATION_GUIDE.md", "docs/REPLICATION_STATUS.md",
     "docs/PRIVATE_REPOSITORY_HANDOFF.md",
     "docs/REPOSITORY_AUDIT_2026-09-11.md",
+    "docs/REPOSITORY_AUDIT_2026-09-14.md",
     "docs/JURISDICTION_MODEL_EXPANSION_V1.md",
     "docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md",
     "docs/HPC_LOCAL_GGUF_FULL_V1.md",
@@ -149,6 +151,15 @@ def classify(rel: str, exists: bool) -> dict[str, str]:
             reproducible="true", contains_unique_evidence="false",
             recommended_action="keep", confidence="high",
             evidence="Current root-level execution/configuration surface.",
+        )
+        return base
+    if rel.startswith(".github/workflows/") and suffix in {".yaml", ".yml"}:
+        base.update(
+            scientific_role="live GitHub automation",
+            current_status="active_supporting", canonical_or_supporting="true",
+            reproducible="true", contains_unique_evidence="true",
+            recommended_action="keep_and_review_before_publication", confidence="high",
+            evidence="Tracked workflow for the repository's documented publication surface.",
         )
         return base
     if name in ACCIDENTAL_NAMES or (top == "writeup" and suffix in LATEX_BUILD_SUFFIXES):

@@ -5,11 +5,11 @@ creates an immutable candidate directory, runs the registered active stages,
 hashes inputs/source/docs/outputs, and promotes only after acceptance and figure
 audit pass. It makes no external call.
 
-Current execution order is 01, 11, 12, 15, 16, 17, 40, 20 and 21. Stage 16 is
+Current execution order is 01, 11, 12, 15, 16, 17, 18, 40, 20 and 21. Stage 16 is
 foundational because its fixed geometry supplies Main Figure 1.
 Pending scripts are absent from this plan. The manifest includes the original
-final v2.4 Parquet, the five expansion annotation batches and their response
-indexes, the nine raw expansion model directories and their run manifests,
+final v2.4 Parquet, the six registry-defined expansion annotation sources and
+their indexes, the raw expansion model directories and their run manifests,
 exact prompts/schemas, original annotation inputs, embedding cache, package
 versions, seeds and resampling counts. A full build stores
 `data_clean.RData` inside the immutable release; no mutable root analysis frame
@@ -29,8 +29,8 @@ passes 29/29 analysis plus 16/16 figure gates. Its manifest records the
 explicitly permitted dirty tree. A final archival paper release requires a
 committed clean tree and a new release ID.
 
-The latest non-promoted `canon_029` release exercises this same contract on
-the 20-model interim roster containing Sarvam-105B and Bielik 11B v3.0. It
+The latest non-promoted `canon_031` release exercises this same contract on
+the 24-model interim roster containing the four completed Torch models. It
 inherits fully recomputed estimates from `canon_025` and passes 29/29 numerical
 and 17/17 figure checks. T-pro is absent because its generation is incomplete.
 

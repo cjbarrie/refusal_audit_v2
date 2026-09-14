@@ -656,6 +656,80 @@ the four guarded `prepare-`, `estimate-`, `authorize-`, and
 `assemble-final-wall-to-wall-luna-v2-4` command performs the final keyed merge
 and makes no provider call.
 
+### 4.7 Torch expansion census and distribution-shift audit
+
+Four locally runnable models were generated on NYU Torch with the same 2,496
+prompt meanings in English, Chinese, Arabic, Russian and Hindi: Krutrim 2,
+GigaChat3 10B A1.8B, EuroLLM 22B and Salamandra 7B. Generation produced 49,920
+terminal records: 49,879 non-empty responses, 28 empty responses and 13 runtime
+or transport failures. The generation audit hash is recorded in
+`docs/HPC_LOCAL_GGUF_FULL_V1.md`; empty and failed records were not converted
+into behavioral outcomes.
+
+Luna v2.4 then annotated every one of the 49,879 non-empty responses using the
+unchanged source-response-only prompt and schema. The initial run returned
+49,867 valid records. A frozen 12-case adaptive repair retained the same fields
+and definitions and completed all remaining schemas. The final assembled Luna
+census has SHA-256
+`f6f1c3afe59bc48db191cd3d423d491a63ab5eda82d0c10aee813992931f587d`.
+It contains 381 genuine refusals and 13,630 capability failures. These complete
+Luna labels enter the substantive analysis; no audit label is substituted into
+individual response rows.
+
+Because these local models differ sharply from the earlier API-served models,
+we ran a separate distribution-shift audit using GPT-5.6 Sol with the identical
+v2.4 messages and schema. The frozen 1,335-response design included all 381
+Luna refusal positives, all 271 cases where Luna found refusal unassessable, a
+probability sample of 298 assessable Luna capability failures, and a probability
+sample of 385 apparently clean controls. Seven exhausted structured outputs
+were repaired under a predeclared two-attempt protocol. All original and repair
+records remain append-only. The final Sol result hash is
+`0cf12fb0a94bece20d220ad33b1a6c6ecf7e9e7db5b09d6d9e2b24c7405be12f`;
+total provider cost was $5.2674122.
+
+Inverse frozen inclusion probabilities recover the 49,879-response Torch
+population. For genuine refusal, Luna and Sol have 99.87% design-weighted
+agreement. Treating Sol only as a frontier-model reference, Luna has 98.78%
+sensitivity, 99.88% specificity, 84.25% precision and F1 .909; weighted
+prevalence is .764% under Luna and .651% under Sol. Capability-failure and
+wrong-language agreement are materially weaker, reinforcing the decision to
+keep them separate from genuine refusal. `pipeline/18_measurement_validation.R`
+verifies the frozen hashes and republishes these design-weighted results as
+`c28`--`c30`. Full operational details and scripts are indexed in
+`docs/HPC_LOCAL_GGUF_FULL_V1.md` and `scripts/SCRIPT_REGISTRY.csv` (`E27`--`E30`).
+
+### 4.8 Local Fanar admission pilot
+
+The locally hosted `QCRI/Fanar-1-9B-Instruct` experiment is an admission pilot,
+not a prevalence sample. It applies the same 40 deliberately enriched prompt
+meanings in all five languages, yielding 200 generation attempts. Torch
+returned 196 non-empty responses; four Hindi requests ended in explicit server
+errors and remain generation failures rather than inferred semantic labels.
+
+Luna v2.4 annotated all 196 returned responses with the unchanged
+source-response-only production prompt and schema. It coded 42 genuine
+refusals, 103 capability failures and 62 wrong-language responses. These
+dimensions are allowed to overlap: 18 refusal labels coincided with capability
+failure. English and Arabic were mechanically much stronger than Chinese,
+Russian and Hindi, but the enriched selection means none of these fractions is
+a population refusal rate.
+
+The independent check was therefore a full 196-response Sol census. Every case
+had inclusion probability and design weight one; Sol received the same v2.4
+messages and schema while remaining blind to Luna. This avoided adding sampling
+uncertainty to a small, high-disagreement route-admission decision. The frozen
+Sol payload SHA-256 was
+`7c60b4fd1ba86b766ac75366cc09cc59660e0144631a4c3cbcf152a8b9767b94`.
+All 196 schemas completed for $0.632352. Luna and Sol agreed on 192 refusal
+decisions (98.0%; kappa 0.938), 189 capability-failure decisions (96.4%; kappa
+0.929), and all 196 wrong-language decisions. Sol found 40 refusals, 96
+capability failures and 62 wrong-language outputs. English and Arabic pass the
+pilot's cell-admission screen; Chinese, Russian and Hindi do not because their
+capability-failure rates were respectively 85.0%, 62.5% and 97.2% among
+returned responses. Exact checkpoint, generation, annotation, cost and
+artifact details are in `docs/FANAR_EXPERIMENTS_V1.md`, with guarded entry
+points `E31` and `E32` in `scripts/SCRIPT_REGISTRY.csv`.
+
 ## 5. Exact prompt and structured-output request
 
 The production prompt builder is `_system_v24()` in

@@ -5,16 +5,17 @@ Use this page to find the relevant stage, then use the linked page to check its
 data, formula, weights, resampling and outputs line by line.
 
 The current analysis code combines the 137,186-row original Luna v2.4 table
-with 112,015 completed Luna v2.4 expansion annotations: 249,201 responses from
-20 models.
+with 161,894 completed Luna v2.4 expansion annotations: 299,080 responses from
+24 models.
 `genuine_refusal` is the primary response-behaviour outcome;
 `capability_failure` is analysed separately and may overlap it. The original
 Gemini `engagement_code >= 4` measure appears only as an explicitly labelled
 measurement sensitivity. `canon_024` is the promoted working release; it
 inherits the verified 18-model estimates from `canon_021` and contains the
 accepted two-main-figure redesign. The accepted, non-promoted `canon_029`
-interim release adds Sarvam-105B and Bielik 11B v3.0 and passes 29/29 numerical
-plus 17/17 figure checks; unfinished T-pro is excluded.
+interim release adds Sarvam-105B and Bielik 11B v3.0. Accepted, non-promoted
+`canon_031` also adds Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B and
+passes 29/29 numerical plus 17/17 figure checks; unfinished T-pro is excluded.
 
 Paper-level specifications are in [CANONICAL_ANALYSES.md](CANONICAL_ANALYSES.md).
 The exact outcome join is described in
@@ -35,8 +36,8 @@ full_v1 responses + prompt metadata + expansion label batches
                   |
        +----------+----------+-----------+-----------+
        v          v          v           v           v
-      11         12         15          16          17/40
-     home   language/frame  stability   UMAP     descriptions
+      11         12         15          16        17/18/40
+     home   language/frame  stability   UMAP   description/validation
        +----------+----------+-----------+-----------+
                   |
                   v
@@ -61,7 +62,7 @@ stages, and therefore are intentionally unnumbered.
 | Script | What it does | Detailed reference |
 |---|---|---|
 | `01_data_loading.R` | Reconstructs the original panel, verifies its v2.4 labels, and appends the hash-checked expansion panel. | [01_data_loading.md](r_pipeline/01_data_loading.md) |
-| `_expansion_input.R` | Verifies the five expansion annotation batches, derives the same two outcomes, and enforces combined counts and keys. | [_expansion_input.md](r_pipeline/_expansion_input.md) |
+| `_expansion_input.R` | Verifies the six registry-defined expansion sources, derives the same two outcomes, and enforces combined counts and keys. | [_expansion_input.md](r_pipeline/_expansion_input.md) |
 | `_response_validity.R` | Enforces the outcome file hash, schema, counts and exact key equality. | [_response_validity.md](r_pipeline/_response_validity.md) |
 | `10_canonical_common.R` | Creates the analysis frame, weights, issue bootstrap, support checks, logistic models and standardization functions. | [10_canonical_common.md](r_pipeline/10_canonical_common.md) |
 | `11_canonical_home.R` | Describes home/away rates and estimates standardized home-region associations. | [11_canonical_home.md](r_pipeline/11_canonical_home.md) |
@@ -69,6 +70,7 @@ stages, and therefore are intentionally unnumbered.
 | `15_subsample_stability.R` | Measures how estimates deviate from the full result after sampling declared percentages of issues. | [15_subsample_stability.md](r_pipeline/15_subsample_stability.md) |
 | `16_prompt_umap.R` | Reuses the fixed English-prompt geometry and describes outcome propensity, concentration and cross-model recurrence. | [16_prompt_umap.md](r_pipeline/16_prompt_umap.md) |
 | `17_response_validity.R` | Describes v2.4 outcomes, components, overlap, original-to-final transition and provenance. | [17_response_validity.md](r_pipeline/17_response_validity.md) |
+| `18_measurement_validation.R` | Verifies and publishes the probability-weighted Torch Luna–Sol measurement audit without changing response labels. | [18_measurement_validation.md](r_pipeline/18_measurement_validation.md) |
 | `40_appendix_descriptives.R` | Produces current model/language and task-behaviour appendix tables. | [40_appendix_descriptives.md](r_pipeline/40_appendix_descriptives.md) |
 | `20_figures_main.R` | Draws two genuine-refusal figures linking fixed semantic maps to home and language contrasts; it does not estimate. | [20_figures_main.md](r_pipeline/20_figures_main.md) |
 | `21_figures_extended.R` | Draws 14 Extended Data PNGs, including all capability-failure artwork and detailed model-level atlases. | [21_figures_extended.md](r_pipeline/21_figures_extended.md) |

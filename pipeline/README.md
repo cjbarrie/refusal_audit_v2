@@ -1,23 +1,23 @@
 # R analysis pipeline
 
 The active R files in this directory define the current candidate analysis built
-from 249,201 Luna v2.4 response annotations across 20 models. The code treats genuine refusal and
+from 299,080 Luna v2.4 response annotations across 24 models. The code treats genuine refusal and
 capability failure as separate, potentially overlapping outcomes. It does not
 silently treat the original Gemini non-engagement label as a refusal label.
 
 The promoted baseline remains `canon_024`. It inherits the verified 18-model
 estimates from `canon_021` and contains the accepted two-main-figure redesign.
-`canon_029` is the latest non-promoted candidate adding Sarvam-105B and Bielik
-11B v3.0. It inherits the fully recomputed estimates from `canon_025` and passes
-the current analysis and figure gates. Unfinished T-pro and all current Torch
-jobs are deliberately excluded. Because both states were built from dirty
+`canon_029` is the earlier non-promoted candidate adding Sarvam-105B and Bielik
+11B v3.0. Accepted non-promoted `canon_031` adds the completed Torch runs for
+Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B. T-pro remains unfinished.
+Because the accepted states were built from dirty
 trees, a new clean-tree archival release will be required after the expansion
 and estimands are frozen.
 Test the live code against its matching candidate, then build new work without
 promotion:
 
 ```bash
-make r-candidate-test CANDIDATE_RELEASE=canon_029
+make r-candidate-test CANDIDATE_RELEASE=canon_031
 CANONICAL_RUN_ID=<new-id> Rscript pipeline/make_release.R --no-promote
 ```
 
@@ -25,13 +25,14 @@ CANONICAL_RUN_ID=<new-id> Rscript pipeline/make_release.R --no-promote
 
 | Stage | Role | Principal outputs |
 |---|---|---|
-| `01` | Assemble the original panel and five expansion label batches. | release-scoped `data_clean.RData` and `00_*` summaries |
+| `01` | Assemble the original panel and six registry-defined expansion sources. | release-scoped `data_clean.RData` and `00_*` summaries |
 | `10` | Define the shared analysis frame and statistical helpers. | In-memory objects; bootstrap diagnostics written by callers |
 | `11` | Home-region descriptives and standardized associations. | `c02`–`c07` |
 | `12` | Paired language and framing contrasts. | `c08`–`c11` |
 | `15` | Issue-subsample stability. | `c21` |
 | `16` | Fixed prompt UMAP, prompt concentration and cross-model recurrence. | `c22`, `c22b`–`c22d` |
-| `17` | v2.4 measurement descriptives and contract. | `c23`–`c26` |
+| `17` | v2.4 measurement descriptives and contract. | `c23`–`c27` |
+| `18` | Verify and publish the probability-weighted Torch Luna–Sol audit. | `c28`–`c30` |
 | `40` | Appendix descriptives for current outcomes. | `a01`–`a04` |
 | `20`–`21` | Draw two genuine-refusal main figures and the separate descriptive, capability-failure and heterogeneity appendix from saved estimates. | Fig1–Fig2 and ED1–ED14 |
 | `30` + audit | Reject releases that violate the analytical or graphics contract. | `c01b`, non-zero exit on failure |
@@ -59,9 +60,10 @@ and do not imply missing files.
   `original_nonengagement` in active code.
 
 The helper `_response_validity.R` verifies the original-panel Parquet file.
-`_expansion_input.R` verifies the five expansion manifests, indexes, annotation
-results, keys and counts. Together they enforce 249,201 observed response keys,
-6,794 genuine refusals and 60,968 capability failures.
+`_expansion_input.R` reads the machine-readable roster and verifies six
+expansion annotation sources, their manifests, indexes, keys, counts, and
+hashes. Together the helpers enforce 299,080 observed response keys, 7,175
+genuine refusals and 74,598 capability failures.
 
 ## Pending analyses
 

@@ -7,6 +7,9 @@ not rewritten after a move.
 
 ## Start here
 
+- `TECHNICAL_PIPELINE.md`: the complete numbered account from Wikipedia
+  harvesting through prompt corrections, provider connections, annotation,
+  analysis and release;
 - `REPLICATION_GUIDE.md`: the ordered, safe replication route;
 - `REPLICATION_STATUS.md`: promoted, unpromoted, in-progress and deferred work;
 - `PRIVATE_REPOSITORY_HANDOFF.md`: pre-commit size, credential and data-boundary checks;
@@ -41,16 +44,17 @@ not rewritten after a move.
 - `FANAR_EXPERIMENTS_V1.md`: native-provider filtering, conservative refusal
   bounds, the frozen 29-case filter retest and the matched local QCRI pilot.
 
-The operational histories above support provenance. They are not additional
-steps in the default paper replication. Use `REPLICATION_GUIDE.md` for the
-short path and consult an operational document only when reproducing that
-specific expansion.
+The operational histories above support the numbered master pipeline. They are
+not additional steps in the default paper replication. Use
+`TECHNICAL_PIPELINE.md` to understand what happened, `REPLICATION_GUIDE.md` for
+the short verification route, and an operational document only when
+reproducing that specific expansion.
 
 ## Audits and deferred work
 
 - `CODE_ANALYSIS_AUDIT.md`: current forensic R/code audit;
-- `REPOSITORY_AUDIT_2026-09-11.md`: replication-readiness findings, checks and
-  remaining public-release blockers;
+- `REPOSITORY_AUDIT_2026-09-14.md`: current sequential-pipeline findings and
+  resolutions; the 11 September audit remains a dated earlier state;
 - `DEFERRED_SLANT_MORAL_VALIDITY.md`: why content outcomes remain pending;
 - `ARTIFACT_REGISTRY.csv`: regenerated file-level inventory;
 - `ARCHIVE_MANIFEST.csv`: hash-preserving record of the 1 September cleanup.

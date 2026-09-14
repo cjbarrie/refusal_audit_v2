@@ -10,16 +10,16 @@ or alter the fixed UMAP coordinates.
 |---|---:|---|
 | `c02_home_descriptive_english.csv` | Five genuine-refusal home-minus-away rows | Unadjusted jurisdiction differences and bootstrap intervals |
 | `c04_home_standardized.csv` | Five nested/full-target genuine-refusal rows | Standardized jurisdiction contrasts |
-| `c05_home_by_model.csv` | Twenty genuine-refusal rows | Model-specific standardized contrasts |
+| `c05_home_by_model.csv` | Twenty-three genuine-refusal rows | Model-specific standardized contrasts; GigaChat has no defined home stratum |
 | `c08_language_paired.csv` | Four equal-model genuine-refusal rows | Aggregate target-language-minus-English contrasts |
-| `c09_language_by_model.csv` | Eighty genuine-refusal rows | Model × language contrast matrix |
+| `c09_language_by_model.csv` | Ninety-six genuine-refusal rows | Model × language contrast matrix |
 | `c22_prompt_umap_coordinates.csv` | 2,496 prompts | The one fixed English-prompt geometry |
 | `c22_prompt_outcome_propensities.csv` | Five language rows per prompt | Language-specific genuine-refusal propensity |
-| `c22_prompt_outcomes_by_model.csv` | Up to twenty model rows per prompt | Binary English genuine-refusal events |
+| `c22_prompt_outcomes_by_model.csv` | Up to twenty-four model rows per prompt | Binary English genuine-refusal events |
 
 ## Figure 1
 
-`Fig1_jurisdiction_refusal_atlas_home.png` contains five equal-height developer-
+`Fig1_jurisdiction_refusal_atlas_home.png` contains six equal-height developer-
 jurisdiction blocks. Each block places a combined English semantic map beside
 the corresponding home-topic forest plot.
 
@@ -43,8 +43,8 @@ coordinates or allowing dense background points to compete with refusals.
 
 The grey key is deliberately labelled **No genuine refusal**, not “engaged.” A
 response can fail for capability reasons without being a genuine refusal.
-Twenty-seven missing English prompt-model outcomes—twenty Bielik, six Sarvam
-and one GPT-4o—are not
+Fifty-one missing English prompt-model outcomes—twenty-four GigaChat, twenty
+Bielik, six Sarvam-30B and one GPT-4o—are not
 recoded as non-refusals. A prompt with an incomplete set and no observed refusal
 is shown as a hollow grey point.
 
@@ -59,6 +59,11 @@ colours match the map. Every block uses the same −15 to +25 percentage-point
 axis. Reliable stored intervals are drawn; an estimable point with an unreliable
 interval is left open and its interval is suppressed. A grey cross is retained
 for a non-estimable model row and is not a zero estimate.
+
+Russia is displayed because GigaChat contributes complete-enough refusal and
+language outcomes. Both Russia coefficient rows are crosses: the prompt frame
+has no Russia-focused issue region, so neither an aggregate nor model-specific
+home contrast exists. Europe is not used as a proxy.
 
 The maps are descriptive semantic locators. The adjacent home estimates adjust
 for measured prompt composition, but they are predictive standardizations and
@@ -90,7 +95,9 @@ speaker's identity or nationality.
   correctly write into the new candidate estimate directory.
 
 PNG is the only image format. The artwork contains no title, subtitle, caption,
-explanatory callout, or fitted quantity calculated in the plotting layer.
+explanatory callout, or fitted quantity calculated in the plotting layer. The
+Russia design limitation is encoded by the existing non-estimable cross mark
+and explained in the external figure caption.
 
 ## Worked trace
 

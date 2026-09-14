@@ -97,6 +97,7 @@ ACCENT_2    <- "#1B4F8A"
 # labels carry the information.
 PAL_JURIS <- c(
   "CN"    = "#8C363C",   # deep muted red      L* 35
+  "Russia"= "#76558C",   # muted violet
   "India" = "#4F748F",   # slate blue          L* 47
   "MENA"  = "#B88047",   # burnt ochre         L* 58
   "US"    = "#96A8B6",   # cool grey-blue      L* 68
@@ -104,7 +105,7 @@ PAL_JURIS <- c(
 )
 
 # Model identity inside a jurisdiction block. These palettes are deliberately
-# local: no semantic map asks a reader to distinguish all 20 models at once.
+# local: no semantic map asks a reader to distinguish all 24 models at once.
 # The same colour is reused for the model's standardized estimate beside that
 # map. Values are drawn from Paul Tol's colour-vision-safe muted palette; the
 # grey semantic background is not reused for a model.

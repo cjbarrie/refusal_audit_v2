@@ -1,8 +1,12 @@
 # Supported pipeline entry points
 
-Status: 11 September 2026. Run commands from the repository root. Commands in
+Status: 14 September 2026. Run commands from the repository root. Commands in
 this document are the supported live interface; scripts preserved elsewhere
 may reproduce historical stages but are not general run instructions.
+
+Read `TECHNICAL_PIPELINE.md` first for the global 00--21 sequence. The section
+numbers below organize supported commands; they do not replace those global
+stage numbers.
 
 ## Environment
 
@@ -24,7 +28,7 @@ and local. No command may print, copy or commit its values.
 make baseline-check PYTHON=.venv/bin/python
 make private-repo-preflight PYTHON=.venv/bin/python
 make python-tests PYTHON=.venv/bin/python
-make r-candidate-test CANDIDATE_RELEASE=canon_029
+make r-candidate-test CANDIDATE_RELEASE=canon_031
 ```
 
 `make baseline-check` is read-only. `scripts/audit_repository.py` rewrites only
@@ -121,6 +125,10 @@ $PY scripts/local_gguf_pilot_annotation.py prepare
 $PY scripts/local_gguf_pilot_annotation.py cost
 $PY scripts/local_gguf_pilot_sol_audit.py prepare
 $PY scripts/local_gguf_pilot_sol_audit.py cost
+$PY scripts/local_gguf_hpc_full_annotation.py prepare
+$PY scripts/local_gguf_hpc_full_annotation.py cost
+$PY scripts/local_gguf_hpc_full_annotation_repair.py prepare
+$PY scripts/local_gguf_hpc_full_annotation_repair.py cost
 ```
 
 These commands are local. A full-run annotation contract can only be frozen
@@ -137,6 +145,38 @@ documented in `docs/LOCAL_GGUF_MODEL_EXPANSION_V1.md`. The annotation `prepare`
 and `cost` commands are local; its `run` command remains fail-closed until the
 exact payload hash and cost ceiling are explicitly authorized.
 
+The Torch production generation ledger completed at 49,920 terminal records:
+49,879 response-bearing cases, 28 empty responses and 13 HTTP/runtime failures.
+The full annotation commands above freeze a census of all response-bearing
+records under the same blinded v2.4 source-response-only contract. The 41
+records without response text remain explicit technical generation outcomes
+and are not passed to Luna or imputed as semantic outcomes. Exact hashes,
+pricing and guarded run commands are in `docs/HPC_LOCAL_GGUF_FULL_V1.md`. The
+main run produced 49,867 valid annotations and 12 exhausted logical conflicts.
+The separately authorized repair completed all 12 on its first attempt without
+overwriting the source attempts. Its local `assemble` command produced 49,879
+unique response labels with explicit main-versus-repair provenance. These
+models still require analysis admission and a new immutable R release.
+
+The post-census frontier audit is implemented separately and does not replace
+the Luna labels:
+
+```bash
+python scripts/local_gguf_hpc_full_sol_audit.py prepare
+python scripts/local_gguf_hpc_full_sol_audit.py cost
+```
+
+It freezes 1,335 Sol v2.4 reviews: censuses of all 381 Luna refusals and 271
+refusal-unassessable records, plus model-language-stratified probability
+samples of 298 assessable capability failures and 385 apparently clean
+controls. The output retains inclusion probabilities and design weights for
+full-population scoring. Its main run produced 1,328 valid labels and seven
+exhausted consistency conflicts. The separately authorized seven-case
+adaptive repair resolved all seven on its first round, producing a complete
+1,335-record lossless assembly and design-weighted scores. See
+`docs/HPC_LOCAL_GGUF_FULL_V1.md` for hashes, costs, results, the statistical
+rationale and guarded commands.
+
 ### Fanar provider-filter experiments
 
 The current local commands are:
@@ -147,6 +187,11 @@ $PY scripts/fanar_filter_retest.py prepare
 $PY scripts/fanar_retest_sol_annotation.py prepare
 $PY scripts/fanar_retest_sol_annotation.py cost
 $PY hpc/prepare_fanar_local_pilot.py prepare
+$PY hpc/prepare_fanar_local_pilot.py audit
+$PY scripts/fanar_local_pilot_annotation.py prepare
+$PY scripts/fanar_local_pilot_annotation.py cost
+$PY scripts/fanar_local_pilot_sol_audit.py prepare
+$PY scripts/fanar_local_pilot_sol_audit.py cost
 ```
 
 The first command only reanalyses retained records. The completed filter retest
@@ -154,7 +199,31 @@ has its own immutable ledger. Its 16 newly returned responses were classified
 by Sol v2.4 under the authorized frozen payload recorded in
 `docs/FANAR_EXPERIMENTS_V1.md`; do not rerun it. The local pilot requires an
 explicit Slurm submission after its files are copied to Torch. Full definitions,
-hashes and limits are in `docs/FANAR_EXPERIMENTS_V1.md`.
+hashes and limits are in `docs/FANAR_EXPERIMENTS_V1.md`. The local pilot has
+now completed with 196 non-empty responses and four explicit Hindi generation
+failures. Its final two commands freeze and price—without running—the blinded
+Luna v2.4 census of those 196 response-bearing records. That census is now
+complete. The final two commands above freeze and price an independent Sol
+v2.4 census of the same 196 records. That census is also complete; the commands
+are retained only to reproduce its immutable request and cost records and must
+not be treated as authorization to rerun it.
+
+### T-pro recovery and stability probe
+
+The original T-pro run is terminal but incomplete. Recover preserved HTTP-200
+response bodies and reproduce the frozen route-stability probe locally with:
+
+```bash
+$PY scripts/tpro_full_recovery.py recover
+$PY scripts/tpro_full_retry_probe.py prepare
+$PY scripts/tpro_full_retry_probe.py cost
+```
+
+These commands make no provider call. The 200-request probe has a separate
+hash-bound authorization gate. Do not annotate T-pro or launch the 4,240-key
+residual retry until the probe has been run and its route-stability result has
+been reviewed. Full counts, hashes and rationale are recorded in
+`docs/JURISDICTION_MODEL_EXPANSION_V1.md`.
 
 ## 4. Response-validity v2.4
 
@@ -186,8 +255,8 @@ own frozen hash, provider route, disabled-fallback settings, cost ceiling and
 explicit authorization record agree. The final assembly is the retained output;
 do not recreate it unless an integrity check fails and the cause is established.
 
-There is no implemented selective Sol cascade. If one is later adopted, it
-must be a new versioned stage and cannot silently replace Luna labels.
+The Torch-only probability audit above is the sole implemented selective Sol
+stage. It is a new versioned audit and cannot silently replace Luna labels.
 
 ## 5. Interactive refusal explorer — local, read-only
 
@@ -220,11 +289,12 @@ canonical 2-D view, and exposes only v2.4 genuine-refusal response records.
 
 ## 6. R analysis
 
-The live R source is the 20-model candidate, while the promoted baseline is the
+The live R source is the accepted, unpromoted 24-model `canon_031` candidate,
+while the promoted baseline is the
 18-model `canon_024`. Test the source against the matching candidate:
 
 ```bash
-make r-candidate-test CANDIDATE_RELEASE=canon_029
+make r-candidate-test CANDIDATE_RELEASE=canon_031
 ```
 
 The promoted working release is `canon_024`; it contains the agreed v2.4

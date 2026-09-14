@@ -4,7 +4,7 @@
 
 This script creates the response-level analysis frame. It combines the original
 Gemini records with prompt metadata, attaches the original-panel Luna v2.4
-table, validates five expansion Luna batches, and appends nine additional
+table, validates six expansion Luna sources, and appends 13 additional
 models. It estimates nothing.
 
 ## Inputs and keys
@@ -29,8 +29,8 @@ sources. This prevents inclusion being decided by one tier field while a later
 model adjusts for a contradictory field.
 
 The original Luna table is joined through `_response_validity.R`: 137,186 keys
-must match exactly. `_expansion_input.R` then adds 112,015 observed keys. The
-combined frame must contain 249,201 unique keys and 20 models. Missing
+must match exactly. `_expansion_input.R` then adds 161,894 observed keys. The
+combined frame must contain 299,080 unique keys and 24 models. Missing
 generations and the six exhausted annotations (one Kimi, five Bielik) are not
 imputed.
 

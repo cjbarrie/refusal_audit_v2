@@ -28,7 +28,7 @@ only, genuine refusal only, and both. It reports counts, shares within each
 original label, and shares of the full corpus. This is an instrument-transition
 description, not an estimate of either annotator's accuracy.
 
-The current-outcome tables describe the 249,201 observed responses; the
+The current-outcome tables describe the 299,080 observed responses; the
 original-measure tables describe the explicitly named original subset. The
 script does not add binomial sampling intervals. Uncertainty in Luna's
 measurement accuracy is a different problem and is documented in

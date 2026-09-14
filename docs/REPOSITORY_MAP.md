@@ -1,6 +1,6 @@
 # Repository and workflow map
 
-Status: 11 September 2026. Paths are relative to the repository root. This map
+Status: 14 September 2026. Paths are relative to the repository root. This map
 describes the retained evidence and the supported live path; it does not turn
 completed development experiments into production stages.
 
@@ -13,13 +13,14 @@ Wikipedia/Wikidata
   -> subject-model responses (`annotations/full_v1/` + `annotations/model_expansion_v3/` + `annotations/model_expansion_v4/`)
   -> original Gemini annotations (`annotations/full_v1/ann/` + assembled JSONL)
   -> human/codebook development + model evaluations (`annotations/response_validity_*`)
-  -> frozen Luna v2.4 labels (137,186 original + 112,015 expansion rows)
+  -> frozen Luna v2.4 labels (137,186 original + 161,894 accepted expansion rows)
   -> provisional R estimands/releases (`pipeline/`)
   -> local read-only refusal explorer (`interactive/`)
 ```
 
-The ordered cross-directory contract is `config/REPLICATION_STAGES.csv` and
-the practical entry point is `docs/REPLICATION_GUIDE.md`. Directory-level
+The complete sequence is `docs/TECHNICAL_PIPELINE.md`, the ordered
+cross-directory contract is `config/REPLICATION_STAGES.csv`, and the practical
+verification entry point is `docs/REPLICATION_GUIDE.md`. Directory-level
 registries enumerate every live script; archived and pending code is excluded
 from the default execution surface.
 
@@ -147,11 +148,13 @@ manifest. Sol did not repair the 129 cases. A selective future Sol cascade is
 not implemented or complete. Human validation remains incomplete, and Sol
 labels are machine-reference labels rather than human truth.
 
-The same v2.4 prompt and schema were applied to the expansion responses in
-five frozen Luna batches. `pipeline/_expansion_input.R` validates their
+The same v2.4 prompt and schema were applied to the expansion responses in six
+registry-defined Luna sources. `pipeline/_expansion_input.R` validates their
 manifests, payload and artifact hashes, keys and status counts before appending
-them. The resulting interim 20-model frame contains 6,794 genuine refusals and
-60,968 capability failures.
+them. The current 24-model frame contains 299,080 observed responses, 7,175
+genuine refusals and 74,598 capability failures. The probability-sampled Torch
+Sol audit is kept as measurement validation and never substituted row by row
+for the Luna census.
 
 ## 5. R analysis and releases
 
@@ -167,7 +170,7 @@ main-figure redesign; it passes 29/29 analysis plus 16/16 figure gates.
 `canon_013` remains incomplete and is never selected by numeric suffix.
 `canon_024` records an explicitly approved dirty-tree promotion, so a new
 clean-tree release is still required before the final archival paper freeze.
-The live source now targets the 20-model candidate in `canon_029`; this is
+The live source now targets the 24-model candidate in `canon_031`; this is
 accepted but unpromoted and must not be confused with the baseline.
 
 ## 6. Interactive explorer

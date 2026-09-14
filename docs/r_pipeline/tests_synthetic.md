@@ -1,11 +1,12 @@
 # `tests_synthetic.R`
 
 This fast regression script checks the current measurement and shared estimator
-contracts. By default it reads the promoted release-scoped analysis frame
-through stage 10; `CANON_DATA_PATH` can instead point it at a candidate. It
-writes no scientific output.
+contracts. By default it reads the accepted 24-model `canon_031` frame because
+the live constants enforce that roster. `CANON_DATA_PATH` can point it at a
+different compatible candidate. The separate Python baseline check verifies the
+promoted 18-model `canon_024` artifact. This script writes no scientific output.
 
-The tests assert 249,201 unique keys across 20 models, the two combined outcome
+The tests assert 299,080 unique keys across 24 models, the two combined outcome
 counts, and exact original-label mapping on its 137,186-row domain; verify
 nested/equal-model weights sum to one; fit a constructed
 positive home effect and require finite positive g-computation; ensure a

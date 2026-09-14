@@ -9,7 +9,7 @@ sequence.
 
 - `G01`--`G05`: original prompt sampling, generation, annotation, assembly and
   embedding production;
-- `E01`--`E26`: subject-model expansion contracts; `E03` is the guarded
+- `E01`--`E30`: subject-model expansion contracts; `E03` is the guarded
   new-developer access-smoke stage, `E04` is its 400-response pilot, and `E05`
   is the native Sarvam-105B access smoke; `E06` is the transient-only
   low-concurrency repair, `E07` is the matched Sarvam pilot, and `E08` is their
@@ -36,7 +36,18 @@ sequence.
   `E24` performs the offline native Fanar system-outcome audit, while `E25`
   freezes and guards the 29-case provider-filter repeatability experiment;
   `E26` applies the unchanged Sol v2.4 codebook to every response newly exposed
-  by that retest;
+  by that retest; `E27`--`E28` produce the complete, repaired Luna v2.4 census
+  for the four Torch full-corpus models; and `E29`--`E30` produce the frozen
+  probability-weighted Sol distribution-shift audit without overwriting Luna;
+  `E31` freezes the 196 response-bearing cases from the completed 200-record
+  local Fanar-1 9B pilot and applies the unchanged Luna v2.4 codebook while
+  retaining four Hindi generation failures outside semantic annotation; and
+  `E32` independently sends all 196 returned responses—not merely Luna-flagged
+  cases—to Sol with byte-identical v2.4 messages and schema, so the small
+  admission pilot is checked without sampling error; `E33` performs an offline,
+  lossless recovery of preserved malformed T-pro HTTP-200 envelopes and freezes
+  the genuinely unresolved keys; and `E34` guards the language-balanced
+  200-request route-stability probe that must pass before a large T-pro retry;
 - `V01`: the adopted response-validity command surface;
 - `A01`: repository audit;
 - `H01`--`H02`: imported helpers, never run as pipeline stages;

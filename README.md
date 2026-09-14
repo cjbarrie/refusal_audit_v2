@@ -29,12 +29,14 @@ than drafted from scratch by a model.
   16/16 figure checks. The manifest records that it was built from a dirty
   working tree under explicit approval; a clean-tree rebuild remains required
   before the final archival paper release.
-- The live R source has advanced to an unpromoted **20-model candidate**. Its
-  checked build, `canon_029`, contains 249,201 observed responses after adding
-  Sarvam-105B and Bielik 11B v3.0. It passed the current gates but was also
-  built from a dirty tree and does not silently replace `canon_024`.
-- T-pro-it-2.0, the four NYU Torch local models and the local Fanar experiment
-  remain operational workbench runs. None enters either release above.
+- The live R source now targets the accepted, unpromoted **24-model
+  `canon_031` candidate** with
+  299,080 observed responses. It adds the complete 49,879-response NYU Torch
+  panel for Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B to `canon_029`'s
+  20-model frame. It passes all 29 numerical and 17 figure gates but has not
+  been promoted; `canon_024` therefore remains the public working baseline.
+- T-pro-it-2.0 and the local Fanar experiment remain operational workbench
+  runs and do not enter the 24-model candidate.
 - Sol was used as a frontier machine reference in validation work. It is not a
   human gold standard, and no selective Sol production cascade has been run.
 
@@ -69,6 +71,11 @@ Start a replication with
 [`docs/REPLICATION_STATUS.md`](docs/REPLICATION_STATUS.md) to distinguish
 promoted results from work in progress.
 
+For the complete chronological account—from Wikipedia API requests through
+prompt-battery amendments, provider routes, codebook revisions, outcome
+annotation and R releases—start with
+[`docs/TECHNICAL_PIPELINE.md`](docs/TECHNICAL_PIPELINE.md).
+
 ## Supported entry points
 
 Run commands from the repository root. The authoritative command guide is
@@ -78,19 +85,19 @@ Run commands from the repository root. The authoritative command guide is
 # Verify the frozen prompts, outcome table and promoted canon_024 release
 make baseline-check PYTHON=.venv/bin/python
 
-# Check prospective private-Git files without printing any matched value
+# Check prospective public-Git files without printing any matched value
 make private-repo-preflight PYTHON=.venv/bin/python
 
 # Run Python tests and test the current R code against its matching candidate
 make python-tests PYTHON=.venv/bin/python
-make r-candidate-test CANDIDATE_RELEASE=canon_029
+make r-candidate-test CANDIDATE_RELEASE=canon_031
 
 # Rebuild explorer assets from the promoted release and start the web version
 make interactive-data PYTHON=.venv/bin/python
 make interactive-web
 
 # Build, but do not promote, a newly named candidate analysis release
-make candidate-release RUN_ID=canon_030
+make candidate-release RUN_ID=canon_032
 ```
 
 Prompt sourcing, model generation, translation and annotation can make
@@ -100,6 +107,8 @@ of a local `.env` file.
 
 ## Technical references
 
+- Complete numbered pipeline:
+  [`docs/TECHNICAL_PIPELINE.md`](docs/TECHNICAL_PIPELINE.md)
 - Ordered replication procedure:
   [`docs/REPLICATION_GUIDE.md`](docs/REPLICATION_GUIDE.md)
 - Current inclusion status:

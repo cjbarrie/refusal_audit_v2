@@ -4,9 +4,9 @@
 # =============================================================================
 # Scientific purpose
 #   Reconstruct the 137,186-response original corpus, attach its frozen Luna
-#   v2.4 outcomes, and append the nine completed expansion models through the
-#   manifest-bound contract in pipeline/_expansion_input.R. The result contains
-#   249,201 observed and annotated responses from 20 models.
+#   v2.4 outcomes, and append the 13 completed expansion models through the
+#   registry- and hash-bound contract in pipeline/_expansion_input.R. The result
+#   contains 299,080 observed and annotated responses from 24 models.
 #
 # Unit/key
 #   One row per (prompt_id, prompt_language, model). Boundary and regular prompt
@@ -17,8 +17,7 @@
 #   annotations/full_v1/annotations_{en,zh,ar,ru,hi}_boundary.jsonl
 #   annotations/full_v1/prompts_meta/test_prompts_<language>.json
 #   final Luna v2.4 Parquet named in pipeline/_response_validity.R
-#   three expansion response-index/result/manifest sets named in
-#   pipeline/_expansion_input.R
+#   six expansion annotation batches declared in config/analysis_roster_v1.json
 #
 # Outputs
 #   CANON_DATA_PATH (default pipeline/data_clean.RData), object data_clean
@@ -404,7 +403,7 @@ data_clean <- attach_final_outcomes(data_clean)
 stopifnot(nrow(data_clean) == RV_EXPECTED_N,
           !anyDuplicated(data_clean[RV_KEY]))
 
-cat("\nAppending nine completed expansion models...\n")
+cat("\nAppending registry-defined completed expansion models...\n")
 data_clean <- append_expansion_rows(data_clean)
 stopifnot(nrow(data_clean) == EXP_EXPECTED_N,
           !anyDuplicated(data_clean[EXP_KEY]))

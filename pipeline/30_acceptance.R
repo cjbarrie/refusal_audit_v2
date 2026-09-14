@@ -29,15 +29,18 @@ rd <- function(file) {
 }
 
 # A. Measurement and sample ----------------------------------------------------
-chk("A1", "analysis has 249,201 unique response keys across 20 models",
+chk("A1", sprintf("analysis has %s unique response keys across %d models",
+                  format(EXP_EXPECTED_N, big.mark = ","), EXP_EXPECTED_MODELS),
     nrow(canon) == EXP_EXPECTED_N && n_distinct(canon$model) == EXP_EXPECTED_MODELS &&
       !anyDuplicated(canon[RV_KEY]))
 chk("A2", "final v2.4 hash is the frozen accepted hash",
     identical(digest::digest(Sys.getenv("RESPONSE_VALIDITY_PATH", RV_DEFAULT_PATH),
                              "sha256", file = TRUE), RV_EXPECTED_SHA256))
-chk("A3", "combined genuine-refusal count is 6,794",
+chk("A3", sprintf("combined genuine-refusal count is %s",
+                  format(EXP_EXPECTED_REFUSALS, big.mark = ",")),
     sum(canon$genuine_refusal) == EXP_EXPECTED_REFUSALS)
-chk("A4", "combined capability-failure count is 60,968",
+chk("A4", sprintf("combined capability-failure count is %s",
+                  format(EXP_EXPECTED_CAPABILITY_FAILURES, big.mark = ",")),
     sum(canon$capability_failure) == EXP_EXPECTED_CAPABILITY_FAILURES)
 original_rows <- canon |> filter(!is.na(original_nonengagement))
 chk("A5", "original-label sensitivity is confined to and exact for 137,186 rows",

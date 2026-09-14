@@ -1,6 +1,6 @@
 {
   "version": "replication-contract-v1",
-  "updated_at": "2026-09-11",
+  "updated_at": "2026-09-12",
   "promoted_baseline": {
     "release_id": "canon_024",
     "status": "accepted_promoted_working_release",
@@ -17,19 +17,20 @@
     "final_archival_release": false
   },
   "current_candidate": {
-    "release_id": "canon_029",
+    "release_id": "canon_031",
     "status": "accepted_unpromoted_candidate",
-    "analysis_rows": 249201,
-    "models": 20,
+    "analysis_rows": 299080,
+    "models": 24,
     "languages": 5,
     "prompt_meanings": 2496,
     "issues": 624,
-    "genuine_refusals": 6794,
-    "capability_failures": 60968,
-    "manifest_sha256": "ff196d294e770a6b9e0f799d62f63f4fa9e97cdcd36c6c6eeeb1af019066e852",
+    "genuine_refusals": 7175,
+    "capability_failures": 74598,
+    "manifest_sha256": "1cff150bca1f7655c5fffc8d51968ba4fa2e2bf0c0831801e7273b44d1700c10",
     "acceptance_checks": 29,
     "built_from_clean_git_tree": false,
-    "promoted": false
+    "promoted": false,
+    "estimate_source_release": "canon_030"
   },
   "original_panel_outcome": {
     "path": "annotations/response_validity_v2_4/wall_to_wall_luna_v1/final_annotations.parquet",
@@ -59,6 +60,6 @@
     "historical_releases_are_immutable": true,
     "promotion_requires_clean_git_tree_for_final_archival_release": true,
     "interactive_site_remains_in_this_repository_until_explicitly_split": true,
-    "github_visibility": "private"
+    "github_visibility": "public"
   }
 }

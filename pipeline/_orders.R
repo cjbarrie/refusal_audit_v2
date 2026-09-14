@@ -20,9 +20,10 @@
 # declare that exception in its external legend.
 
 # --- jurisdictions -----------------------------------------------------------
-# Ordered by the size of the home contrast in the first release and then frozen,
-# so it is stable across releases rather than re-sorting when an estimate moves.
-ORDER_JURIS <- c("CN", "MENA", "India", "US", "EU")
+# The original five retain their frozen order. Russia is inserted beside China
+# as a new developer jurisdiction; it has no home-region estimate because the
+# prompt battery has no Russia-focused issue stratum.
+ORDER_JURIS <- c("CN", "Russia", "MENA", "India", "US", "EU")
 
 # --- issue regions -----------------------------------------------------------
 # The STORED level is "Arab" (the 22 Arab League states, as harvested); every
@@ -32,7 +33,7 @@ ORDER_JURIS <- c("CN", "MENA", "India", "US", "EU")
 # estimate table.
 ORDER_REGION <- c("China", "Arab", "India", "US", "Europe", "General")
 HOME_REGION_OF <- c(CN = "China", MENA = "Arab", India = "India",
-                    US = "US", EU = "Europe")
+                    US = "US", EU = "Europe", Russia = NA_character_)
 
 # --- models ------------------------------------------------------------------
 # Grouped by developer jurisdiction, alphabetical within group. NOT ordered by
@@ -40,24 +41,31 @@ HOME_REGION_OF <- c(CN = "China", MENA = "Arab", India = "India",
 ORDER_MODEL <- c(
   "deepseek-chat-v3.1", "glm-4.7-flash", "hunyuan-a13b", "kimi-k2.5",
   "qwen3-max",                                                        # CN
+  "gigachat3-10b-a1.8b-local-q8",                                    # Russia
   "allam-7b", "falcon3-10b", "jais-8b",                               # MENA
-  "sarvam-105b", "sarvam-30b",                                      # India
+  "krutrim-2-instruct-local-q8", "sarvam-105b", "sarvam-30b",        # India
   "claude-opus-4.5", "gemini-2.5-flash-lite", "gpt-4o", "gpt-5.1",
   "grok-4.3", "llama-4-scout", "nova-lite",                          # US
-  "bielik-11b-v3.0", "ministral-14b", "mistral-large-2512")          # EU
+  "bielik-11b-v3.0", "eurollm-22b-instruct-2512-local-q8",
+  "ministral-14b", "mistral-large-2512",
+  "salamandra-7b-instruct-2606-local-q8")                              # EU
 MODEL_JURIS <- c(
   "deepseek-chat-v3.1" = "CN",   "glm-4.7-flash"      = "CN",
   "hunyuan-a13b"       = "CN",   "kimi-k2.5"          = "CN",
   "qwen3-max"          = "CN",
+  "gigachat3-10b-a1.8b-local-q8" = "Russia",
   "allam-7b"           = "MENA", "falcon3-10b"        = "MENA",
   "jais-8b"            = "MENA",
+  "krutrim-2-instruct-local-q8" = "India",
   "sarvam-105b"        = "India", "sarvam-30b"         = "India",
   "claude-opus-4.5"    = "US",   "gemini-2.5-flash-lite" = "US",
   "gpt-4o"             = "US",   "gpt-5.1"            = "US",
   "grok-4.3"           = "US",   "llama-4-scout"      = "US",
   "nova-lite"          = "US",
-  "bielik-11b-v3.0"    = "EU",   "ministral-14b"      = "EU",
-  "mistral-large-2512" = "EU")
+  "bielik-11b-v3.0"    = "EU",
+  "eurollm-22b-instruct-2512-local-q8" = "EU",
+  "ministral-14b"      = "EU",   "mistral-large-2512" = "EU",
+  "salamandra-7b-instruct-2606-local-q8" = "EU")
 
 # --- languages ---------------------------------------------------------------
 # English first: it is the paired reference for every language contrast, which

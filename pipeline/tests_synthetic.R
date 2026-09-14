@@ -2,12 +2,13 @@
 # Technical reference: docs/r_pipeline/tests_synthetic.md
 # FAST SYNTHETIC TESTS -- v2.4 outcome and estimator contracts
 # =============================================================================
-# Uses constructed data plus a read-only count/key check of the promoted
-# release-scoped analysis frame. Writes no scientific output and makes no
-# provider call. A caller may override CANON_DATA_PATH to test a candidate.
+# Uses constructed data plus a read-only count/key check of the current
+# 24-model candidate frame. Writes no scientific output and makes no provider
+# call. A caller may override CANON_DATA_PATH to test another release.
 
 if (!nzchar(Sys.getenv("CANON_DATA_PATH"))) {
-  Sys.setenv(CANON_DATA_PATH = "pipeline/estimates/canonical/data_clean.RData")
+  Sys.setenv(CANON_DATA_PATH =
+               "pipeline/releases/canon_031/estimates/data_clean.RData")
 }
 
 source("pipeline/10_canonical_common.R")

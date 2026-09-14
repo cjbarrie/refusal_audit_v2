@@ -6,17 +6,21 @@ are read-only or local unless they are explicitly marked as an external call.
 
 ## What is being replicated
 
-There are currently two legitimate analysis states:
+There are currently three accepted analysis states:
 
 1. **Promoted baseline (`canon_024`)** — 224,544 observed responses from 18
    models. This is the release shown by `pipeline/estimates/canonical/`, the
    committed figure tree and both interactive explorers.
-2. **Unpromoted candidate (`canon_029`)** — 249,201 observed responses from 20
+2. **Earlier unpromoted candidate (`canon_029`)** — 249,201 observed responses from 20
    models, adding Sarvam-105B and Bielik 11B v3.0. It passed the current gates,
    but was built from a dirty tree and has not replaced the promoted baseline.
 
-The live R source describes the 20-model candidate. It should not be used to
-claim that `canon_024` was rebuilt from the present checkout. Both releases
+3. **Accepted 24-model candidate (`canon_031`)** — 299,080 observed responses
+   after adding the four completed Torch models. It passes 29/29 numerical and
+   17/17 figure checks but remains unpromoted.
+
+The live R source describes the 24-model candidate. It should not be used to
+claim that `canon_024` was rebuilt from the present checkout. These releases
 record `git_dirty=TRUE`; neither is the final clean-tree archival release.
 `config/replication_contract.json` records these facts in machine-readable form.
 
@@ -65,36 +69,37 @@ retained in the relevant manifests and technical documents.
 
 ## 3. Follow the scientific pipeline
 
-The ordered, machine-readable map is `config/REPLICATION_STAGES.csv`.
+The complete narrative is `TECHNICAL_PIPELINE.md`; the ordered,
+machine-readable map is `config/REPLICATION_STAGES.csv`.
 
 | Stage | Input | Transformation | Retained output |
 |---|---|---|---|
-| 01–02 | Wikipedia/Wikidata pages | harvest, enrich, construct, translate, review and sample | five frozen 2,496-prompt batteries |
-| 03 | frozen prompts and subject-model roster | generate one response per available model-language-prompt key | append-only response JSONL |
-| 04 | original responses | original Gemini annotation | non-engagement sensitivity labels |
-| 05 | response text and v2.4 codebook | Luna structured-output annotation | genuine-refusal and capability-failure components |
-| 06 | original and accepted expansion batches | hash checks, metadata joins and exact-key assembly | release-scoped `data_clean.RData` |
-| 07 | analysis frame | home standardization, paired language contrasts and descriptive measurement analyses | numbered CSV estimate tables |
-| 08 | accepted estimate tables and fixed UMAP geometry | render only; no model fitting | 600-dpi PNGs |
-| 09 | registered R stages | manifest, acceptance and figure audit | immutable release; optional promotion |
-| 10 | promoted release | build read-only explorer assets | local Streamlit and web interfaces |
+| 01–07 | Wikipedia/Wikidata pages | harvest three routes, enrich, merge, construct, amend, translate, review and sample | five frozen 2,496-prompt batteries |
+| 08 | frozen prompts and original subject-model roster | generate one response per available model-language-prompt key | append-only original response JSONL |
+| 09 | original responses | original Gemini annotation | non-engagement sensitivity labels |
+| 10–12 | reviewed development cases, response text and v2.4 codebook | refine the codebook, select Luna and annotate the original panel | one v2.4 label per original response key |
+| 13–15 | accepted hosted and Torch models | generate, annotate and audit expansions | hash-registered expansion batches |
+| 16 | original and accepted expansion batches | hash checks, metadata joins and exact-key assembly | release-scoped `data_clean.RData` |
+| 17 | analysis frame | home standardization, paired language contrasts and descriptive measurement analyses | numbered CSV estimate tables |
+| 18 | estimates and fixed UMAP geometry | render, accept and freeze without refitting in figure code | immutable release and 600-dpi PNGs |
+| 19 | promoted release | build read-only explorer assets | local Streamlit and web interfaces |
 
 Detailed inputs, outputs and inference limits are in
 `CANONICAL_ANALYSES.md`, `R_PIPELINE_WALKTHROUGH.md` and `r_pipeline/`.
 
-## 4. Test the current 20-model code
+## 4. Test the current 24-model code
 
 Because the live R code has advanced beyond the promoted baseline, its tests
 must point explicitly at the matching candidate data:
 
 ```bash
-make r-candidate-test CANDIDATE_RELEASE=canon_029
+make r-candidate-test CANDIDATE_RELEASE=canon_031
 ```
 
 To build another candidate without promotion:
 
 ```bash
-make candidate-release RUN_ID=canon_030
+make candidate-release RUN_ID=canon_032
 ```
 
 Never reuse a release ID. Inspect the new manifest, acceptance table and PNGs
@@ -126,14 +131,13 @@ Those records do not enter the paper pipeline until their generation is
 complete, their v2.4 annotations pass the declared quality gate, and a new R
 release explicitly includes them.
 
-## 7. Private repository and eventual split
+## 7. Public repository and eventual site split
 
-The configured GitHub remote is private. Keep it private while row-level model
-responses, provider metadata and the interactive explorer share this codebase.
-The standalone webpage remains under `interactive/web/` for now. When the data
-and analyses are frozen, split it by exporting only the minimal public browser
-assets and their disclosure review; do not copy `.env`, raw ledgers, endpoint
-URLs, account identifiers or hidden reasoning text.
+The configured GitHub repository, `cjbarrie/refusal_audit_v2`, is public. This
+was verified on 14 September 2026. The standalone webpage remains under
+`interactive/web/` for now. When it is split into a site repository, export
+only the minimal browser assets after a disclosure review; do not copy `.env`,
+raw ledgers, endpoint URLs, account identifiers or hidden reasoning text.
 
 Before staging or pushing, run:
 
@@ -142,4 +146,5 @@ make private-repo-preflight PYTHON=.venv/bin/python
 ```
 
 The exact commit boundary and large-file decisions are documented in
-`docs/PRIVATE_REPOSITORY_HANDOFF.md`.
+`docs/PRIVATE_REPOSITORY_HANDOFF.md`. The filename is retained for link
+stability; the document now governs public-repository disclosure checks.

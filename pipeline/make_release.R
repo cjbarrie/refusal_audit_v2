@@ -136,10 +136,18 @@ source("pipeline/_expansion_input.R")
 # used both by the figures-only pre-flight and by the release manifest, which
 # prevents the two provenance checks from drifting apart.
 expansion_annotation_inputs <- function() {
-  x <- unlist(lapply(EXPANSION_BATCHES$path, function(p)
-    file.path(p, c("manifest.json", "run_summary.json", "response_index.parquet",
-                   "results.jsonl", "prompt.txt", "response_schema.json"))))
-  x[file.exists(x)]
+  x <- c(EXP_ROSTER_PATH, unlist(lapply(seq_len(nrow(EXPANSION_BATCHES)), function(i) {
+    p <- EXPANSION_BATCHES$path[i]
+    if (EXPANSION_BATCHES$format[i] == "assembled_parquet")
+      file.path(p, c("assembled_labels.parquet", "final_annotations_manifest.json"))
+    else file.path(p, c("manifest.json", "run_summary.json", "response_index.parquet",
+                        "results.jsonl", "prompt.txt", "response_schema.json"))
+  })))
+  audit_x <- unlist(lapply(EXP_ROSTER$sol_audits, function(a)
+    file.path(a$path, c("summary.json", "final_annotations_manifest.json",
+                        "final_results.jsonl", "design_weighted_agreement.csv",
+                        "design_based_model_language_estimates.csv"))))
+  unique(c(x[file.exists(x)], audit_x[file.exists(audit_x)]))
 }
 expansion_generation_inputs <- function() {
   roots <- EXPANSION_GENERATION_ROOTS
@@ -314,6 +322,7 @@ PLAN <- tribble(
   # c22 tables are part of the publication contract rather than optional.
   "16", "pipeline/16_prompt_umap.R",                "prompt-semantic UMAP (c22)",       TRUE,
   "17", "pipeline/17_response_validity.R",          "v2.4 measurement descriptives (c23-c27)", TRUE,
+  "18", "pipeline/18_measurement_validation.R",     "Torch probability-audit validation (c28-c30)", TRUE,
   "40", "pipeline/40_appendix_descriptives.R",      "appendix descriptives (a01-a04)",  FALSE,
   "20", "pipeline/20_figures_main.R",               "main figures",                     TRUE,
   "21", "pipeline/21_figures_extended.R",           "Extended Data figures",            TRUE)

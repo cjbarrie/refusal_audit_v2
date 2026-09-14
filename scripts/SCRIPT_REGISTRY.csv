@@ -30,6 +30,14 @@ E23,scripts/local_gguf_hpc_benchmark_sol_audit.py,active_guarded_contract,Freeze
 E24,scripts/fanar_system_audit.py,active_local_audit,Reconcile native Fanar delivery outcomes and calculate textual-refusal and system-noncompliance bounds,false,docs/FANAR_EXPERIMENTS_V1.md
 E25,scripts/fanar_filter_retest.py,active_guarded_contract,Freeze authorize and run a one-shot repeatability audit of the 29 original native Fanar response filters,guarded,docs/FANAR_EXPERIMENTS_V1.md
 E26,scripts/fanar_retest_sol_annotation.py,active_guarded_contract,Freeze cost authorize run and summarize Sol v2.4 labels for all 16 responses exposed by the Fanar filter retest,guarded,docs/FANAR_EXPERIMENTS_V1.md
+E27,scripts/local_gguf_hpc_full_annotation.py,completed_guarded_contract,Freeze cost authorize run and assemble Luna v2.4 labels for every successful Torch full-corpus response,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E28,scripts/local_gguf_hpc_full_annotation_repair.py,completed_guarded_contract,Repair the 12 exhausted Torch Luna schema cases without changing the v2.4 codebook,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E29,scripts/local_gguf_hpc_full_sol_audit.py,completed_guarded_contract,Run the probability-sampled Sol v2.4 distribution-shift audit of the four Torch models,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E30,scripts/local_gguf_hpc_full_sol_audit_repair.py,completed_guarded_contract,Repair seven exhausted Sol audit schemas and assemble design-weighted validation outputs,guarded,docs/HPC_LOCAL_GGUF_FULL_V1.md
+E31,scripts/fanar_local_pilot_annotation.py,active_guarded_contract,Freeze cost authorize run and summarize Luna v2.4 labels for every response-bearing local Fanar-1 9B pilot record,guarded,docs/FANAR_EXPERIMENTS_V1.md
+E32,scripts/fanar_local_pilot_sol_audit.py,completed_guarded_contract,Freeze cost authorize run and score a full-census Sol v2.4 verification of all 196 local Fanar-1 9B pilot responses,guarded,docs/FANAR_EXPERIMENTS_V1.md
+E33,scripts/tpro_full_recovery.py,active_local_recovery,Losslessly recover preserved malformed HTTP-200 T-pro completions and freeze only unresolved keys for a separately authorized retry,false,docs/JURISDICTION_MODEL_EXPANSION_V1.md
+E34,scripts/tpro_full_retry_probe.py,active_guarded_contract,Authorize and run a 200-key language-balanced T-pro residual retry probe before any full repair continuation,guarded,docs/JURISDICTION_MODEL_EXPANSION_V1.md
 V01,scripts/response_validity.py,active_guarded_contract,Expose local validation and versioned paid response-validity commands,guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
 A01,scripts/audit_repository.py,active_local_audit,Rebuild the forensic file-level artifact registry,false,docs/REPOSITORY_MAP.md
 A02,scripts/replication_check.py,active_local_check,Verify the frozen prompt and outcome hashes promoted release figures script registries and secret boundary,false,docs/REPLICATION_GUIDE.md

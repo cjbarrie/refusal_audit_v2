@@ -26,6 +26,7 @@ OUTCOME_ROLE <- c(genuine_refusal = "primary",
 SUPPORT_COLS <- c("model", "domain", "route_f", "tier")
 ENG <- CANON_ENGLISH
 ENG_HA <- ENG |> filter(home_status %in% c("home", "away"))
+JURIS_HOME_C <- names(HOME_REGION_C)[!is.na(HOME_REGION_C)]
 
 cat(strrep("=", 78), "\nHOME-REGION ANALYSIS: LUNA v2.4\n",
     strrep("=", 78), "\n", sep = "")
@@ -114,7 +115,7 @@ c02_cells <- ENG |> group_by(jurisdiction = as.character(juris), home_status) |>
   mutate(quantity = "observed rate", estimate = rate,
          estimate_pp = pp(rate), weighting = "response")
 
-c02_diff <- map_dfr(JURIS_C, function(j) {
+c02_diff <- map_dfr(JURIS_HOME_C, function(j) {
   d <- ENG_HA |> filter(juris == j)
   map_dfr(OUTCOMES, function(y) {
     descriptive_difference(d, y, sprintf("c02|%s|%s", j, y),
@@ -148,7 +149,7 @@ write_csv(c03, file.path(CAN_EST,
                          "c03_home_descriptive_all_languages_supplement.csv"))
 
 # B. Standardized jurisdiction and model contrasts ----------------------------
-c04 <- map_dfr(JURIS_C, function(j) {
+c04 <- map_dfr(JURIS_HOME_C, function(j) {
   d <- ENG_HA |> filter(juris == j) |> droplevels()
   map_dfr(OUTCOMES, function(y)
     standardized_row(d, y, j,
@@ -179,14 +180,14 @@ c05 <- map_dfr(sort(unique(as.character(ENG_HA$model))), function(m) {
 write_csv(c05, file.path(CAN_EST, "c05_home_by_model.csv"))
 
 # C. Positivity and common support ---------------------------------------------
-c06 <- map_dfr(JURIS_C, function(j) {
+c06 <- map_dfr(JURIS_HOME_C, function(j) {
   d <- ENG_HA |> filter(juris == j) |> droplevels()
   support_cells(d, SUPPORT_COLS) |> mutate(jurisdiction = j, .before = 1)
 }) |> mutate(support_definition = paste(SUPPORT_COLS, collapse = " x "),
              canonical_run_id = CANONICAL_RUN_ID)
 write_csv(c06, file.path(CAN_EST, "c06_home_overlap.csv"))
 
-c06b <- map_dfr(JURIS_C, function(j) {
+c06b <- map_dfr(JURIS_HOME_C, function(j) {
   d <- ENG_HA |> filter(juris == j) |> droplevels()
   restrict_support(d, SUPPORT_COLS)$diag |> mutate(jurisdiction = j, .before = 1)
 }) |> mutate(unsupported_target_weight = 1 - target_weight_retained,
@@ -194,7 +195,7 @@ c06b <- map_dfr(JURIS_C, function(j) {
 write_csv(c06b, file.path(CAN_EST, "c06b_common_support_diagnostics.csv"))
 
 # D. Sensitivities; `changed` prevents unlike targets being conflated ---------
-c07 <- map_dfr(JURIS_C, function(j) {
+c07 <- map_dfr(JURIS_HOME_C, function(j) {
   d <- ENG_HA |> filter(juris == j) |> droplevels()
   ds <- restrict_support(d, SUPPORT_COLS)$data |> droplevels()
   # The original Gemini measure was not collected for expansion models. Its

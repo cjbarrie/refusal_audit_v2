@@ -31,15 +31,15 @@ model-specific estimate is attached to an explicit model label.
     capability-failure maps using the same geometry and visual grammar as Main
     Figure 1.
 9. `ED14_genuine_refusal_semantic_atlas_by_model.png`: the detailed English
-   genuine-refusal map for each of the 20 models. It preserves model-level
-   inspection after the main figure replaces 20 repeated maps with five exact
+   genuine-refusal map for each of the 24 models. It preserves model-level
+   inspection after the main figure replaces repeated maps with six exact
    jurisdiction-combination maps.
 
 ## Interpretation
 
 ED5--ED6 and ED9--ED14 are descriptive. ED1--ED4 show absolute levels
 underlying the reported contrasts. ED7--ED8 are exploratory heterogeneity
-analyses with no multiplicity adjustment and describe the 20 tested models.
+analyses with no multiplicity adjustment and describe the 24 tested models.
 Subsample-stability tables remain available as c21 diagnostics but are no
 longer rendered as generic Extended Data figures.
 

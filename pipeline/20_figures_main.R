@@ -33,7 +33,7 @@ save_main <- function(plot, name, height) {
   figs[[name]] <<- plot
 }
 
-JURIS_LABEL <- c(CN = "China", MENA = "MENA", India = "India",
+JURIS_LABEL <- c(CN = "China", Russia = "Russia", MENA = "MENA", India = "India",
                  US = "United States", EU = "Europe")
 LANG_LABEL <- c(en = "English", zh = "Chinese", ar = "Arabic",
                 ru = "Russian", hi = "Hindi")
@@ -157,6 +157,28 @@ home_forest <- function(j, show_key = FALSE, show_x_title = TRUE) {
   rows <- c("All models", mods)
   ypos <- setNames(rev(seq_along(rows)), rows)
 
+  # The prompt frame has no Russia-focused issue stratum. GigaChat's refusal
+  # map is fully observed, but a Russia home-minus-away contrast is undefined;
+  # use the same cross mark used for other non-estimable coefficients rather
+  # than explanatory prose inside the artwork.
+  if (is.na(HOME_REGION_OF[[j]])) {
+    absent <- tibble(label = rows, y = unname(ypos[rows]))
+    return(ggplot(absent, aes(x = 0, y = y)) +
+      geom_vline(xintercept = 0, colour = INK_FAINT, linewidth = .34) +
+      geom_point(shape = 4, colour = INK_FAINT, size = 1.45, stroke = .55) +
+      scale_x_continuous(limits = HOME_X_LIMITS, breaks = c(-10, 0, 10, 20),
+                         expand = expansion(mult = c(0, .01))) +
+      scale_y_continuous(breaks = unname(ypos), labels = names(ypos),
+                         limits = c(.55, max(ypos) + .5), expand = c(0, 0)) +
+      labs(x = if (show_x_title) "Home − away difference (percentage points)" else NULL,
+           y = NULL) +
+      theme_nature(base_size = PT_BODY, grid = "none") +
+      theme(axis.text.y = element_text(colour = INK, size = PT_MIN),
+            axis.title.x = element_text(size = PT_MIN),
+            plot.margin = margin(8, 4, 2, 2)) + tag_only() +
+      theme(plot.tag = element_blank()))
+  }
+
   raw <- c02 |>
     filter(outcome == "genuine_refusal", quantity == "home minus away",
            jurisdiction == j) |>
@@ -228,7 +250,7 @@ jurisdiction_block <- function(j, show_key = FALSE, show_x_title = TRUE) {
     plot_layout(widths = c(.52, .48))
 }
 
-# Figure 1: five equal-height jurisdiction rows. A two-column prototype was
+# Figure 1: six equal-height jurisdiction rows. A two-column prototype was
 # rejected at print size: fixed-aspect maps left large vertical voids and the
 # local model keys truncated. Full-width rows retain the map--estimate pairing,
 # give every semantic map the same physical dimensions, and keep all 20 model

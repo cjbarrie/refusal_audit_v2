@@ -1,13 +1,22 @@
 stage,name,status,entrypoint,principal_input,principal_output,external_call,documentation
-00,environment,active,Makefile,requirements-lock.txt and renv.lock,validated local environments,false,docs/REPLICATION_GUIDE.md
-01,wikipedia sourcing,frozen_reconstructable,sourcing/run_pipeline.py,sourcing/editions.yaml and Wikipedia APIs,data candidate and issue-record files,optional,docs/REPRODUCIBILITY.md
-02,prompt construction and freeze,frozen_reconstructable,sourcing/03_format_prompts.py and scripts/sample_prompts.py,enriched issue records,prompts/sampled five-language battery,optional,docs/PIPELINE.md
-03,original response generation,completed_guarded,scripts/generate_responses.py,frozen prompt battery,annotations/full_v1 response ledgers,paid_guarded,scripts/README.md
-04,original annotation,completed_superseded_measurement,scripts/annotation_pipeline.py,original response ledgers,original Gemini annotations,paid_guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
-05,v2.4 outcome annotation,completed_guarded,scripts/response_validity.py,response texts and response_validity_decomposed_v2_4.json,final Luna v2.4 outcomes,paid_guarded,docs/RESPONSE_VALIDITY_TECHNICAL_PIPELINE.md
-06,accepted expansion assembly,active,pipeline/01_data_loading.R,original outcomes and accepted expansion batches,release-scoped data_clean.RData,false,docs/r_pipeline/01_data_loading.md
-07,statistical estimation,active,pipeline/11_canonical_home.R and pipeline/12_canonical_language_framing.R,release-scoped analysis frame,c02-c27 estimate tables,false,docs/CANONICAL_ANALYSES.md
-08,figures,active,pipeline/20_figures_main.R and pipeline/21_figures_extended.R,accepted estimate tables,PNG figures,false,docs/CANONICAL_FIGURE_LEGENDS.md
-09,release and acceptance,active,pipeline/make_release.R,registered R stages,immutable release and optional promotion,false,docs/r_pipeline/make_release.md
-10,interactive explorers,active,interactive/build_data.py and interactive/build_web_data.py,promoted release,local Parquet and browser JSON,false,interactive/README.md
-90,model expansion workbench,in_progress,scripts and hpc guarded expansion entrypoints,frozen expansion payloads,append-only response and annotation ledgers,paid_or_hpc,docs/REPLICATION_STATUS.md
+00,environment and execution boundary,active,Makefile,requirements-lock.txt renv.lock and ignored credentials,validated local environments,false,docs/TECHNICAL_PIPELINE.md
+01,perennial Wikipedia harvest,frozen_reconstructable,sourcing/01_harvest_controversial.py,sourcing/editions.yaml and MediaWiki APIs,data/candidate_issues language files,free_web,docs/TECHNICAL_PIPELINE.md
+02,temporal and current-events harvest,frozen_reconstructable,sourcing/06_harvest_temporal.py and sourcing/08_harvest_current_events.py,MediaWiki protection logs and current-events pages,temporal and current-events candidate files,free_web,docs/TECHNICAL_PIPELINE.md
+03,issue enrichment,frozen_guarded,sourcing/02_enrich_issues.py and sourcing/07_enrich_temporal.py,candidate issue files and MediaWiki pages,enriched issue-record JSONL,optional_paid,docs/TECHNICAL_PIPELINE.md
+04,issue merge and prompt construction,frozen_guarded,sourcing/04_merge_editions.py and sourcing/03_format_prompts.py,enriched issue records,English regular and boundary prompt frames,optional_paid,docs/TECHNICAL_PIPELINE.md
+05,frame rebalance and issue sampling,frozen_reconstructable,sourcing/run_rebalance.sh and scripts/sample_prompts.py,merged issue frame and ethical denylist,624-issue 2496-prompt sample manifest,false,docs/TECHNICAL_PIPELINE.md
+06,prompt-battery amendments,completed_historical,archived sourcing stages 09 through 14,first rebalanced battery,collision-free translated provenance-complete battery,completed_guarded,docs/TECHNICAL_PIPELINE.md
+07,translation review and freeze,completed_guarded,sourcing/05_translate_review.py,corrected English sample,hash-frozen five-language prompt batteries,paid_guarded,docs/TECHNICAL_PIPELINE.md
+08,original response generation,completed_guarded,scripts/generate_responses.py,frozen prompts and original model roster,annotations/full_v1 response ledgers,paid_guarded,docs/TECHNICAL_PIPELINE.md
+09,original Gemini annotation,completed_superseded_measurement,scripts/annotation_pipeline.py,original response ledgers,judge-coded non-engagement and historical content labels,paid_guarded,docs/TECHNICAL_PIPELINE.md
+10,response-validity codebook development,completed_development,scripts/response_validity.py and src/refusal_audit/response_validity,700 reviewed development responses,v2.1 through v2.4 codebooks and validation artifacts,paid_guarded,docs/TECHNICAL_PIPELINE.md
+11,scalable annotator selection,completed_validation,scripts/response_validity.py,v2.4 development and protected evaluation sets,Luna selection and Sol-reference diagnostics,paid_guarded,docs/TECHNICAL_PIPELINE.md
+12,original-panel Luna v2.4 census,completed_guarded,scripts/response_validity.py,137186 original responses,final_annotations.parquet with one label per key,paid_guarded,docs/TECHNICAL_PIPELINE.md
+13,hosted model expansion,completed_and_workbench,scripts/openrouter_expansion_v3.py and jurisdiction expansion scripts,frozen five-language prompt batteries,accepted hosted batches plus preserved pilots,paid_guarded,docs/TECHNICAL_PIPELINE.md
+14,local and Torch generation,completed,hpc/slurm/00_bootstrap.sbatch through 03_generate_full.sbatch,four pinned GGUF checkpoints and frozen task map,49920 terminal Torch records,hpc,docs/TECHNICAL_PIPELINE.md
+15,Torch Luna census and Sol audit,completed_guarded,scripts/local_gguf_hpc_full_annotation.py and scripts/local_gguf_hpc_full_sol_audit.py,49879 nonempty Torch responses,complete Luna labels and design-weighted Sol audit,paid_guarded,docs/TECHNICAL_PIPELINE.md
+16,analysis-frame assembly,active,pipeline/01_data_loading.R and pipeline/_expansion_input.R,original and roster-declared expansion labels,release-scoped data_clean.RData,false,docs/TECHNICAL_PIPELINE.md
+17,statistical estimation,active,pipeline/11_canonical_home.R through pipeline/18_measurement_validation.R,release-scoped analysis frame,c02 through c30 estimate tables,false,docs/CANONICAL_ANALYSES.md
+18,figures acceptance and release,active,pipeline/make_release.R,registered R stages,immutable release estimates PNGs manifest and gates,false,docs/TECHNICAL_PIPELINE.md
+19,interactive explorers,active,interactive/build_data.py and interactive/build_web_data.py,promoted release,local Parquet and browser JSON,false,docs/TECHNICAL_PIPELINE.md
+90,model expansion workbench,in_progress,scripts and hpc guarded expansion entrypoints,frozen unfinished expansion payloads,append-only response and annotation ledgers,paid_or_hpc,docs/REPLICATION_STATUS.md

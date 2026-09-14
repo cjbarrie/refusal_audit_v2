@@ -9,5 +9,5 @@ S07,sourcing/07_enrich_temporal.py,frozen_guarded,Enrich temporal candidates,pai
 S08,sourcing/08_harvest_current_events.py,frozen_reconstructable,Harvest the current-events route,free_web,docs/PIPELINE.md
 S09,sourcing/preflight_providers.py,active_local_check,Check provider credentials and model routing without a production run,network_check,docs/PIPELINE_ENTRYPOINTS.md
 S10,sourcing/run_pipeline.py,frozen_orchestrator,Run perennial sourcing with paid stages opt-in,optional_guarded,docs/REPRODUCIBILITY.md
-S11,sourcing/run_corrections.sh,frozen_repair_orchestrator,Apply the documented historical correction chain,optional_guarded,docs/REPRODUCIBILITY.md
+S11,sourcing/run_corrections.sh,historical_recipe_nonexecuting,Point readers to the archived stages 09 through 14 that produced the corrected frozen battery,false,docs/TECHNICAL_PIPELINE.md
 S12,sourcing/run_rebalance.sh,frozen_repair_orchestrator,Rebuild the documented rebalanced battery,optional_guarded,docs/REBALANCE.md

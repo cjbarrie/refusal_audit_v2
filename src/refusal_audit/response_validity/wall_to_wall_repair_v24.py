@@ -309,6 +309,7 @@ def authorize_wall_to_wall_repair_v24(
         raise RuntimeError("explicit authorization confirmation is required")
     manifest_path = output_dir / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    expected_n = int(manifest.get("n_requests", EXPECTED_N))
     cost = json.loads((output_dir / "cost_estimate.json").read_text(encoding="utf-8"))
     if payload_sha != manifest["protocol"]["initial_provider_payload_sha256"]:
         raise ValueError("authorized payload hash does not match frozen bytes")
@@ -320,8 +321,8 @@ def authorize_wall_to_wall_repair_v24(
         "recorded_at": _now(), "user_authorized": True,
         "authorization_scope": "wall_to_wall_luna_v2_4_schema_repair_v1",
         "provider_payload_sha256": payload_sha, "protocol_sha256": protocol_sha,
-        "model_id": MODEL, "provider_tag": PROVIDER, "n_requests": EXPECTED_N,
-        "max_provider_calls": EXPECTED_N * MAX_REPAIR_ATTEMPTS,
+        "model_id": MODEL, "provider_tag": PROVIDER, "n_requests": expected_n,
+        "max_provider_calls": expected_n * MAX_REPAIR_ATTEMPTS,
         "reasoning_disabled": True, "allow_fallbacks": False,
         "cost_ceiling_usd": float(ceiling),
     }
@@ -333,7 +334,16 @@ def authorize_wall_to_wall_repair_v24(
 
 
 def run_wall_to_wall_repair_v24(
-    root: Path, output_dir: Path, workers: int, ceiling: float, authorized: bool
+    root: Path,
+    output_dir: Path,
+    workers: int,
+    ceiling: float,
+    authorized: bool,
+    *,
+    expected_model: str = MODEL,
+    expected_provider: str = PROVIDER,
+    input_price: float = INPUT_PRICE,
+    output_price: float = OUTPUT_PRICE,
 ) -> dict:
     """Run the exact repair protocol resumably, preserving every draft."""
     if not authorized:
@@ -342,12 +352,14 @@ def run_wall_to_wall_repair_v24(
         raise ValueError("workers must be between 1 and 24")
     manifest_path = output_dir / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    expected_n = int(manifest.get("n_requests", EXPECTED_N))
     auth = manifest.get("authorization", {})
     if not (
         auth.get("user_authorized") is True
         and auth.get("provider_payload_sha256") == sha_file(output_dir / "provider_requests.jsonl")
         and auth.get("protocol_sha256") == manifest.get("protocol_sha256")
-        and auth.get("model_id") == MODEL and auth.get("provider_tag") == PROVIDER
+        and auth.get("model_id") == expected_model
+        and auth.get("provider_tag") == expected_provider
         and auth.get("reasoning_disabled") is True and auth.get("allow_fallbacks") is False
         and float(auth.get("cost_ceiling_usd", -1)) == float(ceiling)
     ):
@@ -401,8 +413,8 @@ def run_wall_to_wall_repair_v24(
                             retry_feedback
                         ))
                         hold = (
-                            (request["estimated_input_tokens"] + retry_tokens) * INPUT_PRICE
-                            + request["max_output_tokens"] * OUTPUT_PRICE
+                            (request["estimated_input_tokens"] + retry_tokens) * input_price
+                            + request["max_output_tokens"] * output_price
                         ) / 1_000_000
                         if spent + reserved + hold > ceiling + 1e-9:
                             break
@@ -446,18 +458,18 @@ def run_wall_to_wall_repair_v24(
     results_path = output_dir / "results.jsonl"
     _write_jsonl(results_path, ordered)
     summary = {
-        "completed_at": _now(), "n_expected": EXPECTED_N,
-        "n_completed": len(ordered), "n_incomplete": EXPECTED_N - len(ordered),
-        "schema_success": len(ordered) / EXPECTED_N,
+        "completed_at": _now(), "n_expected": expected_n,
+        "n_completed": len(ordered), "n_incomplete": expected_n - len(ordered),
+        "schema_success": len(ordered) / expected_n,
         "provider_cost_usd": spent, "authorized_ceiling_usd": float(ceiling),
         "provider_payload_sha256": sha_file(output_dir / "provider_requests.jsonl"),
         "protocol_sha256": manifest["protocol_sha256"],
         "attempts_sha256": sha_file(attempts_path), "results_sha256": sha_file(results_path),
         "network_call_made": True, "raw_provider_content_preserved_before_validation": True,
-        "sol_contingency_required_n": EXPECTED_N - len(ordered),
+        "sol_contingency_required_n": expected_n - len(ordered),
     }
     (output_dir / "run_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    manifest["status"] = "completed" if len(ordered) == EXPECTED_N else "luna_repair_incomplete"
+    manifest["status"] = "completed" if len(ordered) == expected_n else "luna_repair_incomplete"
     manifest["network_call_made"] = True
     manifest["run_summary"] = summary
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")

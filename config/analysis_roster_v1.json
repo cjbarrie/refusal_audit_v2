@@ -1,0 +1,87 @@
+{
+  "version": "analysis-roster-v1",
+  "primary_annotation": "Luna v2.4 census",
+  "primary_outcome": "genuine_refusal",
+  "expected": {
+    "response_rows": 299080,
+    "models": 24,
+    "expansion_rows": 161894,
+    "genuine_refusals": 7175,
+    "capability_failures": 74598
+  },
+  "models": {
+    "ministral-14b": "EU",
+    "nova-lite": "US",
+    "llama-4-scout": "US",
+    "hunyuan-a13b": "CN",
+    "glm-4.7-flash": "CN",
+    "gemini-2.5-flash-lite": "US",
+    "kimi-k2.5": "CN",
+    "sarvam-105b": "India",
+    "bielik-11b-v3.0": "EU",
+    "eurollm-22b-instruct-2512-local-q8": "EU",
+    "gigachat3-10b-a1.8b-local-q8": "Russia",
+    "krutrim-2-instruct-local-q8": "India",
+    "salamandra-7b-instruct-2606-local-q8": "EU"
+  },
+  "batches": [
+    {
+      "format": "standard_jsonl",
+      "path": "annotations/model_expansion_v3/luna_v2_4_completed_batch1",
+      "n_requested": 37440,
+      "n_complete": 37440,
+      "payload_sha256": "9dc329e7a84c1848e1f10803d8adfba5d17be052af16f2882a778b2860b6daed",
+      "wave": "expansion_v3"
+    },
+    {
+      "format": "standard_jsonl",
+      "path": "annotations/model_expansion_v3/luna_v2_4_completed_batch2",
+      "n_requested": 37439,
+      "n_complete": 37439,
+      "payload_sha256": "2a794718d80b41055cd5e151163ce221c8ddc79e2c657e5425fa3c8e954bbef0",
+      "wave": "expansion_v3"
+    },
+    {
+      "format": "standard_jsonl",
+      "path": "annotations/model_expansion_v3/luna_v2_4_kimi_batch3",
+      "n_requested": 12480,
+      "n_complete": 12479,
+      "payload_sha256": "113e2a2d269e91814434ec25a2ee7765d8460f319ea81ac96751ee20ce55dfe9",
+      "wave": "expansion_v3"
+    },
+    {
+      "format": "standard_jsonl",
+      "path": "annotations/model_expansion_v4/full_generation_v1/sarvam-105b/luna_v2_4_annotations_v1",
+      "n_requested": 12478,
+      "n_complete": 12478,
+      "payload_sha256": "dec6a32dbcf50b755e73fe7d96943ddc3193289441d7ee293b01cf8e838a23e4",
+      "wave": "expansion_v4"
+    },
+    {
+      "format": "standard_jsonl",
+      "path": "annotations/model_expansion_v4/full_generation_v1/bielik-11b-v3.0/luna_v2_4_annotations_v1",
+      "n_requested": 12184,
+      "n_complete": 12179,
+      "payload_sha256": "2221c6fa24d35896282173441d54ed57934dc91e6c9e441dd64b2c129dac78b7",
+      "wave": "expansion_v4"
+    },
+    {
+      "format": "assembled_parquet",
+      "path": "annotations/model_expansion_v4/local_gguf_full_hpc_luna_v2_4_v1",
+      "n_requested": 49879,
+      "n_complete": 49879,
+      "assembled_sha256": "f6f1c3afe59bc48db191cd3d423d491a63ab5eda82d0c10aee813992931f587d",
+      "final_manifest_sha256": "eb71477b0812847416d54560fafc02ca731a13b7051d7ea182595fecf33b62a8",
+      "wave": "expansion_v4_torch"
+    }
+  ],
+  "sol_audits": [
+    {
+      "batch": "expansion_v4_torch",
+      "path": "annotations/model_expansion_v4/local_gguf_full_hpc_sol_v2_4_audit_v1",
+      "n": 1335,
+      "population_n": 49879,
+      "final_results_sha256": "0cf12fb0a94bece20d220ad33b1a6c6ecf7e9e7db5b09d6d9e2b24c7405be12f"
+    }
+  ]
+}

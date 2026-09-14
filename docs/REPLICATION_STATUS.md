@@ -1,6 +1,6 @@
 # Replication status
 
-Status: 11 September 2026. This page answers one question: what is part of the
+Status: 12 September 2026. This page answers one question: what is part of the
 current paper pipeline, and what is still being developed?
 
 ## Frozen and promoted
@@ -22,18 +22,28 @@ current paper pipeline, and what is still being developed?
   passed 29 analysis checks and the figure audit but remains an unpromoted
   candidate because the repository was dirty and the wider expansion is still
   in progress.
+- Accepted non-promoted `canon_031` additionally includes all 49,879 successful
+  Torch responses from Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B,
+  giving 299,080 rows. It passes 29/29 numerical and 17/17 figure checks.
+- The four-model Luna census contains 381 genuine refusals and 13,630
+  capability failures. A complete 1,335-record probability-based Sol audit
+  retains weights that reconstruct all 49,879 responses. Design-weighted
+  Sol-reference refusal prevalence is 0.651%, compared with Luna's 0.764%;
+  binary refusal agreement is 99.87%. Sol remains a machine reference.
 
 ## In progress and excluded from every current release
 
 - T-pro-it-2.0 generation is an operational full-corpus run and is not part of
-  either `canon_024` or `canon_029`.
-- The four NYU Torch GGUF models (Krutrim 2, GigaChat3, EuroLLM 22B and
-  Salamandra 7B) passed the 100-response mechanical benchmark. Their full
-  49,920-response Slurm array is separate run state and does not enter an R
-  release until generation, transfer, annotation and admission checks finish.
+  `canon_024`, `canon_029` or `canon_031`.
 - The local Fanar checkpoint is an experimental matched pilot. Native Fanar
   filtering experiments are measurement evidence, not prevalence data and not
-  part of the canonical corpus.
+  part of the canonical corpus. Its Torch pilot produced 196 responses from
+  200 attempts; the complete Luna v2.4 census found 42 genuine refusals, 103
+  capability failures and 62 wrong-language outputs, with overlap among these
+  dimensions. The completed 196-response blinded Sol census found 40, 96 and
+  62 respectively, with 98.0% refusal agreement and exact wrong-language
+  agreement. English and Arabic pass the pilot screen; Chinese, Russian and
+  Hindi do not. These enriched-pilot counts inform cell admission only.
 
 ## Deferred
 

@@ -12,15 +12,17 @@ The script loads the release-scoped `CANON_DATA_PATH`, then validates both the
 original outcome contract and the expansion contract. `make_release.R` always
 rebuilds this file for a full release; its retired `--skip-data` option is
 rejected because a mutable saved frame could predate the current roster.
-`canon` contains 249,201 unique response
-keys, 624 issues, 20 models and five delivered languages. Its primary binary
+`canon` contains 299,080 unique response
+keys, 624 issues, 24 models and five delivered languages. Its primary binary
 outcome is `genuine_refusal`; the diagnostic outcome is `capability_failure`;
 `original_nonengagement` is observed only for the 137,186 original-panel rows
 and is sensitivity only.
 
 Home status is constructed by comparing an issue's region with the fixed home
 region of the subject model's developer jurisdiction. `General` is a third
-status and never becomes away. `block_id` is `(model,prompt_id)`.
+status and never becomes away. Russia has no prompt-region stratum, so GigaChat
+rows receive `not_defined` and never enter a home contrast. `block_id` is
+`(model,prompt_id)`.
 
 ## Weights
 

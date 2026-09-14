@@ -32,7 +32,7 @@
 \title{\textbf{Refusal Audit v2}\\[4pt]
   \large How the study is built and what it is intended to estimate}
 \author{}
-\date{11 September 2026}
+\date{14 September 2026}
 
 \begin{document}
 \maketitle
@@ -62,8 +62,8 @@ differently on issues concerning their developer's home jurisdiction. The
 promoted baseline contains \textbf{224,544 usable outputs} from \textbf{624
 issues}, \textbf{2,496 prompts per language}, \textbf{five languages}, and
 \textbf{18 models}. The live analysis code also has a checked but unpromoted
-20-model candidate containing 249,201 outputs after adding Sarvam-105B and
-Bielik 11B v3.0. The distinction is deliberate: the promoted figures and
+24-model candidate containing 299,080 outputs. It adds Sarvam-105B, Bielik 11B
+v3.0, Krutrim 2, GigaChat3, EuroLLM 22B and Salamandra 7B. The distinction is deliberate: the promoted figures and
 interactive explorer remain on the 18-model baseline until the wider model
 roster is frozen. One observation is a model's response to one prompt in one
 language.
@@ -101,15 +101,42 @@ machine reference, Luna's design-weighted refusal precision was .897, recall
 
 \begin{plainbox}
 \textbf{Current implementation boundary.} Luna v2.4 annotation is complete for
-all 137,186 original-panel responses and for 87,358 returned expansion
-responses. The combined observed frame contains 6,127 genuine refusals and
-52,563 capability failures. One Gemini generation returned empty content after
-both permitted attempts, and one Kimi response exhausted all three Luna schema
-attempts; neither is imputed. Sol-based validation results remain agreement
+all 137,186 original-panel responses and 161,894 accepted expansion responses.
+The current 24-model candidate contains 7,175 genuine refusals and 74,598
+capability failures. Missing generations and exhausted schemas remain missing;
+none is imputed. Sol-based validation results remain agreement
 relative to a frontier machine reference, not human accuracy.
 \file{pipeline/PIPELINE\_REGISTRY.csv} is the authoritative implemented/planned
 register.
 \end{plainbox}
+
+\subsection{How the implementation is ordered}
+
+The machine-readable sequence is
+\file{config/REPLICATION\_STAGES.csv}. The complete plain-language crosswalk,
+including every prompt-battery amendment and every provider connection mode, is
+\file{docs/TECHNICAL\_PIPELINE.md}. The order is:
+
+\begin{enumerate}[leftmargin=1.7em]
+  \item harvest perennial, protection-log and current-events Wikipedia seeds;
+  \item enrich and merge issue records, construct four prompts per issue, and
+        draw the region-balanced issue sample;
+  \item apply the recorded ID, back-translation, retranslation, template and
+        source-provenance amendments, then review and freeze five languages;
+  \item generate original model responses and preserve the original Gemini
+        annotation as a historical non-engagement measure;
+  \item develop v2.1--v2.4 from reviewed responses, select Luna under the final
+        codebook, and annotate the original panel;
+  \item admit hosted or local expansion models only after generation,
+        model-language screening and the unchanged v2.4 annotation; and
+  \item assemble hash-declared batches in R, estimate, render, audit and create
+        a new immutable release.
+\end{enumerate}
+
+An amendment is not hidden inside its parent script. It has its own retained
+implementation or manifest, names the defect it repairs, preserves the earlier
+record and produces a new artifact. Workbench pilots remain outside the R input
+roster until that admission sequence is complete.
 
 \section{From Wikipedia to a study battery}
 
@@ -554,22 +581,23 @@ salamandra-7b-instruct-2606-local-q8 & \code{BSC-LT/salamandra-7b-instruct-2606}
 Their production frame is $4\times5\times2{,}496=49{,}920$ requests. The
 frozen task map has 40 shards: two shards for every model--language cell, with
 at most eight L40S jobs active. Each GPU serves four requests concurrently.
-Production Slurm job \code{17368291} is running and remains outside the
-analysis until the 49,920 terminal records pass the coverage audit and the
-returned texts receive v2.4 labels. The complete repository names, filenames,
-hashes, wrappers, and task map are frozen in
+Production Slurm job \code{17368291} completed with 49,920 terminal records:
+49,879 non-empty responses, 28 empty responses and 13 transport or runtime
+failures. Luna v2.4 annotated every non-empty response; the resulting four
+models enter the unpromoted 24-model candidate. The complete repository names,
+filenames, hashes, wrappers, and task map are frozen in
 \file{config/model\_rosters/local\_gguf\_hpc\_v1.json} and described in
 \file{docs/HPC\_LOCAL\_GGUF\_FULL\_V1.md}.
 
-Finally, \code{QCRI/Fanar-1-9B-Instruct} is being tested as a distinct open
+Finally, \code{QCRI/Fanar-1-9B-Instruct} was tested as a distinct open
 Qatari checkpoint. It is not a local reconstruction of the native
 \code{Fanar-C-2-27B} service. The 200-request pilot uses the same enriched 40
 prompt meanings in all five languages, with the source revision
 \code{d30938d0efb1fd251727ee96df6987802ff84662} and the Q8\_0 GGUF revision
-\code{63b1f77e1ef4f91bca3c8e1db4511f6f62620b58}. Torch download job
-\code{17374496} and dependent five-language pilot array \code{17374497} were
-submitted on 11 September. These pilot outputs will be used only for admission
-and capability checks, not prevalence estimates.
+\code{63b1f77e1ef4f91bca3c8e1db4511f6f62620b58}. The completed pilot returned
+196 non-empty responses. Luna and Sol v2.4 labelled the full returned census.
+These outputs remain admission and capability evidence, not prevalence
+estimates or analysis-roster rows.
 
 \subsection{How the models were connected}
 
@@ -713,9 +741,11 @@ $2,496\times5\times11=137,280$ rows. The original analysis population has
 further 87,360 cells and contributes 87,358 analysed rows after one missing
 generation and one missing annotation. The promoted baseline therefore has
 224,544 rows. Sarvam-105B contributes 12,478 annotated responses and Bielik
-contributes 12,179; the checked 20-model candidate therefore has 249,201 rows.
-These additions are not yet promoted. T-pro and the four-model Torch corpus
-remain in generation. The open Fanar checkpoint is an admission experiment
+contributes 12,179; that historical 20-model candidate had 249,201 rows. The
+completed Torch panel contributes 49,879 further non-empty, Luna-coded
+responses, producing the current 299,080-row, 24-model candidate. These
+additions are not yet promoted. T-pro remains outside the analysis. The open
+Fanar checkpoint is an admission experiment
 rather than a prevalence sample.
 Paired analyses count incomplete blocks explicitly; no later-stage failure is
 converted to an engaged response or a refusal.
@@ -742,6 +772,8 @@ Expansion usable and annotated & 17,472 & 17,471 & 17,472 & 17,472 & 17,471 & 87
 Promoted baseline & 44,921 & 44,918 & 44,916 & 44,909 & 44,880 & 224,544 \\
 Sarvam and Bielik additions & 4,972 & 4,846 & 4,953 & 4,973 & 4,913 & 24,657 \\
 Unpromoted 20-model candidate & 49,893 & 49,764 & 49,869 & 49,882 & 49,793 & 249,201 \\
+Torch additions & 9,960 & 9,983 & 9,975 & 9,981 & 9,980 & 49,879 \\
+Unpromoted 24-model candidate & 59,853 & 59,747 & 59,844 & 59,863 & 59,773 & 299,080 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -896,12 +928,12 @@ fields were added are documented in the frozen historical contract at
 \section{Current estimands and statistical specifications}
 
 The live candidate analysis frame contains the two Luna v2.4 outcomes for
-249,201 observed responses; the promoted baseline contains 224,544. Genuine
+299,080 observed responses; the promoted baseline contains 224,544. Genuine
 refusal is the primary outcome. Capability failure is
 estimated separately and may overlap refusal. Original Gemini
 \code{engagement\_code >= 4} is available only for the original 11-model panel;
 it is therefore kept in separate sensitivity tables rather than filled with
-zeros for the seven added models.
+zeros for the thirteen added models.
 
 \subsection{Descriptive response behaviour}
 
@@ -1086,13 +1118,17 @@ capability failures. The hash-verified full-bootstrap estimates retained in
 passes all 29 analytical acceptance checks and all 16 figure-structure checks.
 Its manifest records the explicitly approved dirty Git tree. A new release must
 still be built from a committed stable tree for the final archival paper freeze.
-The accepted but unpromoted \code{canon\_029} candidate adds Sarvam-105B and
-Bielik: 249,201 responses, 20 models, 6,794 genuine refusals and 60,968
-capability failures. It too records a dirty tree and is not an archival freeze.
+The accepted but unpromoted \code{canon\_031} candidate additionally includes
+Sarvam-105B, Bielik and the four completed Torch models: 299,080 responses, 24
+models, 7,175 genuine refusals and 74,598 capability failures. It too records a
+dirty tree and is not an archival freeze.
 
 \begin{center}
 \small
-\begin{longtable}{@{}p{2.6cm}p{5.4cm}p{5.0cm}@{}}
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{2.6cm}
+  >{\raggedright\arraybackslash}p{5.4cm}
+  >{\raggedright\arraybackslash}p{5.0cm}@{}}
 \toprule Stage & Implementation & Frozen input or output \\
 \midrule\endhead
 Prompt battery & \file{sourcing/}; \file{prompts/} & 624 issues, four prompts per issue, five languages \\
@@ -1102,10 +1138,10 @@ Original v2.4 measurement & \file{scripts/response\_validity.py}; response-valid
 Expansion v2.4 measurement & expansion Batch 1, Batch 2 and Kimi Batch 3 manifests & 87,358 labels; one exhausted Kimi annotation \\
 Later hosted generation & \file{scripts/jurisdiction\_expansion\_full.py} & Sarvam-105B: 12,478 texts; Bielik: 12,184 texts; T-pro: resumable run incomplete \\
 Later hosted v2.4 measurement & \file{scripts/jurisdiction\_full\_annotation.py} & Sarvam-105B: 12,478 labels; Bielik: 12,179 labels and five schema-exhausted rows \\
-Local GGUF production & \file{hpc/prepare\_local\_gguf\_full.py}; \file{hpc/run\_local\_gguf\_shard.py} & 49,920-request Torch job active; not yet an analysis input \\
+Local GGUF production & \file{hpc/prepare\_local\_gguf\_full.py}; \file{hpc/run\_local\_gguf\_shard.py} & 49,920 terminal Torch records; 49,879 non-empty responses enter the candidate \\
 Native Fanar experiments & \file{scripts/fanar\_filter\_retest.py}; \file{scripts/fanar\_system\_audit.py} & Native pilot, route audit, and exact filter retest complete; filtering and textual refusal kept separate \\
-Open Fanar checkpoint & \file{hpc/prepare\_fanar\_local\_pilot.py}; \file{hpc/run\_fanar\_local\_pilot.py} & Frozen 200-request Torch pilot submitted; not a prevalence sample \\
-Analysis assembly & \file{pipeline/01\_data\_loading.R}; \file{pipeline/\_expansion\_input.R} & 224,544-row promoted baseline; 249,201-row unpromoted candidate \\
+Open Fanar checkpoint & \file{hpc/prepare\_fanar\_local\_pilot.py}; \file{hpc/run\_fanar\_local\_pilot.py} & 196-response enriched pilot; not a prevalence sample or analysis input \\
+Analysis assembly & \file{pipeline/01\_data\_loading.R}; \file{pipeline/\_expansion\_input.R} & 224,544-row promoted baseline; 299,080-row unpromoted candidate \\
 Estimation & \file{pipeline/11\_canonical\_home.R}; \file{12\_canonical\_language\_framing.R} & c02--c11 tables \\
 \bottomrule
 \end{longtable}
@@ -1116,468 +1152,4 @@ included response-validity section above. The operational decision log remains
 \file{docs/RESPONSE\_VALIDITY\_DECISION\_LOG.md}; it is provenance, not a second
 statement of the current pipeline.
 
-% The following disabled block preserves the earlier DSL planning text in the
-% source history. It is intentionally excluded from the current rendered PDF.
-\iffalse
-\section{Candidate estimands and specifications}
-
-These are analysis families, not a final figure list. Outcomes are estimated
-separately for genuine refusal and capability failure. Original non-engagement
-is retained as a sensitivity.
-
-\subsection{Common human-referenced outcome}
-
-The code below states the intended implementation, not just the algebra. It
-assumes one row per \code{(prompt\_id, prompt\_language, model)} and the columns
-\code{issue\_id}, \code{tier}, \code{topic\_domain}, \code{route},
-\code{home\_status}, \code{jurisdiction}, \code{human\_y},
-\code{student\_prob}, \code{in\_prob\_sample}, and \code{pi}. The student
-probability must be out-of-fold for every human-labelled row.
-
-The live canonical table uses shorter internal names. The planned Stage 18
-must begin with an explicit interface rather than relying on partial name
-matching. In particular, \code{lang}, \code{juris}, \code{domain},
-\code{route\_f}, and \code{model\_f} are mapped as follows; the human-design and
-cross-fitted prediction files are then joined one-to-one on the three-part key.
-
-\begin{lstlisting}[language=R]
-analysis_frame <- canon %>%
-  transmute(
-    prompt_id, issue_id,
-    prompt_language = as.character(lang),
-    model = as.character(model_f),
-    tier = as.character(tier),
-    topic_domain = as.character(domain),
-    route = as.character(route_f),
-    home_status,
-    jurisdiction = as.character(juris),
-    original_nonengagement = refusal
-  ) %>%
-  left_join(human_design, by = c("prompt_id", "prompt_language", "model"),
-            relationship = "one-to-one") %>%
-  left_join(crossfit_predictions,
-            by = c("prompt_id", "prompt_language", "model"),
-            relationship = "one-to-one") %>%
-  mutate(in_prob_sample = coalesce(in_prob_sample, FALSE),
-         pi = if_else(in_prob_sample, pi, NA_real_))
-stopifnot(nrow(analysis_frame) == nrow(canon))
-\end{lstlisting}
-
-Here \code{human\_y} and \code{student\_prob} are outcome-specific: the frame
-is constructed once for genuine refusal and once for capability failure. The
-mapping matches \file{pipeline/10\_canonical\_common.R}, where
-\code{home\_status} is built using \file{pipeline/\_orders.R} constant
-\code{HOME\_REGION\_OF}. This was the interface contract proposed in the
-historical design now preserved at
-\file{archive/2026-09-01\_pre\_rationalization/docs/HUMAN\_REFERENCED\_DSL.md};
-it is not the current production outcome assembly.
-
-\begin{lstlisting}[language=R]
-make_dsl_outcome <- function(d) {
-  stopifnot(!anyDuplicated(d[c("prompt_id", "prompt_language", "model")]))
-  stopifnot(all(d$pi[d$in_prob_sample] > 0 &
-                d$pi[d$in_prob_sample] <= 1))
-  stopifnot(all(!is.na(d$human_y[d$in_prob_sample])))
-
-  d %>% mutate(
-    residual_correction = if_else(
-      in_prob_sample, (human_y - student_prob) / pi, 0
-    ),
-    y_tilde = student_prob + residual_correction
-  )
-}
-\end{lstlisting}
-
-Here \code{y\_tilde} is the row-level design-based correction. It can be below
-zero or above one. That is expected after inverse-probability correction and is
-why it must not be passed to a binomial \code{glm}. Each estimand below is run
-on \code{y\_tilde}, the student probability alone, the directly weighted human
-labels, and original judge-coded non-engagement, with the four results labelled
-separately.
-
-\subsection{Descriptive prevalence}
-
-For model $m$,
-\begin{equation}
-\widehat p_m=N_m^{-1}\sum_{i:M_i=m}Y_i,
-\qquad
-\widehat p_{\mathrm{eqM}}=M^{-1}\sum_{m=1}^{M}\widehat p_m.
-\end{equation}
-
-These are descriptions of the delivered corpus and require no model.
-Response-weighted prevalence is a separate target. Intervals resample whole
-issues so prompt variants, languages, and models attached to an issue move
-together.
-
-\begin{lstlisting}[language=R]
-estimate_prevalence <- function(d, y = "y_tilde") {
-  by_model <- d %>%
-    group_by(model) %>%
-    summarise(estimate = mean(.data[[y]]), n = n(), .groups = "drop")
-  bind_rows(
-    by_model %>% transmute(cell = model, estimate),
-    by_model %>% summarise(cell = "equal_model_overall",
-                           estimate = mean(estimate))
-  )
-}
-\end{lstlisting}
-
-\subsection{Home-jurisdiction contrast}
-
-An issue is \emph{home} when its region matches the developer jurisdiction,
-\emph{away} when it concerns another named region, and \emph{general} when it
-has no regional focus. General issues are described separately and not folded
-into away.
-
-The unadjusted contrast within jurisdiction $j$ is
-\begin{equation}
-\widehat\Delta_j^{\mathrm{desc}}
-=\widehat E(Y\mid H=1,J=j)-\widehat E(Y\mid H=0,J=j).
-\end{equation}
-It describes this corpus but mixes home status with issue composition.
-
-The historical analysis used a logit fitted separately by jurisdiction:
-\begin{center}
-\code{Y ~ home * model + tier + topic\_domain + route}.
-\end{center}
-That remains valid for the original binary outcome. For the human-referenced
-analysis, however, \code{y\_tilde} is not binary. The primary estimator solves
-$X'(\widetilde Y-X\beta)-10^{-8}P\beta=0$ on the probability scale, with the
-intercept unpenalized. G-computation predicts each target row once as home and
-once as away. The target gives equal mass to models, then issues within model,
-then prompts within model--issue. A common-support sensitivity keeps only model
-$\times$ domain $\times$ route $\times$ tier cells present in both arms.
-
-\begin{lstlisting}[language=R]
-nested_weights <- function(z) {
-  M <- n_distinct(z$model)
-  z %>%
-    add_count(model, issue_id, name = "n_prompt") %>%
-    group_by(model) %>%
-    mutate(n_issue = n_distinct(issue_id)) %>%
-    ungroup() %>%
-    transmute(w = 1 / (M * n_issue * n_prompt)) %>% pull(w)
-}
-
-moment_fit <- function(X, y, lambda = 1e-8) {
-  P <- diag(c(0, rep(1, ncol(X) - 1)))
-  drop(solve(crossprod(X) + lambda * P, crossprod(X, y)))
-}
-
-estimate_home <- function(d, y = "y_tilde") {
-  d %>%
-    filter(prompt_language == "en",
-           home_status %in% c("home", "away")) %>%
-    mutate(home = as.integer(home_status == "home")) %>%
-    group_split(jurisdiction) %>%
-    map_dfr(function(z) {
-      z <- droplevels(z)
-      f <- ~ home * model + tier + topic_domain + route
-      beta <- moment_fit(model.matrix(f, z), z[[y]])
-      z1 <- transform(z, home = 1L)
-      z0 <- transform(z, home = 0L)
-      rd <- drop((model.matrix(f, z1) - model.matrix(f, z0)) %*% beta)
-      tibble(jurisdiction = first(z$jurisdiction),
-             estimate = sum(nested_weights(z) * rd))
-    })
-}
-\end{lstlisting}
-
-Production code drops a factor term if it has only one realized level within a
-jurisdiction and records a failed fit rather than silently omitting it. The
-historical sensitivity fits \code{glm(original\_nonengagement ~ home * model +
-tier + topic\_domain + route, family = binomial(), data = z)} and applies the
-same nested-target g-computation.
-
-Region effects are excluded because region determines home within jurisdiction.
-This is a \textbf{covariate-standardized predictive contrast}, not a causal
-effect: home is not randomized or varied within issue. The current 300-case
-human sample has too few refusal events in several jurisdiction arms for a
-headline human-referenced home result. A targeted probability sample should be
-drawn after the final roster is frozen.
-
-The current predeclared workload plan is an initial 680 English home/away
-selections, allocated by jurisdiction, arm, standardized-estimator leverage,
-and predicted event risk. It allows a fixed reserve up to 1,250 selections if
-event-support or five-percentage-point half-width gates fail. EU is handled as
-a zero-event verification design with 60 home and 60 away rows and a one-sided
-rule-of-three bound when both cells remain zero. This is a planning design, not
-an authorized draw. Because an enlarged model roster changes equal-model
-weights and leverage, the planner must be rerun after that roster is frozen.
-
-\implementation{The active original-outcome estimator and model-matrix rules
-are in \file{pipeline/10\_canonical\_common.R} and
-\file{pipeline/11\_canonical\_home.R}. The unexecuted human augmentation is
-specified in the archived
-\file{archive/2026-09-01\_pre\_rationalization/docs/HOME\_HUMAN\_AUGMENTATION\_DESIGN.md} and implemented
-only as an aggregate planner in
-\file{src/refusal\_audit/response\_validity/home\_augmentation.py} function
-\code{plan\_home\_augmentation()}; its CLI is
-\code{scripts/response\_validity.py plan-home-human-augmentation}.}
-
-\subsection{Prompt-fixed language contrasts}
-
-For target language $\ell$, complete blocks hold model $m$ and prompt $p$ fixed:
-\begin{equation}
-\Delta_\ell=\frac{1}{M}\sum_m\frac{1}{|\mathcal B_{m\ell}|}
- \sum_{p\in\mathcal B_{m\ell}}(Y_{mp\ell}-Y_{mp,\mathrm{en}}).
-\end{equation}
-
-No regression is needed. Whole-issue resampling preserves the paired design.
-This is the study's closest design to a causal language contrast because model
-and prompt identity are fixed. Language assignment was not randomized across a
-common call schedule, however. Its causal reading is therefore the effect of
-delivering the tested translation rather than English, for these prompts and
-models, conditional on translation equivalence, stable provider and run-time
-conditions, and mean-zero generation randomness. It is not the general effect
-of a user's language. Refusal and capability failure must remain separate.
-
-\begin{lstlisting}[language=R]
-estimate_language <- function(d, target, y = "y_tilde") {
-  d %>%
-    filter(prompt_language %in% c("en", target)) %>%
-    select(issue_id, model, prompt_id, prompt_language,
-           value = all_of(y)) %>%
-    pivot_wider(names_from = prompt_language, values_from = value) %>%
-    filter(!is.na(en), !is.na(.data[[target]])) %>%
-    mutate(difference = .data[[target]] - en) %>%
-    group_by(model) %>%
-    summarise(model_difference = mean(difference),
-              complete_pairs = n(), .groups = "drop") %>%
-    summarise(estimate = mean(model_difference),
-              complete_pairs = sum(complete_pairs))
-}
-\end{lstlisting}
-
-\subsection{Prompt framing}
-
-Within complete issue $q$, model $m$, language $\ell$ blocks,
-\begin{equation}
-D_{qm\ell}=\frac{Y^{B1}_{qm\ell}+Y^{B2}_{qm\ell}}{2}
--\frac{Y^{R1}_{qm\ell}+Y^{R2}_{qm\ell}}{2},
-\qquad \Delta_F=E(D_{qm\ell}).
-\end{equation}
-The planned primary estimator uses English complete 2+2 blocks and counts
-incomplete blocks; the same function can be reported separately by language.
-Issue, model, and language are held fixed, but wording is not: framing is
-implemented through different prompts. A causal reading depends on generated
-variants being exchangeable within issue. This remains secondary.
-
-\begin{lstlisting}[language=R]
-estimate_framing <- function(d, y = "y_tilde") {
-  blocks <- d %>%
-    filter(prompt_language == "en") %>%
-    group_by(issue_id, model, tier) %>%
-    summarise(n = n(), value = mean(.data[[y]]), .groups = "drop") %>%
-    pivot_wider(names_from = tier, values_from = c(n, value)) %>%
-    filter(n_regular == 2, n_boundary == 2) %>%
-    mutate(difference = value_boundary - value_regular)
-  blocks %>%
-    group_by(model) %>%
-    summarise(model_difference = mean(difference),
-              complete_issues = n(), .groups = "drop") %>%
-    summarise(estimate = mean(model_difference),
-              complete_issues = sum(complete_issues))
-}
-\end{lstlisting}
-
-\subsection{Slant and moral foundations}
-
-Slant uses four ordered dimensions with five categories $-2,-1,0,+1,+2$; the
-natural estimand is the equal-model share in each category, with signed means
-secondary. Moral foundations are six non-exclusive indicators and therefore
-have separate prevalences rather than shares of a composition.
-
-Both analyses are conditional on the original engagement screen, and only 156
-issues received content annotation. Corrected engagement changes the
-denominator, but newly recovered responses lack content labels. These analyses
-are deferred until refusal measurement is settled.
-
-The active original-label content stage already produces both pooled and
-model-specific results: \code{c12} and \code{c14} are aggregate slant and moral
-tables, while \code{c13} and \code{c15} are the corresponding by-model tables.
-The eligible English denominator is constructed as \code{SLANT\_EN} from
-\code{slant\_eligible}, \code{engaged}, and non-missing content fields in
-\file{pipeline/13\_canonical\_content.R}. Those outputs remain historical
-descriptions until the revised engagement denominator and missing-content rule
-are fixed; model-specific estimates are not absent from the codebase.
-
-When that denominator is settled, the intended descriptive code is:
-
-\begin{lstlisting}[language=R]
-# Five-category slant distributions, first within model, then equal-model.
-slant <- content %>%
-  filter(final_content_eligible) %>%
-  pivot_longer(all_of(slant_dimensions),
-               names_to = "dimension", values_to = "score") %>%
-  count(model, dimension, score, name = "n") %>%
-  group_by(model, dimension) %>%
-  complete(score = -2:2, fill = list(n = 0)) %>%
-  mutate(share = n / sum(n)) %>%
-  group_by(dimension, score) %>%
-  summarise(estimate = mean(share), .groups = "drop")
-
-# Six non-exclusive foundation prevalences; they need not sum to one.
-moral <- content %>%
-  filter(final_content_eligible) %>%
-  pivot_longer(all_of(moral_foundations),
-               names_to = "foundation", values_to = "present") %>%
-  group_by(model, foundation) %>%
-  summarise(model_prevalence = mean(present), .groups = "drop") %>%
-  group_by(foundation) %>%
-  summarise(estimate = mean(model_prevalence), .groups = "drop")
-\end{lstlisting}
-
-\subsection{Uncertainty and repeated structure}
-
-Every point estimator above is linear in \code{y\_tilde}, including the home
-contrast because its probability-scale coefficient fit and g-computation are
-linear in the outcome once the design matrix is fixed. Let $a_i$ be the
-resulting coefficient on response $i$, $e_i=Y_i-m_i$, and let $\pi_{ij}$ be the
-exact probability that responses $i$ and $j$ both entered the 300-case human
-sample. Conditional on the corpus, the human-sampling component of uncertainty
-uses the Horvitz--Thompson variance estimator below. The matrix is reconstructed
-from the frozen union design by
-\code{human\_audit.py::exact\_union\_pairwise\_inclusion()}; it is not a stored
-column and the design is not treated as a simple random sample.
-
-\begin{lstlisting}[language=R]
-ht_residual_variance <- function(s, a, pi2) {
-  # s contains only probability-sampled human rows in the same order as pi2.
-  stopifnot(nrow(pi2) == nrow(s), ncol(pi2) == nrow(s))
-  pi1 <- s$pi
-  stopifnot(all(diag(pi2) == pi1), all(pi2 > 0))
-  z <- a * (s$human_y - s$student_prob) / pi1
-  delta <- pi2 - outer(pi1, pi1)
-  sum((delta / pi2) * outer(z, z))
-}
-
-resample_issues <- function(d, seed) {
-  ids <- unique(d$issue_id)
-  set.seed(seed)
-  draw <- tibble(issue_id = sample(ids, length(ids), replace = TRUE),
-                 boot_instance = seq_along(ids))
-  draw %>%
-    inner_join(d, by = "issue_id", relationship = "many-to-many") %>%
-    mutate(boot_issue = paste0(issue_id, "#", boot_instance))
-}
-
-boot <- map_dfr(seq_len(500), function(b) {
-  db <- resample_issues(d, 20260826 + b)
-  estimate_prevalence(db, y = "y_tilde") %>% mutate(replicate = b)
-})
-\end{lstlisting}
-
-The outer 500-draw issue bootstrap treats the 624 issues as the repeated-data
-clusters: a sampled issue carries all its prompts, languages, and models, and
-repeated draws receive distinct instance IDs. For each estimand we report the
-issue-bootstrap variance, the exact human-sampling residual variance, and
-out-of-fold student variation separately before combining them by the declared
-law-of-total-variance rule. Simultaneous bands within a reported family use the
-95th percentile of the replicate maximum absolute studentized deviation. The
-coefficient vector $a$ is $1/(MN_m)$ for equal-model prevalence; it is the
-corresponding signed complete-pair or complete-block weight for language and
-framing; and for home it is obtained directly from the fitted linear map
-$c'(X'X+10^{-8}P)^{-1}X'$. This variance code must be tested against enumerated
-small-population draws before publication.
-
-These uncertainty components answer different questions. The exact
-human-sampling variance is design-based for the fixed 137,186-response corpus.
-The issue bootstrap describes stability to resampling the 624 sampled issues;
-it is not, by itself, the known-probability sampling variance for the full
-Wikipedia frame. The primary point estimands therefore target the delivered
-frozen corpus. Any wider ``Wikipedia-surfaced issues'' interpretation must name
-the additional superpopulation assumption. Before combining the conditional
-human variance, issue variation, and fold variation, Stage 18 must state a
-law-of-total-variance decomposition and show that the same source of variation
-has not been counted twice.
-
-\begin{center}
-\small
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm}
-  >{\raggedright\arraybackslash}p{3.5cm}
-  >{\raggedright\arraybackslash}p{4.1cm}
-  >{\raggedright\arraybackslash}p{2.4cm}@{}}
-\toprule Question & Target & Estimator & Status \\
-\midrule\endhead
-How often do models refuse? & Equal-model genuine-refusal prevalence & Model means, then equal-model average; issue-cluster uncertainty & Direct human diagnostic: 1.83\%; final assisted estimate pending \\
-Do models fail by language? & Equal-model capability-failure prevalence & Same descriptive estimator & Paired 1,197-case Luna/Sol run complete; 458-case human review ready \\
-Do models treat home issues differently? & Standardized home--away probability difference & Probability-scale moment fit plus nested-target g-computation and correction & Needs targeted support \\
-Does delivered language matter? & Target-language minus English within model--prompt & Direct paired mean and correction & Direct diagnostic complete; precision target not met \\
-Does boundary framing matter? & Boundary minus regular within complete blocks & Direct block mean & Secondary \\
-What content appears? & Slant distributions and foundation prevalences among engaged responses & Design-weighted shares & Deferred \\
-\bottomrule
-\end{longtable}
-\end{center}
-
-\section{What is settled and what comes next}
-
-The issue frame, 624-issue draw, four-prompt construction, five-language
-battery, realized 11-model corpus, seven-model OpenRouter expansion, and their
-completed annotations are settled historical inputs. They should not be
-silently rebuilt. Sarvam-105B and Bielik are assembled candidate additions;
-T-pro, the four-model Torch run, and the open Fanar checkpoint remain active
-operational stages. Their presence in a ledger is not yet membership in the
-canonical 18-model analysis.
-
-The refusal measurement layer now uses the decomposed v2.4 codebook throughout.
-Luna supplies the scalable wall-to-wall labels. Sol was used as a frontier
-machine reference during prompt and model evaluation, but it is not described
-as human gold. Human review informed the codebook and resolved targeted
-boundaries; full independent human certification remains incomplete. The
-retained development samples and model comparisons explain why v2.4 was
-chosen, while only the final frozen Luna assemblies enter the current R frame.
-
-\subsection{Compact code and artifact crosswalk}
-
-This table is a navigation aid, not a second pipeline history. It links each
-claim in this document to the implementation and frozen artifact that should be
-checked when reproducing it.
-
-\begin{center}
-\small
-\begin{longtable}{@{}p{2.2cm}p{5.2cm}p{5.6cm}@{}}
-\toprule Stage & Implementation & Frozen artifact or status \\
-\midrule\endhead
-Wikipedia frame & \file{sourcing/01\_harvest\_controversial.py}, \file{06\_harvest\_temporal.py}, \file{08\_harvest\_current\_events.py}, \file{04\_merge\_editions.py} & merged 2,773-issue rebalanced frame with article and Q-ID provenance \\
-Issue draw and prompts & \file{scripts/sample\_prompts.py}; \file{sourcing/03\_format\_prompts.py} & \file{prompts/sampled/rebalanced\_sample\_manifest.json}; \file{rebalanced\_prompts\_en\_sample.json} \\
-Prompt translation & \file{sourcing/05\_translate\_review.py}, \file{10\_backtranslate\_native.py}, \file{11\_retranslate\_affected.py}, \file{12\_normalize\_boundary\_templates.py} & five frozen language batteries represented in \file{annotations/full\_v1/prompts\_meta/} \\
-Subject outputs & \file{scripts/config.py}; \file{scripts/generate\_responses.py} & language-specific append-only JSONL in \file{annotations/full\_v1/responses/} \\
-Hosted jurisdiction expansion & \file{scripts/openrouter\_expansion\_v3.py}; \file{scripts/jurisdiction\_expansion\_full.py}; \file{scripts/jurisdiction\_full\_annotation.py} & seven-model v3 corpus promoted; Sarvam-105B and Bielik assembled only in the unpromoted candidate; T-pro incomplete \\
-Torch and Fanar systems & \file{hpc/}; \file{scripts/fanar\_system\_audit.py} & four-model 49,920-request run active; open Fanar 200-request pilot submitted; native Fanar filter experiments complete \\
-Original labels & \file{scripts/annotation\_pipeline.py}; \file{scripts/run\_pilot.py} & assembled original labels plus \file{pass23\_subsample.json} under \file{annotations/full\_v1/} \\
-Human reference & \file{scripts/response\_validity.py}; modules under \file{src/refusal\_audit/response\_validity/} & 300-case probability sample, 400-case enrichment sample, 162 direct v2.2 reviews, 538 explicit mappings, zero unresolved headline labels \\
-Low-cost annotator & \file{scripts/response\_validity.py}; modules under \file{src/refusal\_audit/response\_validity/} & Luna v2.4 wall-to-wall assemblies frozen; Sol retained as a frontier machine reference; independent human certification incomplete \\
-Estimation & \file{pipeline/10\_canonical\_common.R}--\file{pipeline/17\_response\_validity.R} & current descriptive, standardized, paired-language, stability, semantic-map and measurement tables \\
-\bottomrule
-\end{longtable}
-\end{center}
-
-One operational detail matters when reconstructing the analysis table.
-\file{pipeline/01\_data\_loading.R} retains \file{annotations/pilot\_v1} as its
-standalone default, while \file{pipeline/make\_release.R} explicitly supplies
-\file{annotations/full\_v1}. Canonical work should therefore use the release
-driver or set \code{REFUSAL\_RUN\_DIR} explicitly; directly sourcing Stage 01
-without that setting can load the wrong run.
-
-Figure selection, publication layout, release promotion, UMAP displays, broad
-sensitivity suites, and content extensions come after the measurement target
-and headline estimands are agreed. The archived full reference retains that
-earlier work if it needs to be recovered.
-
-The live data-construction code is in \file{sourcing/} and \file{scripts/}.
-The earlier human form is
-\file{config/response\_validity\_codebook\_v2.json}; harmonized human outcomes
-retain v2.2 provenance, and the production machine rules are in
-\file{config/response\_validity\_decomposed\_v2\_4.json}. The completed Luna
-assembly contains 137,186 unique annotations, including 3,591 derived genuine
-refusals and 43,317 capability failures, at
-\file{annotations/response\_validity\_v2\_4/wall\_to\_wall\_luna\_v1/final\_annotations.parquet}.
-The active measurement
-runbook and experiment history are kept separately in
-\file{docs/RESPONSE\_VALIDITY\_TECHNICAL\_PIPELINE.md} and
-\file{docs/RESPONSE\_VALIDITY\_DECISION\_LOG.md}. The former 69-page catalogue
-remains under \file{writeup/archive/} as a historical record.
-
-\fi
 \end{document}

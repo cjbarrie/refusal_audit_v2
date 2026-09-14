@@ -150,10 +150,13 @@ python hpc/prepare_fanar_local_pilot.py prepare
 Its logical payload SHA-256 is
 `f814f8336beaa674bceb3ace88d9b11fa8ce81b7053e6de5a08d0a0af1236c1c`.
 The files were copied to Torch and the frozen payload was reproduced there on
-11 September 2026. Download job `17374496` and dependent five-task pilot array
-`17374497` were then submitted. The jobs were initially pending normally in the
-`cpu_short` and `l40s_publ` partitions; no generation result was available at
-the time of this update. The exact submission sequence was:
+11 September 2026. An initial download job failed because the batch virtual
+environment lacked `huggingface_hub`; no model generation occurred in that
+failed attempt. After installing the pinned `huggingface_hub==0.34.4` package
+in `/scratch/cb5691/refusal_audit_hpc/venv`, the fixed download job `17697549`
+completed and verified the 9,337,690,048-byte GGUF with SHA-256
+`f56fe070e58c4ebcaac698e5da0b2a5e5b834237804d9a094a3afe3ffc20e5ac`.
+The exact submission sequence was:
 
 ```bash
 cd /scratch/cb5691/refusal_audit_v2
@@ -171,16 +174,95 @@ echo "download=${DOWNLOAD_JOB} pilot=${PILOT_JOB}"
 The five array tasks correspond to the five languages and each generates 40
 responses. Each GPU serves four requests concurrently. The runner is resumable,
 writes append-only attempt and result ledgers, and allows a second attempt only
-for transport or transient HTTP failures. When it finishes:
+for transport or transient HTTP failures.
+
+The transferred audit completed on 13 September 2026. It verifies all 200
+generation keys, 196 non-empty responses and four terminal generation errors.
+English, Chinese, Arabic and Russian each returned 40/40 responses. Hindi
+returned 36/40. The four Hindi failures were llama-server HTTP 500 responses
+stating that output did not match the expected content-only format; they remain
+technical generation outcomes rather than being imputed as refusals or
+capability failures.
+
+Every response-bearing case is now frozen for blinded Luna v2.4 annotation:
+
+```bash
+python scripts/fanar_local_pilot_annotation.py prepare
+python scripts/fanar_local_pilot_annotation.py cost
+```
+
+The annotation payload contains 196 requests, uses source-response-only input,
+temperature 0, a 500-token maximum, reasoning disabled and the pinned OpenAI
+provider with fallbacks disabled. Its SHA-256 is
+`679ef8439188bf119a4f29c55611c4de3aebd49a2e85369958de71f33bd2c17b`.
+The planning estimate is $0.1310, the single-attempt reserve is $0.2016 and the
+guarded hard ceiling is $0.25. The authorized run completed all 196 schemas on
+13 September 2026 for an actual provider-reported cost of $0.0657214. Its raw
+results SHA-256 is
+`6d7326666728272b9b091290fa7cce9b9e690659e1c41d98bf85bad15657b124`;
+the assembled-label SHA-256 is
+`e143decfeb64683fdd01c901b260705dd2d2c9f0f2cd78a69a2e8cf0411e8321`.
+
+Luna coded 42/196 returned responses as genuine refusals, 103/196 as capability
+failures and 62/196 as wrong-language outputs. These labels overlap: 18 of the
+42 refusals were also capability failures and 15 were also wrong-language.
+The language breakdown makes the admission decision clearer. English had 11
+refusals and no capability or language failures; Arabic had 13 refusals, two
+capability failures and two wrong-language outputs. Chinese had 39 capability
+failures among 40 responses, Russian had 26 among 40, and Hindi had 36 among
+36 returned responses. The four additional Hindi requests were generation
+failures. These are enriched-pilot proportions, not corpus prevalence.
+
+Because this is a small pilot with unusually strong overlap between behavioral
+and competence labels, the verification design uses a complete Sol census
+rather than extrapolating from flagged cases and sampled controls:
+
+```bash
+python scripts/fanar_local_pilot_sol_audit.py prepare
+python scripts/fanar_local_pilot_sol_audit.py cost
+```
+
+All 196 returned responses have inclusion probability one and design weight
+one. Sol receives byte-identical v2.4 source-response-only messages and schema;
+it does not see Luna's decisions. The frozen payload SHA-256 is
+`7c60b4fd1ba86b766ac75366cc09cc59660e0144631a4c3cbcf152a8b9767b94`.
+The planning estimate is $1.231662, the one-attempt maximum-token reserve is
+$1.819662 and the authorized hard ceiling was $2.50. The run completed all 196
+schemas on 13 September 2026 for $0.632352. Its raw result SHA-256 is
+`d7e253bf169183f8b62656bfb1dd8bc8dacc3390eb23e39daa12ee7bdbe670e9`;
+the joined Luna--Sol comparison SHA-256 is
+`2a9e4815f32262ad17f067cc936db2b2f44c83e65d619bed55852d4c6258b2ff`.
+
+Sol coded 40/196 responses as genuine refusals, compared with Luna's 42.
+The two judges agreed on 192/196 refusal decisions (98.0%; Cohen's kappa
+0.938). Treating Sol only as a frontier reference, Luna's refusal sensitivity
+was 97.5%, specificity 98.1%, precision 92.9% and F1 0.951. There were four
+refusal disagreements: two Hindi and one Arabic Luna positives that Sol treated
+as pivots or an epistemic limitation, and one Russian Luna negative that Sol
+treated as an explicit refusal. All four remain in the disagreement ledger;
+neither label overwrites the other.
+
+Capability-failure agreement was 189/196 (96.4%; kappa 0.929). Sol found 96
+capability failures versus Luna's 103. Wrong-language coding agreed on all 196
+cases: both found 62. Sol's language-cell estimates reinforce the admission
+decision: capability failure was 0/40 in English, 2/40 in Arabic, 25/40 in
+Russian, 34/40 in Chinese and 35/36 among returned Hindi responses. The four
+additional Hindi generation failures remain outside this denominator.
+
+On this evidence, English and Arabic are viable cells for a future
+probability-based corpus run. Chinese, Russian and Hindi are not viable for
+substantive refusal estimation with this checkpoint and serving setup. They
+may be retained as documented capability outcomes, but must not be pooled into
+a refusal analysis as though all five language cells were comparable.
 
 ```bash
 python hpc/prepare_fanar_local_pilot.py audit
 ```
 
 Copy the completed directory back before annotation. Every returned response
-should then receive the unchanged Luna v2.4 source-response-only annotation;
-all flagged responses plus probability-sampled clean controls should receive
-the established blinded Sol check.
+has received the unchanged Luna v2.4 source-response-only annotation. For this
+small pilot, all returned responses—not a subsample—are included in the frozen
+blinded Sol check.
 
 ## What each comparison can establish
 

@@ -149,15 +149,15 @@ responses for Krutrim Chinese and Russian, and frequent wrong-script or corrupt
 Hindi from Salamandra. These checks agree with the earlier Luna/Sol audit; they
 are diagnostics rather than replacement semantic labels.
 
-At the observed request latencies, generating all 20 cells is projected to use
-about 93 L40S GPU-hours. With eight simultaneous tasks, expected elapsed time is
-roughly 12–16 hours after scheduling. Every individual shard projects below six
-hours, leaving a substantial margin under the 24-hour task limit. After
-benchmark review and explicit approval, production array job `17368291` was
-submitted on 11 September 2026. It is resumable and was still running at the
-time of this update, so no changing partial count is treated as a completed
-result. The design fixes the scope at all 20 model-language cells. There is no
-pre-generation or pre-annotation refusal-admission filter.
+After benchmark review and explicit approval, production array job `17368291`
+was submitted on 11 September 2026. It completed on 12 September. The
+deterministic audit recovered all 49,920 terminal records and no missing keys:
+49,879 successful non-empty responses, 28 explicit empty responses and 13
+HTTP/runtime failures. The merged response ledger has SHA-256
+`878beee4360fa7304296818e0ee72dfad964d64d0e63e9f6888f2ff883285fe6`.
+The design therefore retains all 20 model-language cells and the complete
+generation denominator. There was no pre-generation or pre-annotation
+refusal-admission filter.
 
 The benchmark was then annotated in full with the unchanged Luna v2.4
 source-response-only codebook. The frozen payload contained exactly 20
@@ -192,14 +192,233 @@ and Salamandra Arabic (1/20). On the benchmark, the unconditional refusal
 bounds were therefore 0–35%, 0–25% and 0–5% for those cells. These are gate
 diagnostics based on 20 responses per cell, not paper estimates.
 
-The production recommendation is to generate all 49,920 responses. All 20
-cells remain part of the system-behaviour population and will receive the same
-joint v2.4 annotation. The full analysis will report definite refusal,
-capability failure, their overlap and refusal-unassessable output separately.
-Where unassessability is material, the unconditional refusal result will be an
-identified lower/upper bound. A competence-conditioned refusal rate will be a
-secondary, explicitly selection-conditioned sensitivity rather than a silent
-replacement for the unconditional outcome.
+## Full-corpus semantic annotation
+
+`scripts/local_gguf_hpc_full_annotation.py` applies the unchanged Luna v2.4
+measurement contract to a census of the 49,879 response-bearing records. It
+does not send the 28 empty responses or 13 HTTP/runtime failures to a semantic
+text classifier because those records contain no response to judge. Instead,
+all 49,920 generation outcomes are preserved in
+`generation_outcomes.parquet`, with the 41 unusable records retained as
+separate technical outcomes. They are not recoded as engagement, refusal or
+capability failure.
+
+For each usable record, Luna receives only four pieces of source material: the
+target language, the English reference prompt, the target-language prompt and
+the original model response. It does not receive the subject model, developer,
+jurisdiction, topic metadata, selection status or any earlier annotation. The
+request uses the adopted `response-validity-v2.4` prompt and JSON schema,
+`openai/gpt-5.6-luna` pinned to OpenAI, temperature 0, a 500-token maximum,
+reasoning disabled and provider fallbacks disabled. Refusal, capability
+failure and language fidelity remain separate fields, so a degraded or
+wrong-language response can still contain a refusal.
+
+The local freeze and price calculation are:
+
+```bash
+python scripts/local_gguf_hpc_full_annotation.py prepare
+python scripts/local_gguf_hpc_full_annotation.py cost
+```
+
+As frozen on 12 September 2026, the payload contains 49,879 requests and has
+SHA-256 `a7a09867f9303f2a41e718b539a11b4f241d2b94c54d4968cd63450001e193e7`.
+The input estimate is 122,265,048 tokens. At the then-current pinned OpenAI
+route price of $0.20 per million input tokens and $1.20 per million output
+tokens, the planning estimate is $36.42. Previous Luna runs project $23.44 at
+their observed cost per response. The guarded hard ceiling is $54.75. These
+local preparation steps made no provider call. The user explicitly authorized
+this exact 49,879-request payload, pinned route and $54.75 ceiling on 12
+September 2026 at 16:43 UTC. The authorization was recorded in the immutable
+manifest before the first provider request. The resumable 32-worker run then
+started under `caffeinate` and completed at 17:37 UTC. It returned 49,867 valid
+annotations and 12 exhausted consistency conflicts, for a provider-reported
+cost of $20.177800. Schema success was 99.976%, above the 99.5% operational
+gate. The attempt-ledger SHA-256 is
+`66a3823d73ba95d2a5113e1f246acb853f706484e923cf8f44faf124cd3cd29a`;
+the 49,867-record result-ledger SHA-256 is
+`9d72c598439717889587f7d43024215dfe8d4e00d62e2a88bc427a53aed4794a`.
+
+All 12 unresolved cases exhausted three attempts on the same validator rule:
+the draft simultaneously called the output incoherent or unassessable and
+assigned explicit or implicit substantive refusal. This is a logical schema
+conflict, not an API or transport failure. The cases are concentrated in
+GigaChat Hindi (4), Krutrim Arabic (1), Salamandra Arabic (6) and Salamandra
+Hindi (1).
+
+The repair is a separate immutable stage implemented by
+`scripts/local_gguf_hpc_full_annotation_repair.py`. It uses the same adaptive
+repair wording previously validated on the 129 exhausted original-panel cases:
+Luna must re-read the full response and decide whether it coherently
+communicates withholding or is genuinely unassessable. Wrong language remains
+independent. The repair does not change the v2.4 codebook, fields, enum values
+or JSON schema, and it preserves all three invalid drafts.
+
+The frozen repair contains 12 requests and permits at most two attempts per
+case. Its initial payload SHA-256 is
+`0002de774fa94e01ba81c30d53a52b70d626f65cf261b91f49e63e99a3683d51`;
+the adaptive protocol SHA-256 is
+`430e7f18b75708667f1ae8a04324518c9f2d713dbdee9b7f21b8fe817a684c32`.
+The maximum two-attempt planning estimate was $0.019369, the maximum-token
+reserve was $0.028009 and the guarded hard ceiling was $0.25. Preparation and
+costing made no provider call. The user authorized both hashes and the ceiling
+on 12 September at 19:13 UTC. All 12 requests returned valid annotations on
+their first repair attempt, costing $0.006437. No adaptive second attempt or
+Sol contingency was needed. The repair attempt SHA-256 is
+`8c635452140ee40edda55bc8f2ba1d42738cb75f2d6a0ef3bb4bfdb37c76cec1`;
+the repair result SHA-256 is
+`d57a873db008d7eb000e72d49ecadfe5f67cbee0abfad49381511971b2d430c8`.
+
+Eleven repairs resolved to `substantive_refusal=unassessable` with
+`output_quality=incoherent_garbled`. One Krutrim Arabic response was judged
+partly coherent enough to establish an explicit refusal; it was also a
+wrong-language repetition-loop capability failure. This illustrates why the
+repair re-judged the response rather than deterministically changing every
+refusal field to `unassessable`.
+
+The final lossless assembly contains all 49,879 response-bearing records:
+49,867 labels from the main run and 12 from repair. It has 49,879 unique
+`(prompt_id, prompt_language, subject_model)` keys and explicit row-level label
+provenance. The assembled-label SHA-256 is
+`f6f1c3afe59bc48db191cd3d423d491a63ab5eda82d0c10aee813992931f587d`.
+It contains 381 derived genuine-refusal labels and 13,630 derived capability
+failures, including 65 responses carrying both outcomes. These are unadjusted
+corpus counts, not standardized or causal estimates.
+
+## Probability-based Sol audit
+
+The full Luna census is followed by a focused audit with
+`scripts/local_gguf_hpc_full_sol_audit.py`. Sol is used as an independent
+frontier-model reference, not as human ground truth and not as a replacement
+for the Luna labels. The design includes every Luna-coded genuine refusal
+(381) and every remaining response for which Luna could not determine refusal
+status (271). It then draws deterministic simple random samples, separately
+within each model-language cell, of up to 20 assessable capability failures
+and up to 20 apparently clean responses. This adds 298 capability-failure
+cases and 385 clean controls, for 1,335 reviews in total.
+
+Each sampled record stores its inclusion probability and inverse-probability
+weight. The weights sum to the full 49,879-response population, allowing the
+audit to estimate full-population Luna-Sol agreement and outcome differences
+without pretending that the deliberately enriched review set is a simple
+random sample. Census strata have weight one. Sol receives the exact messages
+and JSON schema used for Luna and cannot see Luna's labels, model identity,
+selection stratum or weight.
+
+The frozen Sol payload has SHA-256
+`5292840f2227103fb4cd575c3a2b1b1b687c8035e2a0dad4fec5da58759f2be2`.
+At the OpenRouter price verified on 12 September 2026—$2 per million input
+tokens and $10 per million output tokens—the planning estimate is $9.11 and
+the single-attempt maximum-token reserve is $13.11. The proposed guarded hard
+ceiling is $16.50. Preparation and costing made no provider request. The user
+authorized this exact payload and ceiling on 12 September 2026 at 19:36 UTC.
+The 24-worker run returned 1,328 valid labels and seven exhausted consistency
+conflicts for $5.240928. The attempt-ledger SHA-256 is
+`4917af713f5aa9615e92460ceafb649a029756fe9690d9fa25e2d4f64ad9a5dd`;
+the valid result-ledger SHA-256 is
+`a6f7e412a55aafcb770b91ea14caa87958e310ad3e19568ef4c7c7a4c69a712d`.
+
+All seven unresolved records failed the same logical check on all three base
+attempts: the draft called the response incoherent or unassessable while also
+claiming that it established an explicit or implicit refusal. They are not
+dropped or automatically recoded. A separate adaptive repair has been frozen
+with initial payload SHA-256
+`59f9ac6d3d96366c4d474447abfc5695f0d93b5f400e1bb4d3c02a3d7f05daae`
+and protocol SHA-256
+`a1b36605680a981dbf6146a3d629413ccd146f7aad5bc4d56a2c34b6ed0b3e3e`.
+It permits at most two Sol attempts per case, has a maximum-two-attempt
+planning cost of $0.094 and a proposed hard ceiling of $0.25. At the freeze
+stage it was not yet authorized or run; design-weighted scoring remained
+blocked so that no enriched audit case could be silently omitted.
+
+The user subsequently authorized that exact repair payload, protocol and
+ceiling on 12 September 2026 at 19:48 UTC. All seven cases returned valid
+labels in the first adaptive round for $0.026484. The repair attempt-ledger
+SHA-256 is
+`d5f31bbb4264ce8039f28dc2f7c61c02de00cda572f785569e8d9498a7234d79`;
+the repair result-ledger SHA-256 is
+`93a4dd64db91aba24430630282525e541d920c113950623ba9b776764dd82af6`.
+The lossless 1,335-record assembly has SHA-256
+`0cf12fb0a94bece20d220ad33b1a6c6ecf7e9e7db5b09d6d9e2b24c7405be12f`.
+Main and repair calls together cost $5.267412.
+
+Treating Sol as a frontier machine reference, the design-weighted genuine
+refusal rate is 0.651%, compared with Luna's 0.764%. Luna-Sol agreement on the
+derived binary refusal outcome is 99.87% (kappa 0.909), sensitivity is 98.78%,
+specificity 99.88% and positive predictive value 84.25%. In substantive
+terms, Luna detected nearly all Sol refusals but classified 60 of its 381
+positive cases as refusals that Sol did not confirm. The weighted estimate of
+Sol-positive refusals among Luna-negative responses is approximately four
+cases in the 49,879-response population.
+
+The capability results are less stable across annotators. Sol estimates a
+21.49% capability-failure rate, compared with Luna's 27.33%; agreement is
+93.43% (kappa 0.823). The largest measurement discrepancy is wrong-language
+output: 3.52% under Sol versus 10.44% under Luna. This gap is concentrated in
+Hindi and in specific local model-language cells. Therefore the Torch models'
+main refusal estimates may proceed with the Sol audit adjustment and its
+design uncertainty, but Luna-only wrong-language and capability-failure counts
+must not be treated as settled paper estimates.
+
+The local preparation commands are:
+
+```bash
+python scripts/local_gguf_hpc_full_sol_audit.py prepare
+python scripts/local_gguf_hpc_full_sol_audit.py cost
+```
+
+After exact authorization, the guarded commands are:
+
+```bash
+python scripts/local_gguf_hpc_full_sol_audit.py authorize \
+  --payload-sha <authorized_sha256> \
+  --cost-ceiling <authorized_ceiling> \
+  --confirm-user-authorization
+python scripts/local_gguf_hpc_full_sol_audit.py run \
+  --workers 24 \
+  --cost-ceiling <authorized_ceiling> \
+  --authorize-paid-run
+python scripts/local_gguf_hpc_full_sol_audit.py score
+```
+
+After authorization, the guarded commands are:
+
+```bash
+python scripts/local_gguf_hpc_full_annotation.py authorize \
+  --payload-sha <authorized_sha256> \
+  --cost-ceiling <authorized_ceiling> \
+  --confirm-user-authorization
+python scripts/local_gguf_hpc_full_annotation.py run \
+  --workers 32 \
+  --cost-ceiling <authorized_ceiling> \
+  --authorize-paid-run
+python scripts/local_gguf_hpc_full_annotation.py summarize
+```
+
+The guarded repair commands are:
+
+```bash
+python scripts/local_gguf_hpc_full_annotation_repair.py prepare
+python scripts/local_gguf_hpc_full_annotation_repair.py cost
+python scripts/local_gguf_hpc_full_annotation_repair.py authorize \
+  --payload-sha <authorized_sha256> \
+  --protocol-sha <authorized_protocol_sha256> \
+  --cost-ceiling <authorized_ceiling> \
+  --confirm-user-authorization
+python scripts/local_gguf_hpc_full_annotation_repair.py run \
+  --workers 12 \
+  --cost-ceiling <authorized_ceiling> \
+  --authorize-paid-run
+python scripts/local_gguf_hpc_full_annotation_repair.py assemble
+```
+
+The runner is append-only and resumable. The summary refuses to assemble until
+all 49,879 records have schema-valid terminal annotations. The full analysis
+will report definite refusal, capability failure, their overlap and
+refusal-unassessable output separately. Where unassessability is material, the
+unconditional refusal result will be an identified lower/upper bound. A
+competence-conditioned refusal rate remains a secondary,
+selection-conditioned sensitivity rather than a silent replacement for the
+unconditional outcome.
 
 ## Outputs
 
@@ -214,6 +433,14 @@ Generated state lives in the gitignored directory
 - `audit.json`: coverage audit; and
 - `responses.jsonl`: complete merged generation ledger, created only at full
   coverage.
+
+The separate gitignored annotation directory is
+`annotations/model_expansion_v4/local_gguf_full_hpc_luna_v2_4_v1/`. Its frozen
+inputs are `generation_outcomes.parquet`, `response_index.parquet`,
+`provider_requests.jsonl`, `prompt.txt`, `response_schema.json`, `manifest.json`
+and `cost_estimate.json`. After a complete paid run it also contains append-only
+attempts, schema-valid results, the run summary, assembled labels and cell-level
+outcome tables.
 
 Weights, the Apptainer image, Hugging Face cache and their lock records live
 under `/scratch/cb5691/refusal_audit_hpc/`, not in Git. Secrets are not required

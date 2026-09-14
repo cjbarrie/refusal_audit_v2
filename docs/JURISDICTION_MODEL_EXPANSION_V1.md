@@ -439,10 +439,43 @@ capability failures. The five missing annotations and 296 generation failures
 remain missing; neither group is imputed as engagement, refusal, or behavioral
 capability failure.
 
-T-pro should be frozen for annotation when its longer generation run completes.
-This sequencing changes only when annotation begins, not the codebook, prompt,
-schema or downstream outcome definitions, so results remain comparable across
-subject models.
+T-pro reached a terminal state on 13 September 2026, but terminal did not mean
+successful. The ledger contained all 12,480 keys, only 4,084 ordinary success
+records and 8,396 exhausted errors. Of those errors, 4,477 were malformed
+HTTP-200 JSON envelopes and 3,813 ended in HTTP 503; the remainder were empty
+content, network, authentication or other transport outcomes. Recorded token
+cost among ordinary success records was $24.425521. Annotation did not begin on
+this incomplete response ledger.
+
+`scripts/tpro_full_recovery.py` then performed a strictly offline recovery. It
+did not alter the original requests, attempts, results or manifest. For 4,067
+cases, the preserved provider body contained one valid leading completion JSON
+object followed by a second provider-error object. The script decoded only that
+leading object. A further 89 bodies contained an intact JSON-escaped content
+string followed by a uniquely identified truncated provider wrapper; the script
+decoded exactly those string bytes. Hashes of every source body and provider
+trailer are retained. This recovered 4,156 responses and increased the
+assembled response count to 8,240/12,480. The assembled-response SHA-256 is
+`d62bb17152314a7f32881e2e6651802bc43d9e77746daa4af87842a566e14515`.
+
+The remaining 4,240 keys are frozen in
+`recovery_v1/retry_provider_requests.jsonl`, SHA-256
+`a81a77fea00909dd4cfc4c5163aa8931f542828093ff36c0744bf0bb05145f22`.
+A one-call retry of every unresolved key has a planning estimate of $25.3355,
+a maximum-token cost of $41.9501 and a proposed $40 ceiling. We do not launch
+that repair immediately because the previous route was unstable.
+
+Instead, `scripts/tpro_full_retry_probe.py` freezes a deterministic simple
+random sample of 40 unresolved keys in each language. The 200-request probe uses
+the unchanged canonical prompts, temperature 1.0, 5,000-token maximum,
+thinking disabled, the pinned Featherless route, no provider fallback, one new
+attempt per key and four concurrent workers. Its payload SHA-256 is
+`12991bc11157e67c75045e57c120c122e930217de3d7171d6822c2b5265cb3ed`.
+The planning estimate is $1.1951; even if all 200 responses reach the token
+ceiling, cost is $1.9788, so the guarded ceiling is $2.00. The probe is frozen
+but not authorized. Its purpose is operational: determine whether the route is
+now stable enough to justify a separately authorized residual census. It does
+not estimate refusal prevalence.
 
 ## Decision after the smoke test
 

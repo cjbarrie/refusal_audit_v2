@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Refusal Observatory',
-  description: 'Explore where language models refuse across semantic space.',
+  title: 'Refusal Atlas — Political speech across language models',
+  description: 'Explore where language models refuse political requests across semantic space, languages and developer jurisdictions.',
   robots: {
     index: false,
     follow: false,

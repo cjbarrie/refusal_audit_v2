@@ -37,6 +37,7 @@ next-env.d.ts
 /.vite/
 /outputs/
 /work/
+*.tsbuildinfo
 
 # Browser publication data are deliberately versioned as Git LFS objects so
 # GitHub Pages can reproduce the exact reviewed release without private inputs.

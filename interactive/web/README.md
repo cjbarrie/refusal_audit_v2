@@ -12,6 +12,8 @@ This directory contains the static publication site for the interactive refusal 
 
 The small gallery previews use the browser's 2-D canvas and a perspective projection of the stored 3-D coordinates. This avoids opening a separate WebGL context for every visible model. The main atlas and expanded model explorer use Three.js with orbit controls.
 
+The overview globe uses Natural Earth 1:110m country boundaries distributed by `world-atlas`. Country IDs are assigned to the six broad developer-jurisdiction groups in `components/refusal-observatory.tsx`; the map is a navigation device, not a claim about a model's legal or geographic coverage. Unassigned countries are shown in neutral grey.
+
 ## Data contract
 
 The site reads three generated files from `public/data/`:

@@ -88,9 +88,12 @@ a { color: inherit; }
 .jurisdiction-list i { width: 7px; height: 7px; border-radius: 50%; }
 .jurisdiction-list span { font-size: 12px; font-weight: 620; }
 .jurisdiction-list em { color: #918b92; font-size: 10px; font-style: normal; }
-.globe-wrap { position: relative; height: 570px; }
-.jurisdiction-globe { width: 100%; height: 100%; }
-.jurisdiction-globe canvas { display: block; width: 100%; height: 100%; }
+.jurisdiction-note { display: block; max-width: 510px; margin-top: 19px; color: #8a848b; font-size: 10px; line-height: 1.55; }
+.globe-wrap { position: relative; height: 570px; isolation: isolate; }
+.jurisdiction-globe { display: block; width: 100%; height: 100%; touch-action: none; }
+.globe-tooltip { position: absolute; left: 50%; bottom: 12%; z-index: 2; min-width: 190px; padding: 10px 13px; display: flex; flex-direction: column; gap: 3px; transform: translateX(-50%); border: 1px solid rgba(215, 210, 216, .9); border-radius: 4px; background: rgba(255, 255, 253, .94); box-shadow: 0 9px 28px rgba(43, 34, 48, .08); pointer-events: none; }
+.globe-tooltip strong { font-family: var(--serif); font-size: 15px; font-weight: 500; }
+.globe-tooltip span { color: #777178; font-size: 9px; }
 .globe-wrap > span { position: absolute; right: 8%; bottom: 7%; color: #8b858c; font-size: 10px; letter-spacing: .03em; }
 .principle-grid { padding-block: 72px 120px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 42px; }
 .principle-grid article { padding-top: 20px; border-top: 2px solid var(--ink); }

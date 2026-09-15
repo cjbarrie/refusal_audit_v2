@@ -4,9 +4,14 @@ import {
   ArrowRight, Box, ChevronDown, ExternalLink, Layers3, LocateFixed,
   Maximize2, Menu, MousePointer2, RotateCcw, Search, X,
 } from 'lucide-react';
+import { geoContains, geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
+import type { Feature, FeatureCollection, Geometry } from 'geojson';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { feature } from 'topojson-client';
+import type { GeometryCollection, Topology } from 'topojson-specification';
+import worldAtlas from 'world-atlas/countries-110m.json';
 
 type PromptPoint = {
   prompt_id: string; prompt_text: string; issue_id: string; domain: string;
@@ -38,6 +43,9 @@ const PAGE_LABELS: Record<Page, string> = {
 const LANGUAGE_NAMES: Record<string, string> = { en: 'English', zh: 'Chinese', ar: 'Arabic', ru: 'Russian', hi: 'Hindi' };
 const JURISDICTION_COLOURS: Record<string, string> = {
   CN: '#cf3b55', EU: '#3158a4', India: '#d37826', MENA: '#7855a6', Russia: '#65758f', US: '#16806d',
+};
+const JURISDICTION_LABELS: Record<string, string> = {
+  CN: 'China', EU: 'European Union', India: 'India', MENA: 'Middle East and North Africa', Russia: 'Russia', US: 'United States',
 };
 const MODEL_PALETTES: Record<string, string[]> = {
   CN: ['#9e2442', '#c93d52', '#e35d51', '#a95478', '#d97a73'],
@@ -108,6 +116,28 @@ const JURISDICTION_LOCATIONS = [
   { jurisdiction: 'India', latitude: 22, longitude: 79 },
   { jurisdiction: 'MENA', latitude: 27, longitude: 43 },
 ];
+const JURISDICTION_COUNTRY_IDS: Record<string, Set<string>> = {
+  US: new Set(['840']),
+  CN: new Set(['156']),
+  India: new Set(['356']),
+  Russia: new Set(['643']),
+  EU: new Set([
+    '040', '056', '100', '191', '196', '203', '208', '233', '246', '250', '276', '300',
+    '348', '372', '380', '428', '440', '442', '470', '528', '616', '620', '642', '703', '705', '724', '752',
+  ]),
+  MENA: new Set([
+    '012', '048', '275', '364', '368', '376', '400', '414', '422', '434', '478', '504',
+    '512', '634', '682', '729', '760', '788', '792', '784', '818', '887',
+  ]),
+};
+const WORLD_COUNTRIES = feature(
+  worldAtlas as unknown as Topology,
+  (worldAtlas as unknown as Topology).objects.countries as GeometryCollection,
+) as unknown as FeatureCollection<Geometry, { name?: string }>;
+function jurisdictionForCountry(id: string | number | undefined) {
+  const code = String(id ?? '').padStart(3, '0');
+  return Object.entries(JURISDICTION_COUNTRY_IDS).find(([, ids]) => ids.has(code))?.[0] ?? null;
+}
 const ANNOTATION_INPUT = `TARGET LANGUAGE
 {prompt_language}
 
@@ -256,30 +286,38 @@ function ModelPreview({ prompts, activeIds, colour }: { prompts: PromptPoint[]; 
 }
 
 function JurisdictionGlobe({ counts, onSelect }: { counts: Map<string, number>; onSelect: (jurisdiction: string) => void }) {
-  const host = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hovered, setHovered] = useState<{ country: string; jurisdiction: string } | null>(null);
   useEffect(() => {
-    const container = host.current; if (!container) return;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100); camera.position.set(0, 0, 5.4);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); renderer.setClearColor(0xffffff, 0); container.appendChild(renderer.domElement);
-    const group = new THREE.Group(); scene.add(group);
-    const shell = new THREE.Mesh(new THREE.SphereGeometry(1.62, 48, 32), new THREE.MeshBasicMaterial({ color: '#f5f3f1', transparent: true, opacity: .82 })); group.add(shell);
-    const grid = new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.SphereGeometry(1.625, 24, 16)), new THREE.LineBasicMaterial({ color: '#d4cfd5', transparent: true, opacity: .34 })); group.add(grid);
-    const markers: THREE.Mesh[] = [];
-    const vector = (latitude: number, longitude: number, radius: number) => { const phi = (90 - latitude) * Math.PI / 180; const theta = (longitude + 180) * Math.PI / 180; return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta)); };
-    JURISDICTION_LOCATIONS.forEach(({ jurisdiction, latitude, longitude }) => { const marker = new THREE.Mesh(new THREE.SphereGeometry(.075, 18, 14), new THREE.MeshBasicMaterial({ color: JURISDICTION_COLOURS[jurisdiction] })); marker.position.copy(vector(latitude, longitude, 1.68)); marker.userData.jurisdiction = jurisdiction; markers.push(marker); group.add(marker); });
-    group.rotation.y = -.55;
-    const raycaster = new THREE.Raycaster(); const pointer = new THREE.Vector2(); let frame = 0; let dragging = false; let priorX = 0; let startX = 0; const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const locate = (event: PointerEvent | MouseEvent) => { const rect = renderer.domElement.getBoundingClientRect(); pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1; pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1; raycaster.setFromCamera(pointer, camera); return raycaster.intersectObjects(markers, false)[0]?.object as THREE.Mesh | undefined; };
-    const down = (event: PointerEvent) => { dragging = true; startX = event.clientX; priorX = event.clientX; renderer.domElement.setPointerCapture(event.pointerId); };
-    const move = (event: PointerEvent) => { if (dragging) { group.rotation.y += (event.clientX - priorX) * .008; priorX = event.clientX; } const hit = locate(event); renderer.domElement.style.cursor = hit ? 'pointer' : dragging ? 'grabbing' : 'grab'; };
-    const up = (event: PointerEvent) => { const moved = Math.abs(event.clientX - startX); const hit = locate(event); dragging = false; if (hit && moved < 5) onSelect(String(hit.userData.jurisdiction)); };
-    renderer.domElement.addEventListener('pointerdown', down); renderer.domElement.addEventListener('pointermove', move); renderer.domElement.addEventListener('pointerup', up);
-    const resize = () => { const width = container.clientWidth; const height = container.clientHeight; renderer.setSize(width, height, false); camera.aspect = width / Math.max(height, 1); camera.updateProjectionMatrix(); }; const observer = new ResizeObserver(resize); observer.observe(container); resize();
-    const animate = () => { if (!reduced && !dragging) group.rotation.y += .00125; renderer.render(scene, camera); frame = requestAnimationFrame(animate); }; animate();
-    return () => { cancelAnimationFrame(frame); observer.disconnect(); renderer.domElement.removeEventListener('pointerdown', down); renderer.domElement.removeEventListener('pointermove', move); renderer.domElement.removeEventListener('pointerup', up); shell.geometry.dispose(); (shell.material as THREE.Material).dispose(); grid.geometry.dispose(); (grid.material as THREE.Material).dispose(); markers.forEach((marker) => { marker.geometry.dispose(); (marker.material as THREE.Material).dispose(); }); renderer.dispose(); renderer.domElement.remove(); };
+    const canvas = canvasRef.current; if (!canvas) return; const context = canvas.getContext('2d'); if (!context) return;
+    const countries = WORLD_COUNTRIES.features as Feature<Geometry, { name?: string }>[];
+    const mappedCountries = countries.filter((country) => jurisdictionForCountry(country.id) !== null);
+    const projection = geoOrthographic().precision(.35).clipAngle(90); const path = geoPath(projection, context); const graticule = geoGraticule10();
+    const rotation: [number, number, number] = [-12, -13, 0];
+    let width = 0; let height = 0; let frame = 0; let dragging = false; let hovering = false; let priorX = 0; let priorY = 0; let startX = 0; let startY = 0; let lastTime = performance.now();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const resize = () => { const dpr = Math.min(window.devicePixelRatio, 2); width = canvas.clientWidth; height = canvas.clientHeight; canvas.width = Math.max(1, Math.round(width * dpr)); canvas.height = Math.max(1, Math.round(height * dpr)); context.setTransform(dpr, 0, 0, dpr, 0, 0); projection.translate([width / 2, height / 2]).scale(Math.min(width, height) * .435); };
+    const locate = (event: PointerEvent | MouseEvent) => { const rect = canvas.getBoundingClientRect(); const coordinates = projection.invert?.([event.clientX - rect.left, event.clientY - rect.top]); if (!coordinates) return null; const country = mappedCountries.find((candidate) => geoContains(candidate, coordinates)); const jurisdiction = country ? jurisdictionForCountry(country.id) : null; return country && jurisdiction ? { country, jurisdiction } : null; };
+    const render = (time: number) => {
+      const delta = Math.min(time - lastTime, 50); lastTime = time; if (!reduced && !dragging && !hovering) rotation[0] -= delta * .0033; projection.rotate(rotation);
+      context.clearRect(0, 0, width, height); context.save();
+      context.beginPath(); path({ type: 'Sphere' }); context.shadowColor = 'rgba(43, 34, 48, .12)'; context.shadowBlur = 26; context.fillStyle = '#faf9f7'; context.fill(); context.shadowBlur = 0;
+      context.beginPath(); path(graticule); context.strokeStyle = 'rgba(116, 109, 119, .14)'; context.lineWidth = .65; context.stroke();
+      countries.forEach((country) => { const jurisdiction = jurisdictionForCountry(country.id); context.beginPath(); path(country); context.fillStyle = jurisdiction ? JURISDICTION_COLOURS[jurisdiction] : '#e8e7e4'; context.globalAlpha = jurisdiction ? .9 : .82; context.fill(); context.globalAlpha = 1; context.strokeStyle = jurisdiction ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.96)'; context.lineWidth = jurisdiction ? .7 : .55; context.stroke(); });
+      context.beginPath(); path({ type: 'Sphere' }); context.strokeStyle = '#cfcbd0'; context.lineWidth = 1.15; context.stroke();
+      const centre: [number, number] = [-rotation[0], -rotation[1]];
+      JURISDICTION_LOCATIONS.forEach(({ jurisdiction, latitude, longitude }) => { if (geoDistance([longitude, latitude], centre) > Math.PI / 2) return; const point = projection([longitude, latitude]); if (!point) return; const label = jurisdiction === 'MENA' ? 'MENA' : jurisdiction; context.font = '600 10px Inter, sans-serif'; const textWidth = context.measureText(label).width; context.fillStyle = 'rgba(255,255,255,.9)'; context.beginPath(); context.roundRect(point[0] - textWidth / 2 - 7, point[1] - 10, textWidth + 14, 20, 10); context.fill(); context.fillStyle = JURISDICTION_COLOURS[jurisdiction]; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(label, point[0], point[1] + .5); });
+      context.restore(); frame = requestAnimationFrame(render);
+    };
+    const down = (event: PointerEvent) => { dragging = true; startX = priorX = event.clientX; startY = priorY = event.clientY; canvas.setPointerCapture(event.pointerId); };
+    const move = (event: PointerEvent) => { if (dragging) { rotation[0] += (event.clientX - priorX) * .24; rotation[1] = Math.max(-62, Math.min(62, rotation[1] - (event.clientY - priorY) * .2)); priorX = event.clientX; priorY = event.clientY; } const hit = locate(event); hovering = Boolean(hit); setHovered(hit ? { country: hit.country.properties?.name ?? JURISDICTION_LABELS[hit.jurisdiction], jurisdiction: hit.jurisdiction } : null); canvas.style.cursor = hit ? 'pointer' : dragging ? 'grabbing' : 'grab'; };
+    const leave = () => { hovering = false; setHovered(null); };
+    const up = (event: PointerEvent) => { const moved = Math.hypot(event.clientX - startX, event.clientY - startY); const hit = locate(event); dragging = false; if (hit && moved < 6) onSelect(hit.jurisdiction); };
+    canvas.addEventListener('pointerdown', down); canvas.addEventListener('pointermove', move); canvas.addEventListener('pointerleave', leave); canvas.addEventListener('pointerup', up);
+    const observer = new ResizeObserver(resize); observer.observe(canvas); resize(); frame = requestAnimationFrame(render);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); canvas.removeEventListener('pointerdown', down); canvas.removeEventListener('pointermove', move); canvas.removeEventListener('pointerleave', leave); canvas.removeEventListener('pointerup', up); };
   }, [onSelect]);
-  return <section className="jurisdiction-browser section-wrap" aria-labelledby="jurisdiction-browser-title"><div className="globe-copy"><span className="section-index">02</span><h2 id="jurisdiction-browser-title">Browse models by developer jurisdiction</h2><p>The markers locate the jurisdiction assigned to each model developer. Select one to view the corresponding model panels.</p><div className="jurisdiction-list">{JURISDICTION_LOCATIONS.map(({ jurisdiction }) => <button key={jurisdiction} onClick={() => onSelect(jurisdiction)}><i style={{ background: JURISDICTION_COLOURS[jurisdiction] }} /><span>{jurisdiction}</span><em>{counts.get(jurisdiction) ?? 0} models</em><ArrowRight size={14} /></button>)}</div></div><div className="globe-wrap"><div ref={host} className="jurisdiction-globe" aria-hidden="true" /><span>Drag to rotate · select a marker</span></div></section>;
+  return <section className="jurisdiction-browser section-wrap" aria-labelledby="jurisdiction-browser-title"><div className="globe-copy"><span className="section-index">02</span><h2 id="jurisdiction-browser-title">Browse models by developer jurisdiction</h2><p>Countries are grouped according to the regional categories used for model developers in this study. Select a coloured area to view the corresponding model panels.</p><div className="jurisdiction-list">{JURISDICTION_LOCATIONS.map(({ jurisdiction }) => <button key={jurisdiction} onClick={() => onSelect(jurisdiction)} aria-label={`View ${counts.get(jurisdiction) ?? 0} models from ${JURISDICTION_LABELS[jurisdiction]}`}><i style={{ background: JURISDICTION_COLOURS[jurisdiction] }} /><span>{JURISDICTION_LABELS[jurisdiction]}</span><em>{counts.get(jurisdiction) ?? 0} models</em><ArrowRight size={14} /></button>)}</div><small className="jurisdiction-note">Colours show the study’s broad developer-jurisdiction groups, not the geographic scope or legal coverage of individual models.</small></div><div className="globe-wrap"><canvas ref={canvasRef} className="jurisdiction-globe" aria-label="Rotating world map coloured by model developer jurisdiction" />{hovered && <div className="globe-tooltip"><strong>{hovered.country}</strong><span>{JURISDICTION_LABELS[hovered.jurisdiction]} · {counts.get(hovered.jurisdiction) ?? 0} models</span></div>}<span>Drag to rotate · select a coloured region</span></div></section>;
 }
 
 function PromptDrawer({ point, rows, responseIndex, setResponseIndex, close }: { point: PromptPoint | null; rows: Refusal[]; responseIndex: number; setResponseIndex: (index: number) => void; close: () => void }) {

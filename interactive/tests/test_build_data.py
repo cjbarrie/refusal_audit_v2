@@ -17,9 +17,11 @@ def test_last_clean_error_does_not_erase_valid(tmp_path):
     assert got[("p", "en", "m")]["response_text"] == "ok"
 
 
-def test_current_model_roster_has_18_complete_jurisdiction_mappings():
-    assert len(MODEL_JURISDICTION) == 18
-    assert set(MODEL_JURISDICTION.values()) == {"CN", "MENA", "India", "US", "EU"}
+def test_candidate_model_roster_has_24_complete_jurisdiction_mappings():
+    assert len(MODEL_JURISDICTION) == 24
+    assert set(MODEL_JURISDICTION.values()) == {
+        "CN", "MENA", "India", "US", "EU", "Russia"
+    }
 
 
 def test_built_umap_assets_include_hover_text():
@@ -32,3 +34,24 @@ def test_built_umap_assets_include_hover_text():
     assert len(points) == 2496
     assert points["prompt_id"].is_unique
     assert points["prompt_text"].notna().all()
+
+
+def test_public_candidate_metadata_matches_accepted_release():
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "web" / "public" / "data" / "metadata.json"
+    )
+    if not path.exists():
+        return
+    import json
+
+    metadata = json.loads(path.read_text(encoding="utf-8"))
+    assert metadata["canonical_release"] == "canon_031"
+    assert metadata["release_status"] == "accepted_candidate"
+    assert metadata["counts"] == {
+        "prompts": 2496,
+        "responses": 299080,
+        "genuine_refusals": 7175,
+        "models": 24,
+        "languages": 5,
+    }

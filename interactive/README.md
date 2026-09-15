@@ -1,7 +1,7 @@
 # Refusal explorers
 
-This directory contains two read-only interfaces to the promoted release's Luna
-v2.4 genuine-refusal labels. `app.py` is the compact Streamlit verification
+This directory contains two read-only interfaces to release-frozen Luna v2.4
+genuine-refusal labels. `app.py` is the compact Streamlit verification
 interface. `web/` is the standalone Refusal Observatory: a full-screen 3-D/2-D
 semantic atlas intended for exploratory use and eventual public presentation.
 Historical human-review and adjudication pages remain archived after their
@@ -21,22 +21,32 @@ python interactive/build_data.py
 `build_data.py`:
 
 1. resolves the promoted release from
-   `pipeline/estimates/canonical/c00_manifest.csv`;
+   `pipeline/estimates/canonical/c00_manifest.csv`, unless a specifically
+   approved website candidate is supplied with `--release`;
 2. verifies that manifest against its immutable release;
 3. reads that release's fixed `c22_prompt_umap_coordinates.csv` (2,496 prompt
    points) and never fits an embedding or UMAP;
 4. loads the exact response frame stored inside that immutable release;
-5. assembles the original and seven expansion models' response text using the
-   last-valid-record rule, and verifies every expansion JSONL against the hash
-   that supplied its frozen Luna batch;
+5. assembles response text using the last-valid-record rule and checks each
+   expansion response against the response hash supplied to its accepted Luna
+   annotation;
 6. writes ignored `interactive/data/{umap_points,responses}.parquet` plus a
    hash/count manifest.
 
-For the current 18-model contract the expected result is 224,544 response rows,
-18 models and 2,496 prompt points. The build fails on a changed manifest or
+The default promoted contract remains `canon_024` (224,544 responses and 18
+models). The public website currently uses the explicitly recorded accepted
+candidate `canon_031` (299,080 responses and 24 models):
+
+```bash
+python interactive/build_data.py --release canon_031
+```
+
+The candidate adds Sarvam 105B, Krutrim 2, GigaChat3 10B A1.8B, Bielik 11B
+v3.0, EuroLLM 22B, and Salamandra 7B. It does not alter the formal canonical
+pointer and does not yet include T-pro or the corrected full Fanar run. The
+build fails on a changed manifest or
 source hash, duplicate key, missing prompt/response text, missing annotation or
-unexpected row count. It will therefore continue to show the old promoted
-release until a new release is accepted and promoted.
+unexpected row count.
 
 ## Run
 
@@ -72,8 +82,8 @@ npm install
 npm run dev -- --host 127.0.0.1
 ```
 
-The current page loads all 2,496 prompt points and only the 6,127
-genuine-refusal response records in `canon_024`. Gray context points remain
+The current page loads all 2,496 prompt points and only the 7,175
+genuine-refusal response records in accepted candidate `canon_031`. Gray context points remain
 hoverable and selectable. Selecting a point opens its prompt, matching
 responses, refusal evidence and v2.4 coding without leaving the constellation.
 The publication JSON is versioned through Git LFS so a GitHub Pages build uses
@@ -92,7 +102,7 @@ read the published prompts and genuine-refusal responses.
 To update the public site after promoting a new canonical release:
 
 ```bash
-python interactive/build_data.py
+python interactive/build_data.py --release canon_031
 python interactive/build_web_data.py
 cd interactive/web
 npm run build:pages

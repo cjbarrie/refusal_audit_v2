@@ -144,6 +144,7 @@ def build() -> dict:
         "version": "refusal-observatory-web-v1",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "canonical_release": source_manifest["canonical_release"],
+        "release_status": source_manifest["release_status"],
         "counts": {
             "prompts": len(prompts),
             "responses": len(responses),

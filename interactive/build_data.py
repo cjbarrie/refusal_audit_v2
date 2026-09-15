@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Build reproducible, local-only Parquet assets for the fixed-geometry UMAP.
 
-The builder resolves the promoted release from its manifest, verifies the c22
-hash, and intersects raw append-only response records with the exact R analysis
+The default build resolves the formally promoted release. An explicit
+``--release`` may select one of the recorded, accepted website candidates below
+without changing the analysis promotion pointer. Every build verifies the
+release files and intersects raw response records with the exact R analysis
 keys. It never fits embeddings or UMAP and never exports reasoning content.
 """
 
@@ -28,8 +30,29 @@ EXPANSION_RUN_DIR = ROOT / "annotations" / "model_expansion_v3" / "full_run_v1"
 HUNYUAN_RUN_DIR = (
     ROOT / "annotations" / "model_expansion_v3" / "hunyuan_all_languages_v3_1"
 )
-EXPECTED_RESPONSES = 224_544
-EXPECTED_MODELS = 18
+V4_FULL_DIR = ROOT / "annotations" / "model_expansion_v4" / "full_generation_v1"
+TORCH_FULL = (
+    ROOT / "annotations" / "model_expansion_v4" / "local_gguf_full_hpc_v1"
+    / "responses.jsonl"
+)
+RELEASE_CONTRACTS = {
+    "canon_024": {
+        "release_status": "promoted",
+        "responses": 224_544,
+        "models": 18,
+        "extra_sources": [],
+    },
+    "canon_031": {
+        "release_status": "accepted_candidate",
+        "responses": 299_080,
+        "models": 24,
+        "extra_sources": [
+            V4_FULL_DIR / "sarvam-105b" / "results.jsonl",
+            V4_FULL_DIR / "bielik-11b-v3.0" / "results.jsonl",
+            TORCH_FULL,
+        ],
+    },
+}
 EXPANSION_LABEL_DIRS = [
     ROOT / "annotations" / "model_expansion_v3" / "luna_v2_4_completed_batch1",
     ROOT / "annotations" / "model_expansion_v3" / "luna_v2_4_completed_batch2",
@@ -45,21 +68,32 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def resolve_promoted_release() -> tuple[str, Path, pd.DataFrame]:
+def resolve_release(requested_release: str | None) -> tuple[str, str, Path, pd.DataFrame, Path]:
     if not PROMOTED_MANIFEST.exists():
         raise FileNotFoundError("promoted canonical manifest is missing")
     manifest = pd.read_csv(PROMOTED_MANIFEST)
     ids = manifest["canonical_run_id"].dropna().astype(str).unique()
     if len(ids) != 1:
         raise ValueError(f"manifest must name exactly one release, found {ids.tolist()}")
-    release_id = ids[0]
+    promoted_id = ids[0]
+    release_id = requested_release or promoted_id
+    if release_id not in RELEASE_CONTRACTS:
+        raise ValueError(
+            f"website release {release_id!r} is not an approved build contract; "
+            f"choose one of {sorted(RELEASE_CONTRACTS)}"
+        )
     release = ROOT / "pipeline" / "releases" / release_id
     release_manifest = release / "estimates" / "c00_manifest.csv"
     if not release_manifest.exists():
-        raise FileNotFoundError(f"promoted release {release_id} has no manifest")
-    if sha256(release_manifest) != sha256(PROMOTED_MANIFEST):
+        raise FileNotFoundError(f"release {release_id} has no manifest")
+    if release_id == promoted_id and sha256(release_manifest) != sha256(PROMOTED_MANIFEST):
         raise ValueError("promoted manifest differs from the release manifest")
-    return release_id, release, manifest
+    selected_manifest = pd.read_csv(release_manifest)
+    selected_ids = selected_manifest["canonical_run_id"].dropna().astype(str).unique()
+    if selected_ids.tolist() != [release_id]:
+        raise ValueError(f"release manifest does not uniquely identify {release_id}")
+    status = RELEASE_CONTRACTS[release_id]["release_status"]
+    return release_id, status, release, selected_manifest, release_manifest
 
 
 def verify_manifest_file(manifest: pd.DataFrame, path: Path) -> None:
@@ -137,7 +171,7 @@ def exact_analysis_keys(data_path: Path) -> pd.DataFrame:
         "rv_technical_failure", "rv_confidence", "rv_refusal_evidence_span",
         "rv_decision_note", "rv_annotation_source", "rv_provider_request_id",
         "rv_created_at", "genuine_refusal", "capability_failure",
-        "original_nonengagement", "corpus",
+        "original_nonengagement", "corpus", "generation_response_sha256",
     ]
     with tempfile.TemporaryDirectory(prefix="refusal_umap_") as td:
         target = Path(td) / "keys.csv"
@@ -154,9 +188,12 @@ def exact_analysis_keys(data_path: Path) -> pd.DataFrame:
     return frame
 
 
-def build() -> dict:
+def build(requested_release: str | None = None) -> dict:
     OUT.mkdir(parents=True, exist_ok=True)
-    release_id, release, manifest = resolve_promoted_release()
+    release_id, release_status, release, manifest, release_manifest = resolve_release(
+        requested_release
+    )
+    contract = RELEASE_CONTRACTS[release_id]
     coords_path = release / "estimates" / "c22_prompt_umap_coordinates.csv"
     verify_manifest_file(manifest, coords_path)
     data_path = release / "estimates" / "data_clean.RData"
@@ -171,6 +208,11 @@ def build() -> dict:
     expansion_paths += sorted(HUNYUAN_RUN_DIR.glob("stage_*/results.jsonl"))
     verify_expansion_generation(expansion_paths)
     source_paths += expansion_paths
+    extra_sources = contract["extra_sources"]
+    missing_sources = [path for path in extra_sources if not path.exists()]
+    if missing_sources:
+        raise FileNotFoundError(f"candidate response sources are missing: {missing_sources}")
+    source_paths += extra_sources
     responses = last_clean_jsonl(source_paths, "response")
     raw = pd.DataFrame([{**{k: key[i] for i, k in enumerate(KEY)}, **row} for key, row in responses.items()])
     keep = [*KEY, "prompt_text", "response_text", "provider", "model_id", "battery", "prompt_category", "qid", "timestamp", "_source_file", "_source_line"]
@@ -180,8 +222,23 @@ def build() -> dict:
     if len(missing):
         raise ValueError(f"{len(missing)} canonical responses lack recoverable text")
     merged = merged.drop(columns="_merge")
-    if len(merged) != EXPECTED_RESPONSES or merged.model.nunique() != EXPECTED_MODELS:
-        raise ValueError(f"unexpected canonical response count {len(merged)}")
+    if len(merged) != contract["responses"] or merged.model.nunique() != contract["models"]:
+        raise ValueError(
+            f"unexpected canonical shape: {len(merged)} responses and "
+            f"{merged.model.nunique()} models"
+        )
+    frozen_response_hash = merged.get("generation_response_sha256")
+    if frozen_response_hash is not None:
+        check = frozen_response_hash.notna()
+        observed_hash = merged.loc[check, "response_text"].map(
+            lambda value: hashlib.sha256(value.encode("utf-8")).hexdigest()
+        )
+        mismatch = observed_hash.ne(frozen_response_hash.loc[check].astype(str))
+        if mismatch.any():
+            raise ValueError(
+                f"{int(mismatch.sum())} response texts differ from the hashes "
+                "used by the accepted annotations"
+            )
     merged["developer_jurisdiction"] = merged["model"].map(MODEL_JURISDICTION)
     if merged["developer_jurisdiction"].isna().any():
         raise ValueError("one or more models lack a jurisdiction mapping")
@@ -235,11 +292,13 @@ def build() -> dict:
     merged.to_parquet(OUT / "responses.parquet", index=False)
     meta = {
         "canonical_release": release_id,
+        "release_status": release_status,
         "built_at": datetime.now(timezone.utc).isoformat(),
         "row_counts": {"umap_points": len(points), "responses": len(merged),
                        "models": int(merged.model.nunique())},
         "hashes": {
-            "canonical_manifest": sha256(PROMOTED_MANIFEST),
+            "release_manifest": sha256(release_manifest),
+            "promoted_manifest": sha256(PROMOTED_MANIFEST),
             "umap_coordinates": sha256(coords_path),
             "data_clean": sha256(data_path),
             "umap_points": sha256(OUT / "umap_points.parquet"),
@@ -254,5 +313,11 @@ def build() -> dict:
 
 
 if __name__ == "__main__":
-    argparse.ArgumentParser(description=__doc__).parse_args()
-    print(json.dumps(build(), indent=2))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--release",
+        choices=sorted(RELEASE_CONTRACTS),
+        help="build an explicitly approved release; defaults to the promoted release",
+    )
+    args = parser.parse_args()
+    print(json.dumps(build(args.release), indent=2))
